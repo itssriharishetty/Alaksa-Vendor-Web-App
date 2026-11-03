@@ -2302,6 +2302,486 @@ export const VENDOR_IMPACT_DETAILS = {
         url: "https://alaskaair.sharepoint.com/sites/ERBC/businesscontinuity/Shared%20Documents/Business%20Resiliency%20Plans/Business%20Resiliency%20Plans/AAG%20Contact%20Centers/AAG%20Contact%20Centers%202025%20Plan/AAG%20Contact%20Centers%20-%20BR%20Plan%20Update%20-%202025.pdf?web=1"
       }
     ]
+  },
+
+  avtec: {
+    id: "avtec",
+    name: "Avtec",
+    company: "Avtec",
+    website: "(Add Website/Support Portal URL)",
+    category: "Flight Operations / Dispatch Communications / Radio & Telephony",
+    itsTeam: "UC Team (Unified Communications)",
+    logo: "public/vendors/avtec.jpg",
+    status: "Active",
+    lastUpdated: "Source-Verified Runbook",
+    subtitle:
+      "Flight Operations / Dispatch Communications / Radio & Telephony (Avtec Dispatch Radio System / Avtec Scout · Critical System · 24x7)",
+    impactCallout: {
+      level: "Critical",
+      message:
+        "Critical System — Avtec is a critical Flight Operations communications system supporting Dispatch and operational groups (AS & QX Dispatch, Bridge, CLP, Maintenance Control) through phone lines, G/G and A/G radios, intercoms, radio remotes, transfers, and broadcasts; unavailability can impede communication with stations/agents (e.g., gate changes and aircraft coordination) and cause potential flight delays. IMPORTANT OPERATIONAL TAKEAWAY: Do not immediately call Avtec for every Avtec issue — contact the UC Team first at 206-688-3800, option 1 (24x7), who determines whether vendor escalation is needed, and isolate CUCM/VPGate configuration and Hub/Lumen voice paths before classifying a broad failure as a vendor outage."
+    },
+    applicationsCardSubtitle:
+      "Applications, dispatch hardware, and operational consumer groups supported by Avtec",
+    impactSummary: {
+      confirmed: 1,
+      potential: 8,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactedSystems: [
+      {
+        id: "avtec-dispatch-radio-system",
+        name: "Avtec Dispatch Radio System / Avtec Scout",
+        subName: "(Critical System · AS & QX Dispatch, Bridge, CLP, Maintenance Control)",
+        appTabSubName: "(Critical System · AS & QX Dispatch, Bridge, CLP, Maintenance Control)",
+        description:
+          "Avtec provides a dispatch communications solution supporting radio/LTE endpoints. The internal user guide describes Avtec Scout as purpose-built dispatch hardware supporting up to four radio or LTE endpoints. Operational Consumers validated in the DR plan: AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control, QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control (explicitly testing inbound/outbound calling for AS and QX operational groups).",
+        appTabDescription:
+          "Avtec provides a dispatch communications solution supporting radio/LTE endpoints. The internal user guide describes Avtec Scout as purpose-built dispatch hardware supporting up to four radio or LTE endpoints. Operational Consumers validated in the DR plan: AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control, QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control (explicitly testing inbound/outbound calling for AS and QX operational groups).",
+        businessFunction:
+          "Provides operational voice communications, including radio and telephone communications used by Flight Operations. It supports phone/radio endpoint selection, outbound calls, call transfer, forwarding, and radio-to-phone or radio-to-radio patching.",
+        impact:
+          "It is classified internally as a critical system, with possible flight delays.",
+        dependencies:
+          "Avtec consoles/endpoints, VPGates, phone lines, G/G radios, A/G radios, intercoms, radio remotes, network connectivity, and UC/voice infrastructure.",
+        owner: "UC Team"
+      }
+    ],
+    upstreamDependencies: [
+      "Avtec VPGates: Provide endpoint handling/failover capability across primary SEA-side (SEACRAVTECOO01A–03B) and IGQ DR (IGQPRAVTEC01A–03B) servers.",
+      "Voice / Call-Processing Infrastructure (Hub/Lumen & Data Center Path): Voice/call-processing infrastructure is a dependency. A recent incident (INC 3399523) was restored by manually moving voice traffic away from affected Hub/Lumen voice circuits to the Data Center call-processing path.",
+      "CUCM (Cisco Unified Communications Manager): Involved in the Avtec telephony path. One PDX incident (INC 3340834) was associated with a PDX CUCM Subscriber re-IP, and another ticket's closure notes state that the PDX CUCM subscriber was removed from Avtec endpoints.",
+      "VPGate Audio Service: Operationally significant service. After IP changes, restarting this service restored Avtec functionality during INC 3340834 before intermittent symptoms briefly recurred.",
+      "Authentication — Standard RDP: Standard RDP is used for server access.",
+      "Authentication — LDAP: LDAP authentication is used for programming from inside the Alaska network."
+    ],
+    downstreamConsumers: [
+      "Endpoint Categories (5 DR Plan Categories): G/G radios, A/G radios, Phone lines, Intercoms, and Radio remotes.",
+      "AS Operational Consumers (DR Validated): AS Dispatch, AS Bridge, AS CLP, and AS Maintenance Control (explicitly tested for console functionality and inbound/outbound calling).",
+      "QX Operational Consumers (DR Validated): QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control (explicitly tested for console functionality and inbound/outbound calling).",
+      "Operational Voice & Radio Functions Supported: Inbound calls, Outbound calls, Two-way radio transmission, AS/QX intercoms, Radio dial-up remotes, Calls transferred between consoles, AS Dispatch All Call, and AS Dispatch Broadcast."
+    ],
+    dependenciesTab: {
+      diagramSubtitle:
+        "Architecture view of Avtec VPGates, CUCM/voice call-processing paths, RDP/LDAP authentication, and downstream AS/QX Flight Operations radio/telephony consumers",
+      diagramUpstream: [
+        { id: "avtec-up-vpgate", label: "Avtec VPGates (SEA & IGQ Failover)", iconType: "server" },
+        { id: "avtec-up-voice", label: "Voice / Call-Processing (Hub/Lumen & DC)", iconType: "cloud" },
+        { id: "avtec-up-cucm", label: "CUCM Telephony Path", iconType: "server" },
+        { id: "avtec-up-audio", label: "VPGate Audio Service", iconType: "shield" },
+        { id: "avtec-up-auth", label: "Standard RDP & LDAP Auth", iconType: "shield" }
+      ],
+      diagramServices: [
+        "Avtec Dispatch Radio System / Avtec Scout",
+        "Phone/Radio Selection, Patching, Transfers & Broadcasts",
+        "SEA VPGates (SEACRAVTECOO01A–03B) & IGQ VPGates (IGQPRAVTEC01A–03B)"
+      ],
+      diagramDownstream: [
+        {
+          id: "avtec-down-endpoints",
+          label: "5 Endpoint Categories (G/G, A/G, Phone, Intercom, Remotes)",
+          iconType: "layers"
+        },
+        {
+          id: "avtec-down-as",
+          label: "AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control",
+          iconType: "users"
+        },
+        {
+          id: "avtec-down-qx",
+          label: "QX Dispatch, QX Bridge, QX CLP, QX Maintenance Control",
+          iconType: "users"
+        },
+        {
+          id: "avtec-down-funcs",
+          label: "Inbound/Outbound Calls, 2-Way Radio, All Call & Broadcast",
+          iconType: "chart"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 6, tone: "red" },
+        { label: "Downstream Consumer Groups", count: 4, tone: "blue" },
+        { label: "VPGate Servers (SEA + IGQ)", count: 12, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "Avtec is a critical Flight Operations communications system, not simply a desktop telephone application. It supports Dispatch and other operational groups through phone lines, ground/ground and air/ground radios, intercoms, radio remotes, transfers, broadcasts, and other operational voice functions.",
+        "Loss or degradation can impede communication between operational personnel and stations/agents and has documented potential for flight delays.",
+        "A PDX incident specifically documented potential flight delays because operators use Avtec to communicate gate changes and organize aircraft with agents.",
+        "Important Operational Takeaway: For Production Operations, do not immediately call Avtec for every Avtec issue. The documented escalation path is to contact UC Team first at 206-688-3800 option 1, and UC determines whether Avtec vendor involvement is necessary.",
+        "Broad Failure Isolation: A broad Avtec failure does not necessarily mean the Avtec vendor itself is down. Recent incidents show dependencies on CUCM/VPGate configuration and Hub/Lumen voice paths, so those internal/infrastructure layers should be isolated before classifying the problem as a vendor outage."
+      ],
+      upstreamTable: [
+        {
+          id: "avtec-uptbl-1",
+          name: "Avtec VPGates",
+          subName: "(SEA Primary SEACRAVTECOO01A–03B / IGQ DR IGQPRAVTEC01A–03B)",
+          description:
+            "Avtec VPGates provide endpoint handling/failover capability across the 5 endpoint categories (G/G radios, A/G radios, Phone lines, Intercoms, Radio remotes).",
+          type: "Endpoint Handling & Failover",
+          typeBadge: "purple",
+          impact: "Loss of endpoint registration or audio routing; requires failover of Avtec endpoints to IGQ VPGates."
+        },
+        {
+          id: "avtec-uptbl-2",
+          name: "Voice / Call-Processing Infrastructure",
+          subName: "(Hub/Lumen Voice Circuits & Data Center Call-Processing Path)",
+          description:
+            "Voice/call-processing infrastructure is a dependency. A recent incident (INC 3399523) was restored by manually moving voice traffic away from affected Hub/Lumen voice circuits to the Data Center call-processing path.",
+          type: "Voice & Circuit Infrastructure",
+          typeBadge: "orange",
+          impact: "Degraded or failed inbound/outbound voice calls across HUB/NOC until traffic is failed over to the Data Center call-processing path."
+        },
+        {
+          id: "avtec-uptbl-3",
+          name: "CUCM (Cisco Unified Communications Manager)",
+          subName: "(Avtec Telephony Path)",
+          description:
+            "CUCM is involved in the Avtec telephony path. One PDX incident (INC 3340834) was associated with a PDX CUCM Subscriber re-IP, and another ticket's closure notes state that the PDX CUCM subscriber was removed from Avtec endpoints.",
+          type: "Telephony Call Control",
+          typeBadge: "blue",
+          impact: "CUCM subscriber IP or configuration changes can disrupt Avtec phone line registration and call handling."
+        },
+        {
+          id: "avtec-uptbl-4",
+          name: "VPGate Audio Service",
+          subName: "(Windows / VPGate Server Audio Service)",
+          description:
+            "VPGate Audio Service is operationally significant. After IP changes, restarting this service restored Avtec functionality during INC 3340834 before intermittent symptoms briefly recurred.",
+          type: "Core Application Service",
+          typeBadge: "purple",
+          impact: "No audio or failed call completion on Avtec consoles until the VPGate Audio Service is restarted."
+        },
+        {
+          id: "avtec-uptbl-5",
+          name: "Standard RDP",
+          subName: "(Server Access Authentication)",
+          description: "Standard RDP is used for server access to Avtec / VPGate infrastructure.",
+          type: "Authentication",
+          typeBadge: "blue",
+          impact: "Administrative and DR server access requires Standard RDP."
+        },
+        {
+          id: "avtec-uptbl-6",
+          name: "LDAP Authentication",
+          subName: "(Internal Alaska Network Programming)",
+          description: "LDAP authentication is used for programming from inside the Alaska network.",
+          type: "Authentication",
+          typeBadge: "blue",
+          impact: "Unable to authenticate for Avtec system programming from inside the Alaska network."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "avtec-dwntbl-1",
+          name: "Five Endpoint Categories (DR Plan)",
+          subName: "(G/G Radios, A/G Radios, Phone Lines, Intercoms, Radio Remotes)",
+          description:
+            "The DR plan identifies five endpoint categories managed by Avtec: G/G radios, A/G radios, Phone lines, Intercoms, and Radio remotes.",
+          dataFlow: "Real-Time Voice & Radio Audio / Signaling",
+          impact: "Radio/phone lines may appear greyed out, offline, or unavailable; loss of handset/headset or speaker audio."
+        },
+        {
+          id: "avtec-dwntbl-2",
+          name: "AS Operational Consumers",
+          subName: "(AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control)",
+          description:
+            "Operational consumers explicitly validated in DR testing for Alaska Airlines (AS), including console functionality and inbound/outbound calling.",
+          dataFlow: "Dispatch Voice, Radio & Telephone Patching",
+          impact: "Impedes dispatch, bridge, CLP, and maintenance control communications; potential flight delays."
+        },
+        {
+          id: "avtec-dwntbl-3",
+          name: "QX Operational Consumers",
+          subName: "(QX Dispatch, QX Bridge, QX CLP, QX Maintenance Control)",
+          description:
+            "Operational consumers explicitly validated in DR testing for Horizon Air (QX), including console functionality and inbound/outbound calling.",
+          dataFlow: "Dispatch Voice, Radio & Telephone Patching",
+          impact: "Impedes QX dispatch, bridge, CLP, and maintenance control communications; potential flight delays."
+        },
+        {
+          id: "avtec-dwntbl-4",
+          name: "Supported Operational Voice & Dispatch Functions",
+          subName: "(Calls, Two-Way Radio, Intercoms, Remotes, Transfers, All Call, Broadcast)",
+          description:
+            "Avtec functionality supports Inbound calls, Outbound calls, Two-way radio transmission, AS/QX intercoms, Radio dial-up remotes, Calls transferred between consoles, AS Dispatch All Call, and AS Dispatch Broadcast.",
+          dataFlow: "End-to-End Operational Voice & Broadcasts",
+          impact: "Operators may have difficulty communicating gate changes, coordinating aircraft with agents, or issuing dispatch broadcasts."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "avtec-infra-1",
+          category: "VPGate Servers (Primary / SEA-Side Documented Systems)",
+          iconType: "server",
+          details:
+            "SEACRAVTECOO01A, SEACRAVTECOO01B, SEACRAVTECOO02A, SEACRAVTECOO02B, SEACRAVTECOO03A, SEACRAVTECOO03B."
+        },
+        {
+          id: "avtec-infra-2",
+          category: "VPGate Servers (IGQ Systems / DR Failover)",
+          iconType: "server",
+          details:
+            "IGQPRAVTEC01A, IGQPRAVTEC01B, IGQPRAVTEC02A, IGQPRAVTEC02B, IGQPRAVTEC03A, IGQPRAVTEC03B."
+        },
+        {
+          id: "avtec-infra-3",
+          category: "Critical Network Dependency",
+          iconType: "globe",
+          details:
+            "The DR document explicitly identifies connectivity between IGQ and HUB/PUY as a critical operational dependency."
+        },
+        {
+          id: "avtec-infra-4",
+          category: "Authentication (Server Access & Programming)",
+          iconType: "shield",
+          details:
+            "Standard RDP is used for server access. LDAP authentication is used for programming from inside the Alaska network."
+        },
+        {
+          id: "avtec-infra-5",
+          category: "Monitoring (Zenoss Real Time Services)",
+          iconType: "layers",
+          details:
+            "Zenoss Real Time Services monitoring is part of the DR procedure. It is disabled for the primary during failover preparation and re-enabled following recovery."
+        },
+        {
+          id: "avtec-infra-6",
+          category: "Database Dependency",
+          iconType: "database",
+          details: "(Add Database Dependencies)"
+        },
+        {
+          id: "avtec-infra-7",
+          category: "Firewall Dependencies",
+          iconType: "shield",
+          details: "(Add Firewall Dependencies)"
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Unable to make outbound calls.",
+      "Unable to answer calls reliably or requiring multiple attempts.",
+      "Radio/phone lines may appear greyed out, offline, or unavailable.",
+      "No audio transmitted or received through handset/headset.",
+      "No audio from Avtec speakers.",
+      "Operational teams may have difficulty communicating gate changes and coordinating aircraft with agents.",
+      "Potential flight delays."
+    ],
+    knownWorkarounds: [
+      "Personal phones have been used when Avtec outbound calls were unavailable.",
+      "Radios can provide limited backup communication.",
+      "Microsoft Teams has also been used operationally as a workaround for outbound communication.",
+      "For a single Avtec endpoint/line stuck IN USE or OFFLINE, calls to the impacted line automatically route to the Rollover/Backup line.",
+      "The DR architecture supports moving Avtec endpoints to IGQ VPGates.",
+      "After recovery, if one of the five endpoint groups fails, the DR plan says that specific group can be moved back."
+    ],
+    validationChecklist: [
+      "1. Determine scope: Ask whether the problem affects one workstation/endpoint, one line, multiple endpoints, entire station/location, or AS, QX, or both. For multiple endpoint failures, document all impacted endpoint names and contact UC On-Call at 206-688-3800.",
+      "2. Determine failing functionality: Check separately inbound phone calls, outbound phone calls, radio transmission/receive, intercom, transfers, audio output/input, and whether endpoints show offline/grey/in-use (mirrors the validation categories in the DR plan).",
+      "3. For handset/headset audio problems: Disconnect/reconnect handset or headset, test using known-good hardware, reset the Avtec Jackbox by disconnecting USB, waiting 5 seconds, then reconnecting, and reboot the workstation if necessary.",
+      "4. For speaker problems: Check speaker volume, check Windows audio/mute, reset USB speaker, verify there are no unauthorized/additional USB audio devices, confirm output is Realtek Audio, and confirm Intel Display Audio is disabled.",
+      "5. Check whether another phone path works: During the PDX incident, the team compared Avtec behavior with a supervisor desk phone to help isolate the issue.",
+      "6. Check UC/voice infrastructure: If multiple endpoints are affected, engage the UC Team. Check VPGate/voice infrastructure and relevant CUCM changes. A documented outage followed a PDX CUCM Subscriber re-IP.",
+      "7. Check VPGate Audio Service: A documented PDX resolution required restarting the VPGate Audio Service after IP changes.",
+      "8. Check voice circuit/path health: If symptoms span HUB/NOC or suggest a wider voice-path problem, validate Hub/Lumen circuits and Data Center call processing. A September incident was recovered by manually failing voice traffic to the Data Center call-processing path.",
+      "9. Validate recovery: Test AS/QX inbound calls, AS/QX outbound calls, two-way radio audio, intercoms, radio remotes, console-to-console transfer, and Dispatch All Call/Broadcast, where applicable.",
+      "10. Escalate if necessary: Contact UC Team first at 206-688-3800, option 1. UC determines whether vendor escalation to Avtec is needed."
+    ],
+    vendorContacts: {
+      supportPhone: "800-545-3034",
+      supportEmail: "customersupport@avtecinc.com",
+      supportHours: "24x7",
+      accountManager: "Avtec On-Call",
+      technicalSupport:
+        "Avtec Support / Avtec On-Call: 800-545-3034 • customersupport@avtecinc.com (24x7) • Account Manager: (Add Account Manager)",
+      namedEscalationContact:
+        "(Add Vendor Escalation Contact) • Account Manager: (Add Account Manager)",
+      companyNote:
+        "Avtec. The internal documentation names the vendor as Avtec but does not provide a longer legal company name.",
+      categoryNote:
+        "Flight Operations / Dispatch Communications / Radio & Telephony. Avtec is documented as the Avtec Dispatch Radio System and as a critical system.",
+      escalation:
+        "IMPORTANT OPERATIONAL TAKEAWAY: Do not immediately call Avtec for every Avtec issue. Contact the UC Team first at 206-688-3800, option 1 (24x7); UC determines whether Avtec vendor involvement is necessary. Isolate internal/infrastructure layers (CUCM/VPGate configuration, VPGate Audio Service, and Hub/Lumen voice paths) before classifying a broad failure as a vendor outage. If vendor escalation is required, contact Avtec Support / Avtec On-Call at 800-545-3034 or customersupport@avtecinc.com (24x7). Account Manager: (Add Account Manager). Named Vendor Escalation Contact: (Add Vendor Escalation Contact).",
+      communicationGuidelines: [
+        "Determine whether the impact is one or multiple endpoints.",
+        "Capture the PC/endpoint name(s) before escalation to ITS support.",
+        "Document whether phone, radio, audio, intercom, or multiple communication methods are affected.",
+        "Document whether inbound calls, outbound calls, or both are impacted.",
+        "Confirm whether Flight Operations has a viable workaround such as radio, personal phone, Teams, or rollover line. Existing incidents demonstrate these fallback methods.",
+        "For multiple endpoints, engage UC On-Call at 206-688-3800.",
+        "Before engaging Avtec directly, contact the UC Team at 206-688-3800 option 1. UC determines whether vendor escalation is required.",
+        "If escalation is required, contact Avtec On-Call: 800-545-3034 / customersupport@avtecinc.com.",
+        "For planned DR activities, communications include Production Operations, DR Program, NOC/SOC System Operations, AS Flight Operations and QX Flight Operations.",
+        "Important Operational Takeaway: Do not immediately call Avtec for every Avtec issue. Contact UC Team first at 206-688-3800 option 1. Also, a broad Avtec failure does not necessarily mean the Avtec vendor itself is down — recent incidents show dependencies on CUCM/VPGate configuration and Hub/Lumen voice paths, so isolate those internal/infrastructure layers before classifying the problem as a vendor outage."
+      ],
+      responseSlas: [
+        {
+          priority: "System Criticality",
+          level: "System Criticality",
+          description: "Internal system criticality classification in Avtec System Summary",
+          target: "Critical System.",
+          condition: "Critical System."
+        },
+        {
+          priority: "Potential Impact",
+          level: "Potential Impact",
+          description: "Operational impact if Avtec is unavailable or degraded",
+          target: "Flight delays possible.",
+          condition: "Flight delays possible."
+        },
+        {
+          priority: "Internal UC Support Coverage",
+          level: "Internal UC Support Coverage",
+          description: "UC Team (Unified Communications) on-call support coverage (206-688-3800, option 1)",
+          target: "24x7.",
+          condition: "24x7."
+        },
+        {
+          priority: "Vendor Avtec Coverage",
+          level: "Vendor Avtec Coverage",
+          description: "Avtec Support / Avtec On-Call coverage (800-545-3034 / customersupport@avtecinc.com)",
+          target: "24x7.",
+          condition: "24x7."
+        },
+        {
+          priority: "Sev 1 Initial Response Target",
+          level: "Sev 1 Initial Response Target",
+          description: "Vendor initial response target for Severity 1 incidents",
+          target: "(Add Sev 1 Initial Response Target)",
+          condition: "(Add Sev 1 Initial Response Target)"
+        },
+        {
+          priority: "Sev 1 Update Cadence",
+          level: "Sev 1 Update Cadence",
+          description: "Vendor update cadence for Severity 1 incidents",
+          target: "(Add Sev 1 Update Cadence)",
+          condition: "(Add Sev 1 Update Cadence)"
+        },
+        {
+          priority: "Sev 2 Initial Response Target",
+          level: "Sev 2 Initial Response Target",
+          description: "Vendor initial response target for Severity 2 incidents",
+          target: "(Add Sev 2 Initial Response Target)",
+          condition: "(Add Sev 2 Initial Response Target)"
+        },
+        {
+          priority: "Sev 2 Update Cadence",
+          level: "Sev 2 Update Cadence",
+          description: "Vendor update cadence for Severity 2 incidents",
+          target: "(Add Sev 2 Update Cadence)",
+          condition: "(Add Sev 2 Update Cadence)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "UC Team (Unified Communications)",
+      itsTeamNote:
+        "Primary ITS Team Owner: UC Team (Unified Communications), 206-688-3800, option 1 (24x7). DR / Production Monitoring: ITS Production Operations (Production Monitoring and Service restarts); Scott Heilman (application/UC validation activities); Dan Olson (DR plan owner).",
+      applicationOwner:
+        "UC Team (Dan Olson - DR plan owner; Scott Heilman - application/UC validation activities)",
+      onCallSupport: "UC Team, 206-688-3800, option 1 (24x7)",
+      systemAdministration:
+        "UC Team, 206-688-3800, option 1 (24x7) • DR / Production Monitoring: ITS Production Operations (Production Monitoring and Service restarts); Scott Heilman (application/UC validation activities); Dan Olson (DR plan owner)",
+      businessOwner: "Flight Operations / ERBC Team, ERBC.Team@alaskaair.com (24x7)",
+      passwordSupport: "ITS Service Desk, 877-238-1077"
+    },
+    incidentHistory: [
+      {
+        id: "INC 3399523",
+        date: "Documented Incident",
+        severity: "High",
+        duration: "Voice Path Failover",
+        summary:
+          "Voice/call-processing infrastructure impact across Hub/Lumen voice circuits affecting Avtec communications.",
+        rootCause:
+          "Degraded/affected Hub/Lumen voice circuits along the primary voice path.",
+        resolution:
+          "Restored by manually moving voice traffic away from affected Hub/Lumen voice circuits to the Data Center call-processing path."
+      },
+      {
+        id: "INC 3340834",
+        date: "Documented Incident",
+        severity: "High",
+        duration: "PDX Avtec Outage",
+        summary:
+          "PDX Avtec endpoints not working following a PDX CUCM Subscriber re-IP; team compared Avtec behavior with a supervisor desk phone to help isolate the issue.",
+        rootCause:
+          "Associated with a PDX CUCM Subscriber re-IP impacting the Avtec telephony path and VPGate Audio Service state.",
+        resolution:
+          "Restarting the VPGate Audio Service restored Avtec functionality after IP changes before intermittent symptoms briefly recurred; closure notes also state that the PDX CUCM subscriber was removed from Avtec endpoints."
+      },
+      {
+        id: "INC 3358692",
+        date: "Documented Incident",
+        severity: "Medium",
+        duration: "PDX Outbound Calling",
+        summary:
+          "Outbound calling issue on Avtec at PDX with documented potential for flight delays because operators use Avtec to communicate gate changes and organize aircraft with agents.",
+        rootCause:
+          "Avtec outbound call path unavailable at PDX.",
+        resolution:
+          "Operators utilized fallback communication workarounds (personal phones, radios, Microsoft Teams, or rollover/backup lines) while UC restored outbound calling."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "Avtec System Summary.docx",
+        type: "System Summary (Word)",
+        owner: "UC Team (Unified Communications)",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B022159B6-DF16-494D-8673-4C66F7D83A12%7D&file=Avtec%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Avtec User Guide.docx",
+        type: "User Guide (Word)",
+        owner: "UC Team / Flight Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B4D9A6045-1784-449E-9C6C-649731C53AE5%7D&file=Avtec%20User%20Guide.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "2026_Avtec_DR_Plan.xlsx",
+        type: "Disaster Recovery Plan (Excel)",
+        owner: "Dan Olson / Scott Heilman / UC Team",
+        updated: "2026",
+        url: "https://alaskaair.sharepoint.com/sites/sc/DR/_layouts/15/Doc.aspx?sourcedoc=%7BB4A9DD5B-16D0-4A62-9A31-339721511A8F%7D&file=2026_Avtec_DR_Plan.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Avtec Common Troubleshooting Steps.docx",
+        type: "Troubleshooting Guide (Word)",
+        owner: "UC Team / Production Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B0B10D599-8648-4557-8B73-CB5D67CF8676%7D&file=Avtec%20Common%20Troubleshooting%20Steps.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "INC 3399523 - MEL Update (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:c160606227ea4a639e17b4bdb4b42b8c@thread.v2/1790288933262?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "INC 3340834 - PDX Avtec Not Working (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:e25edb72a12542d381b9da31051749bc@thread.v2/1785396628764?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "INC 3340834 - Ticket Closure Notes (Outlook)",
+        type: "Incident Closure Email (Outlook)",
+        owner: "Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://outlook.office365.com/owa/?ItemID=AAMkADQ3NmM0N2MxLThlMDktNDcwMC1iNGUzLWUwNjcwOGE2YmVjMQBGAAAAAAAHZJq3IE%2fqR7PNFWEcMesaBwCHiomNgAhoTr%2bjmuA%2fjTbyAAAAAAEMAACHiomNgAhoTr%2bjmuA%2fjTbyAADPVNV5AAA%3d&exvsurl=1&viewmodel=ReadMessageItem"
+      },
+      {
+        title: "INC 3358692 - PDX Outbound Calling & Gate Changes (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:bf724af558204d20b3d815b4f12783c2@thread.v2/1786759783078?context=%7B%22contextType%22:%22chat%22%7D"
+      }
+    ]
   }
 };
 
@@ -3122,6 +3602,9 @@ export function getVendorImpactDetails(vendor, allVendors = []) {
   }
   if (company.includes("alvaria") || sysName.includes("alvaria")) {
     return VENDOR_IMPACT_DETAILS.alvaria;
+  }
+  if (company.includes("avtec") || sysName.includes("avtec")) {
+    return VENDOR_IMPACT_DETAILS.avtec;
   }
   return buildTemplateVendorImpactDetails(vendor, allVendors);
 }
