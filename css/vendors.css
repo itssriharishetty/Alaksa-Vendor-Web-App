@@ -2085,13 +2085,15 @@ body.vendors-page .ias-main-content.vendors-main.vi-inpage-main {
     align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .vi-hero-title-group {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    flex: 1 1 0%;
+    min-width: 0;
 }
 
 .vi-hero-title {
@@ -2114,7 +2116,9 @@ body.vendors-page .ias-main-content.vendors-main.vi-inpage-main {
     display: flex;
     align-items: center;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
 }
 
 .vi-btn-primary {
@@ -3926,6 +3930,11 @@ body.vendors-page .ias-main-content.vendors-main.vi-inpage-main {
 
     .vi-hero-main {
         flex-direction: column;
+    }
+
+    .vi-hero-header-row,
+    .vi-hero-actions {
+        flex-wrap: wrap;
     }
 
     .vi-meta-row {

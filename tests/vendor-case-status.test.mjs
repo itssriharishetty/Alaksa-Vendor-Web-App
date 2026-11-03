@@ -854,6 +854,100 @@ await runTest("17. Ground Stop Application ACARS contains complete ACARS Ground 
   );
 });
 
+// ============================================================================
+// 18. Alvaria Vendor Impact Details contain complete operational & incident data
+// ============================================================================
+await runTest("18. Alvaria Vendor Impact Details contain complete operational & incident data", async () => {
+  const masterVendors = globalThis.window.masterData.vendors;
+  const alvariaRecord = masterVendors.find((v) => v.id === "alvaria");
+  assert.ok(alvariaRecord, "alvaria record must exist in master-data.js");
+  assert.equal(alvariaRecord.category, "Call Centers / Workforce Management");
+  assert.equal(alvariaRecord.aagItsTeam, "Call Center Technology");
+
+  const details = getVendorImpactDetails(alvariaRecord, masterVendors);
+  assert.equal(details, VENDOR_IMPACT_DETAILS.alvaria, "alvaria must resolve to VENDOR_IMPACT_DETAILS.alvaria");
+
+  // 1. Basic Information
+  assert.equal(details.company, "Alvaria");
+  assert.equal(details.website, "(Add Website/Support Portal URL)");
+  assert.equal(details.category, "Call Centers / Workforce Management");
+  assert.equal(details.itsTeam, "Call Center Technology");
+  assert.equal(details.vendorContacts.supportPhone, "800-999-4455, Alvaria Enterprise Help Desk");
+  assert.equal(details.vendorContacts.supportEmail, "(Add Vendor Support Email)");
+  assert.equal(details.vendorContacts.supportHours, "(Add Support Service Hours)");
+  assert.equal(details.vendorContacts.accountManager, "Enterprise Help Desk");
+  assert.ok(details.vendorContacts.companyNote.includes("formerly known as Aspect"));
+  assert.ok(details.vendorContacts.categoryNote.includes("00015817 - Alvaria Cloud Workforce"));
+  assert.ok(details.vendorContacts.categoryNote.includes("94236"));
+  assert.ok(details.vendorContacts.categoryNote.includes("https://alaska.via.aspect-cloud.net/WFO"));
+
+  // 2. Applications & Systems (2 applications: Alvaria Workforce Management / Aspect WFM & Empower)
+  assert.equal(details.impactedSystems.length, 2);
+  const appNames = details.impactedSystems.map((s) => s.name);
+  assert.deepEqual(appNames, [
+    "Alvaria Workforce Management / Aspect WFM",
+    "Empower"
+  ]);
+  assert.ok(
+    details.impactedSystems[0].impact.includes("supervisors cannot properly administer overtime or release agents early")
+  );
+  assert.ok(
+    details.impactedSystems[1].description.includes("IIS, WFO UI, notification services, Aspect Web Services, Exchange and Dispatcher")
+  );
+
+  // 3. Dependencies Architecture (5 upstream, 4 downstream, 8 infrastructure)
+  assert.equal(details.upstreamDependencies.length, 5);
+  assert.equal(details.dependenciesTab.upstreamTable.length, 5);
+  assert.equal(details.downstreamConsumers.length, 4);
+  assert.equal(details.dependenciesTab.downstreamTable.length, 4);
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 8);
+  assert.equal(details.dependenciesTab.keyTakeaways.length, 2);
+
+  // 4. Business Impact, Workarounds & Validation Checklist
+  assert.equal(details.typicalBusinessImpact.length, 7);
+  assert.ok(
+    details.typicalBusinessImpact.some((item) =>
+      item.includes("Aspect.AspectMessageClient+DownstreamServiceUnavailableException")
+    )
+  );
+  assert.equal(details.knownWorkarounds.length, 3);
+  assert.ok(details.knownWorkarounds[0].includes("Password reset: During the October 2024 incident"));
+  assert.equal(details.validationChecklist.length, 9);
+  assert.ok(
+    details.validationChecklist.some((item) =>
+      item.includes("SEAPRASPCTAPP01, SEAPRASPCTAPP02 and SEAPRASPCTEMP01")
+    )
+  );
+  assert.ok(
+    details.validationChecklist.some((item) =>
+      item.includes("Do not automatically restart SEAPRASPCTSQL01")
+    )
+  );
+
+  // 5. Contacts, Escalation & SLAs
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 6);
+  assert.equal(details.vendorContacts.responseSlas.length, 7);
+  assert.equal(details.internalContacts.itsTeam, "Call Center Technology");
+  assert.equal(details.internalContacts.applicationOwner, "Adam Wallraff, Call Centers");
+  assert.equal(details.internalContacts.businessOwner, "Contact Center Operations / Call Centers");
+  assert.equal(details.internalContacts.passwordSupport, "ITS Service Desk, 877-238-1077, documented 24x7");
+  assert.ok(details.internalContacts.itsTeamNote.includes("call.center.technology@alaskaair.com"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Darlene Harbeson, Matt Smallwood, and Lori Well"));
+
+  // 6. Related SharePoint Documents (7 documents)
+  assert.equal(details.relatedDocuments.length, 7);
+  const docTitles = details.relatedDocuments.map((d) => d.title);
+  assert.deepEqual(docTitles, [
+    "Alvaria_System_Summary.docx",
+    "Accessing Alvaria application presents an error.docx",
+    "Alvaria Architecture Diagram.docx",
+    "Alvaria_DRPlan.docx",
+    "ITS Vendor Information - 2026.xlsx",
+    "AAG Contact Centers - BR Plan Update - 2026.docx",
+    "AAG Contact Centers - BR Plan Update - 2025.pdf"
+  ]);
+});
+
 const passedCount = results.filter((r) => r.passed).length;
 console.log(`\n========================================`);
 console.log(`VENDOR CASE STATUS TEST SUMMARY: ${passedCount}/${results.length} PASSED`);

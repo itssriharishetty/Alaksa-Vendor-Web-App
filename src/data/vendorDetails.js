@@ -1781,6 +1781,527 @@ export const VENDOR_IMPACT_DETAILS = {
         url: "https://alaskaair.sharepoint.com/sites/ASICS/IO/_layouts/15/Doc.aspx?sourcedoc=%7B00FAA8E7-643B-4CA3-B799-88C3D46E82B7%7D&file=AS%2BHA%20OPL%202026-08-24.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1&EntityRepresentationId=03737752-62d1-437a-a465-b15f02abf83a"
       }
     ]
+  },
+  alvaria: {
+    id: "alvaria",
+    name: "Alvaria",
+    breadcrumbTrail: [
+      "Vendors",
+      "Call Centers / Workforce Management",
+      "Alvaria"
+    ],
+    pageTitle: "Alvaria – Vendor Impact Details",
+    pageSubtitle:
+      "View applications, systems, dependencies and business impact if Alvaria experiences an outage or degraded service.",
+    applicationsTabTitle: "Applications & Systems Using Alvaria",
+    applicationsTabSubheading:
+      "Overview of all Alaska Airlines Contact Center workforce-management and employee self-service applications that depend on Alvaria.",
+    applicationsTabSubtitle:
+      "Detailed breakdown of the 2 documented applications (Alvaria Workforce Management / Aspect WFM and Empower), primary capabilities, direct dependencies, and outage impact.",
+    applicationsCardSubtitle:
+      "2 documented applications supported by Call Center Technology",
+    dependenciesTabTitle: "Alvaria – Dependencies",
+    dependenciesTabSubtitle:
+      "Upstream dependencies, downstream consumers, and infrastructure components for Alvaria (Contact Center Workforce Management & Empower).",
+    status: "Active",
+    lastUpdated: "Source-Verified Runbook",
+    subtitle: "Call Centers / Workforce Management (Aspect WFM · Aspect WFO · Tier 2)",
+    company: "Alvaria",
+    website: "(Add Website/Support Portal URL)",
+    category: "Call Centers / Workforce Management",
+    itsTeam: "Call Center Technology",
+    logo: "public/vendors/alvaria.jpg",
+    impactSummary: {
+      confirmed: 0,
+      potential: 2,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title: "High Operational Impact if Alvaria is Unavailable",
+      description:
+        "Contact Center agents may be unable to view or modify schedules or pick up/trade shifts, and supervisors cannot properly administer overtime or release agents early—potentially affecting Contact Center staffing and revenue. Remote Desktop access used by Contact Center Operations can also fail independently even when the primary agent web page (https://alaska.via.aspect-cloud.net/WFO) is functional.",
+      message:
+        "Contact Center agents may be unable to view or modify schedules or pick up/trade shifts, and supervisors cannot properly administer overtime or release agents early—potentially affecting Contact Center staffing and revenue. Remote Desktop access used by Contact Center Operations can also fail independently even when the primary agent web page (https://alaska.via.aspect-cloud.net/WFO) is functional."
+    },
+    impactedSystems: [
+      {
+        id: "alvaria-wfm",
+        name: "Alvaria Workforce Management / Aspect WFM",
+        subName: "Alaska Application URL: https://alaska.via.aspect-cloud.net/WFO",
+        appTabSubName: "(Aspect WFM / Aspect WFO)",
+        description:
+          "Workforce-management platform used by Alaska Airlines Contact Centers for shift management, employee scheduling, schedule changes and long-term workforce forecasting. Primary capabilities include creating Contact Center employee schedules, allowing agents to view schedules, picking up additional shifts, trading/changing shifts, managing overtime and early release, long-term contact-volume forecasting, and supporting budgeting and shift bids. Identified in the Contact Center Business Resiliency Plan as the system used to manage agent schedules across the call center enterprise.",
+        appTabDescription:
+          "Workforce-management platform used by Alaska Airlines Contact Centers for shift management, employee scheduling, schedule changes and long-term workforce forecasting.",
+        businessFunction: "Contact Center Workforce Management",
+        impact:
+          "Contact center agents and revenue can be affected because supervisors cannot properly administer overtime or release agents early.",
+        dependencies:
+          "WFM application services, employee-access component, SQL database, authentication and user-access infrastructure.",
+        directDependencies:
+          "WFM application services, employee-access component, SQL database, authentication and user-access infrastructure.",
+        owner: "Call Center Technology",
+        itsOwner: "Call Center Technology",
+        severity: "High",
+        status: "Potential"
+      },
+      {
+        id: "alvaria-empower",
+        name: "Empower",
+        subName: "WFM Employee Self-Service UI & Notification Component",
+        appTabSubName: "(Employee Self-Service WFM UI)",
+        description:
+          "Component included with the documented WFM solution; infrastructure includes IIS, WFO UI, notification services, Aspect Web Services, Exchange and Dispatcher functionality.",
+        appTabDescription:
+          "Component included with the documented WFM solution; infrastructure includes IIS, WFO UI, notification services, Aspect Web Services, Exchange and Dispatcher functionality.",
+        businessFunction:
+          "Employee/self-service Workforce Management UI and notifications.",
+        impact:
+          "Employees may lose access to applicable WFM self-service functionality.",
+        dependencies:
+          "IIS, WFO UI, notification services, Aspect Web Services and associated WFM infrastructure.",
+        directDependencies:
+          "IIS, WFO UI, notification services, Aspect Web Services and associated WFM infrastructure.",
+        owner: "Call Center Technology",
+        itsOwner: "Call Center Technology",
+        severity: "Medium",
+        status: "Potential"
+      }
+    ],
+    upstreamDependencies: [
+      "Authentication: Windows Integrated Security is documented for application access.",
+      "Alaska SSO: The system summary describes mobile access using Alaska Airlines SSO through fedauth.",
+      "Active Directory groups: app_aspectas provides basic Contact Center employee access; TS_ASPECT provides administrative access.",
+      "Contact Center workforce/scheduling data: Alvaria processes agent schedules, shifts and workforce-planning information.",
+      "ACD integration: WFM sizing documentation specifies one ACD for WFM Core, although the vendor/name is not populated in that source."
+    ],
+    downstreamConsumers: [
+      "Contact Center agents.",
+      "Contact Center leads and supervisors.",
+      "Workforce planners.",
+      "Contact Center Operations. Alvaria is explicitly identified in the Business Resiliency Plan as the application supporting enterprise agent scheduling."
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream authentication, SSO, Active Directory, workforce data, and ACD feeds into Alvaria WFM & Empower and downstream Contact Center consumers.",
+      diagramUpstream: [
+        {
+          id: "up-auth",
+          name: "Windows Integrated Security",
+          subtitle: "Application Access Auth",
+          iconType: "globe"
+        },
+        {
+          id: "up-sso",
+          name: "Alaska SSO (fedauth)",
+          subtitle: "Mobile Access Authentication",
+          iconType: "transfer"
+        },
+        {
+          id: "up-ad",
+          name: "Active Directory Groups",
+          subtitle: "app_aspectas / TS_ASPECT",
+          iconType: "doc"
+        },
+        {
+          id: "up-wfm-data",
+          name: "Workforce & ACD Data",
+          subtitle: "Schedules, Shifts & 1 ACD Core",
+          iconType: "ticket"
+        }
+      ],
+      diagramServices: [
+        "Alvaria Workforce Management / Aspect WFM",
+        "Empower Self-Service UI & Notifications",
+        "Agent Scheduling, Shift Trades & Bids",
+        "Overtime, Early Release & Forecasting"
+      ],
+      diagramDownstream: [
+        {
+          id: "down-agents",
+          name: "Contact Center Agents",
+          subtitle: "Schedule View & Shift Trades",
+          iconType: "team"
+        },
+        {
+          id: "down-supervisors",
+          name: "Leads & Supervisors",
+          subtitle: "Overtime & Early Release",
+          iconType: "nodes"
+        },
+        {
+          id: "down-planners",
+          name: "Workforce Planners",
+          subtitle: "Forecasting, Budgeting & Bids",
+          iconType: "chart"
+        },
+        {
+          id: "down-cco",
+          name: "Contact Center Operations",
+          subtitle: "Enterprise Agent Scheduling",
+          iconType: "database"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 5, tone: "red" },
+        { label: "Downstream Consumers", count: 4, tone: "green" },
+        { label: "Impacted Applications", count: 2, tone: "blue" },
+        { label: "Infrastructure Components", count: 8, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "Alvaria is Alaska's Tier 2 Contact Center workforce-management platform. It is responsible for scheduling, shift changes, overtime/early-release administration and workforce forecasting.",
+        "Unlike ACARS or WAM, its primary outage impact is not aircraft flight processing. The Contact Center resiliency documentation notes that Contact Centers are not essential to safely departing aircraft, but they support airline operations by assisting guests."
+      ],
+      upstreamTable: [
+        {
+          id: "up-tbl-auth",
+          name: "Authentication",
+          subName: "Windows Integrated Security",
+          description:
+            "Windows Integrated Security is documented for application access.",
+          type: "Internal Authentication",
+          impact:
+            "Users cannot authenticate to the Alvaria WFM desktop/web application."
+        },
+        {
+          id: "up-tbl-sso",
+          name: "Alaska SSO",
+          subName: "fedauth Mobile Access",
+          description:
+            "The system summary describes mobile access using Alaska Airlines SSO through fedauth.",
+          type: "Internal Identity / SSO",
+          impact:
+            "Mobile and federated SSO access to Alvaria WFM / Empower is unavailable."
+        },
+        {
+          id: "up-tbl-ad",
+          name: "Active Directory Groups",
+          subName: "app_aspectas / TS_ASPECT",
+          description:
+            "app_aspectas provides basic Contact Center employee access; TS_ASPECT provides administrative access.",
+          type: "Internal Directory",
+          impact:
+            "Role-based employee or administrative authorization fails."
+        },
+        {
+          id: "up-tbl-wfm-data",
+          name: "Contact Center Workforce / Scheduling Data",
+          subName: "Schedules, Shifts & Planning Inputs",
+          description:
+            "Alvaria processes agent schedules, shifts and workforce-planning information.",
+          type: "Internal Data",
+          impact:
+            "Schedule generation, shift updates, and workforce planning cannot process current inputs."
+        },
+        {
+          id: "up-tbl-acd",
+          name: "ACD Integration",
+          subName: "WFM Core ACD Feed",
+          description:
+            "WFM sizing documentation specifies one ACD for WFM Core, although the vendor/name is not populated in that source.",
+          type: "Internal Integration",
+          impact:
+            "Contact volume and adherence/forecasting metrics from the ACD are degraded."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "down-tbl-agents",
+          name: "Contact Center Agents",
+          description:
+            "Use Alvaria WFM and Empower to view schedules, pick up additional shifts, and trade/change shifts.",
+          type: "Internal Consumer",
+          impact:
+            "Agents may be unable to view or modify schedules or pick up/trade shifts."
+        },
+        {
+          id: "down-tbl-supervisors",
+          name: "Contact Center Leads and Supervisors",
+          description:
+            "Supervise shift adherence and administer overtime and early release.",
+          type: "Internal Operations",
+          impact:
+            "Supervisors may be unable to administer overtime or early release."
+        },
+        {
+          id: "down-tbl-planners",
+          name: "Workforce Planners",
+          description:
+            "Manage schedule creation, long-term contact-volume forecasting, budgeting, and shift bids.",
+          type: "Internal Planning",
+          impact:
+            "Workforce planning, shift bids, and long-term forecasting may be affected."
+        },
+        {
+          id: "down-tbl-cco",
+          name: "Contact Center Operations",
+          description:
+            "Alvaria is explicitly identified in the Business Resiliency Plan as the application supporting enterprise agent scheduling.",
+          type: "Internal Operations",
+          impact:
+            "Enterprise agent scheduling and Remote Desktop operational administration can be disrupted; revenue may be affected if workforce staffing cannot be appropriately managed."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "inf-app-servers",
+          component: "Application Servers",
+          description:
+            "SEAPRASPCTAPP01 - Application Server 1; SEAPRASPCTAPP02 - Application Server 2; SEAPRASPCTEMP01 - Employee access.",
+          owner: "Call Center Technology",
+          impact:
+            "Primary WFM application and employee self-service access fail; included in standard 3-server restart procedure."
+        },
+        {
+          id: "inf-support-servers",
+          component: "Supporting Servers (Jump & SQL)",
+          description:
+            "SEAPRASPCTJMP01 - Jump server used for vendor access; SEAPRASPCTSQL01 - SQL database server. The troubleshooting procedure specifically says the Jump and SQL servers should not be included in the standard application-server restart.",
+          owner: "Call Center Technology / DBA",
+          impact:
+            "Vendor jump access or backend database state affected; do NOT automatically restart SEAPRASPCTSQL01 without DBA review."
+        },
+        {
+          id: "inf-database",
+          component: "Database",
+          description: "Microsoft SQL Server 2016 SP2 (SEAPRASPCTSQL01).",
+          owner: "Database Team / Call Center Technology",
+          impact:
+            "Loss of database connectivity prevents WFM schedule retrieval and updates even if SQL server appears healthy."
+        },
+        {
+          id: "inf-hosting",
+          component: "Hosting (On-Premises / AWS Cloud Workforce)",
+          description:
+            "Older WFM architecture documents describe virtual/on-premises server infrastructure, while the later DR plan and vendor sheet describe Alvaria Cloud Workforce hosted on AWS, with shared components across multiple Availability Zones and dedicated customer components, including the database, isolated to a single AZ.",
+          owner: "Alvaria Cloud / Call Center Technology",
+          impact:
+            "Planned monthly cloud maintenance (up to 5 hours) or single-AZ customer component outage impacts WFO/WFM availability."
+        },
+        {
+          id: "inf-network",
+          component: "Network Path",
+          description:
+            "Client-to-Alvaria network path is an operational dependency; one documented incident involved latency affecting users in the McGee building while home/VPN users were unaffected.",
+          owner: "Alaska Network Engineering / ITS",
+          impact:
+            "Location-specific latency or connectivity failures for office users while VPN/remote users operate normally."
+        },
+        {
+          id: "inf-firewall",
+          component: "Specific Firewall Ports",
+          description: "(Add Specific firewall ports)",
+          owner: "Network Security",
+          impact: "Pending documentation of specific firewall ports."
+        },
+        {
+          id: "inf-proxy",
+          component: "Proxy Configuration",
+          description: "(Add Proxy configuration)",
+          owner: "Network Engineering",
+          impact: "Pending documentation of proxy configuration."
+        },
+        {
+          id: "inf-lb",
+          component: "Load Balancers",
+          description: "(Add Load balancers)",
+          owner: "Network Engineering",
+          impact: "Pending documentation of load balancers."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Contact Center agents may be unable to view or modify schedules.",
+      "Agents may be unable to pick up or trade shifts.",
+      "Supervisors may be unable to administer overtime or early release.",
+      "Workforce planning and forecasting may be affected.",
+      "Revenue may be affected if workforce staffing cannot be appropriately managed.",
+      "Remote Desktop access used by Contact Center Operations may fail even when the primary agent web page is functional. This exact split condition occurred following a 2024 maintenance event.",
+      "Users can encounter HTTP 500/downstream-service errors; one documented error was Aspect.AspectMessageClient+DownstreamServiceUnavailableException."
+    ],
+    knownWorkarounds: [
+      "Password reset: During the October 2024 incident, Contact Center Operations restored Remote Desktop access by resetting the affected password after the main Alvaria page had already recovered.",
+      "(Add scheduling/manual process workaround)",
+      "(Add workforce-planning workaround)"
+    ],
+    vendorContacts: {
+      supportEmail: "(Add Vendor Support Email)",
+      supportPhone: "800-999-4455, Alvaria Enterprise Help Desk",
+      technicalSupport:
+        "Alvaria Enterprise Help Desk • Asset: 00015817 - Alvaria Cloud Workforce (Legacy Asset ID: 94236) • Application URL: https://alaska.via.aspect-cloud.net/WFO",
+      accountManager: "Enterprise Help Desk",
+      supportHours: "(Add Support Service Hours)",
+      companyNote:
+        "Alvaria. It was formerly known as Aspect, and internal aliases include Alvaria, Aspect WFM, Aspect WFO, and Aspect.",
+      categoryNote:
+        "Call Centers / Workforce Management • Tier 2 • Current Asset: 00015817 - Alvaria Cloud Workforce (Legacy Asset ID: 94236) • Alaska Application URL: https://alaska.via.aspect-cloud.net/WFO",
+      escalation:
+        "1. Alaska Airlines restarts the server suite (SEAPRASPCTAPP01, SEAPRASPCTAPP02, SEAPRASPCTEMP01; do not include Jump or SQL servers).\n2. Validate whether Alvaria is healthy.\n3. If the application remains unhealthy, contact Darlene Harbeson, Matt Smallwood, or Lori Well to begin vendor escalation.\n4. Alvaria Enterprise Help Desk is the vendor contact at 800-999-4455 (Asset: 00015817 - Alvaria Cloud Workforce; legacy Asset ID: 94236).\n5. When opening the vendor case, provide the affected function, users/locations, symptoms/errors, application and database validation results, and maintenance status.\n6. The dedicated troubleshooting document classifies “Accessing the application presents an error” as Severity 2 with a 30-minute internal troubleshooting time limit.",
+      communicationGuidelines: [
+        "1. Alaska Airlines restarts the server suite (SEAPRASPCTAPP01, SEAPRASPCTAPP02, SEAPRASPCTEMP01; do not include Jump or SQL servers).",
+        "2. Validate whether Alvaria is healthy.",
+        "3. If the application remains unhealthy, contact Darlene Harbeson, Matt Smallwood, or Lori Well to begin vendor escalation.",
+        "4. Alvaria Enterprise Help Desk is the vendor contact at 800-999-4455.",
+        "5. When opening the vendor case, provide the affected function, users/locations, symptoms/errors, application and database validation results, and maintenance status.",
+        "6. The dedicated troubleshooting document classifies “Accessing the application presents an error” as Severity 2 with a 30-minute internal troubleshooting time limit."
+      ],
+      responseSlas: [
+        {
+          priority: "Tier 2",
+          level: "Application Tier",
+          target: "Tier 2",
+          condition: "Documented service tier in Alvaria_System_Summary.docx",
+          tone: "blue"
+        },
+        {
+          priority: "Sev 2",
+          level: "Internal Troubleshooting Limit",
+          target: "30 minutes",
+          condition:
+            "Documented Alvaria troubleshooting time limit for Severity 2 “Accessing the application presents an error” procedure (internal troubleshooting time limit, not a contractual vendor response SLA)",
+          tone: "amber"
+        },
+        {
+          priority: "Sev 1",
+          level: "Sev 1 Vendor Initial Response",
+          target: "(Add Sev 1 vendor initial response)",
+          condition: "Pending contractual SLA verification",
+          tone: "red"
+        },
+        {
+          priority: "Sev 1",
+          level: "Sev 1 Update Cadence",
+          target: "(Add Sev 1 update cadence)",
+          condition: "Pending contractual SLA verification",
+          tone: "red"
+        },
+        {
+          priority: "Sev 2",
+          level: "Sev 2 Vendor Initial Response",
+          target: "(Add Sev 2 vendor initial response)",
+          condition: "Pending contractual SLA verification",
+          tone: "amber"
+        },
+        {
+          priority: "Sev 2",
+          level: "Sev 2 Update Cadence",
+          target: "(Add Sev 2 update cadence)",
+          condition: "Pending contractual SLA verification",
+          tone: "amber"
+        },
+        {
+          priority: "SLA",
+          level: "Availability SLA",
+          target: "(Add Availability SLA)",
+          condition: "Pending contractual SLA verification",
+          tone: "green"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "Call Center Technology",
+      itsTeamNote:
+        "Team email: call.center.technology@alaskaair.com • Escalation contacts (after internal restart/validation fails): Darlene Harbeson, Matt Smallwood, and Lori Well",
+      applicationOwner: "Adam Wallraff, Call Centers",
+      onCallSupport:
+        "Call Center Technology (call.center.technology@alaskaair.com)",
+      systemAdministration:
+        "Escalation contacts: Darlene Harbeson, Matt Smallwood, and Lori Well",
+      businessOwner: "Contact Center Operations / Call Centers",
+      passwordSupport: "ITS Service Desk, 877-238-1077, documented 24x7"
+    },
+    validationChecklist: [
+      "Confirm how many Alvaria users are affected and whether the issue affects the agent website, Remote Desktop, or both. A documented incident showed the website working while the Remote Desktop component remained unavailable.",
+      "Determine whether the problem is location-specific. A previous latency issue affected McGee office users while work-from-home users were operating normally.",
+      "Validate SEAPRASPCTAPP01, SEAPRASPCTAPP02 and SEAPRASPCTEMP01.",
+      "Following the documented troubleshooting procedure, restart those three servers when appropriate, then validate whether users can access the application and whether it behaves normally.",
+      "Do not automatically restart SEAPRASPCTSQL01. If the problem remains, engage DBA to review its state and determine whether a database restart is appropriate.",
+      "Validate database connectivity. In one outage, SEAPRASPCTSQL01 was healthy but showed no current connections from the application.",
+      "Check whether Alvaria has active planned/cloud maintenance. One outage was ultimately associated with planned monthly maintenance that could take up to five hours.",
+      "For login-specific problems, validate authentication/password state. Password reset resolved the documented CCO Remote Desktop incident.",
+      "If still unhealthy, escalate through Call Center Technology and engage the Alvaria Enterprise Help Desk."
+    ],
+    incidentHistory: [
+      {
+        id: "INC-ALVARIA-OCT24",
+        date: "Oct 2024",
+        summary:
+          "Post-maintenance split condition where the primary agent web page (https://alaska.via.aspect-cloud.net/WFO) recovered, but Remote Desktop access used by Contact Center Operations remained unavailable.",
+        severity: "Sev 2",
+        resolution:
+          "Contact Center Operations restored Remote Desktop access by resetting the affected password after the main Alvaria web page had recovered."
+      },
+      {
+        id: "INC-ALVARIA-MAINT",
+        date: "Documented Outage",
+        summary:
+          "Users encountered HTTP 500 / Aspect.AspectMessageClient+DownstreamServiceUnavailableException and SEAPRASPCTSQL01 showed no active connections during an outage ultimately associated with planned monthly cloud maintenance (up to 5 hours).",
+        severity: "Sev 2",
+        resolution:
+          "Validated application servers and SQL state, confirmed active planned monthly maintenance window with Alvaria, and verified recovery post-maintenance."
+      },
+      {
+        id: "INC-ALVARIA-MCGEE",
+        date: "Documented Latency Event",
+        summary:
+          "Location-specific client-to-Alvaria network latency affecting Contact Center users in the McGee building while work-from-home/VPN users operated normally.",
+        severity: "Sev 3",
+        resolution:
+          "Isolated issue to McGee building network path vs. Alvaria platform health."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "Alvaria_System_Summary.docx",
+        type: "System Summary (Word)",
+        owner: "Call Center Technology",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BA73D21BB-52CE-4FBB-83AA-5A73DF69734E%7D&file=Alvaria_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Accessing Alvaria application presents an error.docx",
+        type: "Troubleshooting Procedure (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B9BB0153A-4CD1-4EDD-BF3E-2426E8BFC9D6%7D&file=Accessing%20Alvaria%20application%20presents%20an%20error.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Alvaria Architecture Diagram.docx",
+        type: "Architecture Diagram (Word)",
+        owner: "Call Center Technology",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B0E726D24-DC88-467A-A512-3245C40819C7%7D&file=Alvaria%20Architecture%20Diagram.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Alvaria_DRPlan.docx",
+        type: "Disaster Recovery Plan (Word)",
+        owner: "Call Center Technology",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/sc/DR/_layouts/15/Doc.aspx?sourcedoc=%7B4A41017A-902C-4B89-B571-BD4B0B1982AA%7D&file=Alvaria_DRPlan.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ITS Vendor Information - 2026.xlsx",
+        type: "Vendor Directory (Excel)",
+        owner: "Production Operations",
+        updated: "2026",
+        url: "https://alaskaair-my.sharepoint.com/personal/srihari_gangisetti_alaskaair_com/_layouts/15/Doc.aspx?sourcedoc=%7B5E0C7BFD-2C5A-45BE-B341-FD25909E9AEB%7D&file=ITS%20Vendor%20Information%20-%202026.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "AAG Contact Centers - BR Plan Update - 2026.docx",
+        type: "Business Resiliency Plan (Word)",
+        owner: "Contact Center Operations / ERBC",
+        updated: "2026",
+        url: "https://alaskaair.sharepoint.com/sites/ERBC/businesscontinuity/_layouts/15/Doc.aspx?sourcedoc=%7B6E463623-2541-43A9-9D6C-C18951CF3151%7D&file=AAG%20Contact%20Centers%20-%20BR%20Plan%20Update%20-%202026.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "AAG Contact Centers - BR Plan Update - 2025.pdf",
+        type: "Business Resiliency Plan (PDF)",
+        owner: "Contact Center Operations / ERBC",
+        updated: "2025",
+        url: "https://alaskaair.sharepoint.com/sites/ERBC/businesscontinuity/Shared%20Documents/Business%20Resiliency%20Plans/Business%20Resiliency%20Plans/AAG%20Contact%20Centers/AAG%20Contact%20Centers%202025%20Plan/AAG%20Contact%20Centers%20-%20BR%20Plan%20Update%20-%202025.pdf?web=1"
+      }
+    ]
   }
 };
 
@@ -2598,6 +3119,9 @@ export function getVendorImpactDetails(vendor, allVendors = []) {
   }
   if (company.includes("aims") || sysName.includes("aims")) {
     return VENDOR_IMPACT_DETAILS["aims-vendor"];
+  }
+  if (company.includes("alvaria") || sysName.includes("alvaria")) {
+    return VENDOR_IMPACT_DETAILS.alvaria;
   }
   return buildTemplateVendorImpactDetails(vendor, allVendors);
 }

@@ -961,28 +961,6 @@ export default function Vendors() {
                       </div>
 
                       <div className="vi-hero-actions">
-                        <button
-                          type="button"
-                          className="vi-btn-primary"
-                          onClick={() =>
-                            openVendorModal(impactVendor, "contacts")
-                          }
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <rect x="2" y="4" width="20" height="16" rx="2" />
-                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                          </svg>
-                          <span>Contact Vendor</span>
-                        </button>
-
                         {impactTab !== "overview" ? (
                           <button
                             type="button"
@@ -1153,6 +1131,7 @@ export default function Vendors() {
                   {[
                     { key: "overview", label: "Impact Overview" },
                     { key: "dependencies", label: "Dependencies" },
+                    { key: "contacts", label: "Contacts" },
                     { key: "documents", label: "Related Documents" }
                   ].map(tab => (
                     <button
@@ -2469,6 +2448,183 @@ export default function Vendors() {
                           </tbody>
                         </table>
                       </div>
+                    </section>
+                  )}
+
+                  {/* CONTACTS TAB VIEW */}
+                  {impactTab === "contacts" && (
+                    <section
+                      className="vi-card vi-systems-card"
+                      aria-label="Contacts and Escalation Details"
+                    >
+                      <header className="vi-card-header">
+                        <span
+                          className="vi-card-icon icon-blue"
+                          aria-hidden="true"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                          </svg>
+                        </span>
+                        <h3>Contacts, Escalation &amp; SLAs</h3>
+                      </header>
+
+                      <div className="vi-table-wrap">
+                        <table className="vi-table">
+                          <thead>
+                            <tr>
+                              <th>Contact Role</th>
+                              <th>Name / Team</th>
+                              <th>Phone / Email</th>
+                              <th>Hours / Escalation Scope</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className="vi-td-app">
+                                <strong>Vendor Support Desk</strong>
+                              </td>
+                              <td className="vi-td-func">
+                                {impactData.vendorContacts.accountManager ||
+                                  impactData.name}
+                              </td>
+                              <td className="vi-td-desc">
+                                <div>
+                                  <strong>Phone:</strong>{" "}
+                                  {impactData.vendorContacts.supportPhone}
+                                </div>
+                                <div>
+                                  <strong>Email:</strong>{" "}
+                                  {impactData.vendorContacts.supportEmail}
+                                </div>
+                              </td>
+                              <td className="vi-td-impact">
+                                {impactData.vendorContacts.supportHours ||
+                                  impactData.vendorContacts.technicalSupport ||
+                                  "Follow vendor support schedule"}
+                              </td>
+                            </tr>
+
+                            {(impactData.vendorContacts.secondaryEmail ||
+                              impactData.vendorContacts
+                                .namedEscalationContact) && (
+                              <tr>
+                                <td className="vi-td-app">
+                                  <strong>
+                                    Secondary / Escalation Contact
+                                  </strong>
+                                </td>
+                                <td className="vi-td-func">
+                                  {impactData.vendorContacts
+                                    .namedEscalationContact || impactData.name}
+                                </td>
+                                <td className="vi-td-desc">
+                                  {impactData.vendorContacts.secondaryEmail ||
+                                    impactData.vendorContacts.supportPhone}
+                                </td>
+                                <td className="vi-td-impact">
+                                  {impactData.vendorContacts
+                                    .secondaryEmailNote ||
+                                    "Vendor Escalation Contact"}
+                                </td>
+                              </tr>
+                            )}
+
+                            <tr>
+                              <td className="vi-td-app">
+                                <strong>Primary Alaska ITS Team</strong>
+                              </td>
+                              <td className="vi-td-func">
+                                {impactData.internalContacts.itsTeam}
+                              </td>
+                              <td className="vi-td-desc">
+                                {impactData.internalContacts.onCallSupport ||
+                                  impactData.internalContacts
+                                    .systemAdministration ||
+                                  "Engage via ITS On-Call"}
+                              </td>
+                              <td className="vi-td-impact">
+                                {impactData.internalContacts.itsTeamNote ||
+                                  impactData.internalContacts.businessOwner}
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td className="vi-td-app">
+                                <strong>AAG ITS POC / App Owner</strong>
+                              </td>
+                              <td className="vi-td-func">
+                                {impactData.internalContacts.applicationOwner}
+                              </td>
+                              <td className="vi-td-desc">
+                                {impactData.internalContacts
+                                  .systemAdministration ||
+                                  impactData.internalContacts.itsTeam}
+                              </td>
+                              <td className="vi-td-impact">
+                                {impactData.internalContacts.passwordSupport
+                                  ? `Password Support: ${impactData.internalContacts.passwordSupport}`
+                                  : `Business Owner: ${impactData.internalContacts.businessOwner}`}
+                              </td>
+                            </tr>
+
+                            {Array.isArray(
+                              impactData.vendorContacts.responseSlas
+                            ) &&
+                              impactData.vendorContacts.responseSlas.map(
+                                (sla, idx) => (
+                                  <tr key={`sla-${idx}`}>
+                                    <td className="vi-td-app">
+                                      <strong>{sla.priority}</strong>
+                                    </td>
+                                    <td className="vi-td-func">
+                                      SLA / Response Target
+                                    </td>
+                                    <td className="vi-td-desc">
+                                      {sla.description}
+                                    </td>
+                                    <td className="vi-td-impact">
+                                      <strong>{sla.target}</strong>
+                                    </td>
+                                  </tr>
+                                )
+                              )}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {Array.isArray(
+                        impactData.vendorContacts.communicationGuidelines
+                      ) &&
+                        impactData.vendorContacts.communicationGuidelines
+                          .length > 0 && (
+                          <div style={{ marginTop: "14px" }}>
+                            <strong
+                              style={{
+                                display: "block",
+                                marginBottom: "6px",
+                                fontSize: "13px",
+                                color: "#0B192C"
+                              }}
+                            >
+                              Communication &amp; Escalation Guidelines
+                            </strong>
+                            <ul className="vi-bullet-list">
+                              {impactData.vendorContacts.communicationGuidelines.map(
+                                (guide, idx) => (
+                                  <li key={idx}>{guide}</li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+                        )}
                     </section>
                   )}
 
