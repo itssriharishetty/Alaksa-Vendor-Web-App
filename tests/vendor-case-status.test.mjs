@@ -948,6 +948,122 @@ await runTest("18. Alvaria Vendor Impact Details contain complete operational & 
   ]);
 });
 
+// ============================================================================
+// 19. Avtec Vendor Impact Details contain complete operational & incident data
+// ============================================================================
+await runTest("19. Avtec Vendor Impact Details contain complete operational & incident data", async () => {
+  const masterVendors = globalThis.window.masterData.vendors;
+  const avtecRecord = masterVendors.find((v) => v.id === "avtec");
+  assert.ok(avtecRecord, "avtec vendor record must exist in master-data.js");
+  assert.equal(avtecRecord.sourceRow, 23);
+  assert.equal(avtecRecord.vendor, "Avtec");
+  assert.equal(
+    avtecRecord.category,
+    "Flight Operations / Dispatch Communications / Radio & Telephony"
+  );
+  assert.equal(avtecRecord.aagItsTeam, "UC Team (Unified Communications)");
+  assert.equal(avtecRecord.phone, "800-545-3034");
+  assert.equal(avtecRecord.email, "customersupport@avtecinc.com");
+
+  const details = getVendorImpactDetails(avtecRecord, masterVendors);
+  assert.ok(details, "Avtec must return Vendor Impact Details");
+  assert.equal(details.id, "avtec");
+  assert.equal(details.company, "Avtec");
+  assert.equal(details.website, "(Add Website/Support Portal URL)");
+  assert.equal(
+    details.category,
+    "Flight Operations / Dispatch Communications / Radio & Telephony"
+  );
+  assert.equal(details.itsTeam, "UC Team (Unified Communications)");
+  assert.equal(details.vendorContacts.supportPhone, "800-545-3034");
+  assert.equal(details.vendorContacts.supportEmail, "customersupport@avtecinc.com");
+  assert.equal(details.vendorContacts.supportHours, "24x7");
+  assert.equal(details.vendorContacts.accountManager, "Avtec On-Call");
+  assert.ok(details.vendorContacts.technicalSupport.includes("(Add Account Manager)"));
+  assert.ok(details.vendorContacts.namedEscalationContact.includes("(Add Vendor Escalation Contact)"));
+
+  // 2. Applications & Systems
+  assert.equal(details.impactedSystems.length, 1);
+  const sys = details.impactedSystems[0];
+  assert.equal(sys.name, "Avtec Dispatch Radio System / Avtec Scout");
+  assert.equal(sys.owner, "UC Team");
+  assert.ok(sys.description.includes("Avtec Scout as purpose-built dispatch hardware supporting up to four radio or LTE endpoints"));
+  assert.ok(sys.description.includes("AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control, QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control"));
+  assert.ok(sys.businessFunction.includes("radio-to-phone or radio-to-radio patching"));
+  assert.equal(
+    sys.impact,
+    "It is classified internally as a critical system, with possible flight delays."
+  );
+  assert.equal(
+    sys.dependencies,
+    "Avtec consoles/endpoints, VPGates, phone lines, G/G radios, A/G radios, intercoms, radio remotes, network connectivity, and UC/voice infrastructure."
+  );
+
+  // 3. Dependencies Architecture
+  assert.equal(details.upstreamDependencies.length, 6);
+  assert.equal(details.dependenciesTab.upstreamTable.length, 6);
+  assert.equal(details.downstreamConsumers.length, 4);
+  assert.equal(details.dependenciesTab.downstreamTable.length, 4);
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 7);
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("SEACRAVTECOO01A") && row.details.includes("SEACRAVTECOO03B")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("IGQPRAVTEC01A") && row.details.includes("IGQPRAVTEC03B")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("connectivity between IGQ and HUB/PUY")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("Zenoss Real Time Services")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details === "(Add Database Dependencies)"
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details === "(Add Firewall Dependencies)"
+    )
+  );
+
+  // 4. Business Impact, Workarounds & Incident Validation Checklist
+  assert.equal(details.typicalBusinessImpact.length, 7);
+  assert.equal(details.knownWorkarounds.length, 6);
+  assert.equal(details.validationChecklist.length, 10);
+  assert.ok(details.validationChecklist[0].includes("206-688-3800"));
+  assert.ok(details.validationChecklist[9].includes("206-688-3800, option 1"));
+
+  // 5. Contacts & SLAs
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 10);
+  assert.equal(details.vendorContacts.responseSlas.length, 8);
+  assert.equal(details.internalContacts.itsTeam, "UC Team (Unified Communications)");
+  assert.equal(
+    details.internalContacts.businessOwner,
+    "Flight Operations / ERBC Team, ERBC.Team@alaskaair.com (24x7)"
+  );
+  assert.equal(details.internalContacts.passwordSupport, "ITS Service Desk, 877-238-1077");
+  assert.ok(details.internalContacts.systemAdministration.includes("Scott Heilman"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Dan Olson"));
+
+  // 6. Related Documents & Incident References
+  assert.equal(details.relatedDocuments.length, 8);
+  const avtecDocTitles = details.relatedDocuments.map((d) => d.title);
+  assert.ok(avtecDocTitles.includes("Avtec System Summary.docx"));
+  assert.ok(avtecDocTitles.includes("Avtec User Guide.docx"));
+  assert.ok(avtecDocTitles.includes("2026_Avtec_DR_Plan.xlsx"));
+  assert.ok(avtecDocTitles.includes("Avtec Common Troubleshooting Steps.docx"));
+});
+
 const passedCount = results.filter((r) => r.passed).length;
 console.log(`\n========================================`);
 console.log(`VENDOR CASE STATUS TEST SUMMARY: ${passedCount}/${results.length} PASSED`);
