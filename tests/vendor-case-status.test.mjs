@@ -21,6 +21,7 @@ import {
 import {
   VENDOR_IMPACT_DETAILS,
   getVendorImpactDetails,
+  getGroundStopImpactDetails,
   buildTemplateVendorImpactDetails
 } from "../src/data/vendorDetails.js";
 
@@ -668,80 +669,85 @@ await runTest("15. ACARS (SITA / AIRCOM) Vendor Impact Details contain complete 
 
   const details = getVendorImpactDetails(acarsVendor, masterVendors);
   assert.ok(details, "getVendorImpactDetails must return ACARS details");
-  assert.equal(details.name, "ACARS");
-  assert.equal(details.company, "SITA");
-  assert.equal(details.website, "(Add Website/Support Portal URL)");
-  assert.equal(details.category, "Flight Operations / Aircraft Communications");
-  assert.equal(details.itsTeam, "ITS Flight Operations / ITS COG Flight Operations");
+  assert.equal(details.name, "ACARS Ground System");
+  assert.equal(
+    details.company,
+    "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft"
+  );
+  assert.equal(details.website, "http://acars.app.insideaag.com/StatusReport.htm");
+  assert.equal(details.category, "Flight Ops: aircraft-to-ground communications");
+  assert.equal(details.itsTeam, "ITS COG FlightOps Support / ITS Flight Operations");
   assert.ok(
-    details.impactCallout.message.includes("ACARS Ground") &&
-      details.impactCallout.message.includes("AIRCOM") &&
-      details.impactCallout.message.includes("Tier 1") &&
-      details.impactCallout.message.includes("Ground-stop eligible: Yes"),
-    "impactCallout.message must include ACARS Ground / AIRCOM Tier 1 service classification"
+    details.impactCallout.message.includes("ACARS is the central text link between aircraft and the ground") &&
+      details.impactCallout.message.includes("24x7 critical") &&
+      details.impactCallout.message.includes("Ground Stop list"),
+    "impactCallout.message must include ACARS key takeaways"
   );
 
-  // Verify 5 documented applications/systems
+  // Verify 5 documented applications/systems (ACARS components)
   assert.equal(details.impactedSystems.length, 5);
   const sysNames = details.impactedSystems.map((s) => s.name);
-  assert.ok(sysNames.includes("ACARS Ground / AIRCOM"));
-  assert.ok(sysNames.includes("FlifoTimesWS"));
-  assert.ok(sysNames.includes("AircraftPerformanceData / WAM"));
-  assert.ok(sysNames.includes("S4A"));
-  assert.ok(sysNames.includes("ACARS History Service"));
+  assert.ok(sysNames.includes("SITA Aircom Server"));
+  assert.ok(sysNames.includes("AIRCOM Web Service Invoker"));
+  assert.ok(sysNames.includes("ACARS History (Service/UI/API)"));
+  assert.ok(sysNames.includes("ACARS Messenger / Ops Messenger"));
+  assert.ok(sysNames.includes("FlifoTimesWS, PilotLimitsWS, AircraftPerformanceData, Weather API"));
 
-  // Verify dependencies architecture (4 upstream strings, 9 downstream strings, 5 infrastructure components)
-  assert.equal(details.upstreamDependencies.length, 4);
+  // Verify dependencies architecture (5 upstream strings, 9 downstream strings, 6 infrastructure components)
+  assert.equal(details.upstreamDependencies.length, 5);
   assert.ok(details.upstreamDependencies.every((item) => typeof item === "string"));
   assert.equal(details.downstreamConsumers.length, 9);
   assert.ok(details.downstreamConsumers.every((item) => typeof item === "string"));
-  assert.equal(details.dependenciesTab.upstreamTable.length, 4);
+  assert.equal(details.dependenciesTab.upstreamTable.length, 5);
   assert.equal(details.dependenciesTab.downstreamTable.length, 9);
-  assert.equal(details.dependenciesTab.infrastructureTable.length, 5);
-  assert.equal(details.dependenciesTab.keyTakeaways.length, 2);
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 6);
+  assert.equal(details.dependenciesTab.keyTakeaways.length, 1);
 
-  // Verify business impact (7), workarounds (4), and 11-step incident validation checklist
-  assert.equal(details.typicalBusinessImpact.length, 7);
+  // Verify business impact (5), workarounds (4), and 9-step incident validation checklist (time limit 15 minutes)
+  assert.equal(details.typicalBusinessImpact.length, 5);
   assert.equal(details.knownWorkarounds.length, 4);
-  assert.equal(details.validationChecklist.length, 11);
+  assert.equal(details.validationChecklist.length, 9);
 
   // Verify vendor contacts, internal contacts, communication guidelines, and response SLAs
   assert.equal(
     details.vendorContacts.supportPhone,
-    "SITA: 1-866-247-2661, option 4 for AIRCOM Services. ARINC: 800-633-6882."
+    "SITA: 1-888-247-2661, option 4 (Aircom). ARINC: 800-633-6882"
   );
   assert.equal(details.vendorContacts.supportEmail, "Aircom.support@sitaonair.aero");
-  assert.equal(details.vendorContacts.secondaryEmail, "AOChelpdesk@collins.com");
+  assert.equal(details.vendorContacts.secondaryEmail, "helpdesk@arinc.com");
   assert.equal(details.vendorContacts.accountManager, "(Add Account Manager)");
   assert.ok(details.vendorContacts.namedEscalationContact.includes("410-266-4029"));
-  assert.ok(details.vendorContacts.companyNote.includes("ARINC for aircraft communications"));
-  assert.ok(details.vendorContacts.supportHours.includes("24x7"));
-  assert.equal(details.vendorContacts.communicationGuidelines.length, 5);
-  assert.equal(details.vendorContacts.responseSlas.length, 10);
+  assert.ok(details.vendorContacts.namedEscalationContact.includes("AOC@arinc.com"));
+  assert.ok(details.vendorContacts.companyNote.includes("ARINC (Collins Aerospace) for messages to the aircraft"));
+  assert.equal(details.vendorContacts.supportHours, "24x7, critical to operations");
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 2);
+  assert.equal(details.vendorContacts.responseSlas.length, 4);
 
-  assert.equal(details.internalContacts.itsTeam, "ITS Flight Operations / ITS COG Flight Operations");
+  assert.equal(details.internalContacts.itsTeam, "ITS COG FlightOps Support / ITS Flight Operations");
   assert.equal(details.internalContacts.applicationOwner, "Ryan Wilkins, 206-972-0228");
-  assert.equal(details.internalContacts.systemAdministration, "Andy Nunez / Arun Sharma, 206-392-8613");
+  assert.equal(details.internalContacts.systemAdministration, "Rick Cahoon, Arun Sharma, 206-392-8613");
   assert.equal(
     details.internalContacts.businessOwner,
-    "James Falen, 425-679-2135 cell / 206-392-6083 desk"
+    "James Falen, 425-679-2135 cell / 206-392-6083 desk (Business Owner & Everbridge focal)"
   );
-  assert.equal(details.internalContacts.passwordSupport, "ITS Service Desk, 1-877-238-1077");
+  assert.equal(details.internalContacts.passwordSupport, "Service Desk: 1-877-238-1077");
 
-  // Verify 5 SharePoint source documents (2 Primary Internal Source + 3 Additional Related Source)
-  assert.equal(details.relatedDocuments.length, 5);
+  // Verify 9 source documents (3 Main Sources + 6 Additional Sources)
+  assert.equal(details.relatedDocuments.length, 9);
   assert.equal(
-    details.relatedDocuments.filter((d) => d.updated === "Primary Internal Source").length,
-    2
+    details.relatedDocuments.filter((d) => d.updated === "Main Source").length,
+    3
   );
   assert.equal(
-    details.relatedDocuments.filter((d) => d.updated === "Additional Related Source").length,
-    3
+    details.relatedDocuments.filter((d) => d.updated === "Additional Source").length,
+    6
   );
   for (const doc of details.relatedDocuments) {
     assert.ok(
-      doc.url && doc.url.startsWith("https://alaskaair.sharepoint.com/"),
-      `Document ${doc.title} must have a valid SharePoint URL`
+      doc.url &&
+        (doc.url.startsWith("https://alaskaair.sharepoint.com/") ||
+          doc.url.startsWith("https://itsals.visualstudio.com/")),
+      `Document ${doc.title} must have a valid source URL`
     );
   }
 });
@@ -816,40 +822,45 @@ await runTest("17. Ground Stop Application ACARS contains complete ACARS Ground 
   const acarsApp = globalThis.window.masterData.applications.acars;
   assert.ok(acarsApp, "acars ground stop application must exist in masterData.applications");
   assert.equal(acarsApp.appDataVersion, 2);
-  assert.equal(acarsApp.name, "ACARS Ground / AIRCOM");
+  assert.equal(acarsApp.name, "ACARS Ground System (also called ACARS / AIRCOM)");
   assert.equal(acarsApp.shortName, "ACARS");
-  assert.equal(acarsApp.alias, "AIRCOM");
-  assert.equal(acarsApp.category, "Flight Operations / Aircraft Communications");
-  assert.equal(acarsApp.vendor, "SITA (AIRCOM) / ARINC (Aircraft Communications)");
+  assert.equal(acarsApp.alias, "ACARS / AIRCOM");
+  assert.equal(acarsApp.category, "Flight Ops: aircraft-to-ground communications");
+  assert.equal(
+    acarsApp.vendor,
+    "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft"
+  );
   assert.equal(acarsApp.aagPOC, "Ryan Wilkins, 206-972-0228");
-  assert.equal(acarsApp.aagTeam, "ITS Flight Operations / ITS COG Flight Operations");
-  assert.equal(acarsApp.systemAdmin, "Andy Nunez / Arun Sharma, 206-392-8613");
+  assert.equal(acarsApp.aagTeam, "ITS COG FlightOps Support / ITS Flight Operations");
+  assert.equal(acarsApp.systemAdmin, "Rick Cahoon, Arun Sharma, 206-392-8613");
   assert.equal(acarsApp.businessOwner, "James Falen, 425-679-2135 cell / 206-392-6083 desk");
-  assert.equal(acarsApp.passwordSupport, "ITS Service Desk, 1-877-238-1077");
-  assert.equal(acarsApp.tier, "Tier 1");
+  assert.equal(acarsApp.passwordSupport, "Service Desk: 1-877-238-1077");
+  assert.equal(acarsApp.tier, "Ground Stop");
   assert.equal(acarsApp.groundStopEligible, "Yes");
   assert.equal(
     acarsApp.phone,
-    "SITA: 1-866-247-2661, option 4 for AIRCOM Services. ARINC: 800-633-6882."
+    "SITA: 1-888-247-2661, option 4 (Aircom). ARINC: 800-633-6882"
   );
   assert.ok(acarsApp.email.includes("Aircom.support@sitaonair.aero"));
-  assert.ok(acarsApp.email.includes("AOChelpdesk@collins.com"));
+  assert.ok(acarsApp.email.includes("helpdesk@arinc.com"));
   assert.equal(acarsApp.associatedApplications.length, 5);
-  assert.equal(acarsApp.upstreamDependencies.length, 7);
-  assert.equal(acarsApp.downstreamConsumers.length, 5);
-  assert.equal(acarsApp.typicalBusinessImpact.length, 7);
+  assert.equal(acarsApp.upstreamDependencies.length, 5);
+  assert.equal(acarsApp.downstreamConsumers.length, 9);
+  assert.equal(acarsApp.typicalBusinessImpact.length, 5);
   assert.equal(acarsApp.knownWorkarounds.length, 4);
-  assert.equal(acarsApp.escalationSteps.length, 11);
-  assert.equal(acarsApp.relatedDocuments.length, 5);
+  assert.equal(acarsApp.escalationSteps.length, 9);
+  assert.equal(acarsApp.relatedDocuments.length, 9);
   assert.ok(acarsApp.operationalRunbookUrl.startsWith("https://alaskaair.sharepoint.com/"));
 
   const groundStopsSource = await readFile(resolve(rootDir, "src/pages/GroundStops.jsx"), "utf8");
   assert.ok(
-    groundStopsSource.includes("SITA (AIRCOM) / ARINC (Aircraft Communications)"),
+    groundStopsSource.includes(
+      "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft"
+    ),
     "GroundStops.jsx CARD_PROFILES.acars must include updated vendor"
   );
   assert.ok(
-    groundStopsSource.includes("SITA: 1-866-247-2661, option 4 for AIRCOM Services. ARINC: 800-633-6882."),
+    groundStopsSource.includes("SITA: 1-888-247-2661, option 4 (Aircom). ARINC: 800-633-6882"),
     "GroundStops.jsx CARD_PROFILES.acars must include updated phone numbers"
   );
 });
@@ -1062,6 +1073,114 @@ await runTest("19. Avtec Vendor Impact Details contain complete operational & in
   assert.ok(avtecDocTitles.includes("Avtec User Guide.docx"));
   assert.ok(avtecDocTitles.includes("2026_Avtec_DR_Plan.xlsx"));
   assert.ok(avtecDocTitles.includes("Avtec Common Troubleshooting Steps.docx"));
+});
+
+// TEST 20: Ground Stop Applications View Details opens full-page Impact Details (ACARS & all 9 Ground Stop apps)
+await runTest("20. Ground Stop Applications View Details opens full-page Impact Details (ACARS & all 9 Ground Stop apps)", async () => {
+  const apps = globalThis.window.masterData?.applications || {};
+  const groundStopsSource = await readFile(resolve(rootDir, "src/pages/GroundStops.jsx"), "utf8");
+
+  // Verify GroundStops.jsx uses getGroundStopImpactDetails and renders .vi-page-container on View Details
+  assert.ok(groundStopsSource.includes("getGroundStopImpactDetails"));
+  assert.ok(groundStopsSource.includes('className="vi-page-container"'));
+  assert.ok(groundStopsSource.includes("handleViewAppDetails(key)"));
+
+  // Verify ACARS Ground Stop card resolves full ACARS Ground / AIRCOM Impact Details
+  const acarsDetails = getGroundStopImpactDetails({
+    key: "acars",
+    record: apps.acars || {}
+  });
+  assert.ok(acarsDetails, "ACARS Ground Stop impact details must exist");
+  assert.equal(acarsDetails.name, "ACARS Ground System");
+  assert.equal(
+    acarsDetails.company,
+    "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft"
+  );
+  assert.equal(acarsDetails.website, "http://acars.app.insideaag.com/StatusReport.htm");
+  assert.equal(acarsDetails.impactedSystems.length, 5);
+  assert.equal(acarsDetails.upstreamDependencies.length, 5);
+  assert.equal(acarsDetails.downstreamConsumers.length, 9);
+  assert.equal(acarsDetails.relatedDocuments.length, 9);
+
+  // Verify WAM Ground Stop card resolves full WAM (Flight Planning System / Worksheet) Impact Details
+  const wamDetails = getGroundStopImpactDetails({
+    key: "wam",
+    record: apps.wam || {}
+  });
+  assert.ok(wamDetails, "WAM Ground Stop impact details must exist");
+  assert.equal(wamDetails.name, "WAM (Flight Planning System / Worksheet)");
+  assert.equal(
+    wamDetails.company,
+    "Jeppesen (owned by Boeing), which runs the JetPlan flight plan server"
+  );
+  assert.equal(wamDetails.website, "(Add WAM URL)");
+  assert.equal(wamDetails.category, "Flight Ops / Dispatch: flight planning and releases");
+  assert.equal(
+    wamDetails.itsTeam,
+    "ITS COG Flight Operations. Verified owners: Ryan Wilkins, Adele Lunde"
+  );
+  assert.equal(wamDetails.impactedSystems.length, 5);
+  assert.equal(wamDetails.upstreamDependencies.length, 5);
+  assert.equal(wamDetails.downstreamConsumers.length, 5);
+  assert.equal(wamDetails.dependenciesTab.infrastructureTable.length, 7);
+  assert.equal(wamDetails.typicalBusinessImpact.length, 4);
+  assert.equal(wamDetails.knownWorkarounds.length, 4);
+  assert.equal(wamDetails.validationChecklist.length, 9);
+  assert.equal(wamDetails.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(wamDetails.vendorContacts.responseSlas.length, 4);
+  assert.equal(wamDetails.relatedDocuments.length, 12);
+
+  // Verify JetPlan Ground Stop card resolves full JetPlan (Jeppesen Flight Planning engine) Impact Details
+  const jetplanDetails = getGroundStopImpactDetails({
+    key: "jetplan",
+    record: apps.jetplan || {}
+  });
+  assert.ok(jetplanDetails, "JetPlan Ground Stop impact details must exist");
+  assert.equal(jetplanDetails.name, "JetPlan (Jeppesen Flight Planning engine)");
+  assert.equal(
+    jetplanDetails.company,
+    "Jeppesen (owned by Boeing). Vendor application hosted in-house"
+  );
+  assert.equal(jetplanDetails.website, "https://asflightplan.alaskaair.com/jetplan/");
+  assert.equal(jetplanDetails.category, "Flight Ops / Dispatch: flight plan calculation");
+  assert.equal(
+    jetplanDetails.itsTeam,
+    "ITS COG Flight Operations. ITS System Owner: Ryan Wilkins"
+  );
+  assert.equal(jetplanDetails.impactedSystems.length, 4);
+  assert.equal(jetplanDetails.upstreamDependencies.length, 4);
+  assert.equal(jetplanDetails.downstreamConsumers.length, 6);
+  assert.equal(jetplanDetails.dependenciesTab.infrastructureTable.length, 8);
+  assert.equal(jetplanDetails.typicalBusinessImpact.length, 4);
+  assert.equal(jetplanDetails.knownWorkarounds.length, 5);
+  assert.equal(jetplanDetails.validationChecklist.length, 9);
+  assert.equal(jetplanDetails.vendorContacts.communicationGuidelines.length, 4);
+  assert.equal(jetplanDetails.vendorContacts.responseSlas.length, 5);
+  assert.equal(jetplanDetails.relatedDocuments.length, 9);
+
+  // Verify all 9 Ground Stop applications resolve complete Impact Details
+  const groundStopKeys = [
+    "acars",
+    "wam",
+    "jetplan",
+    "Smart4Aviation (S4A)",
+    "jcte",
+    "airtrack",
+    "pilot-briefing",
+    "aircraft-maintenance",
+    "aims"
+  ];
+  for (const key of groundStopKeys) {
+    const details = getGroundStopImpactDetails({
+      key,
+      record: apps[key] || {}
+    });
+    assert.ok(details, `Impact details missing for Ground Stop key: ${key}`);
+    assert.ok(Array.isArray(details.impactedSystems) && details.impactedSystems.length >= 1);
+    assert.ok(details.dependenciesTab && Array.isArray(details.dependenciesTab.upstreamTable));
+    assert.ok(details.vendorContacts && details.internalContacts);
+    assert.ok(Array.isArray(details.relatedDocuments) && details.relatedDocuments.length >= 1);
+  }
 });
 
 const passedCount = results.filter((r) => r.passed).length;

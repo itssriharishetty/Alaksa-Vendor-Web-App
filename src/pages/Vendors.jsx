@@ -1610,7 +1610,10 @@ export default function Vendors() {
                         </span>
                         <div className="vi-apps-title-stack">
                           <h3>Dependency Overview</h3>
-                          <p>{impactData.dependenciesTab.overviewSubtitle}</p>
+                          <p>
+                            {impactData.dependenciesTab.overviewSubtitle ||
+                              impactData.dependenciesTab.diagramSubtitle}
+                          </p>
                         </div>
                       </header>
 
@@ -1690,8 +1693,10 @@ export default function Vendors() {
                                     )}
                                   </span>
                                   <div className="vi-dep-node-text">
-                                    <strong>{node.name}</strong>
-                                    <span>{node.subtitle}</span>
+                                    <strong>{node.name || node.label}</strong>
+                                    {node.subtitle ? (
+                                      <span>{node.subtitle}</span>
+                                    ) : null}
                                   </div>
                                 </div>
                               )
@@ -1907,8 +1912,10 @@ export default function Vendors() {
                                     )}
                                   </span>
                                   <div className="vi-dep-node-text">
-                                    <strong>{node.name}</strong>
-                                    <span>{node.subtitle}</span>
+                                    <strong>{node.name || node.label}</strong>
+                                    {node.subtitle ? (
+                                      <span>{node.subtitle}</span>
+                                    ) : null}
                                   </div>
                                 </div>
                               )
@@ -2061,18 +2068,18 @@ export default function Vendors() {
                                   <td>
                                     <span
                                       className={`vi-dep-type-pill type-${
-                                        String(row.type || "")
+                                        String(row.type || row.dataFlow || "")
                                           .toLowerCase()
                                           .includes("external")
                                           ? "external"
-                                          : String(row.type || "")
+                                          : String(row.type || row.dataFlow || "")
                                               .toLowerCase()
                                               .includes("infrastructure")
                                           ? "infrastructure"
                                           : "internal"
                                       }`}
                                     >
-                                      {row.type}
+                                      {row.type || row.dataFlow || "Internal"}
                                     </span>
                                   </td>
                                   <td className="vi-td-impact">{row.impact}</td>
@@ -2135,18 +2142,18 @@ export default function Vendors() {
                                   <td>
                                     <span
                                       className={`vi-dep-type-pill type-${
-                                        String(row.type || "")
+                                        String(row.type || row.dataFlow || "")
                                           .toLowerCase()
                                           .includes("external")
                                           ? "external"
-                                          : String(row.type || "")
+                                          : String(row.type || row.dataFlow || "")
                                               .toLowerCase()
                                               .includes("infrastructure")
                                           ? "infrastructure"
                                           : "internal"
                                       }`}
                                     >
-                                      {row.type}
+                                      {row.type || row.dataFlow || "Internal"}
                                     </span>
                                   </td>
                                   <td className="vi-td-impact">{row.impact}</td>
@@ -2199,13 +2206,19 @@ export default function Vendors() {
                             row => (
                               <tr key={row.id}>
                                 <td className="vi-td-app">
-                                  <strong>{row.component}</strong>
+                                  <strong>
+                                    {row.component || row.category}
+                                  </strong>
                                 </td>
                                 <td className="vi-td-desc">
-                                  {row.description}
+                                  {row.description || row.details}
                                 </td>
-                                <td className="vi-td-owner">{row.owner}</td>
-                                <td className="vi-td-impact">{row.impact}</td>
+                                <td className="vi-td-owner">
+                                  {row.owner || impactData.itsTeam}
+                                </td>
+                                <td className="vi-td-impact">
+                                  {row.impact || "See runbook details"}
+                                </td>
                               </tr>
                             )
                           )}
@@ -2378,7 +2391,12 @@ export default function Vendors() {
                         </svg>
                       </span>
                       <div className="vi-alert-content">
-                        <strong>{impactData.impactCallout.title}</strong>
+                        <strong>
+                          {impactData.impactCallout.title ||
+                            (impactData.impactCallout.level
+                              ? `${impactData.impactCallout.level} Operational Impact`
+                              : `Operational Impact if ${impactData.name} is Unavailable`)}
+                        </strong>
                         <p>
                           {impactData.impactCallout.message ||
                             impactData.impactCallout.description}
@@ -2416,13 +2434,15 @@ export default function Vendors() {
                       </header>
 
                       <div className="vi-table-wrap">
-                        <table className="vi-table">
+                        <table className="vi-table vi-table-6col">
                           <thead>
                             <tr>
                               <th>Application / System</th>
-                              <th>Description</th>
+                              <th>Short Description</th>
                               <th>Business Function</th>
-                              <th>Impact if {impactData.name} is Unavailable</th>
+                              <th>Impact if Down ({impactData.name})</th>
+                              <th>Direct Dependencies</th>
+                              <th>ITS Owner</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -2443,6 +2463,12 @@ export default function Vendors() {
                                   {sys.businessFunction}
                                 </td>
                                 <td className="vi-td-impact">{sys.impact}</td>
+                                <td className="vi-td-desc">
+                                  {sys.dependencies || "—"}
+                                </td>
+                                <td className="vi-td-owner">
+                                  {sys.owner || impactData.itsTeam}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -2450,6 +2476,102 @@ export default function Vendors() {
                       </div>
                     </section>
                   )}
+
+                  {impactTab === "overview" && (
+                    <div className="vi-quad-grid">
+                      <section className="vi-card vi-quad-card">
+                        <header className="vi-card-header">
+                          <span
+                            className="vi-card-icon icon-blue-soft"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <line x1="18" y1="20" x2="18" y2="10" />
+                              <line x1="12" y1="20" x2="12" y2="4" />
+                              <line x1="6" y1="20" x2="6" y2="14" />
+                            </svg>
+                          </span>
+                          <h3>Typical Business Impact</h3>
+                        </header>
+                        <ul className="vi-bullet-list">
+                          {impactData.typicalBusinessImpact.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      </section>
+
+                      <section className="vi-card vi-quad-card">
+                        <header className="vi-card-header">
+                          <span
+                            className="vi-card-icon icon-blue-soft"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                            </svg>
+                          </span>
+                          <h3>Known Workarounds</h3>
+                        </header>
+                        <ul className="vi-bullet-list">
+                          {impactData.knownWorkarounds.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      </section>
+                    </div>
+                  )}
+
+                  {impactTab === "overview" &&
+                    Array.isArray(impactData.validationChecklist) &&
+                    impactData.validationChecklist.length > 0 && (
+                      <section
+                        className="vi-card vi-systems-card"
+                        aria-label="Incident Validation Checklist"
+                      >
+                        <header className="vi-card-header">
+                          <span
+                            className="vi-card-icon icon-blue"
+                            aria-hidden="true"
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M9 11l3 3L22 4" />
+                              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                            </svg>
+                          </span>
+                          <h3>
+                            Incident Validation Checklist (Time Limit: 15 Minutes)
+                          </h3>
+                        </header>
+                        <div className="vi-card-body">
+                          <ul className="vi-bullet-list">
+                            {impactData.validationChecklist.map((step, idx) => (
+                              <li key={idx}>{step}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </section>
+                    )}
 
                   {/* CONTACTS TAB VIEW */}
                   {impactTab === "contacts" && (
@@ -2582,16 +2704,24 @@ export default function Vendors() {
                                 (sla, idx) => (
                                   <tr key={`sla-${idx}`}>
                                     <td className="vi-td-app">
-                                      <strong>{sla.priority}</strong>
+                                      <strong>
+                                        {sla.priority ||
+                                          sla.label ||
+                                          "SLA Target"}
+                                      </strong>
                                     </td>
                                     <td className="vi-td-func">
-                                      SLA / Response Target
+                                      {sla.level || "SLA / Response Target"}
                                     </td>
                                     <td className="vi-td-desc">
-                                      {sla.description}
+                                      {sla.description ||
+                                        sla.condition ||
+                                        sla.value}
                                     </td>
                                     <td className="vi-td-impact">
-                                      <strong>{sla.target}</strong>
+                                      <strong>
+                                        {sla.target || sla.value}
+                                      </strong>
                                     </td>
                                   </tr>
                                 )

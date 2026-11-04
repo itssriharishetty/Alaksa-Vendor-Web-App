@@ -9,6 +9,19 @@ html body.ground-stops-page .ground-stops-main {
     background: #F4F7FA !important;
 }
 
+html body.ground-stops-page .ias-main-content.ground-stops-main.vi-inpage-main {
+    background: #EEF4FA !important;
+    padding: 18px 26px 32px !important;
+}
+
+html body.ground-stops-page .vi-hero-logo-fallback .gs-card-logo,
+html body.ground-stops-page .vi-dep-logo-fallback .gs-card-logo {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
 /* =========================================================
    TOP 4 KPI SUMMARY CARDS
    ========================================================= */

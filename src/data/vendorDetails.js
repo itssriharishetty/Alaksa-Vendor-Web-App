@@ -831,27 +831,27 @@ export const VENDOR_IMPACT_DETAILS = {
   },
   sita: {
     id: "sita",
-    name: "ACARS",
-    breadcrumbTrail: ["Vendors", "ACARS", "Vendor Impact"],
-    pageTitle: "ACARS – Vendor Impact Details",
+    name: "ACARS Ground System",
+    breadcrumbTrail: ["Ground Stop Applications", "ACARS", "Impact Details"],
+    pageTitle: "ACARS Ground System (ACARS / AIRCOM) – Impact Details",
     pageSubtitle:
-      "View applications, systems, dependencies and business impact if ACARS Ground / AIRCOM (SITA) experiences an outage or degraded service.",
-    applicationsTabTitle: "ACARS",
-    applicationsTabSubheading: "Applications & Systems",
+      "ACARS is the central text link between aircraft and the ground. It carries flight info, flight times, weather, performance data, releases and load closeouts. Rated 24x7 critical and on the Ground Stop list.",
+    applicationsTabTitle: "ACARS Ground System",
+    applicationsTabSubheading: "Applications & Systems (ACARS Components)",
     applicationsTabSubtitle:
-      "ACARS Ground (Alias: AIRCOM) is a Tier 1, ground-stop eligible Flight Operations system that transmits messages and information to and from aircraft. Business impact is High if completely down; medium if individual services or data types are affected.",
+      "ACARS Ground System (also called ACARS / AIRCOM) is on the Ground Stop list as a Flight Ops IT app (ACARS/Aircom), rated 24x7 critical to operations.",
     applicationsCardSubtitle:
-      "This list shows Alaska applications and systems associated with ACARS Ground / AIRCOM (SITA) and ARINC aircraft communications.",
-    dependenciesTabTitle: "ACARS – Dependencies",
+      "Applications and components that make up ACARS Ground System (SITA Aircom Server, AIRCOM Web Service Invoker, ACARS History, ACARS Messenger / Ops Messenger, and Flight Ops Web Services).",
+    dependenciesTabTitle: "ACARS Ground System – Dependencies Architecture",
     dependenciesTabSubtitle:
-      "Upstream dependencies, downstream consumers, MQ messaging queues, and infrastructure components for ACARS Ground / AIRCOM.",
+      "Upstream systems sending data to ACARS, downstream consumers relying on ACARS data, and server/database/DNS/MQ/monitoring infrastructure.",
     status: "Active",
-    lastUpdated: "Nov 02, 2026",
-    subtitle: "Flight Operations / Aircraft Communications (ACARS Ground · Alias: AIRCOM · Tier 1 Ground-Stop Eligible)",
-    company: "SITA",
-    website: "(Add Website/Support Portal URL)",
-    category: "Flight Operations / Aircraft Communications",
-    itsTeam: "ITS Flight Operations / ITS COG Flight Operations",
+    lastUpdated: "Nov 04, 2026",
+    subtitle: "ACARS Ground System (also called ACARS / AIRCOM) · Criticality: Ground Stop · 24x7, critical to operations",
+    company: "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft",
+    website: "http://acars.app.insideaag.com/StatusReport.htm",
+    category: "Flight Ops: aircraft-to-ground communications",
+    itsTeam: "ITS COG FlightOps Support / ITS Flight Operations",
     logo: "public/vendors/sita.png",
     impactSummary: {
       confirmed: 0,
@@ -860,487 +860,1532 @@ export const VENDOR_IMPACT_DETAILS = {
       underReview: 0
     },
     impactCallout: {
-      title: "Potential Impact on 5 Alaska Systems (Tier 1 / Ground-Stop Eligible)",
+      title: "Criticality: Ground Stop — 24x7, critical to operations (Triage Time Limit: 15 Minutes)",
       message:
-        "Service classification: Application / Service: ACARS Ground (Alias: AIRCOM) • Tier 1 • Ground-stop eligible: Yes • Business impact: High if completely down; medium if individual services or data types are affected. Primary function: Transmit messages and information to and from aircraft.",
+        "ACARS is the central text link between aircraft and the ground. It carries flight info, flight times, weather, performance data, releases and load closeouts. It is rated 24x7 critical and is on the Ground Stop list. Aircom Server Status page: http://acars.app.insideaag.com/StatusReport.htm",
       description:
-        "Service classification: Application / Service: ACARS Ground (Alias: AIRCOM) • Tier 1 • Ground-stop eligible: Yes • Business impact: High if completely down; medium if individual services or data types are affected. Primary function: Transmit messages and information to and from aircraft.",
-      updatedAgo: "Updated from Primary Internal Runbooks"
+        "ACARS is the central text link between aircraft and the ground. It carries flight info, flight times, weather, performance data, releases and load closeouts. It is rated 24x7 critical and is on the Ground Stop list. Aircom Server Status page: http://acars.app.insideaag.com/StatusReport.htm",
+      updatedAgo: "Updated from ACARS System Summary & Triage Runbooks"
     },
     impactedSystems: [
       {
-        id: "acars-ground-aircom",
-        name: "ACARS Ground / AIRCOM",
-        subName: "(Alias: AIRCOM • Tier 1 Ground-Stop Eligible)",
-        appTabSubName: "(Alias: AIRCOM • Tier 1 Ground-Stop Eligible)",
+        id: "sita-aircom-server",
+        name: "SITA Aircom Server",
+        subName: "(SEAVVACARSAPP03 / TUKVVACARSAPP03)",
+        appTabSubName: "(SEAVVACARSAPP03 / TUKVVACARSAPP03)",
         description:
-          "Processes Aircraft Communication Addressing and Reporting System messages transmitted through VHF or satellite. Messages include flight information, weather, aircraft telemetry and free text, and travel in both air-to-ground and ground-to-air directions.",
+          "Vendor message server running on SEAVVACARSAPP03 / TUKVVACARSAPP03",
         appTabDescription:
-          "Processes Aircraft Communication Addressing and Reporting System messages transmitted through VHF or satellite. Messages include flight information, weather, aircraft telemetry and free text, and travel in both air-to-ground and ground-to-air directions.",
-        businessFunction: "Aircraft-to-ground and ground-to-air operational communications.",
-        impact:
-          "Complete loss is documented as high business impact and ACARS is ground-stop eligible. An actual September incident was escalated to Sev 1 after Dispatch reported complete loss of ACARS communications with crews.",
-        dependencies:
-          "SITA AIRCOM Server, AIRCOM Server Client, AIRCOM Web Service Invoker and ACARS History Service.",
+          "Vendor message server running on SEAVVACARSAPP03 / TUKVVACARSAPP03",
+        businessFunction: "Aircraft message routing",
+        impact: "No ACARS messages go to or from aircraft",
+        dependencies: "SQL (SEAPRACARSSQL02 / TUKPRACARSSQL02), IBM MQ, MSMQ",
         status: "Potential",
-        owner: "ITS Flight Operations / ITS COG Flight Operations"
+        owner: "Ryan Wilkins"
       },
       {
-        id: "flifo-times-ws",
-        name: "FlifoTimesWS",
-        subName: "(Flight-Time Web Service)",
-        appTabSubName: "(Flight-Time Web Service)",
+        id: "aircom-web-service-invoker",
+        name: "AIRCOM Web Service Invoker",
+        subName: "(seavvapp22 / tukvvapp22 — Active/Active)",
+        appTabSubName: "(seavvapp22 / tukvvapp22 — Active/Active)",
         description:
-          "Web service used by ACARS Ground to process flight times, including OOOI times.",
+          "In-house Windows service on seavvapp22 / tukvvapp22, both active at the same time",
         appTabDescription:
-          "Web service used by ACARS Ground to process flight times, including OOOI times.",
-        businessFunction: "Flight-time processing.",
-        impact:
-          "ACARS flight-time messages may not update correctly. During one documented incident, operations reported no OOOI times during the ACARS outage.",
-        dependencies: "ACARS Ground/AIRCOM.",
+          "In-house Windows service on seavvapp22 / tukvvapp22, both active at the same time",
+        businessFunction: "Message logic and web service calls",
+        impact: "Flight times (OUT/OFF/ON/IN) and replies don't process",
+        dependencies: "FO.TO.AIRCOM.WEBSERVICES queue",
         status: "Potential",
-        owner: "Flight Operations support"
+        owner: "ITS Flight Ops"
       },
       {
-        id: "aircraft-performance-data-wam",
-        name: "AircraftPerformanceData / WAM",
-        subName: "(Aircraft Performance / Dispatch Release)",
-        appTabSubName: "(Aircraft Performance / Dispatch Release)",
-        description:
-          "AircraftPerformanceData is among the web services used by ACARS Ground. WAM can format and send a dispatch release for upload through ACARS Ground.",
-        appTabDescription:
-          "AircraftPerformanceData is among the web services used by ACARS Ground. WAM can format and send a dispatch release for upload through ACARS Ground.",
-        businessFunction: "Aircraft performance / dispatch release distribution.",
-        impact: "Documented incidents show crews being unable to reliably receive performance numbers.",
-        dependencies: "AIRCOM / ACARS messaging path.",
+        id: "acars-history",
+        name: "ACARS History (Service/UI/API)",
+        subName: "(Azure SQL, APIM, PingFederate)",
+        appTabSubName: "(Azure SQL, APIM, PingFederate)",
+        description: "Search of recent and archived ACARS messages",
+        appTabDescription: "Search of recent and archived ACARS messages",
+        businessFunction: "Message history and audit",
+        impact: "Users can't search ACARS history",
+        dependencies: "Azure SQL, APIM, PingFederate",
         status: "Potential",
-        owner: "ITS Flight Operations / ITS COG Flight Operations"
+        owner: "(Add owner)"
       },
       {
-        id: "s4a-acars-mq",
-        name: "S4A",
-        subName: "(Dedicated MQ Integration)",
-        appTabSubName: "(Dedicated MQ Integration)",
-        description: "ACARS architecture defines dedicated inbound/outbound MQ integration with S4A.",
-        appTabDescription: "ACARS architecture defines dedicated inbound/outbound MQ integration with S4A.",
-        businessFunction: "(Add Business Function)",
-        impact: "(Add S4A impact if ACARS unavailable)",
-        dependencies: "COMM.V1.JMS.EXT_ACARS_INBOUND and COMM.V1.JMS.EXT_ACARS_OUTBOUND.",
+        id: "acars-ops-messenger",
+        name: "ACARS Messenger / Ops Messenger",
+        subName: "(Operations Free-Text Client)",
+        appTabSubName: "(Operations Free-Text Client)",
+        description: "Free-text message clients for Operations",
+        appTabDescription: "Free-text message clients for Operations",
+        businessFunction: "Ops-to-crew messaging",
+        impact: "No free-text messages to crews",
+        dependencies: "Aircom Server",
         status: "Potential",
-        owner: "(Add Internal ITS Owner)"
+        owner: "(Add owner)"
       },
       {
-        id: "acars-history-service",
-        name: "ACARS History Service",
-        subName: "(React UI → API Management → .NET 8 API → Azure SQL)",
-        appTabSubName: "(React UI → API Management → .NET 8 API → Azure SQL)",
-        description:
-          "In-house web service and part of the ACARS Ground system. ACARSHistory-Runbook.docx additionally documents ACARS History as a React UI → API Management → .NET 8 API → Azure SQL architecture, with West US 2 primary hosting and Central US SQL failover.",
-        appTabDescription:
-          "In-house web service and part of the ACARS Ground system. ACARSHistory-Runbook.docx additionally documents ACARS History as a React UI → API Management → .NET 8 API → Azure SQL architecture, with West US 2 primary hosting and Central US SQL failover.",
-        businessFunction: "ACARS message/history access.",
-        impact: "(Add ACARS History impact)",
-        dependencies: "AIRCOM/ACARS ecosystem.",
+        id: "acars-message-web-services",
+        name: "FlifoTimesWS, PilotLimitsWS, AircraftPerformanceData, Weather API",
+        subName: "(2012 DNA Farm Web Services)",
+        appTabSubName: "(2012 DNA Farm Web Services)",
+        description: "Web services that process specific message types",
+        appTabDescription: "Web services that process specific message types",
+        businessFunction: "Flight times, pilot duty limits, performance, weather",
+        impact: "Those message types fail",
+        dependencies: "2012 DNA farm",
         status: "Potential",
-        owner: "(Add Internal ITS Owner)"
+        owner: "FltOps / Crew Scheduling"
       }
     ],
     upstreamDependencies: [
-      "Aircraft messages arrive through VHF or satellite.",
-      "ARINC is an external aircraft-communications partner documented in the ACARS runbook.",
-      "The architecture defines ALASKA.FROM.ARINC as the read queue.",
-      "Current Flight Planning testing documentation describes inbound aircraft data following ACARS → ARINC/SITA → AIRCOM, before downstream processing."
+      "ARINC/SITA → ALASKA.FROM.ARINC / ALASKA.FROM.SITA → Aircom",
+      "S4A (COMM.V1.JMS.EXT_ACARS_OUTBOUND)",
+      "WAM (dispatch release uplink)",
+      "FlightKeys/FPS briefing data (through AS OpsCom CyberJet)",
+      "AeroData (AD.TO.AAG) for performance and loadsheet data"
     ],
     downstreamConsumers: [
-      "Flight Operations / Dispatch",
-      "Aircraft and flight crews",
-      "FlifoTimesWS / flight-time processing",
-      "AircraftPerformanceData",
-      "PilotLimitsWS",
-      "Weather API",
-      "WAM dispatch-release workflow",
-      "S4A",
-      "TIBCO flight-event integration"
+      "Aircraft (through ALASKA.TO.ARINC)",
+      "S4A (EXT_ACARS_INBOUND)",
+      "Tibco (engine, telemetry and position events)",
+      "fltops database (OUT/OFF/ON/IN times)",
+      "QX EFB gateway",
+      "SkyWest feed (FO.OO.ACARS.AS)",
+      "AeroData (AAG.TO.AD)",
+      "FlightKeys",
+      "Dispatch, CLP and SOC teams"
     ],
     dependenciesTab: {
       overviewSubtitle:
-        "This diagram shows the key upstream and downstream dependencies for ACARS Ground / AIRCOM (SITA), including VHF/satellite aircraft messaging, ARINC read/write queues, SQL Server persistence, IBM MQ event queues, and Flight Operations downstream services.",
+        "Upstream systems that send data to ACARS (ARINC/SITA, S4A, WAM, FlightKeys/FPS, AeroData), ACARS components, and downstream consumers that rely on ACARS data.",
       diagramUpstream: [
         {
           id: "acars-dup-1",
-          name: "VHF / Satellite Datalink",
-          subtitle: "Aircraft-to-Ground Messages",
+          name: "ARINC / SITA",
+          subtitle: "ALASKA.FROM.ARINC / ALASKA.FROM.SITA → Aircom",
           iconType: "network"
         },
         {
           id: "acars-dup-2",
-          name: "ARINC Communications",
-          subtitle: "External Aircraft Comms Partner",
+          name: "S4A",
+          subtitle: "COMM.V1.JMS.EXT_ACARS_OUTBOUND",
           iconType: "transfer"
         },
         {
           id: "acars-dup-3",
-          name: "ALASKA.FROM.ARINC",
-          subtitle: "Inbound Read Queue",
+          name: "WAM",
+          subtitle: "Dispatch release uplink",
           iconType: "doc"
         },
         {
           id: "acars-dup-4",
-          name: "ACARS → ARINC/SITA → AIRCOM",
-          subtitle: "Inbound Aircraft Data Flow",
+          name: "FlightKeys / FPS",
+          subtitle: "Briefing data (through AS OpsCom CyberJet)",
           iconType: "ticket"
+        },
+        {
+          id: "acars-dup-5",
+          name: "AeroData (AD.TO.AAG)",
+          subtitle: "Performance and loadsheet data",
+          iconType: "transfer"
         }
       ],
       diagramServices: [
-        "SITA AIRCOM Server",
-        "AIRCOM Server Client",
+        "SITA Aircom Server",
         "AIRCOM Web Service Invoker",
-        "ACARS History Service",
-        "QMAS / IBM MQ & MSMQ"
+        "ACARS History (Service/UI/API)",
+        "ACARS Messenger / Ops Messenger",
+        "FlifoTimesWS, PilotLimitsWS, AircraftPerformanceData, Weather API"
       ],
       diagramDownstream: [
         {
           id: "acars-ddn-1",
-          name: "Flight Ops / Dispatch & Crews",
-          subtitle: "Operational & Crew Messaging",
+          name: "Aircraft & Dispatch / CLP / SOC",
+          subtitle: "ALASKA.TO.ARINC & Operational Teams",
           iconType: "team"
         },
         {
           id: "acars-ddn-2",
-          name: "FlifoTimesWS",
-          subtitle: "OOOI & Flight-Time Processing",
+          name: "S4A & AeroData",
+          subtitle: "EXT_ACARS_INBOUND & AAG.TO.AD",
           iconType: "nodes"
         },
         {
           id: "acars-ddn-3",
-          name: "AircraftPerformanceData & WAM",
-          subtitle: "Performance & Dispatch Release",
-          iconType: "chart"
-        },
-        {
-          id: "acars-ddn-4",
-          name: "PilotLimitsWS & Weather API",
-          subtitle: "Flight Ops Web Services",
+          name: "Tibco & fltops database",
+          subtitle: "Engine/Telemetry/Position & OUT/OFF/ON/IN Times",
           iconType: "database"
         },
         {
+          id: "acars-ddn-4",
+          name: "QX EFB gateway & SkyWest feed",
+          subtitle: "QX EFB & FO.OO.ACARS.AS",
+          iconType: "chart"
+        },
+        {
           id: "acars-ddn-5",
-          name: "S4A & TIBCO Integration",
-          subtitle: "MQ & Flight-Event Consumers",
+          name: "FlightKeys",
+          subtitle: "Flight Planning Consumer",
           iconType: "users"
         }
       ],
       summaryStats: [
-        { label: "Upstream Dependencies", count: 4, tone: "red" },
+        { label: "Upstream Dependencies", count: 5, tone: "red" },
         { label: "Downstream Consumers", count: 9, tone: "green" },
-        { label: "Impacted Applications", count: 5, tone: "blue" },
-        { label: "Infrastructure Components", count: 5, tone: "purple" }
+        { label: "ACARS Components", count: 5, tone: "blue" },
+        { label: "Infrastructure Components", count: 6, tone: "purple" }
       ],
       keyTakeaways: [
-        "ACARS Ground is a Tier 1, ground-stop eligible Flight Operations system that provides aircraft-to-ground and ground-to-air operational messaging. It carries operational information including flight data, weather, telemetry and free-text messages, processes flight times, handles requests for flight initialization/route information and supports dispatch-release uplinks.",
-        "Its architecture crosses SITA AIRCOM, ARINC communications, Windows application servers, SQL Server, MQ messaging and several Flight Operations services, making message flow and queue health particularly important operational dependencies."
+        "ACARS is the central text link between aircraft and the ground. It carries flight info, flight times, weather, performance data, releases and load closeouts. It is rated 24x7 critical and is on the Ground Stop list."
       ],
       upstreamTable: [
         {
           id: "acars-upt-1",
-          name: "Aircraft VHF / Satellite Datalink",
-          description: "Aircraft messages arrive through VHF or satellite.",
-          type: "External / Aircraft",
-          impact: "Loss or delay of air-to-ground and ground-to-air messages."
+          name: "ARINC/SITA → ALASKA.FROM.ARINC / ALASKA.FROM.SITA → Aircom",
+          description: "Inbound aircraft messages routed from ARINC and SITA queues into Aircom.",
+          type: "External / MQ Queue",
+          impact: "No inbound ACARS messages arrive from aircraft into Aircom."
         },
         {
           id: "acars-upt-2",
-          name: "ARINC",
-          description:
-            "ARINC is an external aircraft-communications partner documented in the ACARS runbook.",
-          type: "External Partner",
-          impact: "Aircraft communications link to/from AIRCOM interrupted or degraded."
+          name: "S4A (COMM.V1.JMS.EXT_ACARS_OUTBOUND)",
+          description: "Outbound load management and weight/balance messages from Smart4Aviation (S4A).",
+          type: "Internal / MQ Queue",
+          impact: "Load closeouts and S4A outbound messages cannot be sent to aircraft."
         },
         {
           id: "acars-upt-3",
-          name: "ALASKA.FROM.ARINC",
-          description: "The architecture defines ALASKA.FROM.ARINC as the read queue.",
-          type: "Internal / MQ Queue",
-          impact: "Inbound ARINC messages queue up and are not ingested by AIRCOM."
+          name: "WAM (dispatch release uplink)",
+          description: "Dispatch release uplink data sent from WAM to ACARS.",
+          type: "Internal (Ground Stop)",
+          impact: "Dispatch release uplinks do not reach aircraft via ACARS."
         },
         {
           id: "acars-upt-4",
-          name: "ACARS → ARINC/SITA → AIRCOM Path",
-          description:
-            "Current Flight Planning testing documentation describes inbound aircraft data following ACARS → ARINC/SITA → AIRCOM, before downstream processing.",
-          type: "External / Integration",
-          impact: "Downstream Flight Operations services do not receive inbound aircraft data."
+          name: "FlightKeys/FPS briefing data (through AS OpsCom CyberJet)",
+          description: "Flight planning and briefing data routed through AS OpsCom CyberJet.",
+          type: "External / Partner",
+          impact: "FlightKeys/FPS briefing data uplinks to aircraft are delayed or fail."
+        },
+        {
+          id: "acars-upt-5",
+          name: "AeroData (AD.TO.AAG) for performance and loadsheet data",
+          description: "Inbound performance and loadsheet data from AeroData via AD.TO.AAG queue.",
+          type: "External / MQ Queue",
+          impact: "Takeoff numbers, landing performance data, and loadsheet data are delayed."
         }
       ],
       downstreamTable: [
         {
           id: "acars-dwt-1",
-          name: "Flight Operations / Dispatch",
-          description: "Dispatch-to-crew operational messaging and flight release uplinks.",
-          type: "Internal (Tier 1)",
-          impact: "Dispatch-to-crew communication impaired; potential ground-stop concern."
+          name: "Aircraft (through ALASKA.TO.ARINC)",
+          description: "Outbound ground-to-air ACARS messages transmitted to aircraft via ALASKA.TO.ARINC.",
+          type: "External / Aircraft",
+          impact: "No ACARS messages, releases, load closeouts, or clearances reach aircraft."
         },
         {
           id: "acars-dwt-2",
-          name: "Aircraft and flight crews",
-          description: "Crews receiving flight info, weather, performance numbers, and PDCs.",
-          type: "Internal Users",
-          impact: "Crews unable to reliably receive performance numbers, clearances, or free-text messages."
+          name: "S4A (EXT_ACARS_INBOUND)",
+          description: "Inbound ACARS messages delivered to Smart4Aviation (S4A) via EXT_ACARS_INBOUND.",
+          type: "Internal / MQ Queue",
+          impact: "S4A weight and balance workflow does not receive aircraft ACARS updates."
         },
         {
           id: "acars-dwt-3",
-          name: "FlifoTimesWS / flight-time processing",
-          description: "Web service used by ACARS Ground to process flight times, including OOOI times.",
-          type: "Internal Service",
-          impact: "Missing OOOI/flight times during ACARS outage."
+          name: "Tibco (engine, telemetry and position events)",
+          description: "Downstream middleware consumer for engine, telemetry, and aircraft position events.",
+          type: "Internal Middleware",
+          impact: "Engine, telemetry, and position events do not flow to downstream consumers."
         },
         {
           id: "acars-dwt-4",
-          name: "AircraftPerformanceData",
-          description: "Web service used by ACARS Ground for takeoff/landing performance traffic.",
-          type: "Internal (Tier 1)",
-          impact: "Takeoff and landing performance request/response traffic delayed or lost."
+          name: "fltops database (OUT/OFF/ON/IN times)",
+          description: "Flight Operations database receiving automated OUT/OFF/ON/IN flight times.",
+          type: "Internal Database",
+          impact: "Flight times (OUT/OFF/ON/IN) don't arrive, so Dispatch and CLP have to enter them by hand."
         },
         {
           id: "acars-dwt-5",
-          name: "PilotLimitsWS",
-          description: "Flight Operations web service invoked by ACARS Ground.",
+          name: "QX EFB gateway",
+          description: "Horizon Air (QX) Electronic Flight Bag gateway receiving ACARS traffic.",
           type: "Internal Service",
-          impact: "Pilot limits message processing impacted during ACARS disruption."
+          impact: "Horizon (QX) EFB communications and performance updates are affected."
         },
         {
           id: "acars-dwt-6",
-          name: "Weather API",
-          description: "Weather data requests and uplinks processed through ACARS Ground.",
-          type: "Internal Service",
-          impact: "In-flight weather updates to aircraft delayed or unavailable."
+          name: "SkyWest feed (FO.OO.ACARS.AS)",
+          description: "ACARS message feed to SkyWest via FO.OO.ACARS.AS queue.",
+          type: "External / Partner",
+          impact: "SkyWest ACARS feed does not receive flight messages."
         },
         {
           id: "acars-dwt-7",
-          name: "WAM dispatch-release workflow",
-          description: "WAM formats and sends dispatch releases for upload through ACARS Ground.",
-          type: "Internal (Tier 1)",
-          impact: "Dispatch release uplinks to aircraft delayed or require manual workaround."
+          name: "AeroData (AAG.TO.AD)",
+          description: "Outbound ACARS requests and aircraft data sent to AeroData via AAG.TO.AD.",
+          type: "External / Partner",
+          impact: "Aircraft performance requests do not reach AeroData."
         },
         {
           id: "acars-dwt-8",
-          name: "S4A",
-          description: "Dedicated inbound/outbound MQ integration (COMM.V1.JMS.EXT_ACARS_INBOUND / OUTBOUND).",
-          type: "Internal / Partner",
-          impact: "(Add S4A impact if ACARS unavailable)"
+          name: "FlightKeys",
+          description: "Downstream FlightKeys flight planning system receiving ACARS updates.",
+          type: "External / Partner",
+          impact: "FlightKeys does not receive real-time ACARS flight progression updates."
         },
         {
           id: "acars-dwt-9",
-          name: "TIBCO flight-event integration",
-          description: "Downstream flight-event, engine, telemetry, and position MQ event streams.",
-          type: "Internal Middleware",
-          impact: "Downstream flight-event and telemetry consumers do not receive real-time ACARS events."
+          name: "Dispatch, CLP and SOC teams",
+          description: "Operational teams relying on ACARS for crew messaging, flight times, and load closeouts.",
+          type: "Internal Teams",
+          impact: "Dispatch, CLP, and SOC must enter flight times manually and call in final numbers."
         }
       ],
       infrastructureTable: [
         {
           id: "acars-inf-1",
-          component: "AIRCOM application servers",
+          component: "App servers",
           description:
-            "SEAVVACARSAPP03 - IGQ, TUKVVACARSAPP03 - TUK. Platform documented as Windows Server 2016.",
-          owner: "ITS Flight Operations / ITS COG Flight Operations",
-          impact: "AIRCOM server availability and message processing affected; check AIRCOM Server Status page."
+            "SEAVVACARSAPP03 (IGQ) and TUKVVACARSAPP03 (TUK), Windows Server 2016",
+          owner: "Ryan Wilkins / ITS COG FlightOps Support",
+          impact: "No ACARS messages go to or from aircraft if Aircom Server is unavailable."
         },
         {
           id: "acars-inf-2",
-          component: "Database",
+          component: "Database servers",
           description:
-            "SQL Server 2016: SEAPRACARSSQL02, TUKPRACARSSQL02 (DNS: acars.sql.insideaag.com).",
-          owner: "SQL Database team",
-          impact: "Database Connector turns red; ACARS message persistence and lookup affected."
+            "SEAPRACARSSQL02 (159.49.43.93) and TUKPRACARSSQL02 (10.70.106.5), SQL Server 2016",
+          owner: "DBA On-Call / SQL Database Team",
+          impact: "If the Database Connector shows red, check SQL and call the DBA on call."
         },
         {
           id: "acars-inf-3",
-          component: "Application DNS",
-          description: "acars.app.insideaag.com (GTM entry: acars.app.int.insideaag.com).",
-          owner: "ITS Flight Operations / Infrastructure",
-          impact: "Application routing and GTM failover across IGQ and TUK affected."
+          component: "DNS",
+          description:
+            "acars.app.insideaag.com, acars.sql.insideaag.com, and the CNAME acars.app.int.insideaag.com",
+          owner: "ITS Infrastructure / Network",
+          impact: "Application and SQL name resolution and active/standby routing affected."
         },
         {
           id: "acars-inf-4",
-          component: "Messaging",
+          component: "IBM MQ & MSMQ",
           description:
-            "Local Microsoft Message Queuing, QMAS queue manager, ALASKA.FROM.ARINC, ALASKA.TO.ARINC, COMM.V1.JMS.EXT_ACARS_INBOUND, COMM.V1.JMS.EXT_ACARS_OUTBOUND, FO.ENGINE.EVENTS, FO.ACARS.TELEMETRY.EVENTS, FO.ACARS.AIRCRAFT.POSITION.EVENTS, FO.ACARSGW.TO.QXEFBGW, FO.FLIGHT.EVENTS.ACARSTIMES, FO.FLIGHT.LOAD.ACARS.UPLINK, FO.TO.AIRCOM.WEBSERVICES.",
-          owner: "IBM MQ team / ITS Flight Operations",
-          impact: "MQ link/queue backlog blocks inbound and outbound aircraft and flight-event messages."
+            "IBM MQ queue managers QMAS and QMMFP, plus local MSMQ queues",
+          owner: "Middleware (IBM MQ) / ITS Flight Ops",
+          impact: "Queue disconnect or backlog halts message routing; AMX1QM1.QMAS channel alert is Sev 1."
         },
         {
           id: "acars-inf-5",
-          component: "Specific firewall configuration",
-          description: "(Add Specific firewall configuration)",
+          component: "Monitoring",
+          description: "AlarmsOne, Dynatrace, Zenoss",
+          owner: "ITS Production Operations / SRE",
+          impact: "Monitoring and alerting visibility for Aircom services and queue depths."
+        },
+        {
+          id: "acars-inf-6",
+          component: "Firewall / network rules",
+          description: "(Add firewall details)",
           owner: "ITS Network",
-          impact: "Network / firewall connectivity between AIRCOM, ARINC/SITA, and internal services."
+          impact: "Network connectivity between Aircom, ARINC/SITA, and internal services."
         }
       ]
     },
     typicalBusinessImpact: [
-      "Loss or delay of aircraft-to-ground/ground-to-air communications.",
-      "Missing OOOI/flight times.",
-      "Crews may not receive aircraft performance numbers.",
-      "Takeoff performance request/response traffic can be delayed.",
-      "Dispatch-to-crew communication can be impaired.",
-      "ACARS disruption can become a ground-stop concern because the system is explicitly classified ground-stop eligible.",
-      "An October ACARS latency incident affected landing performance retrieval, takeoff numbers and pre-departure clearances across Alaska, Horizon and Hawaiian operations."
+      "Takeoff numbers, landing performance data and pre-departure clearances are delayed",
+      "Flight times (OUT/OFF/ON/IN) don't arrive, so Dispatch and CLP have to enter them by hand",
+      "Crews don't receive load closeouts or final numbers",
+      "Flight delays. In the MI6516 outage (1/9/2026), Alaska Air Group logged 68 delays totalling 1,075 minutes",
+      "Hawaiian (HA) and Horizon (QX) operations can be affected too"
     ],
     knownWorkarounds: [
-      "A September incident documented the SMART backup system carrying messages more consistently while the primary ACARS path was lagging. Dispatch was also manually emailing performance information to crews during that incident.",
-      "SMART backup messaging path, where applicable to the impacted transaction.",
-      "Manual performance-information delivery from Dispatch to crews was used during the documented outage.",
-      "(Add other Known Workarounds)"
+      "Enter flight times and flight plans manually",
+      "CLP calls in final numbers manually",
+      "CLP re-sends the load closeout after a few minutes",
+      "(Add voice/radio fallback procedure)"
     ],
     vendorContacts: {
       companyNote:
-        "SITA, for the AIRCOM application/vendor product. The runbook separately identifies ARINC for aircraft communications.",
+        "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft",
       categoryNote:
-        "Service classification: Application / Service: ACARS Ground (Alias: AIRCOM) • Tier 1 • Ground-stop eligible: Yes • Business impact: High if completely down; medium if individual services or data types are affected. Primary function: Transmit messages and information to and from aircraft.",
+        "Application Name: ACARS Ground System (also called ACARS / AIRCOM) • Criticality: Ground Stop • Operational Category: Flight Ops: aircraft-to-ground communications • Aircom Server Status page: http://acars.app.insideaag.com/StatusReport.htm",
       supportEmail: "Aircom.support@sitaonair.aero",
-      supportEmailNote: "SITA Help Desk (AIRCOM Services)",
-      secondaryEmail: "AOChelpdesk@collins.com",
-      secondaryEmailNote: "ARINC / Collins (Senior On-Duty Ops Manager 24x7 escalation: AOC@collins.com)",
+      supportEmailNote: "SITA Aircom support",
+      secondaryEmail: "helpdesk@arinc.com",
+      secondaryEmailNote: "ARINC Help Desk (Senior On-Duty Ops Manager 24x7: AOC@arinc.com)",
       supportPhone:
-        "SITA: 1-866-247-2661, option 4 for AIRCOM Services. ARINC: 800-633-6882.",
+        "SITA: 1-888-247-2661, option 4 (Aircom). ARINC: 800-633-6882",
       technicalSupport:
-        "SITA Help Desk (24/7): 1-866-247-2661, option 4 • ARINC: 800-633-6882",
+        "SITA Help Desk: 866-247-2661 (24/7) • SITA Aircom support: 1-888-247-2661, option 4 / Aircom.support@sitaonair.aero • ARINC Help Desk: 800-633-6882 / helpdesk@arinc.com",
       accountManager: "(Add Account Manager)",
       namedEscalationContact:
-        "ARINC Senior On-Duty Operations Manager (24x7): 410-266-4029 / AOC@collins.com",
-      supportHours:
-        "ACARS is documented as 24x7 critical to operation. The SITA Help Desk is listed as 24/7. ARINC Senior On-Duty Operations Manager is 24x7.",
+        "ARINC Senior On-Duty Ops Manager (24x7): 410-266-4029 / AOC@arinc.com",
+      supportHours: "24x7, critical to operations",
       escalation:
-        "SITA / AIRCOM:\n• SITA Help Desk: 1-866-247-2661, option 4\n• Email: Aircom.support@sitaonair.aero\n• Hours: 24/7\n• Internal escalation note: An assigned developer follows up with SITA and escalates.\n\nARINC / Collins Aerospace (Aircraft Communications):\n• Phone: 800-633-6882\n• Email: AOChelpdesk@collins.com\n• Escalation: ARINC Senior On-Duty Operations Manager, 24x7, 410-266-4029, AOC@collins.com",
+        "Vendor Contacts:\n• SITA Help Desk: 866-247-2661 (24/7)\n• SITA Aircom support: 1-888-247-2661, option 4 / Aircom.support@sitaonair.aero\n• ARINC Help Desk: 800-633-6882 / helpdesk@arinc.com\n• ARINC Senior On-Duty Ops Manager (24x7): 410-266-4029 / AOC@arinc.com\n• Account Manager: (Add Account Manager)\n\nCommunication Guidelines:\n• For SITA issues, an assigned developer follows up with SITA and escalates.\n• When escalating, include the scope: one aircraft (tail), one flight (date, flight, city pair), or the whole fleet, plus which Ops group is affected.",
       communicationGuidelines: [
-        "Level 1, IT Service Desk: Incident intake, initial troubleshooting, create/route ServiceNow incident, and escalate to Production Operations through the dedicated Teams channel.",
-        "Production Operations: Monitor dashboards/alerts, lead or co-lead P1/P2/RRT0 bridges, perform approved recovery actions, and escalate to Engineering, SRE and vendors.",
-        "On-call process: Use xMatters or Everbridge. Page/call each on-call resource twice within 90 seconds. If no response within five minutes, escalate to the next tier.",
-        "P1: Start/join bridge immediately. P1 update cadence is 15–30 minutes, marked TBD in the runbook (do not treat as a finalized SLA).",
-        "P2: Create a Teams channel using the major-incident number and invite resolver groups."
+        "For SITA issues, an assigned developer follows up with SITA and escalates.",
+        "When escalating, include the scope: one aircraft (tail), one flight (date, flight, city pair), or the whole fleet, plus which Ops group is affected."
       ],
       responseSlas: [
         {
-          label: "System availability",
-          value: "24x7 critical operation."
+          label: "Sev 1",
+          priority: "Sev 1",
+          level: "Critical / Ground Stop",
+          description:
+            "ARINC MQ channel alert, required services down and not clearing, or queue depth over 500",
+          target: "15 min triage limit",
+          value:
+            "ARINC MQ channel alert, required services down and not clearing, or queue depth over 500"
         },
         {
-          label: "Tier",
-          value: "Tier 1 / ground-stop eligible."
+          label: "Sev 2",
+          priority: "Sev 2",
+          level: "High Operational Impact",
+          description:
+            "Queue depth over 100, multiple flights affected, or critical messages (releases, performance data) failing",
+          target: "Inform COG FlightOps",
+          value:
+            "Queue depth over 100, multiple flights affected, or critical messages (releases, performance data) failing"
         },
         {
-          label: "On-call attempt",
-          value: "Twice within 90 seconds."
+          label: "Sev 3",
+          priority: "Sev 3",
+          level: "Single Flight / Station",
+          description:
+            "Single flight, single station, or non-critical messages",
+          target: "Standard triage",
+          value: "Single flight, single station, or non-critical messages"
         },
         {
-          label: "No-response escalation",
-          value: "Next tier after 5 minutes."
-        },
-        {
-          label: "P1",
-          value: "Start/join bridge immediately."
-        },
-        {
-          label: "P1 update cadence",
-          value: "15–30 minutes, marked TBD in the runbook; do not treat as a finalized SLA."
-        },
-        {
-          label: "P2",
-          value: "Create a Teams channel using the major-incident number and invite resolver groups."
-        },
-        {
-          label: "Sev 1 initial vendor response",
-          value: "(Add Sev 1 initial vendor response)"
-        },
-        {
-          label: "Sev 2 initial vendor response",
-          value: "(Add Sev 2 initial vendor response)"
-        },
-        {
-          label: "Sev 2 update cadence",
-          value: "(Add Sev 2 update cadence)"
+          label: "Initial response and update cadence",
+          priority: "Initial response and update cadence",
+          level: "Response & Update Cadence",
+          description: "(Add Sev 1/Sev 2 response times and update cadence)",
+          target: "(Add Sev 1/Sev 2 response times and update cadence)",
+          value: "(Add Sev 1/Sev 2 response times and update cadence)"
         }
       ]
     },
     internalContacts: {
-      itsTeam: "ITS Flight Operations / ITS COG Flight Operations",
+      itsTeam: "ITS COG FlightOps Support / ITS Flight Operations",
       itsTeamNote:
-        "Technical teams: ITS Flight Operations, ITS COG Flight Operations, SQL Database team and IBM MQ team.",
+        "Technical Owners: Ryan Wilkins, Adele Lunde • On-Call: ITS COG FlightOps Support / ITS FltOps on-call",
       applicationOwner: "Ryan Wilkins, 206-972-0228",
-      onCallSupport: "ITS Flight Operations / ITS COG Flight Operations On-Call",
-      systemAdministration: "Andy Nunez / Arun Sharma, 206-392-8613",
-      businessOwner: "James Falen, 425-679-2135 cell / 206-392-6083 desk",
-      passwordSupport: "ITS Service Desk, 1-877-238-1077"
+      onCallSupport: "ITS COG FlightOps Support / ITS FltOps on-call",
+      systemAdministration: "Rick Cahoon, Arun Sharma, 206-392-8613",
+      businessOwner:
+        "James Falen, 425-679-2135 cell / 206-392-6083 desk (Business Owner & Everbridge focal)",
+      passwordSupport: "Service Desk: 1-877-238-1077",
+      everbridgeContacts:
+        "Everbridge Focal: James Falen (425-679-2135 cell / 206-392-6083 desk) • Everbridge Backup: Charles Ostick (877-238-1077)"
     },
     validationChecklist: [
-      "Determine who or what system is not receiving messages.",
-      "Determine the affected message type.",
-      "Establish how many flights/messages are affected and capture flight details, message times and sample messages.",
-      "Open the AIRCOM Server Status page and identify the active server.",
-      "Verify the required AIRCOM services are green, including Communication Relay, Database Connector, IBM MQ Connector and Message Processor.",
-      "Check MQ link/queue health and queue backlog.",
-      "Check database connectivity and database alerts/performance if Database Connector is red.",
-      "Review errors, latency, traffic, alarms, logs, dependencies, deployments, configuration changes and certificates.",
-      "Follow the documented restart procedure based on which AIRCOM component is unhealthy.",
-      "Escalate persistent message-processing issues to COG Flight Operations/Flight Operations on-call.",
-      "After recovery, confirm error rate, latency, alerts, dependencies, system thresholds and stakeholder validation are normal."
+      "Open the Aircom Status page (http://acars.app.insideaag.com/StatusReport.htm). Confirm all required services are green: Base Service, Communication Relay, Database Connector, Email Connector, File/Printer Connector, FTP Connector, IBM MQ Connector, Message Processor, and Monitoring Service.",
+      "If only the IBM MQ Links show red, restart AS IBM MQ Connector. If the queues are still disconnected, restart all Aircom services.",
+      "If the Message Processor shows yellow, check the backlog. If the queue depth is over 100, restart the Message Processor and inform COG FlightOps.",
+      "Check the FO.FROM.AIRCOM.WEBSERVICES queue depth. Over 100 is Sev 2; over 500 is Sev 1.",
+      "If OUT/OFF/ON/IN times are missing, restart AircomWebSvcInvokerSvc on seavvapp22 / tukvvapp22.",
+      "If the Database Connector shows red, check SQL and call the DBA on call.",
+      "If only one station is affected, contact ARINC and give them the station code.",
+      "An ARINC alert about the AMX1QM1.QMAS channel is Sev 1. Engage Middleware (IBM MQ).",
+      "Ask the user: which flights and tail numbers, what message type, how many flights, and which team (SOC/Dispatch/CLP)."
     ],
     incidentHistory: [
       {
-        id: "INC-ACARS-OCT",
-        date: "October Incident Record",
+        id: "MI6516",
+        date: "Jan 09, 2026",
         summary:
-          "ACARS latency incident affected landing performance retrieval, takeoff numbers and pre-departure clearances across Alaska, Horizon and Hawaiian operations.",
-        severity: "Major Incident",
-        resolution:
-          "Restored AIRCOM / MQ message flow and validated performance retrieval and PDC delivery across operations."
-      },
-      {
-        id: "INC-ACARS-SEP",
-        date: "September Incident Record",
-        summary:
-          "Escalated to Sev 1 after Dispatch reported complete loss of ACARS communications with crews and missing OOOI times.",
+          "ACARS degraded impacting flight operations and planning — Alaska Air Group logged 68 delays totalling 1,075 minutes.",
         severity: "Sev 1",
         resolution:
-          "SMART backup system carried messages while primary ACARS path lagged; Dispatch manually emailed performance info to crews until recovery."
+          "Documented in RCA - Sev1 - MI6516 - ACARS is degraded impacting flight operations and planning.docx"
       }
     ],
     relatedDocuments: [
       {
-        title: "ACARSGround_Aircom_Runbook.docx",
-        type: "Operational Runbook (Word)",
-        owner: "ITS Flight Operations / ITS COG Flight Operations",
-        updated: "Primary Internal Source",
-        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B28053531-3767-408E-B072-918A2307DCA5%7D&file=ACARSGround_Aircom_Runbook.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        title: "ACARS System Summary.docx",
+        type: "Main Source — System Summary (Word)",
+        owner: "ITS COG FlightOps Support / ITS Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BA9959123-88A9-4875-A445-BDE7EC8095C4%7D&file=ACARS%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
-        title: "ITS Operations Runbook_ACARSGround_Aircom_03.2026.pdf",
-        type: "Operational Runbook (PDF)",
-        owner: "ITS Flight Operations / ITS COG Flight Operations",
-        updated: "Primary Internal Source",
-        url: "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/ACARS%20(AS)/ITS%20Operations%20Runbook_ACARSGround_Aircom_03.2026.pdf?web=1"
+        title: "ACARS_Triage_Troubleshooting.docx",
+        type: "Main Source — Triage & Troubleshooting (Word)",
+        owner: "ITS COG FlightOps Support / ITS Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B781CA6D6-1F42-4C55-BEF2-C5D8C9704290%7D&file=ACARS_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
-        title: "ACARS_System_Summary.docx",
-        type: "System Summary (Word)",
-        owner: "ITS Flight Operations",
-        updated: "Additional Related Source",
-        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BE5D614AD-8759-464D-ABD0-0B87929F4568%7D&file=ACARS_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        title: "Ground Stop Applications List.docx",
+        type: "Main Source — Ground Stop List (Word)",
+        owner: "COG Business Impact Mitigation Support",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/CogTeam-BusinessImpactMitigationSupport-CogMIMPOTeams/_layouts/15/Doc.aspx?sourcedoc=%7B93C4FA57-AC4E-4E7A-A5BE-6E1670770D91%7D&file=Ground%20Stop%20Applications%20List.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Service-Offering-Application-Metadata mapping 10-12-2026.xlsx",
+        type: "Service Offering Metadata (Excel)",
+        owner: "ITS Production Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7BCCA8403B-C46B-47D8-8D7D-58429E9875D6%7D&file=Service-Offering-Application-Metadata%20mapping%2010-12-2026.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
         title: "ACARSHistory-Runbook.docx",
         type: "Service Runbook (Word)",
         owner: "ITS Flight Operations",
-        updated: "Additional Related Source",
+        updated: "Additional Source",
         url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B125C0C1E-4C83-4AE9-B492-DB2525D6378C%7D&file=ACARSHistory-Runbook.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
         title: "E2E Test Strategy - Flight Planning System Replacement_V0.1.pptx",
         type: "Architecture & Test Strategy (PowerPoint)",
         owner: "ITS Flight Operations",
-        updated: "Additional Related Source",
+        updated: "Additional Source",
         url: "https://alaskaair.sharepoint.com/sites/AlaskaE2ETesting/_layouts/15/Doc.aspx?sourcedoc=%7B45417EC3-08B2-46C7-A5DF-AE77AB217C2D%7D&file=E2E%20Test%20Strategy%20-%20Flight%20Planning%20System%20Replacement_V0.1.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ground_stop_apps_dep_matrix.xlsx",
+        type: "Ground Stop Dependency Matrix (Excel)",
+        owner: "SRE ITS Hub",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SREITSHub/_layouts/15/Doc.aspx?sourcedoc=%7B4A885E79-6862-4AB7-B941-C8A305D14F04%7D&file=ground_stop_apps_dep_matrix.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "RCA - Sev1 - MI6516 - ACARS is degraded impacting flight operations and planning.docx",
+        type: "Sev 1 RCA (Word)",
+        owner: "ITS Sev1 Response",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSSev1Response/_layouts/15/Doc.aspx?sourcedoc=%7B594EDDF3-1DF8-4F61-8BF9-E2C992B1CBDD%7D&file=RCA%20-%20Sev1%20-%20MI6516%20-%20ACARS%20is%20degraded%20impacting%20flight%20operations%20and%20planning.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ACARS 2.0 Architecture (ADO Wiki)",
+        type: "Architecture Wiki (ADO)",
+        owner: "ITS Flight Operations",
+        updated: "Additional Source",
+        url: "https://itsals.visualstudio.com/FlightOperationsGIT/_wiki/wikis/FlightOperationsGIT.wiki/49438"
+      }
+    ]
+  },
+  wam: {
+    id: "wam",
+    name: "WAM (Flight Planning System / Worksheet)",
+    breadcrumbTrail: ["Ground Stop Applications", "WAM", "Impact Details"],
+    pageTitle: "WAM (Flight Planning System / Worksheet) – Impact Details",
+    pageSubtitle:
+      "WAM is the main dispatch tool for AS and QX. It brings together flight plans, weather, performance data and MEL information to produce the dispatch release. If WAM or any of its upstream feeds fails, flights can't be released.",
+    applicationsTabTitle: "WAM (Flight Planning System / Worksheet)",
+    applicationsTabSubheading: "Applications & Systems (WAM Components)",
+    applicationsTabSubtitle:
+      "WAM is also called the Flight Planning System or Worksheet. Dispatchers for Alaska (AS) and Horizon (QX) use it to create flight plans and dispatch releases. Listed as \"FlightPlanning-WAM\" among Ground Stop critical apps.",
+    applicationsCardSubtitle:
+      "Components that make up WAM (WAM Web UI, FlightPlanSvc, FlightPlanningWs / DispatchFlightDetailWs, Aircraft Performance web services, and MEL Service).",
+    dependenciesTabTitle: "WAM (Flight Planning System / Worksheet) – Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream systems sending data to WAM, downstream consumers relying on WAM data, and server/DNA farm/IBM MQ/Informix/APIM/monitoring infrastructure.",
+    status: "Active",
+    lastUpdated: "Nov 04, 2026",
+    subtitle:
+      "WAM (Flight Planning System / Worksheet) · Criticality: Ground Stop (\"FlightPlanning-WAM\") · 24/7. FlightPlanSvc must run 24/7",
+    company: "Jeppesen (owned by Boeing), which runs the JetPlan flight plan server",
+    website: "(Add WAM URL)",
+    category: "Flight Ops / Dispatch: flight planning and releases",
+    itsTeam: "ITS COG Flight Operations. Verified owners: Ryan Wilkins, Adele Lunde",
+    logo: "public/vendors/jeppesen.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 5,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title:
+        "Criticality: Ground Stop (\"FlightPlanning-WAM\") — 24/7 Operations (Sev 1 Triage Time Limit: 15 Minutes)",
+      message:
+        "WAM is the main dispatch tool for AS and QX. It brings together flight plans, weather, performance data and MEL information to produce the dispatch release. If WAM or any of its upstream feeds fails, flights can't be released.",
+      description:
+        "WAM is the main dispatch tool for AS and QX. It brings together flight plans, weather, performance data and MEL information to produce the dispatch release. If WAM or any of its upstream feeds fails, flights can't be released.",
+      updatedAgo: "Updated from Flight Planning System Summary & WAM Troubleshooting Runbooks"
+    },
+    impactedSystems: [
+      {
+        id: "wam-web-ui",
+        name: "WAM Web UI",
+        subName: "(AngularJS Front End — Chrome Only)",
+        appTabSubName: "(AngularJS Front End — Chrome Only)",
+        description:
+          "AngularJS front end that talks only to web services. Chrome only",
+        appTabDescription:
+          "AngularJS front end that talks only to web services. Chrome only",
+        businessFunction: "Dispatcher workflow",
+        impact: "Dispatchers can't plan or release flights",
+        dependencies: "FlightPlanningWs, DNA farm",
+        status: "Potential",
+        owner: "ITS COG Flight Ops"
+      },
+      {
+        id: "wam-flightplansvc",
+        name: "FlightPlanSvc",
+        subName: "(seavvapp22 / tukvvapp22 — Hot/Hot)",
+        appTabSubName: "(seavvapp22 / tukvvapp22 — Hot/Hot)",
+        description:
+          "Windows service, hot/hot on seavvapp22 / tukvvapp22",
+        appTabDescription:
+          "Windows service, hot/hot on seavvapp22 / tukvvapp22",
+        businessFunction: "Requests flight plans from Jeppesen and updates fltops",
+        impact: "No flight plans, or plans \"REJECTED\" / \"JEP DOWN\"",
+        dependencies: "Jeppesen JetPlan, MQ (QMMFP), fltops DB",
+        status: "Potential",
+        owner: "ITS COG Flight Ops"
+      },
+      {
+        id: "wam-flightplanning-ws",
+        name: "FlightPlanningWs / DispatchFlightDetailWs",
+        subName: "(DNA Farm Web Services)",
+        appTabSubName: "(DNA Farm Web Services)",
+        description: "Web services on the DNA farm",
+        appTabDescription: "Web services on the DNA farm",
+        businessFunction: "Flight plan request and release",
+        impact: "WAM errors, can't release flights",
+        dependencies: "MelsWs, Weather API, FlightPlanSvc",
+        status: "Potential",
+        owner: "ITS COG Flight Ops"
+      },
+      {
+        id: "wam-aircraft-performance",
+        name: "Aircraft Performance (AircraftPerformanceData, DispatchAircraftPerformance, LocationMapsAPI)",
+        subName: "(Takeoff & Landing Performance Web Services)",
+        appTabSubName: "(Takeoff & Landing Performance Web Services)",
+        description: "Takeoff and landing performance web services",
+        appTabDescription: "Takeoff and landing performance web services",
+        businessFunction: "Performance data for releases",
+        impact: "Releases can't be completed, which leads to delays",
+        dependencies: "Dynamic Source (Boeing/Airbus), AeroData (QX)",
+        status: "Potential",
+        owner: "ITS COG Flight Ops"
+      },
+      {
+        id: "wam-mel-service",
+        name: "MEL Service",
+        subName: "(Minimum Equipment List Service)",
+        appTabSubName: "(Minimum Equipment List Service)",
+        description: "Minimum Equipment List (MEL) data called by WAM",
+        appTabDescription: "Minimum Equipment List (MEL) data called by WAM",
+        businessFunction: "MEL checks on releases",
+        impact: "\"Mels Request Exception\" errors in WAM",
+        dependencies: "APIM (primary SDP, secondary DNA), MEL DB",
+        status: "Potential",
+        owner: "ITS COG M&E App Support"
+      }
+    ],
+    upstreamDependencies: [
+      "Jeppesen JetPlan, which supplies flight plans",
+      "Weather API (The Weather Company FlightFX). WAM relies only on this for weather",
+      "Dynamic Source and AeroData performance data",
+      "MEL Service",
+      "Workbench 2.0, which launches WAM"
+    ],
+    downstreamConsumers: [
+      "Dispatch releases. Released flights feed pilot briefing packets",
+      "ACARS, which uplinks the dispatch release to the aircraft",
+      "fltops database",
+      "Pilot Briefing API",
+      "AS and QX Dispatch teams"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream feeds (Jeppesen JetPlan, Weather API, Dynamic Source/AeroData, MEL Service, Workbench 2.0) flowing into WAM to produce dispatch releases for ACARS, Pilot Briefing, fltops, and AS/QX Dispatch.",
+      diagramUpstream: [
+        {
+          id: "wam-up-1",
+          name: "Jeppesen JetPlan",
+          subtitle: "Supplies flight plans",
+          iconType: "network"
+        },
+        {
+          id: "wam-up-2",
+          name: "Weather API (TWC FlightFX)",
+          subtitle: "Sole weather feed for WAM",
+          iconType: "transfer"
+        },
+        {
+          id: "wam-up-3",
+          name: "Dynamic Source & AeroData",
+          subtitle: "Takeoff & landing performance data",
+          iconType: "doc"
+        },
+        {
+          id: "wam-up-4",
+          name: "MEL Service & Workbench 2.0",
+          subtitle: "MEL checks & WAM launcher",
+          iconType: "ticket"
+        }
+      ],
+      diagramServices: [
+        "WAM Web UI (Chrome Only)",
+        "FlightPlanSvc (seavvapp22 / tukvvapp22)",
+        "FlightPlanningWs / DispatchFlightDetailWs",
+        "Aircraft Performance Web Services",
+        "MEL Service"
+      ],
+      diagramDownstream: [
+        {
+          id: "wam-down-1",
+          name: "Dispatch Releases",
+          subtitle: "Feeds pilot briefing packets",
+          iconType: "doc"
+        },
+        {
+          id: "wam-down-2",
+          name: "ACARS",
+          subtitle: "Uplinks dispatch release to aircraft",
+          iconType: "nodes"
+        },
+        {
+          id: "wam-down-3",
+          name: "fltops Database",
+          subtitle: "Informix operational flight database",
+          iconType: "database"
+        },
+        {
+          id: "wam-down-4",
+          name: "Pilot Briefing API",
+          subtitle: "Pre-flight & en-route pilot packets",
+          iconType: "chart"
+        },
+        {
+          id: "wam-down-5",
+          name: "AS and QX Dispatch Teams",
+          subtitle: "Flight planning & release operations",
+          iconType: "team"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 5, tone: "red" },
+        { label: "Downstream Consumers", count: 5, tone: "green" },
+        { label: "WAM Components", count: 5, tone: "blue" },
+        { label: "Infrastructure Components", count: 7, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "WAM is the main dispatch tool for AS and QX. It brings together flight plans, weather, performance data and MEL information to produce the dispatch release. If WAM or any of its upstream feeds fails, flights can't be released."
+      ],
+      upstreamTable: [
+        {
+          id: "wam-upt-1",
+          name: "Jeppesen JetPlan, which supplies flight plans",
+          description: "Jeppesen (owned by Boeing) runs the JetPlan flight plan server supplying flight plans to FlightPlanSvc.",
+          type: "External / Vendor",
+          impact: "No flight plans, or plans \"REJECTED\" / \"JEP DOWN\"."
+        },
+        {
+          id: "wam-upt-2",
+          name: "Weather API (The Weather Company FlightFX). WAM relies only on this for weather",
+          description: "Sole weather feed for WAM flight planning and releases.",
+          type: "External / Internal API",
+          impact: "Missing weather in WAM; requires manual flight release with weather entered by hand (+3–8 min per release)."
+        },
+        {
+          id: "wam-upt-3",
+          name: "Dynamic Source and AeroData performance data",
+          description: "Dynamic Source (Boeing/Airbus) and AeroData (QX) takeoff and landing performance data.",
+          type: "External / Partner",
+          impact: "Performance data is missing from flight packets; releases can't be completed, leading to delays."
+        },
+        {
+          id: "wam-upt-4",
+          name: "MEL Service",
+          description: "Minimum Equipment List (MEL) data called by WAM via APIM (primary SDP, secondary DNA).",
+          type: "Internal Service",
+          impact: "\"Mels Request Exception\" errors in WAM."
+        },
+        {
+          id: "wam-upt-5",
+          name: "Workbench 2.0, which launches WAM",
+          description: "Dispatcher workspace application that launches WAM.",
+          type: "Internal Application",
+          impact: "Dispatchers cannot launch WAM from Workbench 2.0."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "wam-dwt-1",
+          name: "Dispatch releases. Released flights feed pilot briefing packets",
+          description: "Completed dispatch releases generated in WAM feed downstream pilot briefing packets.",
+          type: "Internal Operations",
+          impact: "Flights cannot be released; pilot briefing packets lack release and performance data."
+        },
+        {
+          id: "wam-dwt-2",
+          name: "ACARS, which uplinks the dispatch release to the aircraft",
+          description: "Receives dispatch release uplink messages via FO.FLIGHT.LOAD.ACARS.UPLINK.",
+          type: "Internal / Aircraft Comms",
+          impact: "Dispatch releases cannot be uplinked via ACARS to the aircraft."
+        },
+        {
+          id: "wam-dwt-3",
+          name: "fltops database",
+          description: "Informix operational database updated by FlightPlanSvc and WAM release workflows.",
+          type: "Internal Database",
+          impact: "fltops database does not receive updated flight plan and dispatch release records."
+        },
+        {
+          id: "wam-dwt-4",
+          name: "Pilot Briefing API",
+          description: "Downstream API delivering flight plans, releases, and performance data to pilot briefing tools.",
+          type: "Internal API",
+          impact: "Pilots do not receive updated release or performance packets."
+        },
+        {
+          id: "wam-dwt-5",
+          name: "AS and QX Dispatch teams",
+          description: "Alaska (AS) and Horizon (QX) dispatchers using WAM to plan and release flights.",
+          type: "Internal Teams",
+          impact: "Dispatchers can't pull flight plans or release flights without manual workarounds."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "wam-inf-1",
+          component: "App servers",
+          description: "seavvapp22 / tukvvapp22 (FlightPlanSvc)",
+          owner: "ITS COG Flight Ops",
+          impact: "FlightPlanSvc must run 24/7 (hot/hot on seavvapp22 / tukvvapp22)."
+        },
+        {
+          id: "wam-inf-2",
+          component: "DNA web farm",
+          description: "SEAV3DNA09–16 and TUKV3DNA09–16, behind a load balancer",
+          owner: "ITS COG Flight Ops",
+          impact: "Hosts WAM Web UI and FlightPlanningWs / DispatchFlightDetailWs / performance web services."
+        },
+        {
+          id: "wam-inf-3",
+          component: "IBM MQ",
+          description:
+            "QMMFP on wmq1as.alaskaair.com, port 1425. Queues include FO.FLIGHTPLAN.REQUEST.QUEUE, FO.TANKER.REQUEST.QUEUE and FO.FLIGHT.LOAD.ACARS.UPLINK",
+          owner: "Middleware / ITS COG Flight Ops",
+          impact: "Queue alerts or failures stop flight plan requests, tanker requests, and ACARS release uplinks."
+        },
+        {
+          id: "wam-inf-4",
+          component: "Databases",
+          description: "fltops (Informix) and VisOps",
+          owner: "Informix DBA / ITS COG Flight Ops",
+          impact: "WAM is down if fltops Informix database connectivity fails."
+        },
+        {
+          id: "wam-inf-5",
+          component: "Azure API Management (APIM) and Front Door",
+          description: "Azure API Management (APIM) and Front Door for the MEL Service",
+          owner: "ITS COG M&E App Support",
+          impact: "Causes \"Mels Request Exception\" errors in WAM if primary SDP and secondary DNA backends fail."
+        },
+        {
+          id: "wam-inf-6",
+          component: "Monitoring",
+          description: "AlarmsOne, Sumo Logic, Application Insights, Dynatrace",
+          owner: "ITS COG Flight Ops / ProdOps",
+          impact: "Used to detect MQ alerts, DNA server error counts in Sumo Logic, and service health."
+        },
+        {
+          id: "wam-inf-7",
+          component: "Firewall / network rules",
+          description: "(Add firewall details)",
+          owner: "ITS Network",
+          impact: "Network connectivity between WAM, DNA farm, MQ, Informix, and Jeppesen JetPlan."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Dispatchers can't pull flight plans or release flights",
+      "Performance data is missing from flight packets",
+      "Flight delays. In INC00020700 (11/3/2026), about 50% of dispatchers were affected",
+      "Horizon (QX) delays were reported during the weather outage MI-6584"
+    ],
+    knownWorkarounds: [
+      "Manual flight release with weather entered by hand. This adds about 3–5 minutes per release, or 5–8 minutes when packet updates are needed",
+      "Get aircraft performance manually through Dynamic Source (limited workaround)",
+      "Single-user errors: use Chrome, check the URL is https, and clear the browser cache",
+      "Release screen locked: delete the lock record in the wam_release_locks table"
+    ],
+    vendorContacts: {
+      companyNote:
+        "Jeppesen (owned by Boeing), which runs the JetPlan flight plan server",
+      categoryNote:
+        "Application Name: WAM (Flight Planning System / Worksheet) • Criticality: Ground Stop. Listed as \"FlightPlanning-WAM\" among critical apps • Operational Category: Flight Ops / Dispatch: flight planning and releases",
+      supportEmail: "opssupport@jeppesen.com",
+      supportEmailNote: "Jeppesen email",
+      supportPhone:
+        "Jeppesen: 1-800-732-2800. Say \"Flight Planning\" and give account number 83491",
+      technicalSupport:
+        "Jeppesen Sev 1 line: 1-800-732-2800, account number 83491 • Jeppesen email: opssupport@jeppesen.com • The Weather Company (weather issues): 1-800-872-2359",
+      accountManager: "(Add Account Manager)",
+      namedEscalationContact:
+        "The Weather Company (weather issues): 1-800-872-2359",
+      supportHours: "24/7. FlightPlanSvc must run 24/7",
+      escalation:
+        "Vendor Contacts:\n• Jeppesen Sev 1 line: 1-800-732-2800, account number 83491\n• Jeppesen email: opssupport@jeppesen.com\n• The Weather Company (weather issues): 1-800-872-2359\n• Account Manager: (Add Account Manager)\n\nCommunication Guidelines:\n• The business focal follows up with Jeppesen and escalates.\n• When escalating to Jeppesen, give: which application (WAM or Flight Planning), the flight and tail number, the RC number, and how many users are affected.\n• Send incident updates about every hour, through Everbridge, xMatters and ServiceNow.",
+      communicationGuidelines: [
+        "The business focal follows up with Jeppesen and escalates.",
+        "When escalating to Jeppesen, give: which application (WAM or Flight Planning), the flight and tail number, the RC number, and how many users are affected.",
+        "Send incident updates about every hour, through Everbridge, xMatters and ServiceNow."
+      ],
+      responseSlas: [
+        {
+          label: "Sev 1",
+          priority: "Sev 1",
+          level: "Critical / Ground Stop",
+          description: "ProdOps triage within 15 minutes",
+          target: "15 minutes",
+          value: "ProdOps triage within 15 minutes"
+        },
+        {
+          label: "Sev 2 / Sev 3",
+          priority: "Sev 2 / Sev 3",
+          level: "Scope Classification",
+          description:
+            "Sev 2: multiple flights or users affected. Sev 3: single flight or single user",
+          target: "Sev 2 (Multiple) / Sev 3 (Single)",
+          value:
+            "Sev 2: multiple flights or users affected. Sev 3: single flight or single user"
+        },
+        {
+          label: "Update cadence",
+          priority: "Update cadence",
+          level: "Bridge Communication",
+          description: "hourly, per bridge practice",
+          target: "Hourly",
+          value: "hourly, per bridge practice"
+        },
+        {
+          label: "Vendor response SLA",
+          priority: "Vendor response SLA",
+          level: "Jeppesen SLA",
+          description: "(Add Jeppesen response SLA)",
+          target: "(Add Jeppesen response SLA)",
+          value: "(Add Jeppesen response SLA)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS COG Flight Operations. Verified owners: Ryan Wilkins, Adele Lunde",
+      itsTeamNote:
+        "On-Call: ITS COG Flight Operations • MEL issues: ITS COG M&E App Support",
+      applicationOwner: "Ryan Wilkins, Adele Lunde (Technical Owners)",
+      onCallSupport: "ITS COG Flight Operations",
+      systemAdministration: "MEL issues: ITS COG M&E App Support",
+      businessOwner:
+        "AS Business Focals: Leo Blanco and David Caraballo, 206-688-3213 / 206-688-3216 • QX Business Focal: Mike Timpe, 206-574-4789 / 503-702-3463",
+      passwordSupport: "AS business contacts (alternate list): Katie Pagel, Leo Blanco",
+      everbridgeContacts:
+        "AS Business Focals: Leo Blanco, David Caraballo (206-688-3213 / 206-688-3216) • QX Business Focal: Mike Timpe (206-574-4789 / 503-702-3463) • Alternate AS Contacts: Katie Pagel, Leo Blanco"
+    },
+    validationChecklist: [
+      "Confirm scope: how many users and flights, and AS or QX. Get flight numbers, tail numbers and the dispatcher's machine name.",
+      "Single user: run the Chrome and cache steps. Multiple users: move to step 3.",
+      "\"JEP DOWN\" or rejected plans: check FlightPlanSvc logs on seavvapp22 / tukvvapp22, restart the service, and check the Jeppesen server.",
+      "Check MQ alerts on FO.FLIGHTPLAN.REQUEST.QUEUE.",
+      "Performance errors: check the Sumo queries for the performance web services. Reset IIS on any DNA servers showing higher error counts.",
+      "Missing weather: check the Weather API and confirm with The Weather Company.",
+      "MEL errors: check the APIM backend (SDP or DNA) and engage ITS COG M&E.",
+      "Check for recent changes. In INC00020700, rolling back CHG00001023 resolved the issue.",
+      "Single flight: open a Sev 3. Multiple flights: open a Sev 2 and contact the ITS COG Flight Ops on-call."
+    ],
+    incidentHistory: [
+      {
+        id: "INC00020700",
+        date: "11/3/2026",
+        summary:
+          "Flight delays in WAM where about 50% of dispatchers were affected; rolling back CHG00001023 resolved the issue."
+      },
+      {
+        id: "MI-6584",
+        date: "2026",
+        summary:
+          "Horizon (QX) delays reported during weather outage affecting WAM releases."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "Flight Planning System Summary.docx",
+        type: "Main Source — System Summary (Word)",
+        owner: "ITS Knowledge Management / ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B699F4E53-05D1-46F7-BC0B-DDE61D08A91E%7D&file=Flight%20Planning%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Flight_Planning_System_Summary.docx",
+        type: "Main Source — SysDocs Summary (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B235791B5-2AC8-4E5B-AF7E-F5DCB33C256C%7D&file=Flight_Planning_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "WAM.troubleshooting.docx",
+        type: "Main Source — WAM Troubleshooting (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/ASICS/AOS/FO/_layouts/15/Doc.aspx?sourcedoc=%7B0D9BD242-FDDB-4191-B04F-07B63922C56C%7D&file=WAM.troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "FlightPlanning_JetPlan_WAM_TriageDocument.docx",
+        type: "Main Source — JetPlan / WAM Triage (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BF0F37D42-C602-41A7-AA73-9F3AF09FE00D%7D&file=FlightPlanning_JetPlan_WAM_TriageDocument.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "AircraftPerformanceData_Triage_Troubleshooting.docx",
+        type: "Main Source — Aircraft Performance Triage (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BC758E56D-3E63-4E0C-BB72-B98EEDED3BA0%7D&file=AircraftPerformanceData_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "MELService_Triage_Troubleshooting.docx",
+        type: "Additional Source — MEL Service Triage (Word)",
+        owner: "ITS COG M&E App Support",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BFE7BC914-ED66-41BA-99E2-704E2D344459%7D&file=MELService_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "WAM Error Please try again. If the issue persists report to application support team..docx",
+        type: "Additional Source — Single-User WAM Error Guide (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B7BC9A263-7A94-49B7-AF49-FFE7FF6BBB7D%7D&file=WAM%20Error%20Please%20try%20again.%20If%20the%20issue%20persists%20report%20to%20application%20support%20team..docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Weather_System_Summary.docx",
+        type: "Additional Source — Weather System Summary (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B3DCD1721-BA2E-4F47-838A-3C37820DC927%7D&file=Weather_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ITSOperationsRunbook-WorkBench2.0.docx",
+        type: "Additional Source — Workbench 2.0 Runbook (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BCFDCDE00-B7D3-46A1-BBAB-16D3A29B7FD3%7D&file=ITSOperationsRunbook-WorkBench2.0.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ACARS_System_Summary.docx",
+        type: "Additional Source — ACARS System Summary (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BE5D614AD-8759-464D-ABD0-0B87929F4568%7D&file=ACARS_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "RRT0-2025-12-26-01-WAM is down facing informix DBA (OneNote)",
+        type: "Additional Source — Rapid Response Tier 0 (OneNote)",
+        owner: "Rapid Response Tier 0 / Informix DBA",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/RapidResponseTier0-2026/_layouts/15/Doc.aspx?action=edit&mobileredirect=true&wdorigin=Sharepoint&DefaultItemOpen=1&sourcedoc=%7Baa538122-0d0b-4713-aa06-83613809aaf0%7D"
+      },
+      {
+        title: "PilotBriefing legacy support (ADO Work Item 1392599)",
+        type: "Additional Source — ADO Work Item",
+        owner: "ITS Flight Operations",
+        updated: "Additional Source",
+        url: "https://dev.azure.com/itsals/8a8c8ebe-3927-41cd-a3a1-0caec270008a/_workitems/edit/1392599"
+      }
+    ]
+  },
+  jetplan: {
+    id: "jetplan",
+    name: "JetPlan (Jeppesen Flight Planning engine)",
+    breadcrumbTrail: ["Ground Stop Applications", "JetPlan", "Impact Details"],
+    pageTitle:
+      "JetPlan (Jeppesen Flight Planning engine) – Impact Details",
+    pageSubtitle:
+      "JetPlan is the engine that calculates every AS and QX flight plan. If it goes down, WAM can't produce flight plans or releases, ATC filing stops, and flights can't be dispatched. That is why it is on the Ground Stop list.",
+    applicationsTabTitle: "JetPlan (Jeppesen Flight Planning engine)",
+    applicationsTabSubheading: "Applications & Systems (JetPlan Components)",
+    applicationsTabSubtitle:
+      "JetPlan is Jeppesen's flight planning engine (also called Flight Plan, Jepp JetPlan, BCJPlan). Alaska hosts it in-house, and WAM sends it requests through FlightPlanSvc. Issues require an RRT0 (Tier 0 rapid response) right away.",
+    applicationsCardSubtitle:
+      "Components that make up JetPlan (JetPlan Engine (JPE), JetPlan Weather (ingestMTDD / forbind), Tomcat (LJPDC) / JBoss adaptor, and FlightPlanSvc).",
+    dependenciesTabTitle:
+      "JetPlan (Jeppesen Flight Planning engine) – Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream systems sending data to JetPlan, downstream consumers relying on JetPlan data, and Linux container/weather server/DNS/NAT/IBM MQ/Informix/monitoring/cloud fallback infrastructure.",
+    status: "Active",
+    lastUpdated: "Nov 04, 2026",
+    subtitle:
+      "JetPlan (Jeppesen Flight Planning engine). Also called Flight Plan, Jepp JetPlan, BCJPlan · Criticality: Ground Stop (RRT0) · 24/7, critical to operations",
+    company: "Jeppesen (owned by Boeing). Vendor application hosted in-house",
+    website: "https://asflightplan.alaskaair.com/jetplan/",
+    category: "Flight Ops / Dispatch: flight plan calculation",
+    itsTeam: "ITS COG Flight Operations. ITS System Owner: Ryan Wilkins",
+    logo: "public/vendors/jeppesen.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 4,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title:
+        "Criticality: Ground Stop. Issues require an RRT0 (Tier 0 rapid response) right away — 24/7, critical to operations",
+      message:
+        "JetPlan is the engine that calculates every AS and QX flight plan. If it goes down, WAM can't produce flight plans or releases, ATC filing stops, and flights can't be dispatched. That is why it is on the Ground Stop list. Support Portal URL: https://asflightplan.alaskaair.com/jetplan/",
+      description:
+        "JetPlan is the engine that calculates every AS and QX flight plan. If it goes down, WAM can't produce flight plans or releases, ATC filing stops, and flights can't be dispatched. That is why it is on the Ground Stop list.",
+      updatedAgo: "Updated from FlightPlanning_JetPlan_WAM_TriageDocument & Flight_Planning_System_Summary"
+    },
+    impactedSystems: [
+      {
+        id: "jetplan-engine-jpe",
+        name: "JetPlan Engine (JPE)",
+        subName: "(IGQprJPLANin01 / TUKvvJPLANin01 — Linux Containers)",
+        appTabSubName: "(IGQprJPLANin01 / TUKvvJPLANin01 — Linux Containers)",
+        description: "Linux containers on IGQprJPLANin01 / TUKvvJPLANin01",
+        appTabDescription: "Linux containers on IGQprJPLANin01 / TUKvvJPLANin01",
+        businessFunction: "Calculates flight plans",
+        impact: "\"JEP DOWN\" or \"REJECTED\" plans, no flight plans",
+        dependencies: "Jeppesen weather and winds uploads",
+        status: "Potential",
+        owner: "ITS COG Flight Ops"
+      },
+      {
+        id: "jetplan-weather-ingestmtdd",
+        name: "JetPlan Weather (ingestMTDD / forbind)",
+        subName: "(IGQprJPWXD01 / TUKvvJPWXD01)",
+        appTabSubName: "(IGQprJPWXD01 / TUKvvJPWXD01)",
+        description: "Local weather database on IGQprJPWXD01 / TUKvvJPWXD01",
+        appTabDescription: "Local weather database on IGQprJPWXD01 / TUKvvJPWXD01",
+        businessFunction: "Winds aloft and TAFs used in plans",
+        impact: "\"INSUFFICIENT WX DATA\", old TAF data",
+        dependencies: "Jeppesen file transfer (SFTP) from DENCOM2",
+        status: "Potential",
+        owner: "Jeppesen / ITS COG Flight Ops"
+      },
+      {
+        id: "jetplan-tomcat-ljpdc",
+        name: "Tomcat (LJPDC) / JBoss adaptor",
+        subName: "(Communication Layer & DB Link)",
+        appTabSubName: "(Communication Layer & DB Link)",
+        description: "Communication layer and database link inside JetPlan",
+        appTabDescription: "Communication layer and database link inside JetPlan",
+        businessFunction: "Request handling",
+        impact: "\"FRONTERR PERFORMANCE SERVER ERROR -1\"",
+        dependencies: "JetPlan Engine",
+        status: "Potential",
+        owner: "Jeppesen"
+      },
+      {
+        id: "jetplan-flightplansvc",
+        name: "FlightPlanSvc",
+        subName: "(SEAVVAPP22 / TUKVVAPP22 — Hot/Hot)",
+        appTabSubName: "(SEAVVAPP22 / TUKVVAPP22 — Hot/Hot)",
+        description: "Windows service, hot/hot on SEAVVAPP22 / TUKVVAPP22",
+        appTabDescription: "Windows service, hot/hot on SEAVVAPP22 / TUKVVAPP22",
+        businessFunction: "Sends requests to JetPlan and writes plans to fltops",
+        impact: "No plans reach WAM",
+        dependencies: "IBM MQ (QMMFP), Informix fltops",
+        status: "Potential",
+        owner: "ITS COG Flight Ops"
+      }
+    ],
+    upstreamDependencies: [
+      "WAM, through FlightPlanSvc and FO.FLIGHTPLAN.REQUEST.QUEUE",
+      "Jeppesen weather and winds aloft files sent by file transfer (SFTP), about every 7 hours",
+      "Tanker requests (FO.TANKER.REQUEST.QUEUE)",
+      "Aircraft data loaded by business users"
+    ],
+    downstreamConsumers: [
+      "WAM / Dispatch (AS and QX)",
+      "Dispatch releases and pilot briefing packets",
+      "ATC filing through jobs in the IWS job scheduler: FOASATCPlans and FOQXATCPlans",
+      "Tankering batch (FOTANKERPLANS)",
+      "ACARS, which uplinks the FMC route string to the aircraft",
+      "Flyways Optimization"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream feeds (WAM via FlightPlanSvc/MQ, Jeppesen SFTP weather/winds aloft every ~7 hours, Tanker requests, Aircraft data) flowing into JetPlan to power WAM/Dispatch, ATC filing, Tankering batch, ACARS FMC routes, and Flyways Optimization.",
+      diagramUpstream: [
+        {
+          id: "jp-up-1",
+          name: "WAM via FlightPlanSvc",
+          subtitle: "FO.FLIGHTPLAN.REQUEST.QUEUE",
+          iconType: "transfer"
+        },
+        {
+          id: "jp-up-2",
+          name: "Jeppesen Weather & Winds Aloft",
+          subtitle: "SFTP from DENCOM2 (~every 7 hrs)",
+          iconType: "network"
+        },
+        {
+          id: "jp-up-3",
+          name: "Tanker Requests",
+          subtitle: "FO.TANKER.REQUEST.QUEUE",
+          iconType: "ticket"
+        },
+        {
+          id: "jp-up-4",
+          name: "Aircraft Data",
+          subtitle: "Loaded by business users",
+          iconType: "doc"
+        }
+      ],
+      diagramServices: [
+        "JetPlan Engine (JPE)",
+        "JetPlan Weather (ingestMTDD / forbind)",
+        "Tomcat (LJPDC) / JBoss adaptor",
+        "FlightPlanSvc (SEAVVAPP22 / TUKVVAPP22)"
+      ],
+      diagramDownstream: [
+        {
+          id: "jp-down-1",
+          name: "WAM / Dispatch (AS and QX)",
+          subtitle: "Dispatch releases & pilot briefing packets",
+          iconType: "team"
+        },
+        {
+          id: "jp-down-2",
+          name: "ATC Filing (IWS Jobs)",
+          subtitle: "FOASATCPlans and FOQXATCPlans",
+          iconType: "doc"
+        },
+        {
+          id: "jp-down-3",
+          name: "Tankering Batch",
+          subtitle: "FOTANKERPLANS",
+          iconType: "database"
+        },
+        {
+          id: "jp-down-4",
+          name: "ACARS FMC Route Uplink",
+          subtitle: "Uplinks FMC route string to aircraft",
+          iconType: "nodes"
+        },
+        {
+          id: "jp-down-5",
+          name: "Flyways Optimization",
+          subtitle: "Route & flight optimization",
+          iconType: "chart"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 4, tone: "red" },
+        { label: "Downstream Consumers", count: 6, tone: "green" },
+        { label: "JetPlan Components", count: 4, tone: "blue" },
+        { label: "Infrastructure Components", count: 8, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "JetPlan is the engine that calculates every AS and QX flight plan. If it goes down, WAM can't produce flight plans or releases, ATC filing stops, and flights can't be dispatched. That is why it is on the Ground Stop list."
+      ],
+      upstreamTable: [
+        {
+          id: "jp-upt-1",
+          name: "WAM, through FlightPlanSvc and FO.FLIGHTPLAN.REQUEST.QUEUE",
+          description: "WAM sends flight plan requests through FlightPlanSvc and IBM MQ queue FO.FLIGHTPLAN.REQUEST.QUEUE.",
+          type: "Internal / MQ",
+          impact: "Flight plan requests do not reach JetPlan; no plans reach WAM."
+        },
+        {
+          id: "jp-upt-2",
+          name: "Jeppesen weather and winds aloft files sent by file transfer (SFTP), about every 7 hours",
+          description: "Jeppesen SFTP file transfer from DENCOM2 updating local weather database on IGQprJPWXD01 / TUKvvJPWXD01.",
+          type: "External / SFTP",
+          impact: "\"INSUFFICIENT WX DATA\" or plans calculated with old TAF / winds aloft data."
+        },
+        {
+          id: "jp-upt-3",
+          name: "Tanker requests (FO.TANKER.REQUEST.QUEUE)",
+          description: "Fuel tankering calculation requests sent via IBM MQ queue FO.TANKER.REQUEST.QUEUE.",
+          type: "Internal / MQ",
+          impact: "Tankering requests fail to process."
+        },
+        {
+          id: "jp-upt-4",
+          name: "Aircraft data loaded by business users",
+          description: "Aircraft characteristics and route/fleet configuration data maintained by business users.",
+          type: "Internal Operations",
+          impact: "Incorrect or missing aircraft data causes rejected flight plans."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "jp-dwt-1",
+          name: "WAM / Dispatch (AS and QX)",
+          description: "Alaska (AS) and Horizon (QX) dispatchers receiving calculated flight plans in WAM.",
+          type: "Internal Teams",
+          impact: "All flights get \"JEP DOWN\" or \"REJECTED\" flight plans; WAM can't produce flight plans or releases."
+        },
+        {
+          id: "jp-dwt-2",
+          name: "Dispatch releases and pilot briefing packets",
+          description: "Calculated flight plans populate dispatch releases and pilot briefing packets.",
+          type: "Internal Operations",
+          impact: "Flight releases are delayed, which leads to departure delays."
+        },
+        {
+          id: "jp-dwt-3",
+          name: "ATC filing through jobs in the IWS job scheduler: FOASATCPlans and FOQXATCPlans",
+          description: "Automated ATC flight plan filing jobs in IWS job scheduler.",
+          type: "Internal / Batch",
+          impact: "Flight plans aren't filed with ATC, so Dispatch has to file them manually."
+        },
+        {
+          id: "jp-dwt-4",
+          name: "Tankering batch (FOTANKERPLANS)",
+          description: "Batch job processing fuel tankering plans.",
+          type: "Internal / Batch",
+          impact: "Automated fuel tankering plans do not run."
+        },
+        {
+          id: "jp-dwt-5",
+          name: "ACARS, which uplinks the FMC route string to the aircraft",
+          description: "Uplinks the calculated FMC route string from JetPlan to the aircraft via ACARS.",
+          type: "Internal / Aircraft Comms",
+          impact: "Crews cannot receive automated FMC route uplinks via ACARS."
+        },
+        {
+          id: "jp-dwt-6",
+          name: "Flyways Optimization",
+          description: "Downstream flight optimization platform consuming JetPlan flight plan data.",
+          type: "External / Partner",
+          impact: "Flyways Optimization lacks calculated flight plan feeds."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "jp-inf-1",
+          component: "JetPlan servers",
+          description: "IGQprJPLANin01 (159.49.43.6) and TUKvvJPLANin01 (10.70.104.189)",
+          owner: "ITS COG Flight Ops / Jeppesen",
+          impact: "Hosts JetPlan Engine (JPE) Linux containers."
+        },
+        {
+          id: "jp-inf-2",
+          component: "Weather servers",
+          description: "IGQprJPWXD01 (159.49.41.22) and TUKvvJPWXD01 (10.70.104.45)",
+          owner: "Jeppesen / ITS COG Flight Ops",
+          impact: "Hosts local weather database (ingestMTDD / forbind) for winds aloft and TAFs."
+        },
+        {
+          id: "jp-inf-3",
+          component: "DNS (GTM WideIP)",
+          description:
+            "asflightplan.alaskaair.com and jpdc.alaskaair.com (159.49.246.70 / 159.49.88.47); jetplandatafeed.alaskaair.com",
+          owner: "ITS Network",
+          impact: "Routes traffic to active JetPlan and weather data feed endpoints."
+        },
+        {
+          id: "jp-inf-4",
+          component: "External NAT IP",
+          description:
+            "External NAT IP 159.49.252.30, which Jeppesen uses for the winds aloft feed",
+          owner: "ITS Network / Jeppesen",
+          impact: "Required for Jeppesen SFTP winds aloft uploads (~every 7 hours)."
+        },
+        {
+          id: "jp-inf-5",
+          component: "IBM MQ QMMFP",
+          description: "IBM MQ QMMFP (wmq1as.alaskaair.com, port 1425)",
+          owner: "Middleware / ITS COG Flight Ops",
+          impact: "Handles FO.FLIGHTPLAN.REQUEST.QUEUE and FO.TANKER.REQUEST.QUEUE."
+        },
+        {
+          id: "jp-inf-6",
+          component: "Informix fltops database",
+          description: "Informix fltops database on Visops 2000",
+          owner: "Informix DBA / ITS COG Flight Ops",
+          impact: "Stores flight plans written by FlightPlanSvc (fltops.alaskaair.com:1585)."
+        },
+        {
+          id: "jp-inf-7",
+          component: "Monitoring",
+          description: "Sysdig, AlarmsOne, Grafana, Sumo Logic",
+          owner: "ITS COG Flight Ops / ProdOps",
+          impact: "Monitors URL health, weather file size (warn 400MB / crit 500MB), and 7-hour upload window."
+        },
+        {
+          id: "jp-inf-8",
+          component: "Cloud fallback endpoint",
+          description:
+            "Cloud fallback endpoint (needs a config change): soap-grays-east.cloud.jetplan.com",
+          owner: "Jeppesen / ITS COG Flight Ops",
+          impact: "Used when switching from on-prem JetPlan servers to the Jeppesen cloud endpoint."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "All flights get \"JEP DOWN\" or \"REJECTED\" flight plans",
+      "Plans use old weather data (TAFs, winds aloft)",
+      "Flight plans aren't filed with ATC, so Dispatch has to file them manually",
+      "Flight releases are delayed, which leads to departure delays"
+    ],
+    knownWorkarounds: [
+      "Single user or a few users: change the request settings and try again",
+      "File flight plans with ATC manually",
+      "Fail over between IGQ and TUK using the JetPlan DR plan (requires an RC number gap of about 100)",
+      "Switch to the Jeppesen cloud endpoint",
+      "Boeing MAX ETOPS flights on OW routes: pick a different route"
+    ],
+    vendorContacts: {
+      companyNote:
+        "Jeppesen (owned by Boeing). Vendor application hosted in-house",
+      categoryNote:
+        "Application Name: JetPlan (Jeppesen Flight Planning engine). Also called Flight Plan, Jepp JetPlan, BCJPlan • Criticality: Ground Stop. Issues require an RRT0 (Tier 0 rapid response) right away • Support Portal URL: https://asflightplan.alaskaair.com/jetplan/",
+      supportEmail: "OpsSupport@jeppesen.com",
+      supportEmailNote: "Jeppesen Email",
+      supportPhone:
+        "Sev 1: 1-800-732-2800. Say \"Flight Planning\" and give account number 83491. Other issues: 1-800-375-4973. Server help: 1-303-328-4585",
+      technicalSupport:
+        "Jeppesen Sev 1: 1-800-732-2800, account number 83491 • Jeppesen general: 1-800-375-4973 • Jeppesen server help: 1-303-328-4585 • Jeppesen Digital Support Operations Center (DSOC): 1-800-JETPLAN (538-7526)",
+      accountManager: "(Add Account Manager)",
+      namedEscalationContact:
+        "Jeppesen Digital Support Operations Center (DSOC): 1-800-JETPLAN (538-7526) • Server help: 1-303-328-4585",
+      supportHours: "24/7, critical to operations",
+      escalation:
+        "Vendor Contacts:\n• Jeppesen Sev 1: 1-800-732-2800, account number 83491\n• Jeppesen general: 1-800-375-4973\n• Jeppesen server help: 1-303-328-4585\n• Email: OpsSupport@jeppesen.com\n• Jeppesen Digital Support Operations Center (DSOC): 1-800-JETPLAN (538-7526)\n• Account Manager: (Add Account Manager)\n\nCommunication Guidelines:\n• The business focal follows up with Jeppesen and escalates.\n• When escalating, give: which application (WAM or Flight Planning), the flight, tail and RC numbers, how many users are affected, and the weather type if it's a weather issue.\n• Forward critical Jeppesen alerts directly to OpsSupport@jeppesen.com.\n• Raise an RRT0 right away for any JetPlan issue.",
+      communicationGuidelines: [
+        "The business focal follows up with Jeppesen and escalates.",
+        "When escalating, give: which application (WAM or Flight Planning), the flight, tail and RC numbers, how many users are affected, and the weather type if it's a weather issue.",
+        "Forward critical Jeppesen alerts directly to OpsSupport@jeppesen.com.",
+        "Raise an RRT0 right away for any JetPlan issue."
+      ],
+      responseSlas: [
+        {
+          label: "Sev 1",
+          priority: "Sev 1",
+          level: "Critical / Ground Stop (RRT0)",
+          description:
+            "all flights or multiple users getting \"REJECTED\" or \"ERROR\"",
+          target: "Raise RRT0 right away",
+          value:
+            "all flights or multiple users getting \"REJECTED\" or \"ERROR\""
+        },
+        {
+          label: "Sev 2",
+          priority: "Sev 2",
+          level: "High Operational Impact",
+          description:
+            "more than 2 dispatchers affected, or constant FRONTERR errors",
+          target: "More than 2 dispatchers / constant FRONTERR",
+          value:
+            "more than 2 dispatchers affected, or constant FRONTERR errors"
+        },
+        {
+          label: "Sev 3",
+          priority: "Sev 3",
+          level: "Single User / Intermittent",
+          description: "single user, or intermittent FRONTERR errors",
+          target: "Single user / intermittent FRONTERR",
+          value: "single user, or intermittent FRONTERR errors"
+        },
+        {
+          label: "Initial response and update cadence",
+          priority: "Initial response and update cadence",
+          level: "Response & Update Cadence",
+          description: "(Add Sev 1/Sev 2 response times and update cadence)",
+          target: "(Add Sev 1/Sev 2 response times and update cadence)",
+          value: "(Add Sev 1/Sev 2 response times and update cadence)"
+        },
+        {
+          label: "Vendor response SLA",
+          priority: "Vendor response SLA",
+          level: "Jeppesen SLA",
+          description: "(Add Jeppesen response SLA)",
+          target: "(Add Jeppesen response SLA)",
+          value: "(Add Jeppesen response SLA)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS COG Flight Operations. ITS System Owner: Ryan Wilkins",
+      itsTeamNote:
+        "Technical Owners: Ryan Wilkins, Adele Lunde • On-Call: ITS COG Flight Operations",
+      applicationOwner: "Ryan Wilkins (ITS System Owner) • Technical Owners: Ryan Wilkins, Adele Lunde",
+      onCallSupport: "ITS COG Flight Operations",
+      systemAdministration:
+        "AS Business Owners / System Admins: Leo Blanco, David Caraballo, 206-688-3213 / 206-688-3216",
+      businessOwner:
+        "AS Business Owners / System Admins: Leo Blanco, David Caraballo, 206-688-3213 / 206-688-3216 • QX Business Owner: Mike Timpe, 206-574-4789 / 503-702-3463",
+      passwordSupport: "Service Desk: 1-877-238-1077",
+      everbridgeContacts:
+        "AS Business Owners / System Admins: Leo Blanco, David Caraballo (206-688-3213 / 206-688-3216) • QX Business Owner: Mike Timpe (206-574-4789 / 503-702-3463)"
+    },
+    validationChecklist: [
+      "Confirm scope: one user, several dispatchers, or all flights. All flights is Sev 1; more than 2 dispatchers is Sev 2.",
+      "Check that https://asflightplan.alaskaair.com/jetplan/ is up.",
+      "Check Sysdig: URL monitor, weather file size (warning at 400MB, critical at 500MB), and whether the last data upload was within the past 7 hours.",
+      "Check that FlightPlanSvc is running on SEAVVAPP22 / TUKVVAPP22 and review the logs. Restart it if needed.",
+      "Check queue depth on FO.FLIGHTPLAN.REQUEST.QUEUE (QMMFP). Engage Middleware if it isn't draining.",
+      "\"ingestMT down\" alert: forward it to Jeppesen right away. Ping the server; if the ping fails, call Compute & Platform on-call.",
+      "SSL/TLS alert: check the Jeppesen certificate and any recent change requests (CRs).",
+      "Check the Informix fltops database (fltops.alaskaair.com:1585). Engage the DBA if there's a problem.",
+      "If the problem continues, call the Jeppesen Sev 1 line and engage the ITS COG Flight Ops on-call."
+    ],
+    incidentHistory: [],
+    relatedDocuments: [
+      {
+        title: "FlightPlanning_JetPlan_WAM_TriageDocument.docx",
+        type: "Main Source — JetPlan & WAM Triage (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BF0F37D42-C602-41A7-AA73-9F3AF09FE00D%7D&file=FlightPlanning_JetPlan_WAM_TriageDocument.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Flight_Planning_System_Summary.docx",
+        type: "Main Source — System Summary (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B235791B5-2AC8-4E5B-AF7E-F5DCB33C256C%7D&file=Flight_Planning_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Flight Planning System Summary.docx",
+        type: "Main Source — ITS Knowledge Management (Word)",
+        owner: "ITS Knowledge Management / ITS COG Flight Operations",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B699F4E53-05D1-46F7-BC0B-DDE61D08A91E%7D&file=Flight%20Planning%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "FlightPlanSvc_Runbook.pdf",
+        type: "Main Source — FlightPlanSvc Runbook (PDF)",
+        owner: "ITS Flight Ops Runbooks (IOC)",
+        updated: "Main Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/ITS%20Flight%20Ops%20Runbooks%20(IOC)/FlightPlanSvc_Runbook.pdf?web=1"
+      },
+      {
+        title: "JetPlan_DRPlan.xlsx",
+        type: "Additional Source — JetPlan DR Plan (Excel)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B3960049C-C827-4F38-A1F6-649E183E60EE%7D&file=JetPlan_DRPlan.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "User Gets FRONTERR PERFORMANCE SERVER ERROR -1.docx",
+        type: "Additional Source — FRONTERR Troubleshooting (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B852618A7-D2AA-4D06-ABFC-79BFE7867DA0%7D&file=User%20Gets%20FRONTERR%20PERFORMANCE%20SERVER%20ERROR%20-1.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Service-Offering-Application-Metadata mapping 10-12-2026.xlsx",
+        type: "Additional Source — Service Offering Metadata (Excel)",
+        owner: "ITS Production Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7BCCA8403B-C46B-47D8-8D7D-58429E9875D6%7D&file=Service-Offering-Application-Metadata%20mapping%2010-12-2026.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ACARS_Physical_View.pdf",
+        type: "Additional Source — ACARS Physical View (PDF)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/ACARS%20(AS)/ACARS_Physical_View.pdf?web=1"
+      },
+      {
+        title: "FlywaysMessaging_FlywaysOptimization_Triage_Troubleshooting.docx",
+        type: "Additional Source — Flyways Optimization Triage (Word)",
+        owner: "ITS COG Flight Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BE6109FA6-1741-4020-B2D6-E29C9DF7AF1A%7D&file=FlywaysMessaging_FlywaysOptimization_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
       }
     ]
   },
@@ -2307,6 +3352,17 @@ export const VENDOR_IMPACT_DETAILS = {
   avtec: {
     id: "avtec",
     name: "Avtec",
+    breadcrumbTrail: ["Vendors", "Avtec", "Vendor Impact"],
+    pageTitle: "Avtec – Vendor Impact Details",
+    pageSubtitle:
+      "View applications, systems, dependencies and business impact if Avtec experiences an outage or degraded service.",
+    applicationsTabTitle: "Avtec",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View all Alaska applications, dispatch hardware, and operational consumer groups that depend on Avtec.",
+    dependenciesTabTitle: "Avtec – Dependencies",
+    dependenciesTabSubtitle:
+      "View upstream and downstream dependencies, integrations, and infrastructure components for Avtec.",
     company: "Avtec",
     website: "(Add Website/Support Portal URL)",
     category: "Flight Operations / Dispatch Communications / Radio & Telephony",
@@ -2363,7 +3419,7 @@ export const VENDOR_IMPACT_DETAILS = {
       "Operational Voice & Radio Functions Supported: Inbound calls, Outbound calls, Two-way radio transmission, AS/QX intercoms, Radio dial-up remotes, Calls transferred between consoles, AS Dispatch All Call, and AS Dispatch Broadcast."
     ],
     dependenciesTab: {
-      diagramSubtitle:
+      overviewSubtitle:
         "Architecture view of Avtec VPGates, CUCM/voice call-processing paths, RDP/LDAP authentication, and downstream AS/QX Flight Operations radio/telephony consumers",
       diagramUpstream: [
         { id: "avtec-up-vpgate", label: "Avtec VPGates (SEA & IGQ Failover)", iconType: "server" },
@@ -3607,6 +4663,425 @@ export function getVendorImpactDetails(vendor, allVendors = []) {
     return VENDOR_IMPACT_DETAILS.avtec;
   }
   return buildTemplateVendorImpactDetails(vendor, allVendors);
+}
+
+const GROUND_STOP_LOGOS = {
+  acars: "public/vendors/sita.png",
+  wam: "public/vendors/the-weather-company.webp",
+  jetplan: "public/vendors/jeppesen.png",
+  "smart4aviation (s4a)": "public/vendors/smart4aviation.jpg",
+  jcte: "public/vendors/jeppesen.png",
+  "aircraft-maintenance": "public/vendors/trax.jpg",
+  aims: "public/vendors/aims.jpg"
+};
+
+function normalizeTextValue(value) {
+  if (Array.isArray(value)) {
+    return value.map(normalizeTextValue).filter(Boolean).join(" • ");
+  }
+  if (value && typeof value === "object") {
+    return JSON.stringify(value);
+  }
+  return String(value ?? "").trim();
+}
+
+function cleanVal(val, fallback = "") {
+  const text = cleanField(val);
+  return text && !/^(?:n\/?a|none|tbd|no)$/i.test(text) ? text : fallback;
+}
+
+function buildGroundStopImpactDetails(appItem) {
+  const key = String(appItem.key || appItem.id || appItem.record?.key || appItem.record?.id || "ground-stop-app").trim();
+  const lowerKey = key.toLowerCase();
+  const profile = appItem.profile || {};
+  const record = appItem.record || appItem || {};
+
+  const displayName = cleanVal(
+    profile.shortName || record.shortName || record.name,
+    key
+  );
+  const fullName = cleanVal(record.name || profile.shortName, displayName);
+  const category = cleanVal(
+    record.category || profile.category || record.function,
+    "Flight Operations"
+  );
+  const rawVendor = cleanVal(record.vendor || profile.vendor, "");
+  const company =
+    rawVendor && !/^(?:n\/?a|none|tbd)$/i.test(rawVendor)
+      ? rawVendor
+      : "Alaska ITS (Internal)";
+  const itsTeam = cleanVal(
+    record.aagTeam || profile.team,
+    "ITS Flight Operations"
+  );
+  const applicationOwner = cleanVal(
+    record.aagPOC || profile.poc,
+    itsTeam
+  );
+  const supportPhone = cleanVal(
+    normalizeTextValue(record.phone || profile.phone),
+    "Contact ITS On-Call"
+  );
+  const supportEmail = cleanVal(
+    normalizeTextValue(record.email || profile.email),
+    "Engage via ITS On-Call"
+  );
+  const severity = cleanVal(
+    record.severity || profile.severity || record.criticality,
+    "Critical"
+  );
+  const responseTarget = cleanVal(
+    record.response || profile.sla,
+    "15 minutes"
+  );
+  const descriptionText = cleanVal(
+    normalizeTextValue(record.description || profile.description || record.function),
+    `${fullName} operational ground-stop application supporting ${category}.`
+  );
+  const logo = cleanVal(
+    record.vendorLogo || GROUND_STOP_LOGOS[lowerKey],
+    ""
+  );
+
+  const associatedList =
+    Array.isArray(record.associatedApplications) &&
+    record.associatedApplications.length > 0
+      ? record.associatedApplications
+      : [
+          {
+            name: fullName,
+            function: category,
+            owner: itsTeam,
+            dependencies:
+              record.directDependencies ||
+              `${company} services, Alaska middleware, and ${itsTeam} infrastructure`,
+            impact:
+              record.businessImpact ||
+              `Degradation or outage of ${displayName} impacts ${category} day-of-operations workflows (${severity} severity; ${responseTarget} response target).`,
+            description: descriptionText
+          }
+        ];
+
+  const impactedSystems = associatedList.map((svc, idx) => ({
+    id: `${lowerKey}-sys-${idx + 1}`,
+    name: svc.name || fullName,
+    subName: svc.subName || `(${category} • ${severity})`,
+    appTabSubName: svc.subName || `(${category} • ${severity})`,
+    description: svc.description || descriptionText,
+    appTabDescription: svc.description || descriptionText,
+    businessFunction: svc.function || category,
+    impact:
+      svc.impact ||
+      `Operational disruption to ${svc.name || displayName} workflows`,
+    dependencies:
+      svc.dependencies ||
+      `${company} integration and Alaska internal operational feeds`,
+    status: "Potential",
+    owner: svc.owner || itsTeam
+  }));
+
+  const upstreamDependencies =
+    Array.isArray(record.upstreamDependencies) &&
+    record.upstreamDependencies.length > 0
+      ? record.upstreamDependencies
+      : [
+          `Alaska Operational Data Feeds (Internal): Provides flight, schedule, or operational inputs to ${displayName}.`,
+          `${company} Core Platform / Services: Primary application services supporting ${displayName}.`,
+          `Enterprise Middleware & API Gateway (Internal): Real-time messaging and web-service integration for ${displayName}.`,
+          `Network & Authentication Infrastructure: Secure connectivity and user authentication for ${displayName}.`
+        ];
+
+  const downstreamConsumers =
+    Array.isArray(record.downstreamConsumers) &&
+    record.downstreamConsumers.length > 0
+      ? record.downstreamConsumers
+      : [
+          `${category} / Flight Operations Teams`,
+          `Dispatch & System Operations Control (SOC / NOC)`,
+          `Flight Crews & Frontline Operations Personnel`,
+          `${itsTeam} Monitoring & Operational Support`
+        ];
+
+  const typicalBusinessImpact =
+    Array.isArray(record.typicalBusinessImpact) &&
+    record.typicalBusinessImpact.length > 0
+      ? record.typicalBusinessImpact
+      : [
+          `${displayName} (${fullName}) is a ${severity} Ground-Stop application with a ${responseTarget} response target.`,
+          descriptionText,
+          record.escalation && !/^(?:tbd|n\/?a)$/i.test(String(record.escalation).trim())
+            ? String(record.escalation).trim()
+            : `Outage or severe degradation can delay ${category} workflows and impact flight departure readiness.`,
+          `Manual operational workarounds and immediate ${itsTeam} on-call engagement may be required.`
+        ];
+
+  const knownWorkarounds =
+    Array.isArray(record.knownWorkarounds) && record.knownWorkarounds.length > 0
+      ? record.knownWorkarounds
+      : [
+          `Engage ${itsTeam} on-call (${applicationOwner}) immediately to assess operational impact and initiate recovery.`,
+          `Use documented manual dispatch / ${category} contingency procedures while ${displayName} is degraded.`,
+          `Coordinate with ${company} support (${supportPhone}) for vendor-side service restoration.`
+        ];
+
+  const communicationGuidelines =
+    Array.isArray(record.communicationGuidelines) &&
+    record.communicationGuidelines.length > 0
+      ? record.communicationGuidelines
+      : Array.isArray(record.escalationSteps) && record.escalationSteps.length > 0
+      ? record.escalationSteps.map(normalizeTextValue)
+      : [
+          `Validate operational scope and affected flights/users for ${displayName}.`,
+          `Engage ${itsTeam} on-call (${applicationOwner}) immediately.`,
+          `Contact ${company} support (${supportPhone} / ${supportEmail}) per documented escalation procedure.`
+        ];
+
+  const responseSlas =
+    Array.isArray(record.responseSlas) && record.responseSlas.length > 0
+      ? record.responseSlas.map((item) => {
+          if (item && typeof item === "object") return item;
+          const str = String(item);
+          const parts = str.split(":");
+          if (parts.length >= 2) {
+            return {
+              label: parts[0].trim(),
+              value: parts.slice(1).join(":").trim()
+            };
+          }
+          return { label: "SLA / Target", value: str };
+        })
+      : [
+          {
+            label: "Severity Classification",
+            value: `${severity} (Ground-Stop Eligible Application)`
+          },
+          {
+            label: "Response Target",
+            value: responseTarget
+          },
+          {
+            label: "Support Model",
+            value: cleanVal(record.supportModel, `${company} + ${itsTeam}`)
+          },
+          {
+            label: "Escalation Policy",
+            value: cleanVal(
+              record.escalation,
+              `Engage ${itsTeam} on-call and ${company} support desk`
+            )
+          }
+        ];
+
+  const validationChecklist =
+    Array.isArray(record.escalationSteps) && record.escalationSteps.length > 0
+      ? record.escalationSteps.map(normalizeTextValue)
+      : [
+          `Validate operational impact of ${displayName} across ${category} workflows.`,
+          `Contact ${itsTeam} on-call (${applicationOwner}).`,
+          `Engage ${company} support (${supportPhone} / ${supportEmail}) if vendor-side issue is suspected.`,
+          `Verify upstream data feeds, API/middleware health, and network connectivity.`,
+          `Confirm full operational recovery with ${category} stakeholders before closing incident.`
+        ];
+
+  const relatedDocuments =
+    Array.isArray(record.relatedDocuments) && record.relatedDocuments.length > 0
+      ? record.relatedDocuments.map((doc) => ({
+          title: doc.title || `${displayName} Operational Runbook`,
+          type: doc.type || doc.category || "Operational Runbook",
+          owner: doc.owner || itsTeam,
+          updated: doc.updated || cleanVal(record.lastUpdated, "2026"),
+          url: doc.url || ""
+        }))
+      : [
+          {
+            title: `${displayName} (${fullName}) Operational Runbook`,
+            type: "SOP / Playbook",
+            owner: itsTeam,
+            updated: cleanVal(record.lastUpdated, "2026"),
+            url: record.operationalRunbookUrl || record.runbookUrl || ""
+          },
+          {
+            title: `${displayName} Escalation & Support Guide`,
+            type: "Escalation Doc",
+            owner: itsTeam,
+            updated: cleanVal(record.lastUpdated, "2026"),
+            url: record.escalationProcedureUrl || record.applicationSupportGuideUrl || ""
+          }
+        ];
+
+  return {
+    id: key,
+    name: displayName,
+    breadcrumbTrail: ["Ground Stop Applications", displayName, "Application Impact"],
+    pageTitle: `${displayName} – Vendor Impact Details`,
+    pageSubtitle: `View applications, systems, dependencies and business impact if ${fullName} (${company}) experiences an outage or degraded service.`,
+    applicationsTabTitle: displayName,
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle: descriptionText,
+    applicationsCardSubtitle: `This list shows Alaska applications and systems associated with ${fullName} (${company}).`,
+    dependenciesTabTitle: `${displayName} – Dependencies`,
+    dependenciesTabSubtitle: `Upstream dependencies, downstream consumers, and infrastructure components for ${fullName}.`,
+    status: cleanVal(record.status || profile.status, "Active"),
+    lastUpdated: cleanVal(record.lastUpdated, "2026"),
+    subtitle: `${category} (${fullName} · ${severity} · SLA: ${responseTarget})`,
+    company,
+    website: cleanVal(record.portalUrl || record.website, "(Add Website/Support Portal URL)"),
+    category,
+    itsTeam,
+    logo,
+    impactSummary: {
+      confirmed: 0,
+      potential: impactedSystems.length,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title: `Potential Impact on ${impactedSystems.length} Alaska System${impactedSystems.length === 1 ? "" : "s"} (${severity} / Ground-Stop Application)`,
+      message: descriptionText,
+      description: descriptionText,
+      updatedAgo: "Updated from Ground Stop Application Inventory"
+    },
+    impactedSystems,
+    upstreamDependencies,
+    downstreamConsumers,
+    dependenciesTab: {
+      overviewSubtitle: `This diagram shows the key upstream dependencies, core services, and downstream operational consumers for ${fullName} (${company}).`,
+      diagramUpstream: upstreamDependencies.slice(0, 4).map((item, idx) => {
+        const text = typeof item === "string" ? item : item.name || String(item);
+        const [titlePart, descPart] = text.split(":");
+        return {
+          id: `${lowerKey}-dup-${idx + 1}`,
+          name: (titlePart || text).slice(0, 42),
+          subtitle: descPart ? descPart.trim().slice(0, 48) : "Upstream Dependency",
+          iconType: ["network", "transfer", "doc", "ticket"][idx % 4]
+        };
+      }),
+      diagramServices: impactedSystems.map((s) => s.name).slice(0, 5),
+      diagramDownstream: downstreamConsumers.slice(0, 5).map((item, idx) => {
+        const text = typeof item === "string" ? item : item.name || String(item);
+        const [titlePart, descPart] = text.split(":");
+        return {
+          id: `${lowerKey}-ddn-${idx + 1}`,
+          name: (titlePart || text).slice(0, 42),
+          subtitle: descPart ? descPart.trim().slice(0, 48) : "Operational Consumer",
+          iconType: ["team", "nodes", "chart", "database", "users"][idx % 5]
+        };
+      }),
+      summaryStats: [
+        { label: "Upstream Dependencies", count: upstreamDependencies.length, tone: "red" },
+        { label: "Downstream Consumers", count: downstreamConsumers.length, tone: "green" },
+        { label: "Impacted Applications", count: impactedSystems.length, tone: "blue" },
+        { label: "Infrastructure Components", count: 3, tone: "purple" }
+      ],
+      keyTakeaways: [
+        descriptionText,
+        cleanVal(
+          record.escalation,
+          `Engage ${itsTeam} (${applicationOwner}) and ${company} support (${supportPhone}) during service disruptions.`
+        )
+      ],
+      upstreamTable: upstreamDependencies.map((item, idx) => {
+        const text = typeof item === "string" ? item : item.name || String(item);
+        const [titlePart, descPart] = text.split(":");
+        return {
+          id: `${lowerKey}-upt-${idx + 1}`,
+          name: (titlePart || text).trim(),
+          description: descPart ? descPart.trim() : text,
+          type: idx === 0 ? "External / Partner" : "Internal / Infrastructure",
+          impact: `Disrupts data or service flow into ${displayName}.`
+        };
+      }),
+      downstreamTable: downstreamConsumers.map((item, idx) => {
+        const text = typeof item === "string" ? item : item.name || String(item);
+        const [titlePart, descPart] = text.split(":");
+        return {
+          id: `${lowerKey}-dwt-${idx + 1}`,
+          name: (titlePart || text).trim(),
+          description: descPart ? descPart.trim() : `Operational consumer of ${displayName}`,
+          type: "Internal Operations",
+          impact: `${category} workflows delayed or require manual contingency.`
+        };
+      }),
+      infrastructureTable: [
+        {
+          id: `${lowerKey}-inf-1`,
+          component: `${displayName} Application Services`,
+          description: cleanVal(
+            record.infrastructure,
+            `Production application infrastructure and endpoints for ${fullName}`
+          ),
+          owner: itsTeam,
+          impact: `Core ${displayName} functionality unavailable or degraded.`
+        },
+        {
+          id: `${lowerKey}-inf-2`,
+          component: "Integration & Middleware",
+          description: cleanVal(
+            record.directDependencies,
+            `Web services, APIs, and data feeds connecting ${displayName} with Alaska systems`
+          ),
+          owner: itsTeam,
+          impact: "Upstream or downstream operational data synchronization delayed."
+        },
+        {
+          id: `${lowerKey}-inf-3`,
+          component: "Network & Authentication",
+          description: `Network routing, firewall rules, and user authentication for ${fullName}`,
+          owner: "ITS Network / Infrastructure",
+          impact: `Users or partner services unable to reach ${displayName}.`
+        }
+      ]
+    },
+    typicalBusinessImpact,
+    knownWorkarounds,
+    vendorContacts: {
+      supportEmail,
+      supportPhone,
+      technicalSupport: `${company} Support (${supportPhone})`,
+      accountManager: cleanVal(record.vendorPOC, company),
+      supportHours: `24x7 Critical Operations (Response Target: ${responseTarget})`,
+      escalation: cleanVal(
+        record.escalation,
+        `Contact ${itsTeam} on-call and ${company} support (${supportPhone})`
+      ),
+      communicationGuidelines,
+      responseSlas
+    },
+    internalContacts: {
+      itsTeam,
+      itsTeamNote: cleanVal(record.supportModel, `${itsTeam} (${applicationOwner})`),
+      applicationOwner,
+      onCallSupport: `${itsTeam} On-Call`,
+      systemAdministration: cleanVal(record.systemAdmin, itsTeam),
+      businessOwner: cleanVal(record.businessOwner, category),
+      passwordSupport: cleanVal(record.passwordSupport, "ITS Service Desk, 1-877-238-1077")
+    },
+    validationChecklist,
+    incidentHistory: [],
+    relatedDocuments
+  };
+}
+
+export function getGroundStopImpactDetails(appItem) {
+  if (!appItem) return null;
+  const key = String(
+    appItem.key || appItem.id || appItem.record?.key || appItem.record?.id || ""
+  ).trim();
+  const lowerKey = key.toLowerCase();
+
+  if (lowerKey === "acars" || lowerKey === "sita") {
+    return VENDOR_IMPACT_DETAILS.sita;
+  }
+  if (lowerKey === "aims" || lowerKey === "aims-vendor") {
+    return VENDOR_IMPACT_DETAILS["aims-vendor"];
+  }
+  if (key && VENDOR_IMPACT_DETAILS[key]) {
+    return VENDOR_IMPACT_DETAILS[key];
+  }
+  if (lowerKey && VENDOR_IMPACT_DETAILS[lowerKey]) {
+    return VENDOR_IMPACT_DETAILS[lowerKey];
+  }
+  return buildGroundStopImpactDetails(appItem);
 }
 
 export default VENDOR_IMPACT_DETAILS;
