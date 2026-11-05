@@ -1178,9 +1178,9 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
     s4aDetails.itsTeam,
     "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins"
   );
-  assert.equal(s4aDetails.supportPhone, "+48 12 379 3737");
-  assert.equal(s4aDetails.supportEmail, "support@smart4aviation.aero");
-  assert.equal(s4aDetails.supportHours, "24x7");
+  assert.equal(s4aDetails.vendorContacts.supportPhone, "+48 12 379 3737");
+  assert.equal(s4aDetails.vendorContacts.supportEmail, "support@smart4aviation.aero");
+  assert.equal(s4aDetails.vendorContacts.supportHours, "24x7");
   assert.equal(s4aDetails.impactedSystems.length, 5);
   assert.equal(s4aDetails.upstreamDependencies.length, 4);
   assert.equal(s4aDetails.downstreamConsumers.length, 7);
@@ -1191,6 +1191,73 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
   assert.equal(s4aDetails.vendorContacts.communicationGuidelines.length, 4);
   assert.equal(s4aDetails.vendorContacts.responseSlas.length, 4);
   assert.equal(s4aDetails.relatedDocuments.length, 8);
+
+  // JCTE uses the rich JCTE (Jeppesen Crew Tracking Enterprise) Ground Stop application profile
+  const jcteDetails = getGroundStopImpactDetails({
+    key: "jcte",
+    record: apps.jcte || {}
+  });
+  assert.ok(jcteDetails, "JCTE Ground Stop impact details must exist");
+  assert.equal(jcteDetails.name, "JCTE (Jeppesen Crew Tracking Enterprise)");
+  assert.equal(jcteDetails.company, "Jeppesen");
+  assert.equal(
+    jcteDetails.website,
+    "Crew Tracking: http://crewtracking.alaskaair.com/. Crew Access: https://crewaccess.alaskaair.com/site/. TIC reports: https://jctereports.alaskaair.com/tic/default"
+  );
+  assert.equal(
+    jcteDetails.category,
+    "Crew: crew scheduling and tracking for about 10,100 crew members"
+  );
+  assert.equal(jcteDetails.itsTeam, "ITS JCTE System Admins. Tech Owner: Sue Rawlings");
+  assert.equal(jcteDetails.vendorContacts.supportEmail, "opssupport@jeppesen.com");
+  assert.equal(jcteDetails.vendorContacts.supportHours, "24x7");
+  assert.equal(jcteDetails.impactedSystems.length, 4);
+  assert.equal(jcteDetails.upstreamDependencies.length, 3);
+  assert.equal(jcteDetails.downstreamConsumers.length, 2);
+  assert.equal(jcteDetails.dependenciesTab.infrastructureTable.length, 5);
+  assert.equal(jcteDetails.typicalBusinessImpact.length, 5);
+  assert.equal(jcteDetails.knownWorkarounds.length, 5);
+  assert.equal(jcteDetails.validationChecklist.length, 9);
+  assert.equal(jcteDetails.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(jcteDetails.vendorContacts.responseSlas.length, 4);
+  assert.equal(jcteDetails.relatedDocuments.length, 7);
+
+  // AirTrak uses the rich AirTrak Ground Stop application profile
+  const airtrackDetails = getGroundStopImpactDetails({
+    key: "airtrack",
+    record: apps.airtrack || {}
+  });
+  assert.ok(airtrackDetails, "AirTrak Ground Stop impact details must exist");
+  assert.equal(airtrackDetails.name, "AirTrak");
+  assert.equal(
+    airtrackDetails.company,
+    "None; built in-house. Key outside services: Ping Identity, Split.io, AppDynamics"
+  );
+  assert.equal(
+    airtrackDetails.website,
+    "airtrak.alaskasworld.com. Older URL: https://AOC-prod-frontdoor.azurefd.net/"
+  );
+  assert.equal(
+    airtrackDetails.category,
+    "Flight Ops: real-time control of the operation (aircraft assignments, Irrops, flight status)"
+  );
+  assert.equal(
+    airtrackDetails.itsTeam,
+    "ITS Ops 360 AirtrAK (Team.Maganty@alaskaair.com)"
+  );
+  assert.equal(airtrackDetails.vendorContacts.supportPhone, "Not applicable (built in-house)");
+  assert.equal(airtrackDetails.vendorContacts.supportEmail, "Not applicable (built in-house)");
+  assert.equal(airtrackDetails.vendorContacts.supportHours, "24x7. Target recovery: 1 hour or less");
+  assert.equal(airtrackDetails.impactedSystems.length, 6);
+  assert.equal(airtrackDetails.upstreamDependencies.length, 5);
+  assert.equal(airtrackDetails.downstreamConsumers.length, 5);
+  assert.equal(airtrackDetails.dependenciesTab.infrastructureTable.length, 8);
+  assert.equal(airtrackDetails.typicalBusinessImpact.length, 5);
+  assert.equal(airtrackDetails.knownWorkarounds.length, 5);
+  assert.equal(airtrackDetails.validationChecklist.length, 8);
+  assert.equal(airtrackDetails.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(airtrackDetails.vendorContacts.responseSlas.length, 4);
+  assert.equal(airtrackDetails.relatedDocuments.length, 7);
 
   // Verify all 9 Ground Stop applications resolve complete Impact Details
   const groundStopKeys = [
@@ -1210,7 +1277,22 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
       record: apps[key] || {}
     });
     assert.ok(details, `Impact details missing for Ground Stop key: ${key}`);
+    assert.ok(
+      details.impactCallout && (details.impactCallout.title || details.impactCallout.level),
+      `impactCallout missing for Ground Stop key: ${key}`
+    );
+    assert.ok(
+      details.impactCallout && (details.impactCallout.message || details.impactCallout.description),
+      `impactCallout message missing for Ground Stop key: ${key}`
+    );
     assert.ok(Array.isArray(details.impactedSystems) && details.impactedSystems.length >= 1);
+    for (const sys of details.impactedSystems) {
+      assert.ok(sys.id, `sys.id missing in ${key}`);
+      assert.ok(sys.name, `sys.name missing in ${key}`);
+      assert.ok(sys.description, `sys.description missing in ${key}`);
+      assert.ok(sys.businessFunction, `sys.businessFunction missing in ${key}`);
+      assert.ok(sys.impact, `sys.impact missing in ${key}`);
+    }
     assert.ok(details.dependenciesTab && Array.isArray(details.dependenciesTab.upstreamTable));
     assert.ok(details.vendorContacts && details.internalContacts);
     assert.ok(Array.isArray(details.relatedDocuments) && details.relatedDocuments.length >= 1);

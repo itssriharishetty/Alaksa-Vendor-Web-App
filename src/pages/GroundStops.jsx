@@ -73,35 +73,35 @@ const CARD_PROFILES = {
     },
     "jcte": {
         shortName: "JCTE",
-        category: "Crew / Technical Engineering",
+        category: "Crew: crew scheduling and tracking for about 10,100 crew members",
         status: "Active",
-        sla: "15 min",
+        sla: "24x7",
         slaIcon: "phone",
         severity: "Critical",
         description:
-            "JCTE Used by Alaska Crew Scheduling, In-flight, Drug Testing, payroll groups and approx 6300 members. The Crew Scheduling System Features scheduling applications for both the Frontline Crew and Back office.",
+            "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1.",
         vendor: "Jeppesen",
         poc: "Sue Rawlings",
-        phone: "1-562-797-6193",
-        email: "NA",
-        team: "ITS Crew System Product",
+        phone: "+1-303-328-6412, effective 01 Apr 2026. For ProdOps Sev 1 use only. Otherwise the System Admins contact Jeppesen",
+        email: "opssupport@jeppesen.com",
+        team: "ITS JCTE System Admins. Tech Owner: Sue Rawlings",
         logoVariant: "logo-jcte",
         monogram: "JT"
     },
     "airtrack": {
-        shortName: "Airtrak",
-        category: "Aircraft Tracking",
+        shortName: "AirTrak",
+        category: "Flight Ops: real-time control of the operation (aircraft assignments, Irrops, flight status)",
         status: "Active",
-        sla: "15 min",
+        sla: "24x7",
         slaIcon: "phone",
-        severity: "High",
+        severity: "Critical",
         description:
-            "Airtrak is an aviation tracking system that provides real-time visibility into aircraft movement. Allows NOC, SOC & Dispatch to conduct Flight operations. It lets them allocate Aircraft to flights or move flights to differenct aircraft.",
-        vendor: "NA",
+            "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network.",
+        vendor: "None; built in-house. Key outside services: Ping Identity, Split.io, AppDynamics",
         poc: "GK Maganty",
-        phone: "NA",
-        email: "NA",
-        team: "ITS Ops 360 AirtrAK",
+        phone: "Not applicable (built in-house)",
+        email: "Not applicable (built in-house)",
+        team: "ITS Ops 360 AirtrAK (Team.Maganty@alaskaair.com)",
         logoVariant: "logo-airtrack",
         monogram: "AT"
     },
@@ -3047,14 +3047,17 @@ export default function GroundStops() {
                                             </span>
                                             <div className="vi-alert-content">
                                                 <strong>
-                                                    {impactData.impactCallout.title ||
-                                                        (impactData.impactCallout.level
+                                                    {impactData.impactCallout?.title ||
+                                                        impactData.criticalityBannerTitle ||
+                                                        (impactData.impactCallout?.level
                                                             ? `${impactData.impactCallout.level} Operational Impact`
                                                             : `Operational Impact if ${impactData.name} is Unavailable`)}
                                                 </strong>
                                                 <p>
-                                                    {impactData.impactCallout.message ||
-                                                        impactData.impactCallout.description}
+                                                    {impactData.impactCallout?.message ||
+                                                        impactData.impactCallout?.description ||
+                                                        impactData.criticalityHint ||
+                                                        impactData.impactAlert}
                                                 </p>
                                             </div>
                                         </div>

@@ -2409,191 +2409,132 @@ export const VENDOR_IMPACT_DETAILS = {
     dependenciesTabTitle: "S4A SmartSuite – Dependencies Architecture",
     dependenciesTabSubtitle:
       "Upstream data feeds, downstream consumers, and hosting & network infrastructure for S4A SmartSuite.",
-    businessImpactTabTitle: "S4A SmartSuite – Business Impact & Workarounds",
-    businessImpactTabSubtitle:
-      "Operational consequences, documented workarounds, and incident validation steps for S4A outages or degraded service.",
-    contactsTabTitle: "S4A SmartSuite – Contacts & SLAs",
-    contactsTabSubtitle:
-      "Escalation points, communication rules, and response targets for S4A incidents.",
-    relatedDocumentsTabTitle: "S4A SmartSuite – Related Documents",
-    relatedDocumentsTabSubtitle:
-      "Runbooks, triage guides, architecture diagrams, and operational documentation for S4A SmartSuite.",
-    company: "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
-    logo: "public/vendors/smart4aviation.jpg",
     status: "Active",
-    tier: "Tier 1 — Ground Stop Eligible",
-    criticality:
-      "Tier 1 and Ground Stop eligible. Impact is high if fully down, medium if only some services or data types are affected",
-    criticalityBannerTitle:
-      "Criticality: Tier 1 and Ground Stop eligible — Impact is high if fully down, medium if only some services or data types are affected",
-    criticalityHint:
-      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time. Web App URL: https://smartsuite.insideaag.com/",
-    impactAlert:
-      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+    lastUpdated: "Nov 04, 2026",
+    subtitle:
+      "S4A SmartSuite. Also called Smart4Aviation, SmartLoad, SmartComm, Weight and Balance · Criticality: Tier 1 and Ground Stop eligible · 24x7",
+    company: "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
     website: "https://smartsuite.insideaag.com/",
-    supportPortalUrl: "https://smartsuite.insideaag.com/",
     category: "Airport Ops / Flight Ops: weight and balance and load planning",
     itsTeam:
       "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins",
-    primaryItsOwner: "Ryan Wilkins (ITS Flight Operations)",
-    supportPhone: "+48 12 379 3737",
-    supportPhoneNote: "Smart4Aviation Support (24x7) — email the support desk first; call if urgent",
-    secondaryPhone: "1-877-238-1077",
-    secondaryPhoneNote: "Alaska Service Desk",
-    supportEmail: "support@smart4aviation.aero",
-    supportEmailNote: "Smart4Aviation Support (email details and logs first, then call)",
-    supportHours: "24x7",
-    escalationText:
-      "Email the support desk first (support@smart4aviation.aero). If there's no response or it's urgent, call the help line (+48 12 379 3737)",
-    summaryMetrics: {
-      totalSystems: 5,
-      tier0Count: 5,
-      tier1Count: 0,
-      upstreamDeps: 4,
-      downstreamDeps: 7
+    logo: "public/vendors/smart4aviation.jpg",
+    impactSummary: {
+      confirmed: 0,
+      potential: 5,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title:
+        "Criticality: Tier 1 and Ground Stop eligible. Impact is high if fully down, medium if only some services or data types are affected — 24x7",
+      message:
+        "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time. Web App URL: https://smartsuite.insideaag.com/",
+      description:
+        "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+      updatedAgo: "Updated from ITS Operations Runbook_S4A_SmartSuite_v1.1_0406_2026 & S4A_Triage_Troubleshooting"
     },
     impactedSystems: [
       {
+        id: "s4a-smartload",
         name: "SmartLoad",
-        category: "Load planning, Load Closeout",
-        criticality: "Tier 1 / Ground Stop",
-        purpose: "Plans the load and calculates weight and balance",
+        subName: "(Load Planning & Weight and Balance)",
+        appTabSubName: "(Load Planning & Weight and Balance)",
+        description: "Plans the load and calculates weight and balance",
+        appTabDescription: "Plans the load and calculates weight and balance",
         shortDescription: "Plans the load and calculates weight and balance",
         businessFunction: "Load planning, Load Closeout",
+        impact: "CLP can't produce Load Closeouts",
         impactIfDown: "CLP can't produce Load Closeouts",
+        dependencies: "MQ S4AP, PostgreSQL",
         keyDependencies: "MQ S4AP, PostgreSQL",
+        owner: "ITS Apps-Airline Ops",
         technicalOwner: "ITS Apps-Airline Ops",
-        status: "Operational"
+        status: "Potential"
       },
       {
+        id: "s4a-smartcomm",
         name: "SmartComm",
-        category: "Communications",
-        criticality: "Tier 1 / Ground Stop",
-        purpose: "Alerts, messaging and message templates",
+        subName: "(Alerts, Messaging & Templates)",
+        appTabSubName: "(Alerts, Messaging & Templates)",
+        description: "Alerts, messaging and message templates",
+        appTabDescription: "Alerts, messaging and message templates",
         shortDescription: "Alerts, messaging and message templates",
         businessFunction: "Communications",
+        impact: "No alerts or messages to stations or aircraft",
         impactIfDown: "No alerts or messages to stations or aircraft",
+        dependencies: "MQ, TIBCO, ACARS",
         keyDependencies: "MQ, TIBCO, ACARS",
+        owner: "ITS Apps-Airline Ops",
         technicalOwner: "ITS Apps-Airline Ops",
-        status: "Operational"
+        status: "Potential"
       },
       {
+        id: "s4a-smartops",
         name: "SmartOps",
-        category: "Flight overview",
-        criticality: "Tier 1 / Ground Stop",
-        purpose: "Gantt view of flight schedules and tail numbers",
+        subName: "(Gantt Flight Schedule & Tail Overview)",
+        appTabSubName: "(Gantt Flight Schedule & Tail Overview)",
+        description: "Gantt view of flight schedules and tail numbers",
+        appTabDescription: "Gantt view of flight schedules and tail numbers",
         shortDescription: "Gantt view of flight schedules and tail numbers",
         businessFunction: "Flight overview",
+        impact: "No flight view for CLP",
         impactIfDown: "No flight view for CLP",
+        dependencies: "Flight event feeds",
         keyDependencies: "Flight event feeds",
+        owner: "ITS Apps-Airline Ops",
         technicalOwner: "ITS Apps-Airline Ops",
-        status: "Operational"
+        status: "Potential"
       },
       {
+        id: "s4a-app-mq-cs-servers",
         name: "App / MQ / CS servers",
-        category: "Hosting",
-        criticality: "Tier 1 / Ground Stop",
-        purpose: "Linux servers in IGQ and SE4 (app, MQ and CS tiers)",
+        subName: "(IGQ & SE4 Linux Servers)",
+        appTabSubName: "(IGQ & SE4 Linux Servers)",
+        description: "Linux servers in IGQ and SE4 (app, MQ and CS tiers)",
+        appTabDescription: "Linux servers in IGQ and SE4 (app, MQ and CS tiers)",
         shortDescription: "Linux servers in IGQ and SE4 (app, MQ and CS tiers)",
         businessFunction: "Hosting",
+        impact: "Whole system down",
         impactIfDown: "Whole system down",
+        dependencies: "JBoss, PostgreSQL",
         keyDependencies: "JBoss, PostgreSQL",
+        owner: "ITS JCTE System Admins",
         technicalOwner: "ITS JCTE System Admins",
-        status: "Operational"
+        status: "Potential"
       },
       {
+        id: "s4a-postgresql-databases",
         name: "PostgreSQL databases",
-        category: "Data storage and reporting",
-        criticality: "Tier 1 / Ground Stop",
-        purpose: "s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02",
+        subName: "(s4a.wbpgdb.insideaag.com & SE4prS4Awbdb02)",
+        appTabSubName: "(s4a.wbpgdb.insideaag.com & SE4prS4Awbdb02)",
+        description: "s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02",
+        appTabDescription: "s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02",
         shortDescription: "s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02",
         businessFunction: "Data storage and reporting",
+        impact: "App fails, reporting fails",
         impactIfDown: "App fails, reporting fails",
+        dependencies: "Database servers",
         keyDependencies: "Database servers",
+        owner: "ITS JCTE System Admins",
         technicalOwner: "ITS JCTE System Admins",
-        status: "Operational"
+        status: "Potential"
       }
     ],
     upstreamDependencies: [
-      {
-        name: "MQ S4AP inbound queues: Flight, PAX, Baggage, Cargo, MEL, Crew, Fuel, EXT_ACARS, Assignment, FP_JEPPESEN, COMM_MESSAGE, XML_COMM",
-        type: "IBM MQ Inbound Queues (S4AP)",
-        protocol: "IBM MQ (S4AP)",
-        impactIfUnavailable:
-          "Inbound flight, passenger, baggage, cargo, MEL, crew, fuel, ACARS, assignment, flight plan, or comm messages do not reach S4A."
-      },
-      {
-        name: "Aircom (ACARS ground), RSA Mobile, iCargo",
-        type: "Aircraft Comms, Ramp & Cargo Systems",
-        protocol: "MQ / ACARS / Data Feeds",
-        impactIfUnavailable:
-          "ACARS ground messages, ramp baggage/loading updates, and cargo weights do not flow into S4A."
-      },
-      {
-        name: "Sabre (reservations and Flight Record Data), Visops, Crew Management, Dispatch (fuel requirements), M&E (MEL through MtxEventPublisher)",
-        type: "Core Airline Operations Feeds",
-        protocol: "MQ / TIBCO / MtxEventPublisher",
-        impactIfUnavailable:
-          "Missing passenger counts, flight schedule updates, crew data, fuel requirements, or MEL weight/balance restrictions."
-      },
-      {
-        name: "JetPlan / Jeppesen flight plans",
-        type: "Flight Planning Feed",
-        protocol: "FP_JEPPESEN Queue",
-        impactIfUnavailable:
-          "Planned flight weights, fuel, and routing data from JetPlan do not populate automatically in S4A."
-      }
+      "MQ S4AP inbound queues: Flight, PAX, Baggage, Cargo, MEL, Crew, Fuel, EXT_ACARS, Assignment, FP_JEPPESEN, COMM_MESSAGE, XML_COMM",
+      "Aircom (ACARS ground), RSA Mobile, iCargo",
+      "Sabre (reservations and Flight Record Data), Visops, Crew Management, Dispatch (fuel requirements), M&E (MEL through MtxEventPublisher)",
+      "JetPlan / Jeppesen flight plans"
     ],
     downstreamConsumers: [
-      {
-        name: "ACARS / aircraft: Load Closeout and fuel slip, through FO.FLIGHT.LOAD.ACARS.UPLINK",
-        type: "Aircraft Uplink",
-        criticality: "Ground Stop",
-        impactIfVendorFails:
-          "No automated Load Closeout or fuel slip sent to the aircraft; stations must print final numbers and read them to the crew."
-      },
-      {
-        name: "FAA Cert database (FINAL_LOAD_OUTBOUND)",
-        type: "Regulatory / Final Load Feed",
-        criticality: "High",
-        impactIfVendorFails:
-          "Final load closeout records do not flow to the FAA Cert database (FAACertWS)."
-      },
-      {
-        name: "Estimated zero fuel weight (EZFW) / ZeroFuelWeightWS (fltops)",
-        type: "Flight Ops Weight Feed",
-        criticality: "High",
-        impactIfVendorFails:
-          "Estimated zero fuel weight (EZFW) updates are not sent to Flight Ops (ZeroFuelWeightWS)."
-      },
-      {
-        name: "AirClic / ULD Planeside tool (COMM_ALERT_OUTBOUND)",
-        type: "Ramp / Planeside Alerts",
-        criticality: "High",
-        impactIfVendorFails:
-          "Outbound load alerts and communications do not reach AirClic / ULD Planeside tools."
-      },
-      {
-        name: "Fuel vendors (fuel slips sent by email through outbound.alaskaair.com)",
-        type: "Fuel Vendor Notification",
-        criticality: "High",
-        impactIfVendorFails:
-          "Automated fuel slips are not emailed to fuel vendors through outbound.alaskaair.com."
-      },
-      {
-        name: "Countdown and Ad-Hoc data feeds, PST, Turn Timeline",
-        type: "Operational Dashboards & Feeds",
-        criticality: "Medium",
-        impactIfVendorFails:
-          "Downstream operational tracking tools (Countdown, Ad-Hoc data feeds, PST, Turn Timeline) lack load closeout updates."
-      },
-      {
-        name: "CLP, stations and ramp agents",
-        type: "Operational End Users",
-        criticality: "Ground Stop",
-        impactIfVendorFails:
-          "Centralized Load Planners (CLP), station agents, and ramp agents cannot automate load planning or closeout."
-      }
+      "ACARS / aircraft: Load Closeout and fuel slip, through FO.FLIGHT.LOAD.ACARS.UPLINK",
+      "FAA Cert database (FINAL_LOAD_OUTBOUND)",
+      "Estimated zero fuel weight (EZFW) / ZeroFuelWeightWS (fltops)",
+      "AirClic / ULD Planeside tool (COMM_ALERT_OUTBOUND)",
+      "Fuel vendors (fuel slips sent by email through outbound.alaskaair.com)",
+      "Countdown and Ad-Hoc data feeds, PST, Turn Timeline",
+      "CLP, stations and ramp agents"
     ],
     dependenciesTab: {
       overviewSubtitle:
@@ -2802,8 +2743,6 @@ export const VENDOR_IMPACT_DETAILS = {
         }
       ]
     },
-    keyTakeaways:
-      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
     typicalBusinessImpact: [
       "No automated Load Closeouts or final numbers to aircraft",
       "Flight delays. In INC3406923, Flight 305 SEA-MIA was delayed 7–10 minutes because of a bag count issue",
@@ -2974,6 +2913,1011 @@ export const VENDOR_IMPACT_DETAILS = {
         owner: "ITS Maintenance & Engineering",
         updated: "Additional Source",
         url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BC6CC21A6-60FF-425F-8CDD-23CB5752EA51%7D&file=MtxEventPublisher%20Service%20(M%26E)%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Executive Summary of Incidents 2025-12 to Current Date.xlsx",
+        type: "Additional Source — Executive Summary of Incidents (Excel)",
+        owner: "ITS Production Operations",
+        updated: "2025-12 to Current",
+        url: "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7BE5D240DC-3123-4D8D-8A59-CF1533D32C5B%7D&file=Executive%20Summary%20of%20Incidents%202025-12%20to%20Current%20Date.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      }
+    ]
+  },
+  jcte: {
+    id: "jcte",
+    name: "JCTE (Jeppesen Crew Tracking Enterprise)",
+    breadcrumbTrail: [
+      "Ground Stop Applications",
+      "JCTE",
+      "Application Impact Details"
+    ],
+    pageTitle: "JCTE (Jeppesen Crew Tracking Enterprise) – Application Impact Details",
+    pageSubtitle:
+      "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1.",
+    applicationsTabTitle: "JCTE (Jeppesen Crew Tracking Enterprise)",
+    applicationsTabSubheading: "Applications & Systems (JCTE Components)",
+    applicationsTabSubtitle:
+      "Also called Crew Access, Crew Exchange, Crew Scheduling System, CMS. Tier 1 system supporting crew scheduling and tracking for about 10,100 crew members.",
+    applicationsCardSubtitle:
+      "This list shows the core JCTE components (Crew Tracking, Crew Access, TIC, and JCTE APIs), their business functions, impact if down, direct dependencies, and ITS owners.",
+    dependenciesTabTitle: "JCTE (Jeppesen Crew Tracking Enterprise) – Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream systems sending data to JCTE, downstream consumers relying on JCTE data, and Linux/Oracle/W3 Domain/Monitoring infrastructure.",
+    status: "Active",
+    lastUpdated: "Nov 04, 2026",
+    subtitle:
+      "JCTE (Jeppesen Crew Tracking Enterprise). Also called Crew Access, Crew Exchange, Crew Scheduling System, CMS · Criticality: Tier 1. Standard ITS Tier 1 SLAs apply · 24x7",
+    company: "Jeppesen",
+    website:
+      "Crew Tracking: http://crewtracking.alaskaair.com/. Crew Access: https://crewaccess.alaskaair.com/site/. TIC reports: https://jctereports.alaskaair.com/tic/default",
+    category: "Crew: crew scheduling and tracking for about 10,100 crew members",
+    itsTeam: "ITS JCTE System Admins. Tech Owner: Sue Rawlings",
+    logo: "public/vendors/jeppesen.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 4,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title:
+        "Criticality: Tier 1. Standard ITS Tier 1 SLAs apply — 24x7",
+      message:
+        "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1. URLs: Crew Tracking: http://crewtracking.alaskaair.com/. Crew Access: https://crewaccess.alaskaair.com/site/. TIC reports: https://jctereports.alaskaair.com/tic/default",
+      description:
+        "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1.",
+      updatedAgo: "Updated from JCTE System Summary 3 19 26 & JCTE_Triage_Troubleshooting_6.10.25"
+    },
+    impactedSystems: [
+      {
+        id: "jcte-crew-tracking",
+        name: "Crew Tracking (Tracking Editor, Crew Editor, Alert Monitor)",
+        subName: "(crewtracking.alaskaair.com)",
+        appTabSubName: "(crewtracking.alaskaair.com)",
+        description: "Java desktop tools launched from crewtracking.alaskaair.com",
+        appTabDescription: "Java desktop tools launched from crewtracking.alaskaair.com",
+        shortDescription: "Java desktop tools launched from crewtracking.alaskaair.com",
+        businessFunction: "Back-office crew scheduling",
+        impact: "Schedulers can't do any scheduling work",
+        impactIfDown: "Schedulers can't do any scheduling work",
+        dependencies: "W3 domain login, Java 11, JCTE servers",
+        keyDependencies: "W3 domain login, Java 11, JCTE servers",
+        owner: "ITS JCTE System Admins",
+        technicalOwner: "ITS JCTE System Admins",
+        status: "Potential"
+      },
+      {
+        id: "jcte-crew-access",
+        name: "Crew Access",
+        subName: "(https://crewaccess.alaskaair.com/site/)",
+        appTabSubName: "(https://crewaccess.alaskaair.com/site/)",
+        description: "Web and mobile site for pilots and flight attendants (FAs)",
+        appTabDescription: "Web and mobile site for pilots and flight attendants (FAs)",
+        shortDescription: "Web and mobile site for pilots and flight attendants (FAs)",
+        businessFunction: "Schedules, trades, pilot check-in",
+        impact: "Crew can't view schedules or check in",
+        impactIfDown: "Crew can't view schedules or check in",
+        dependencies: "Single sign-on (SSO), two web servers behind a load balancer",
+        keyDependencies: "Single sign-on (SSO), two web servers behind a load balancer",
+        owner: "ITS JCTE System Admins",
+        technicalOwner: "ITS JCTE System Admins",
+        status: "Potential"
+      },
+      {
+        id: "jcte-tic",
+        name: "TIC (Tracking Information Center)",
+        subName: "(https://jctereports.alaskaair.com/tic/default)",
+        appTabSubName: "(https://jctereports.alaskaair.com/tic/default)",
+        description: "Reports site",
+        appTabDescription: "Reports site",
+        shortDescription: "Reports site",
+        businessFunction: "Crew reporting",
+        impact: "No reports",
+        impactIfDown: "No reports",
+        dependencies: "FedAuth/SSO",
+        keyDependencies: "FedAuth/SSO",
+        owner: "ITS JCTE System Admins",
+        technicalOwner: "ITS JCTE System Admins",
+        status: "Potential"
+      },
+      {
+        id: "jcte-apis",
+        name: "JCTE APIs (CrewOnFlight, GetStatusCard, JobRunner, TripsDateOutput)",
+        subName: "(On-Premises Services via SDP & APIM)",
+        appTabSubName: "(On-Premises Services via SDP & APIM)",
+        description: "On-premises services that other apps call",
+        appTabDescription: "On-premises services that other apps call",
+        shortDescription: "On-premises services that other apps call",
+        businessFunction: "Crew data to other systems",
+        impact: "Downstream apps lose crew data",
+        impactIfDown: "Downstream apps lose crew data",
+        dependencies: "SDP cluster and API Management (APIM)",
+        keyDependencies: "SDP cluster and API Management (APIM)",
+        owner: "(Add owner)",
+        technicalOwner: "(Add owner)",
+        status: "Potential"
+      }
+    ],
+    upstreamDependencies: [
+      "VisOps flight feed, through MQ Series and ActiveMQ",
+      "Navblue trips and carry-in roster, sent by FTP",
+      "PeopleSoft HCM employee data"
+    ],
+    downstreamConsumers: [
+      "Pilot and Inflight websites, VisOps (crew on flight), APIS, SmartLoad (S4A), ETQ, IMAGE, Block2Block, Flight Payroll, EDW",
+      "AirTrak, FltOps, DAP, Pilot Training, CSA/B2B/JetPack/Calendar (through SDP and APIM), and the FA Attendance App"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream feeds (VisOps flight feed via MQ Series/ActiveMQ, Navblue trips/roster via FTP, PeopleSoft HCM employee data) flowing into JCTE to provide crew data to Pilot/Inflight websites, VisOps, APIS, S4A, Block2Block, Flight Payroll, EDW, AirTrak, FltOps, DAP, and JetPack.",
+      diagramUpstream: [
+        {
+          id: "jcte-up-1",
+          name: "VisOps Flight Feed",
+          subtitle: "Through MQ Series and ActiveMQ",
+          iconType: "transfer"
+        },
+        {
+          id: "jcte-up-2",
+          name: "Navblue Trips & Carry-In Roster",
+          subtitle: "Sent by FTP",
+          iconType: "doc"
+        },
+        {
+          id: "jcte-up-3",
+          name: "PeopleSoft HCM",
+          subtitle: "Employee data",
+          iconType: "database"
+        }
+      ],
+      diagramServices: [
+        "Crew Tracking (Tracking / Crew Editor / Alert Monitor)",
+        "Crew Access (Web & Mobile)",
+        "TIC (Tracking Information Center)",
+        "JCTE APIs (CrewOnFlight, GetStatusCard, JobRunner, TripsDateOutput)"
+      ],
+      diagramDownstream: [
+        {
+          id: "jcte-down-1",
+          name: "Pilot & Inflight Websites, VisOps, APIS",
+          subtitle: "Crew on flight & web portals",
+          iconType: "nodes"
+        },
+        {
+          id: "jcte-down-2",
+          name: "SmartLoad (S4A), ETQ, IMAGE, Block2Block",
+          subtitle: "Weight & balance and crew operations",
+          iconType: "ticket"
+        },
+        {
+          id: "jcte-down-3",
+          name: "Flight Payroll & EDW",
+          subtitle: "Payroll & enterprise data warehouse",
+          iconType: "database"
+        },
+        {
+          id: "jcte-down-4",
+          name: "AirTrak, FltOps, DAP, Pilot Training",
+          subtitle: "Through SDP and APIM",
+          iconType: "chart"
+        },
+        {
+          id: "jcte-down-5",
+          name: "CSA / B2B / JetPack / Calendar & FA Attendance",
+          subtitle: "Crew mobile & attendance apps",
+          iconType: "team"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 3, tone: "red" },
+        { label: "Downstream Consumer Groups", count: 2, tone: "green" },
+        { label: "JCTE Components", count: 4, tone: "blue" },
+        { label: "Infrastructure Components", count: 5, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1."
+      ],
+      upstreamTable: [
+        {
+          id: "jcte-upt-1",
+          name: "VisOps flight feed, through MQ Series and ActiveMQ",
+          description: "Real-time flight movement and schedule updates delivered to JCTE via MQ Series and ActiveMQ.",
+          type: "Internal / MQ",
+          impact: "Flight feed data goes stale, which can lead to flight delays."
+        },
+        {
+          id: "jcte-upt-2",
+          name: "Navblue trips and carry-in roster, sent by FTP",
+          description: "Crew pairings, trips, and carry-in rosters sent via FTP from Navblue.",
+          type: "External / FTP",
+          impact: "Monthly trips and carry-in rosters fail to load into JCTE."
+        },
+        {
+          id: "jcte-upt-3",
+          name: "PeopleSoft HCM employee data",
+          description: "Employee master data for pilots and flight attendants.",
+          type: "Internal / HCM",
+          impact: "Crew member profiles and PeopleSoft ID updates do not sync."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "jcte-dwt-1",
+          name: "Pilot and Inflight websites, VisOps (crew on flight), APIS, SmartLoad (S4A), ETQ, IMAGE, Block2Block, Flight Payroll, EDW",
+          description: "Downstream operational, weight & balance, compliance, check-in, payroll, and analytics systems consuming JCTE crew data.",
+          type: "Internal Systems",
+          impact: "Crew data feeds to S4A, VisOps, APIS, Block2Block, and payroll are affected."
+        },
+        {
+          id: "jcte-dwt-2",
+          name: "AirTrak, FltOps, DAP, Pilot Training, CSA/B2B/JetPack/Calendar (through SDP and APIM), and the FA Attendance App",
+          description: "Downstream flight control, dispatch, pilot briefing, and crew mobile applications calling JCTE APIs through SDP and APIM.",
+          type: "Internal / API Consumers",
+          impact: "Downstream apps (AirTrak, FltOps, JetPack, FA Attendance) lose crew data."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "jcte-inf-1",
+          component: "Main infrastructure Linux server",
+          description: "Tukv3cmsinf01",
+          owner: "ITS JCTE System Admins",
+          impact: "If Tukv3cmsinf01 is down, nobody can log in."
+        },
+        {
+          id: "jcte-inf-2",
+          component: "Main Oracle database",
+          description: "Tukvvcmsdb01",
+          owner: "Oracle DBA / ITS JCTE System Admins",
+          impact: "If Tukvvcmsdb01 is down, open a Sev 1 and contact the Oracle DBA on-call."
+        },
+        {
+          id: "jcte-inf-3",
+          component: "W3 / DMZ domain & Password manager servers",
+          description:
+            "W3 / DMZ domain (SEAVVW3.local) for scheduler logins. Password manager servers: SEAV3PWM01 / TUKV3PWM01",
+          owner: "ITS JCTE System Admins / Compute & Platforms",
+          impact: "Multiple users can't log in with W3 accounts if domain/password servers fail."
+        },
+        {
+          id: "jcte-inf-4",
+          component: "Monitoring",
+          description:
+            "Appmanager, AlarmsOne / Zenoss, plus a TWS job that checks database replication. A Grafana-to-Dynatrace migration is in progress",
+          owner: "ITS JCTE System Admins",
+          impact: "Provides alerting on JCTE servers, queues, and database replication."
+        },
+        {
+          id: "jcte-inf-5",
+          component: "Firewall / network rules",
+          description: "(Add firewall details)",
+          owner: "ITS Network",
+          impact: "(Add firewall details)"
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Crew schedulers can't log in or do any scheduling work",
+      "Flight feed data goes stale, which can lead to flight delays",
+      "Crew can't view schedules or future rosters, or pilots can't check in",
+      "Crew data feeds to S4A, AirTrak and payroll are affected",
+      "RRT0 on 2026-10-07: JCTE couldn't be reached through Azure Virtual Desktop (AVD) because of a network/Azure issue"
+    ],
+    knownWorkarounds: [
+      "Pilots call the crew scheduler on duty to check in",
+      "FAs check in through the Block to Block app or by calling crew scheduling",
+      "Crew Access can run on one web server if the load balancer is redirected",
+      "Stale flight data: use Refresh (not Update) in Tracking Editor",
+      "DR plan: Disaster Recovery Plan - JCTE.xls"
+    ],
+    validationChecklist: [
+      "Confirm scope: one user, multiple users, or all users. Ask whether flight delays are happening; if yes, it's Sev 1.",
+      "Check the JCTE System Admin on-call in Everbridge and contact them.",
+      "Check the AlarmsOne / Zenoss dashboard and alerts.",
+      "Check that Tukv3cmsinf01 is up. If it's down, nobody can log in; notify the System Admin.",
+      "Ping the database Tukvvcmsdb01. If it's down, open a Sev 1 and contact the Oracle DBA on-call.",
+      "Crew Access: test logging in from inside and outside the Alaska network. If it only fails outside, engage the Network team.",
+      "Flight feed not updating: rule out a VisOps outage, then check MQ Series / ActiveMQ alerts.",
+      "Multiple users can't log in with W3 accounts: open a Sev 1 to the JCTE System Admins and engage Compute & Platforms.",
+      "If the problem continues, the System Admin contacts Jeppesen 24x7 support."
+    ],
+    vendorContacts: {
+      companyNote: "Jeppesen",
+      categoryNote:
+        "Application Name: JCTE (Jeppesen Crew Tracking Enterprise). Also called Crew Access, Crew Exchange, Crew Scheduling System, CMS • Criticality: Tier 1. Standard ITS Tier 1 SLAs apply • URLs: Crew Tracking: http://crewtracking.alaskaair.com/. Crew Access: https://crewaccess.alaskaair.com/site/. TIC reports: https://jctereports.alaskaair.com/tic/default",
+      supportEmail: "opssupport@jeppesen.com",
+      supportEmailNote: "Jeppesen 24x7 Support",
+      supportPhone:
+        "+1-303-328-6412, effective 01 Apr 2026. For ProdOps Sev 1 use only. Otherwise the System Admins contact Jeppesen",
+      technicalSupport:
+        "Jeppesen 24x7: +1-303-328-6412 / opssupport@jeppesen.com. Don't share the number; ProdOps uses it only for Sev 1",
+      accountManager: "(Add Account Manager)",
+      namedEscalationContact:
+        "Jeppesen 24x7: +1-303-328-6412 (ProdOps Sev 1 use only; otherwise the JCTE System Admins contact Jeppesen)",
+      supportHours: "24x7",
+      escalation:
+        "Vendor Contacts:\n• Jeppesen 24x7: +1-303-328-6412 / opssupport@jeppesen.com. Don't share the number; ProdOps uses it only for Sev 1\n• Account Manager: (Add Account Manager)\n\nCommunication Guidelines:\n• Don't open tickets to the Crew team for crew questions. Send FAs to their scheduling committees, and pilots to the MEC Scheduling Chair.\n• When escalating, give: user name, PeopleSoft ID, which app they're using, how they're accessing it, steps to reproduce, and screenshots.\n• The JCTE System Admins contact Jeppesen.",
+      communicationGuidelines: [
+        "Don't open tickets to the Crew team for crew questions. Send FAs to their scheduling committees, and pilots to the MEC Scheduling Chair.",
+        "When escalating, give: user name, PeopleSoft ID, which app they're using, how they're accessing it, steps to reproduce, and screenshots.",
+        "The JCTE System Admins contact Jeppesen."
+      ],
+      responseSlas: [
+        {
+          label: "Standard SLAs",
+          priority: "Standard SLAs",
+          level: "Tier 1 System",
+          description: "Standard ITS Tier 1 SLAs",
+          target: "Standard ITS Tier 1 SLAs",
+          value: "Standard ITS Tier 1 SLAs"
+        },
+        {
+          label: "Sev 1",
+          priority: "Sev 1",
+          level: "Critical / Ground Stop",
+          description: "flight delays, all users down, or multiple users can't log in",
+          target: "Flight delays, all users down, or multiple users can't log in",
+          value: "flight delays, all users down, or multiple users can't log in"
+        },
+        {
+          label: "Sev 2",
+          priority: "Sev 2",
+          level: "High Operational Impact",
+          description:
+            "Crew Access fully down (both servers), or Alert Monitor problems causing delays",
+          target: "Crew Access fully down (both servers), or Alert Monitor problems causing delays",
+          value:
+            "Crew Access fully down (both servers), or Alert Monitor problems causing delays"
+        },
+        {
+          label: "Update cadence",
+          priority: "Update cadence",
+          level: "Incident Updates",
+          description: "(Add update cadence)",
+          target: "(Add update cadence)",
+          value: "(Add update cadence)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS JCTE System Admins. Tech Owner: Sue Rawlings",
+      itsTeamNote:
+        "ITS System Owners: Russell Ruiz (206-392-6255), Amirtha Raj Gnana Seelan (1-248-296-2602), Chaithanya Vadlamudi (1-425-919-8914)",
+      applicationOwner:
+        "Tech Owner: Sue Rawlings (253-341-1173) • ITS System Owners: Russell Ruiz (206-392-6255), Amirtha Raj Gnana Seelan (1-248-296-2602), Chaithanya Vadlamudi (1-425-919-8914)",
+      onCallSupport: "ITS JCTE System Admins on-call (Everbridge)",
+      systemAdministration:
+        "System Administration and Everbridge Focal: Sue Rawlings, 253-341-1173",
+      businessOwner:
+        "Allen Thieman (VP Inflight), David Mets (VP Flight Ops)",
+      passwordSupport: "Service Desk / password help: 1-877-238-1077",
+      everbridgeContacts:
+        "Focal: Sue Rawlings (253-341-1173) • Everbridge Backups: Nathan McFerren (859-391-4779), Terrance Chariandy, Keenan Faatea"
+    },
+    incidentHistory: [
+      {
+        id: "RRT0 (2026-10-07)",
+        date: "2026-10-07",
+        duration: "Documented RRT0",
+        severity: "RRT0 / Sev 1",
+        title: "JCTE couldn't be reached through Azure Virtual Desktop (AVD)",
+        rootCause:
+          "RRT0 on 2026-10-07: JCTE couldn't be reached through Azure Virtual Desktop (AVD) because of a network/Azure issue.",
+        resolution: "Network / Azure connectivity restored for AVD users."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "JCTE System Summary 3 19 26.docx",
+        type: "Primary Source — JCTE System Summary (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "2026-03-19",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BF48E8ABE-AEA3-40FB-9AE6-B79DA66D9931%7D&file=JCTE%20System%20Summary%203%2019%2026.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "JCTE_Triage_Troubleshooting_6.10.25.docx",
+        type: "Primary Source — JCTE Triage & Troubleshooting (Word)",
+        owner: "ITS JCTE System Admins",
+        updated: "2025-06-10",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B136D288F-45D3-437D-A139-3F393068EB49%7D&file=JCTE_Triage_Troubleshooting_6.10.25.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "JCTE_System_Summary_1.7.docx",
+        type: "Primary Source — JCTE System Summary v1.7 (Word)",
+        owner: "ITS JCTE System Admins",
+        updated: "v1.7",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B89ED58A8-38EB-4EC5-9743-368B91EF74DA%7D&file=JCTE_System_Summary_1.7.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "JCTE System Communication Diagram.pdf",
+        type: "Primary Source — JCTE System Communication Diagram (PDF)",
+        owner: "ITS Crew Systems",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/iServer365/Shared%20Documents/HistoricalDocuments/Historical%20Diagrams%20Archive%202024/Flight%20Operations%20-%20Capability%20L1/Crew%20Scheduling/JCTE/JCTE%20System%20Communication%20Diagram.pdf?web=1"
+      },
+      {
+        title: "System Summary Password Management in W3 Domain- Account Creation - W3 Domain JCTE - JCTE Docs.docx",
+        type: "Additional Source — W3 Domain Password Management & Account Creation (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B3D8092DB-EC6A-44ED-9B6D-560598D93CB2%7D&file=System%20Summary%20Password%20Management%20in%20W3%20Domain-%20Account%20Creation%20-%20W3%20Domain%20JCTE%20-%20JCTE%20Docs.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "JCTE system not consuming flight messages.docx",
+        type: "Additional Source — JCTE Flight Messages Troubleshooting (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B7FA76419-2A4B-4A8A-B729-85CCA30D8C6B%7D&file=JCTE%20system%20not%20consuming%20flight%20messages.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Critical Applications.xlsx",
+        type: "Additional Source — Critical Applications Inventory (Excel)",
+        owner: "ITS Production Operations",
+        updated: "Current",
+        url: "https://alaskaair-my.sharepoint.com/personal/suraj_mondal_alaskaair_com/_layouts/15/Doc.aspx?sourcedoc=%7B38D6135B-3F6C-44B6-9865-7897353CABCA%7D&file=Critical%20Applications.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      }
+    ]
+  },
+  airtrack: {
+    id: "airtrack",
+    name: "AirTrak",
+    breadcrumbTrail: [
+      "Ground Stop Applications",
+      "AirTrak",
+      "Application Impact Details"
+    ],
+    pageTitle: "AirTrak – Application Impact Details",
+    pageSubtitle:
+      "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network.",
+    applicationsTabTitle: "AirTrak (AOC App / Ops360 / Irrops)",
+    applicationsTabSubheading: "Applications & Systems (AirTrak Components)",
+    applicationsTabSubtitle:
+      "Also called AOC App, Ops360, Irrops. Tier 1 and Ground Stop eligible application built in-house for real-time control of the operation (aircraft assignments, Irrops, flight status).",
+    applicationsCardSubtitle:
+      "This list shows the core AirTrak UI, AKS microservices, Auth API, decision support APIs, and Azure Functions, their business functions, impact if down, direct dependencies, and ITS owner.",
+    dependenciesTabTitle: "AirTrak – Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream event feeds and APIs sending data to AirTrak, downstream consumers relying on AirTrak data, and Azure Front Door/AKS/App Service/Azure SQL/ExpressRoute infrastructure.",
+    status: "Active",
+    lastUpdated: "Nov 04, 2026",
+    subtitle:
+      "AirTrak. Also called AOC App, Ops360, Irrops · Criticality: Tier 1 and Ground Stop eligible. Business impact: High · 24x7 (Target recovery: 1 hour or less)",
+    company:
+      "None; built in-house. Key outside services: Ping Identity, Split.io, AppDynamics",
+    website:
+      "airtrak.alaskasworld.com. Older URL: https://AOC-prod-frontdoor.azurefd.net/",
+    category:
+      "Flight Ops: real-time control of the operation (aircraft assignments, Irrops, flight status)",
+    itsTeam: "ITS Ops 360 AirtrAK (Team.Maganty@alaskaair.com)",
+    logo: "public/applications/airtrack.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 6,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title:
+        "Criticality: Tier 1 and Ground Stop eligible. Business impact: High — 24x7. Target recovery: 1 hour or less",
+      message:
+        "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network. URL: airtrak.alaskasworld.com. Older URL: https://AOC-prod-frontdoor.azurefd.net/",
+      description:
+        "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network.",
+      updatedAgo: "Updated from aoc-runbook, Airtrak_System_Summary & Airtrak_Triage_Troubleshooting"
+    },
+    impactedSystems: [
+      {
+        id: "airtrak-ui",
+        name: "AirTrak UI (React web app)",
+        subName: "(Azure App Service — West US 2 & West Central US)",
+        appTabSubName: "(Azure App Service — West US 2 & West Central US)",
+        description:
+          "Gantt chart UI on Azure App Service, running in West US 2 and West Central US at the same time",
+        appTabDescription:
+          "Gantt chart UI on Azure App Service, running in West US 2 and West Central US at the same time",
+        shortDescription:
+          "Gantt chart UI on Azure App Service, running in West US 2 and West Central US at the same time",
+        businessFunction: "Monitoring the operation",
+        impact: "No visibility for the Operations Control Center (AOC)",
+        impactIfDown: "No visibility for the Operations Control Center (AOC)",
+        dependencies: "Front Door, PingFederate",
+        keyDependencies: "Front Door, PingFederate",
+        owner: "ITS Ops 360 AirtrAK",
+        technicalOwner: "ITS Ops 360 AirtrAK",
+        status: "Potential"
+      },
+      {
+        id: "airtrak-core-aks",
+        name: "AOCFlights / AOCAssignments / AOCAirTrakManager",
+        subName: "(Azure Kubernetes Service — AKS)",
+        appTabSubName: "(Azure Kubernetes Service — AKS)",
+        description: "Core services on Azure Kubernetes (AKS)",
+        appTabDescription: "Core services on Azure Kubernetes (AKS)",
+        shortDescription: "Core services on Azure Kubernetes (AKS)",
+        businessFunction: "Flight data and aircraft assignments",
+        impact: "Flights missing from the Gantt",
+        impactIfDown: "Flights missing from the Gantt",
+        dependencies: "Ops360 SQL database",
+        keyDependencies: "Ops360 SQL database",
+        owner: "ITS Ops 360 AirtrAK",
+        technicalOwner: "ITS Ops 360 AirtrAK",
+        status: "Potential"
+      },
+      {
+        id: "airtrak-irrops-services",
+        name: "AOCIrropsManager / IRROPSQueuePublisher / IrropsCodes",
+        subName: "(Irrops Processing Services)",
+        appTabSubName: "(Irrops Processing Services)",
+        description: "Services that process Irrops",
+        appTabDescription: "Services that process Irrops",
+        shortDescription: "Services that process Irrops",
+        businessFunction:
+          "Divert, return to gate (RTG), air turn back (ATB), cancel, delay",
+        impact: "Irrops can't be submitted",
+        impactIfDown: "Irrops can't be submitted",
+        dependencies: "Service Bus",
+        keyDependencies: "Service Bus",
+        owner: "ITS Ops 360 AirtrAK",
+        technicalOwner: "ITS Ops 360 AirtrAK",
+        status: "Potential"
+      },
+      {
+        id: "airtrak-auth-api",
+        name: "Auth API / AOCAuthorization",
+        subName: "(Authentication & Permissions)",
+        appTabSubName: "(Authentication & Permissions)",
+        description: "Login and permissions",
+        appTabDescription: "Login and permissions",
+        shortDescription: "Login and permissions",
+        businessFunction: "User access",
+        impact: "All users locked out",
+        impactIfDown: "All users locked out",
+        dependencies: "PingFederate",
+        keyDependencies: "PingFederate",
+        owner: "ITS Ops 360 AirtrAK",
+        technicalOwner: "ITS Ops 360 AirtrAK",
+        status: "Potential"
+      },
+      {
+        id: "airtrak-decision-support",
+        name: "AOCCrewInfo, AOCScores, Ground Events API",
+        subName: "(Crew, Scores & Out-of-Service Events)",
+        appTabSubName: "(Crew, Scores & Out-of-Service Events)",
+        description: "Crew data, revenue scores, out-of-service (OTS) events",
+        appTabDescription: "Crew data, revenue scores, out-of-service (OTS) events",
+        shortDescription: "Crew data, revenue scores, out-of-service (OTS) events",
+        businessFunction: "Decision support",
+        impact: "Missing crew, score or ground event data",
+        impactIfDown: "Missing crew, score or ground event data",
+        dependencies: "JCTE / Crew APIs, Revenue Management API",
+        keyDependencies: "JCTE / Crew APIs, Revenue Management API",
+        owner: "ITS Ops 360 AirtrAK",
+        technicalOwner: "ITS Ops 360 AirtrAK",
+        status: "Potential"
+      },
+      {
+        id: "airtrak-azure-functions",
+        name: "Azure Functions",
+        subName: "(EquipmentChange, ShortTurnTime, UserAssignmentsClose, ScheduleFlightAdd)",
+        appTabSubName: "(EquipmentChange, ShortTurnTime, UserAssignmentsClose, ScheduleFlightAdd)",
+        description:
+          "EquipmentChange, ShortTurnTime, UserAssignmentsClose, ScheduleFlightAdd",
+        appTabDescription:
+          "EquipmentChange, ShortTurnTime, UserAssignmentsClose, ScheduleFlightAdd",
+        shortDescription:
+          "EquipmentChange, ShortTurnTime, UserAssignmentsClose, ScheduleFlightAdd",
+        businessFunction: "Processing incoming events",
+        impact: "Equipment changes and flight adds are missed",
+        impactIfDown: "Equipment changes and flight adds are missed",
+        dependencies: "Service Bus",
+        keyDependencies: "Service Bus",
+        owner: "ITS Ops 360 AirtrAK",
+        technicalOwner: "ITS Ops 360 AirtrAK",
+        status: "Potential"
+      }
+    ],
+    upstreamDependencies: [
+      "Flight schedule events on Service Bus (as.sb.fo.ops360.flight.events), Azure Event Hub (FLIFO and aircraft status)",
+      "VisOps / DAP service bus",
+      "Crew APIs (CrewOnFlight, CrewRoster) from JCTE / AIMS",
+      "ACARS events",
+      "Revenue Management Pricing API (through APIM), PingFederate, Split.io"
+    ],
+    downstreamConsumers: [
+      "Irrops, flight times and swap queues to downstream systems, plus the Ops360 Notification Engine",
+      "VisOps",
+      "Sabre (ETA/ETD times)",
+      "Real Time Gates (RTG)",
+      "AS/QX SOC, NOC, Dispatch"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream feeds (Service Bus flight events, Azure Event Hub FLIFO/status, VisOps/DAP, Crew APIs from JCTE/AIMS, ACARS events, Revenue Management API, PingFederate, Split.io) flowing into AirTrak to power Irrops/swap queues, VisOps, Sabre ETA/ETD, Real Time Gates (RTG), and AS/QX SOC, NOC, and Dispatch.",
+      diagramUpstream: [
+        {
+          id: "at-up-1",
+          name: "Service Bus & Azure Event Hub",
+          subtitle: "as.sb.fo.ops360.flight.events, FLIFO & aircraft status",
+          iconType: "transfer"
+        },
+        {
+          id: "at-up-2",
+          name: "VisOps / DAP & ACARS Events",
+          subtitle: "Flight operations & aircraft comms events",
+          iconType: "network"
+        },
+        {
+          id: "at-up-3",
+          name: "Crew APIs (JCTE / AIMS)",
+          subtitle: "CrewOnFlight, CrewRoster",
+          iconType: "database"
+        },
+        {
+          id: "at-up-4",
+          name: "RM Pricing API, PingFederate, Split.io",
+          subtitle: "Through APIM, SSO & feature flags",
+          iconType: "ticket"
+        }
+      ],
+      diagramServices: [
+        "AirTrak UI (React on Azure App Service)",
+        "AOCFlights / AOCAssignments / AOCAirTrakManager (AKS)",
+        "AOCIrropsManager / IRROPSQueuePublisher / IrropsCodes",
+        "Auth API / AOCCrewInfo / AOCScores / Azure Functions"
+      ],
+      diagramDownstream: [
+        {
+          id: "at-down-1",
+          name: "Irrops, Flight Times & Swap Queues",
+          subtitle: "Plus Ops360 Notification Engine",
+          iconType: "nodes"
+        },
+        {
+          id: "at-down-2",
+          name: "VisOps",
+          subtitle: "Operations database & tracking",
+          iconType: "database"
+        },
+        {
+          id: "at-down-3",
+          name: "Sabre (ETA/ETD times)",
+          subtitle: "Flight time updates",
+          iconType: "ticket"
+        },
+        {
+          id: "at-down-4",
+          name: "Real Time Gates (RTG)",
+          subtitle: "Gate planning & operations",
+          iconType: "chart"
+        },
+        {
+          id: "at-down-5",
+          name: "AS/QX SOC, NOC, Dispatch",
+          subtitle: "Operations Control Center teams",
+          iconType: "team"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 5, tone: "red" },
+        { label: "Downstream Consumers", count: 5, tone: "green" },
+        { label: "AirTrak Components", count: 6, tone: "blue" },
+        { label: "Infrastructure Components", count: 8, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network."
+      ],
+      upstreamTable: [
+        {
+          id: "at-upt-1",
+          name: "Flight schedule events on Service Bus (as.sb.fo.ops360.flight.events), Azure Event Hub (FLIFO and aircraft status)",
+          description: "Inbound flight schedule events on Azure Service Bus and real-time FLIFO/aircraft status via Azure Event Hub.",
+          type: "Internal / Azure",
+          impact: "Missing flight schedule updates or real-time aircraft status in AirTrak."
+        },
+        {
+          id: "at-upt-2",
+          name: "VisOps / DAP service bus",
+          description: "Operational flight and schedule feed from VisOps / DAP.",
+          type: "Internal / Service Bus",
+          impact: "Flights or operational updates fail to sync into AirTrak."
+        },
+        {
+          id: "at-upt-3",
+          name: "Crew APIs (CrewOnFlight, CrewRoster) from JCTE / AIMS",
+          description: "Crew assignment and roster APIs from JCTE (AS) and AIMS (QX).",
+          type: "Internal / API",
+          impact: "Crew info doesn't load in AirTrak (e.g., MI6574 and INC00014511)."
+        },
+        {
+          id: "at-upt-4",
+          name: "ACARS events",
+          description: "Real-time OOOI and aircraft event messages from ACARS.",
+          type: "Internal / Aircraft Comms",
+          impact: "Real-time aircraft movement times do not update automatically."
+        },
+        {
+          id: "at-upt-5",
+          name: "Revenue Management Pricing API (through APIM), PingFederate, Split.io",
+          description: "Revenue scores via APIM, SSO authentication via PingFederate, and feature flags via Split.io.",
+          type: "External & Internal",
+          impact: "Missing revenue scores, user authentication lockout, or feature flag issues."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "at-dwt-1",
+          name: "Irrops, flight times and swap queues to downstream systems, plus the Ops360 Notification Engine",
+          description: "Outbound queues publishing aircraft swaps, flight time changes, Irrops actions, and notifications.",
+          type: "Internal / Queues",
+          impact: "Downstream systems do not receive aircraft swaps, flight time updates, or Irrops notifications."
+        },
+        {
+          id: "at-dwt-2",
+          name: "VisOps",
+          description: "Receives irregular operations and equipment assignment updates from AirTrak.",
+          type: "Internal System",
+          impact: "Equipment swaps and Irrops actions made in AirTrak do not flow to VisOps."
+        },
+        {
+          id: "at-dwt-3",
+          name: "Sabre (ETA/ETD times)",
+          description: "Receives updated ETA and ETD flight times from AirTrak.",
+          type: "External / Reservations",
+          impact: "Missing or wrong ETA/ETD data sent to Sabre."
+        },
+        {
+          id: "at-dwt-4",
+          name: "Real Time Gates (RTG)",
+          description: "Gate management system consuming aircraft assignment and flight time updates.",
+          type: "Internal System",
+          impact: "Gate assignments lack real-time tail swap and ETA/ETD updates."
+        },
+        {
+          id: "at-dwt-5",
+          name: "AS/QX SOC, NOC, Dispatch",
+          description: "Alaska and Horizon System Operations Control, Network Operations Control, and Dispatch teams.",
+          type: "Internal Teams",
+          impact: "SOC, NOC and Dispatch can't do equipment swaps or Irrops and lose real-time operational visibility."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "at-inf-1",
+          component: "Azure Front Door Premium",
+          description:
+            "Azure Front Door Premium (airtrak-prod-afd) with web application firewall (WAF) policy aocPRODAFDWafPolicy",
+          owner: "ITS Ops 360 AirtrAK / Cloud",
+          impact: "Primary global entry point and WAF for AirTrak UI and APIs."
+        },
+        {
+          id: "at-inf-2",
+          component: "Traffic Manager & Application Gateway",
+          description:
+            "Traffic Manager (aoc-app-primary-tm) and Application Gateway (aoc-app-gateway) as the fallback path",
+          owner: "ITS Ops 360 AirtrAK / Cloud",
+          impact: "Fallback routing path used during Front Door failover."
+        },
+        {
+          id: "at-inf-3",
+          component: "AKS clusters",
+          description: "its-prod-aks-westus2 / its-prod-aks-westcentralus",
+          owner: "ITS Automated Services / ITS Ops 360 AirtrAK",
+          impact: "Hosts core AirTrak microservices in West US 2 and West Central US."
+        },
+        {
+          id: "at-inf-4",
+          component: "App Service plans",
+          description: "flightops-prod-plan-lin-w2-01 / wc-01",
+          owner: "ITS Ops 360 AirtrAK",
+          impact: "Hosts the AirTrak React UI web app in West US 2 and West Central US."
+        },
+        {
+          id: "at-inf-5",
+          component: "Ops360 Azure SQL database",
+          description:
+            "Ops360 Azure SQL database (multi-region, with a documented failover process)",
+          owner: "ITS Ops 360 AirtrAK",
+          impact: "Primary persistence store for flights, aircraft assignments, and Irrops."
+        },
+        {
+          id: "at-inf-6",
+          component: "Key Vault & App Configuration",
+          description:
+            "Key Vault: aoc-prod-kv. App Configuration: aoc-prod-application-configuration-service / aoc-wc-prod-acs",
+          owner: "ITS Ops 360 AirtrAK",
+          impact: "Stores secrets and application configuration across regions."
+        },
+        {
+          id: "at-inf-7",
+          component: "Monitoring",
+          description:
+            "Application Insights (aoc-prod-appinsights), Log Analytics, AppDynamics, Dynatrace",
+          owner: "ITS Ops 360 AirtrAK",
+          impact: "Telemetry, logging, and health monitoring for AirTrak services."
+        },
+        {
+          id: "at-inf-8",
+          component: "Azure ExpressRoute",
+          description:
+            "Azure ExpressRoute. An ExpressRoute outage affected AirTrak on 2026-08-24",
+          owner: "ITS Network / Cloud",
+          impact: "Hybrid connectivity between on-prem services and Azure."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "SOC, NOC and Dispatch can't do equipment swaps or Irrops",
+      "Missing flights within 24 hours are Sev 1",
+      "Crew info doesn't load. Examples: MI6574, and INC00014511 (QX crew latency)",
+      "HA SOCC (Hawaiian operations center) lost access. INC00008592 lasted 1 hr 55 min. INC3416538 was a separate access issue",
+      "Wrong ETA/ETD data sent to Sabre for diverted round-robin flights"
+    ],
+    knownWorkarounds: [
+      "Use the Island browser if Chrome access fails. This worked during INC00008592",
+      "Check the Out of Service board / Dashboard for ground events",
+      "Single-user issues: clear filters, clear the browser cache, or sign out of VPN",
+      "Irrops access problems: ask another user to make the entry, or contact the AS NOD / QX FCM (24/7)",
+      "Fail over through Front Door / Traffic Manager using the DevOps pipeline"
+    ],
+    validationChecklist: [
+      "Confirm scope: one user, multiple users, or all users, and whether the users are AS, QX or HA.",
+      "Single user: check the URL, the login redirect, and browser cache and filters. This is Sev 4.",
+      "All users locked out: restart the Auth API and Assignments API in both regions. If that doesn't fix it, open a Sev 2 and page the ITS Ops 360 AirtrAK on-call.",
+      "503 or other 500-series errors: restart the UI App Services in both regions.",
+      "No flights showing: restart the Flights API. Some flights missing: restart ScheduleFlightAddFunction.",
+      "Ground events or Irrops reasons missing: check the AKS pods. If pods are down, call ITS Automated Services. If pods are up, call the AirtrAK on-call.",
+      "Check Application Insights, the Front Door health probe, and changes from the last 48 hours.",
+      "Check PingFederate, Azure/ExpressRoute and network health. Engage Identity, Network or Cloud teams as needed."
+    ],
+    vendorContacts: {
+      companyNote:
+        "None; built in-house. Key outside services: Ping Identity, Split.io, AppDynamics",
+      categoryNote:
+        "Application Name: AirTrak. Also called AOC App, Ops360, Irrops • Criticality: Tier 1 and Ground Stop eligible. Business impact: High • URL: airtrak.alaskasworld.com. Older URL: https://AOC-prod-frontdoor.azurefd.net/",
+      supportEmail: "Not applicable (built in-house)",
+      supportEmailNote: "Built in-house — Primary ITS Team Owner: ITS Ops 360 AirtrAK (Team.Maganty@alaskaair.com)",
+      supportPhone: "Not applicable (built in-house)",
+      technicalSupport:
+        "Not applicable (built in-house). For outside platforms: Microsoft Azure Support, Ping Identity, Split.io",
+      accountManager: "Not applicable (built in-house)",
+      namedEscalationContact:
+        "For outside platforms: Microsoft Azure Support, Ping Identity, Split.io",
+      supportHours: "24x7. Target recovery: 1 hour or less",
+      escalation:
+        "Vendor Contacts:\n• Not applicable (built in-house). For outside platforms: Microsoft Azure Support, Ping Identity, Split.io\n\nCommunication Guidelines:\n• On-call is through xMatters or Everbridge. Page or call twice within 90 seconds, and escalate if there's no response in 5 minutes.\n• ProdOps leads or co-leads P1, P2 and RRT0 bridges.\n• When escalating, give: flight number, flight date, Irrops type attempted, and number of users affected.",
+      communicationGuidelines: [
+        "On-call is through xMatters or Everbridge. Page or call twice within 90 seconds, and escalate if there's no response in 5 minutes.",
+        "ProdOps leads or co-leads P1, P2 and RRT0 bridges.",
+        "When escalating, give: flight number, flight date, Irrops type attempted, and number of users affected."
+      ],
+      responseSlas: [
+        {
+          label: "Recovery target",
+          priority: "Recovery target",
+          level: "Tier 1 / Ground Stop Eligible",
+          description: "Recovery target: 1 hour or less",
+          target: "1 hour or less",
+          value: "1 hour or less"
+        },
+        {
+          label: "Response target",
+          priority: "Response target",
+          level: "Multi-Machine / No Backup",
+          description:
+            "15 minutes if multiple machines are affected or no backup machine is available. Otherwise Sev 3",
+          target: "15 minutes (otherwise Sev 3)",
+          value:
+            "15 minutes if multiple machines are affected or no backup machine is available. Otherwise Sev 3"
+        },
+        {
+          label: "Sev 1 / Sev 2",
+          priority: "Sev 1 / Sev 2",
+          level: "Severity Criteria",
+          description:
+            "Sev 1: flights missing within 24 hours. Sev 2: all users can't access, or Irrops fail within 24 hours",
+          target: "Sev 1: flights missing <24h | Sev 2: all users locked out or Irrops fail <24h",
+          value:
+            "Sev 1: flights missing within 24 hours. Sev 2: all users can't access, or Irrops fail within 24 hours"
+        },
+        {
+          label: "Update cadence",
+          priority: "Update cadence",
+          level: "Incident Updates",
+          description: "(Add update cadence)",
+          target: "(Add update cadence)",
+          value: "(Add update cadence)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS Ops 360 AirtrAK (Team.Maganty@alaskaair.com)",
+      itsTeamNote:
+        "Technical Owner / RCA Owner: GK Maganty • Accountable Director: Reid Childress • ITS System Owners: Sean Duggan, Ben Shocki, Michael Dunn",
+      applicationOwner:
+        "Technical Owner / RCA Owner: GK Maganty • ITS System Owners: Sean Duggan, Ben Shocki, Michael Dunn • Accountable Director: Reid Childress",
+      onCallSupport:
+        "On-Call: ITS Ops 360 AirtrAK. AKS issues: ITS Automated Services",
+      systemAdministration:
+        "On-Call: ITS Ops 360 AirtrAK • AKS issues: ITS Automated Services",
+      businessOwner:
+        "Ben Shocki (ITS Flight Operations) • Business Owners (24/7): Alaska SOC (NOD) / Horizon SOC (QX Flight Controller)",
+      passwordSupport: "Service Desk: 877-238-1077",
+      everbridgeContacts:
+        "Everbridge Focal: TJ Banakes, 253-653-5097. Backup: Katie Michel, 971-235-0986"
+    },
+    incidentHistory: [
+      {
+        id: "INC00008592 & INC3416538",
+        date: "2026-10-21",
+        duration: "1 hr 55 min",
+        severity: "RRT0 / Sev 1",
+        title: "HA SOCC (Hawaiian operations center) lost access to AirTrak",
+        rootCause:
+          "HA SOCC (Hawaiian operations center) lost access. INC00008592 lasted 1 hr 55 min. INC3416538 was a separate access issue.",
+        resolution: "Use the Island browser if Chrome access fails (worked during INC00008592)."
+      },
+      {
+        id: "MI6574 & INC00014511",
+        date: "2026-10",
+        duration: "Documented Incident",
+        severity: "High",
+        title: "Crew info doesn't load in AirTrak (QX crew latency)",
+        rootCause:
+          "Crew info doesn't load. Examples: MI6574, and INC00014511 (QX crew latency).",
+        resolution: "Investigated Crew APIs (CrewOnFlight, CrewRoster) from JCTE / AIMS."
+      },
+      {
+        id: "ExpressRoute Outage (2026-08-24)",
+        date: "2026-08-24",
+        duration: "Documented Outage",
+        severity: "High",
+        title: "Azure ExpressRoute outage affected AirTrak",
+        rootCause: "An ExpressRoute outage affected AirTrak on 2026-08-24.",
+        resolution: "Restored ExpressRoute / network health."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "aoc-runbook.docx",
+        type: "Primary Source — AOC / AirTrak Operations Runbook (Word)",
+        owner: "ITS Ops 360 AirtrAK",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B8D1A1BF2-8EA2-4B25-9EDF-DD7EB1E5265B%7D&file=aoc-runbook.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Airtrak_System_Summary.docx",
+        type: "Primary Source — AirTrak System Summary (Word)",
+        owner: "ITS Ops 360 AirtrAK",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B8136D3C8-9D11-4793-AEFC-1C157EA7CB97%7D&file=Airtrak_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Airtrak_Triage_Troubleshooting.docx",
+        type: "Primary Source — AirTrak Triage & Troubleshooting (Word)",
+        owner: "ITS Ops 360 AirtrAK",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BEBCEF9A6-65BB-492A-87BC-53AF2E8E19CA%7D&file=Airtrak_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "AirTrak System Summary.docx",
+        type: "Primary Source — AirTrak System Summary (Word)",
+        owner: "ITS Ops 360 AirtrAK",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B419ACCEF-8571-4454-AE4D-E2C0962663E6%7D&file=AirTrak%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "RRT0 –21 Oct - INC00008592 – AirTrak Intermittent Availability Issue.docx",
+        type: "Additional Source — RRT0 INC00008592 Post-Incident Review (Word)",
+        owner: "ITS Sev1 Response",
+        updated: "2026-10-21",
+        url: "https://alaskaair.sharepoint.com/sites/ITSSev1Response/_layouts/15/Doc.aspx?sourcedoc=%7BFD78FD98-7F7D-40CC-9311-349271FEF320%7D&file=RRT0%20%E2%80%9321%20Oct%20-%20INC00008592%20%E2%80%93%20AirTrak%20Intermittent%20Availability%20Issue.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "AS+HA OPL 2026-10-26.pptx",
+        type: "Additional Source — AS+HA Operational Review (PowerPoint)",
+        owner: "ASICS / IO",
+        updated: "2026-10-26",
+        url: "https://alaskaair.sharepoint.com/sites/ASICS/IO/_layouts/15/Doc.aspx?sourcedoc=%7B0CC90074-BCC7-4C2E-B494-2DB0AC2D679D%7D&file=AS%2BHA%20OPL%202026-10-26.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1"
       },
       {
         title: "Executive Summary of Incidents 2025-12 to Current Date.xlsx",
@@ -5669,6 +6613,9 @@ export function getGroundStopImpactDetails(appItem) {
   }
   if (lowerKey === "smart4aviation (s4a)" || lowerKey === "s4a") {
     return VENDOR_IMPACT_DETAILS["Smart4Aviation (S4A)"];
+  }
+  if (lowerKey === "airtrack" || lowerKey === "airtrak") {
+    return VENDOR_IMPACT_DETAILS.airtrack;
   }
   if (lowerKey === "aims" || lowerKey === "aims-vendor") {
     return VENDOR_IMPACT_DETAILS["aims-vendor"];
