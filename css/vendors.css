@@ -1050,10 +1050,10 @@ body .vendor-view.vendor-btn-details,
     justify-content: center;
     gap: 6px;
     padding: 0 12px;
-    border: 1.5px solid #60A5FA !important;
+    border: 1px solid #0062E6 !important;
     border-radius: 10px;
-    background: #FFFFFF !important;
-    color: #0066DF !important;
+    background: linear-gradient(180deg, #0A74FF 0%, #0062E6 100%) !important;
+    color: #FFFFFF !important;
     font: inherit;
     font-family: var(--aag-font);
     font-size: 13.5px;
@@ -1061,8 +1061,8 @@ body .vendor-view.vendor-btn-details,
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
-    box-shadow: none !important;
-    transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+    box-shadow: 0 3px 10px rgba(0, 102, 238, 0.22) !important;
+    transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
 }
 
 body.vendors-page .vendor-btn-details svg,
@@ -1071,8 +1071,8 @@ body.vendors-page .vendor-btn-details svg,
     height: 15px;
     flex: 0 0 15px;
     fill: none;
-    stroke: #0066DF !important;
-    color: #0066DF !important;
+    stroke: #FFFFFF !important;
+    color: #FFFFFF !important;
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -1088,9 +1088,10 @@ body.vendors-page .vendor-btn-details .vendor-btn-arrow,
 
 body.vendors-page .vendor-btn-details:hover,
 .vendor-btn-details:hover {
-    background: #F0F7FF !important;
-    border-color: #0066DF !important;
-    color: #0052B5 !important;
+    background: linear-gradient(180deg, #0062E6 0%, #004FC4 100%) !important;
+    border-color: #004FC4 !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 5px 14px rgba(0, 82, 204, 0.3) !important;
     transform: translateY(-1px);
 }
 

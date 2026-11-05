@@ -796,7 +796,11 @@ export default function Vendors() {
         </section>
           </>
         ) : (
-            <div className="vi-page-container" id="vendorImpactView">
+            <div
+              className="vi-page-container"
+              id="vendorImpactView"
+              key={impactVendor?.id || impactVendor?.sourceRow || impactData.name}
+            >
               {/* HERO SUMMARY CARD + 4 PASTEL INFO CARDS + TAB BAR */}
               <DetailPageHeader
                 ariaLabel="Vendor summary"
@@ -832,7 +836,7 @@ export default function Vendors() {
 
               {impactTab === "systems" ? (
                 /* FULL-WIDTH APPLICATIONS & SYSTEMS TAB LAYOUT */
-                <div className="vi-apps-tab-layout">
+                <div className="vi-apps-tab-layout vi-animate-tab" key={impactTab}>
                   <section
                     className="vi-card vi-apps-full-card"
                     aria-label="Applications and Systems List"
@@ -1257,7 +1261,7 @@ export default function Vendors() {
                 </div>
               ) : impactTab === "dependencies" && impactData.dependenciesTab ? (
                 /* DEPENDENCIES TAB FULL-WIDTH LAYOUT */
-                <div className="vi-deps-tab-layout">
+                <div className="vi-deps-tab-layout vi-animate-tab" key={impactTab}>
                   {/* ROW 1: DEPENDENCY OVERVIEW DIAGRAM (LEFT) + SUMMARY & KEY TAKEAWAYS (RIGHT) */}
                   <div className="vi-deps-top-grid">
                     {/* LEFT CARD: DEPENDENCY OVERVIEW DIAGRAM */}
@@ -2046,7 +2050,7 @@ export default function Vendors() {
                 </div>
               ) : (
               /* TWO-COLUMN BODY LAYOUT */
-              <div className="vi-content-grid">
+              <div className="vi-content-grid vi-animate-tab" key={impactTab}>
                 {/* LEFT MAIN COLUMN */}
                 <div className="vi-main-col">
                   {/* AMBER WARNING CALLOUT */}

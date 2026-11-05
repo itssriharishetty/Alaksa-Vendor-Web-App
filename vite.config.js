@@ -38,6 +38,13 @@ function fileProtocolPlugin() {
         fs.mkdirSync(destMasterDataDir, { recursive: true });
         fs.copyFileSync(srcMasterData, path.resolve(destMasterDataDir, "master-data.js"));
       }
+
+      // GitHub Pages SPA fallback (404.html) & .nojekyll marker
+      const distIndex = path.resolve(distDir, "index.html");
+      if (fs.existsSync(distIndex)) {
+        fs.copyFileSync(distIndex, path.resolve(distDir, "404.html"));
+      }
+      fs.writeFileSync(path.resolve(distDir, ".nojekyll"), "");
     }
   };
 }
@@ -79,7 +86,7 @@ function publicPathRewritePlugin() {
 }
 
 export default defineConfig({
-  base: "./",
+  base: process.env.VITE_BASE_PATH || "./",
   plugins: [react(), publicPathRewritePlugin(), fileProtocolPlugin()],
   build: {
     outDir: "dist",

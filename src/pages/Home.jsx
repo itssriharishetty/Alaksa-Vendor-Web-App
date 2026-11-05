@@ -191,59 +191,6 @@ const HOME_TOP_CATEGORIES = [
   }
 ];
 
-function useCountUp(target, duration = 1200, delay = 0) {
-  const [value, setValue] = useState(target);
-
-  useEffect(() => {
-    if (!Number.isFinite(target) || target <= 0) {
-      setValue(target);
-      return;
-    }
-
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion || typeof window.requestAnimationFrame !== "function") {
-      setValue(target);
-      return;
-    }
-
-    let rafId = null;
-    let startTime = null;
-    setValue(0);
-
-    function step(timestamp) {
-      if (startTime === null) {
-        startTime = timestamp;
-      }
-      const elapsed = timestamp - startTime - delay;
-      if (elapsed < 0) {
-        rafId = window.requestAnimationFrame(step);
-        return;
-      }
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      const current = progress >= 1 ? target : Math.round(target * eased);
-      setValue(current);
-
-      if (progress < 1) {
-        rafId = window.requestAnimationFrame(step);
-      } else {
-        setValue(target);
-      }
-    }
-
-    rafId = window.requestAnimationFrame(step);
-    return () => {
-      if (rafId) window.cancelAnimationFrame(rafId);
-    };
-  }, [target, duration, delay]);
-
-  return value;
-}
-
 export default function Home() {
   const { applications, vendors, categories, groundStopKeys } = useMasterData();
   const navigate = useNavigate();
@@ -254,9 +201,9 @@ export default function Home() {
   const vendorTarget = Array.isArray(vendors) && vendors.length > 0 ? Math.max(vendors.length, 37) : 37;
   const categoryTarget = Array.isArray(categories) && categories.length > 0 ? Math.max(categories.length, 11) : 11;
 
-  const activeSystemsCount = useCountUp(appTarget, 1200, 0);
-  const connectedVendorsCount = useCountUp(vendorTarget, 1300, 60);
-  const operationalDomainsCount = useCountUp(categoryTarget, 1250, 120);
+  const activeSystemsCount = appTarget;
+  const connectedVendorsCount = vendorTarget;
+  const operationalDomainsCount = categoryTarget;
 
   useEffect(() => {
     const handleKeyDown = event => {

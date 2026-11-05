@@ -102,6 +102,8 @@ body.ground-stops-page .ground-stops-main .ground-stop-card {
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
+  overflow: hidden !important;
+  min-width: 0 !important;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -124,6 +126,9 @@ body.ground-stops-page .ground-stops-main .gs-card-header {
   justify-content: space-between !important;
   gap: 12px !important;
   margin-bottom: 12px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
 }
 
 body.ground-stops-page .ground-stops-main .gs-card-identity {
@@ -186,7 +191,9 @@ body.ground-stops-page .ground-stops-main .gs-card-titles {
   flex-direction: column !important;
   gap: 5px !important;
   min-width: 0 !important;
-  flex: 1 1 auto !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  flex: 1 1 0% !important;
 }
 
 body.ground-stops-page .ground-stops-main .ground-stop-name,
@@ -196,6 +203,10 @@ body.ground-stops-page .ground-stops-main .gs-card-titles h2 {
   color: var(--uht-navy) !important;
   line-height: 1.25 !important;
   margin: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 body.ground-stops-page .ground-stops-main .gs-card-subrow {
@@ -203,6 +214,10 @@ body.ground-stops-page .ground-stops-main .gs-card-subrow {
   align-items: center !important;
   flex-wrap: wrap !important;
   gap: 6px !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
 }
 
 /* Criticality indicator pill (Critical Red / High Orange) */
@@ -215,6 +230,7 @@ body.ground-stops-page .ground-stops-main .gs-criticality-pill {
   padding: 2px 8px !important;
   border-radius: 999px !important;
   line-height: 1.3 !important;
+  flex-shrink: 0 !important;
 }
 
 body.ground-stops-page .ground-stops-main .gs-criticality-pill .gs-criticality-dot,
@@ -248,15 +264,21 @@ body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high i {
 }
 
 body.ground-stops-page .ground-stops-main .gs-category-pill {
-  display: inline-flex !important;
-  align-items: center !important;
+  display: inline-block !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   font-size: 11px !important;
   font-weight: 600 !important;
-  color: var(--uht-text-secondary) !important;
-  background: #F1F5F9 !important;
-  border: 1px solid var(--uht-border) !important;
-  padding: 2px 8px !important;
+  color: #1D4ED8 !important;
+  background: #E8F1FF !important;
+  border: 1px solid #DBEAFE !important;
+  padding: 2px 9px !important;
   border-radius: 999px !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 body.ground-stops-page .ground-stops-main .ground-stop-sla-badge,
@@ -306,25 +328,33 @@ body.ground-stops-page .ground-stops-main .gs-card-footer {
 }
 
 body.ground-stops-page .ground-stops-main .ground-stop-details-button {
-  background: var(--uht-soft-blue) !important;
-  color: var(--uht-blue) !important;
-  border: 1px solid var(--uht-soft-blue-border) !important;
-  border-radius: 999px !important;
-  padding: 7px 14px !important;
-  font-size: 12.5px !important;
+  background: linear-gradient(180deg, #0A74FF 0%, #0062E6 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #0062E6 !important;
+  border-radius: 10px !important;
+  padding: 8px 16px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   display: inline-flex !important;
   align-items: center !important;
-  gap: 5px !important;
-  box-shadow: none !important;
-  transition: background-color 0.15s ease, color 0.15s ease !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  box-shadow: 0 3px 10px rgba(0, 102, 255, 0.22) !important;
+  transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.16s ease !important;
   flex-shrink: 0 !important;
 }
 
-body.ground-stops-page .ground-stops-main .ground-stop-details-button:hover {
-  background: var(--uht-blue) !important;
+body.ground-stops-page .ground-stops-main .ground-stop-details-button svg {
   color: #FFFFFF !important;
-  border-color: var(--uht-blue) !important;
+  stroke: #FFFFFF !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-details-button:hover {
+  background: linear-gradient(180deg, #0062E6 0%, #004FC4 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #004FC4 !important;
+  box-shadow: 0 5px 14px rgba(0, 82, 204, 0.3) !important;
+  transform: translateY(-1px) !important;
 }
 
 /* ==========================================================================
@@ -346,6 +376,8 @@ body.vendors-page .vendors-main .vendor-card {
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
+  overflow: hidden !important;
+  min-width: 0 !important;
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -422,21 +454,57 @@ body.vendors-page .vendors-main .vendor-contact-icon {
   color: var(--uht-blue) !important;
 }
 
-body.vendors-page .vendors-main .vendor-details-btn {
-  background: var(--uht-soft-blue) !important;
-  color: var(--uht-blue) !important;
-  border: 1px solid var(--uht-soft-blue-border) !important;
-  border-radius: 999px !important;
-  padding: 7px 14px !important;
-  font-size: 12.5px !important;
-  font-weight: 600 !important;
+body.vendors-page .vendors-main .vendor-details-btn,
+body.vendors-page .vendors-main .vendor-btn-details,
+body.vendors-page .vendors-main .vendor-view.vendor-btn-details {
+  background: linear-gradient(180deg, #0A74FF 0%, #0062E6 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #0062E6 !important;
+  border-radius: 10px !important;
+  padding: 0 14px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 10px rgba(0, 102, 255, 0.22) !important;
+  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.16s ease !important;
+}
+
+body.vendors-page .vendors-main .vendor-btn-details svg,
+body.vendors-page .vendors-main .vendor-view.vendor-btn-details svg {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
+}
+
+body.vendors-page .vendors-main .vendor-details-btn:hover,
+body.vendors-page .vendors-main .vendor-btn-details:hover,
+body.vendors-page .vendors-main .vendor-view.vendor-btn-details:hover {
+  background: linear-gradient(180deg, #0062E6 0%, #004FC4 100%) !important;
+  color: #FFFFFF !important;
+  border-color: #004FC4 !important;
+  box-shadow: 0 5px 14px rgba(0, 82, 204, 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+body.vendors-page .vendors-main .vendor-btn-contact,
+body.vendors-page .vendors-main .vendor-contact-btn.vendor-btn-contact {
+  background: #E8F2FF !important;
+  color: #0052CC !important;
+  border: 1px solid #BFDBFE !important;
+  border-radius: 10px !important;
   box-shadow: none !important;
 }
 
-body.vendors-page .vendors-main .vendor-details-btn:hover {
-  background: var(--uht-blue) !important;
-  color: #FFFFFF !important;
-  border-color: var(--uht-blue) !important;
+body.vendors-page .vendors-main .vendor-btn-contact svg,
+body.vendors-page .vendors-main .vendor-contact-btn.vendor-btn-contact svg {
+  color: #0052CC !important;
+  stroke: #0052CC !important;
+}
+
+body.vendors-page .vendors-main .vendor-btn-contact:hover,
+body.vendors-page .vendors-main .vendor-contact-btn.vendor-btn-contact:hover {
+  background: #DBEAFE !important;
+  border-color: #93C5FD !important;
+  color: #003E99 !important;
+  transform: translateY(-1px) !important;
 }
 
 /* ==========================================================================
@@ -1693,5 +1761,155 @@ body.vendors-page .vendors-main .vi-copy-btn svg {
   body.ground-stops-page .ground-stops-main .vi-kv-row.vi-kv-row-pastel.no-copy,
   body.vendors-page .vendors-main .vi-kv-row.vi-kv-row-pastel.no-copy {
     grid-template-columns: 36px minmax(96px, 0.85fr) minmax(0, 1.15fr) !important;
+  }
+}
+
+/* ==========================================================================
+   9. SMOOTH PAGE & DETAIL VIEW LOADING ANIMATIONS
+   ========================================================================== */
+@keyframes viPageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.994);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes viCardCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes viTabFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Detail page entrance when clicking "View Details" */
+body.ground-stops-page .ground-stops-main .vi-page-container,
+body.vendors-page .vendors-main .vi-page-container {
+  animation: viPageEnter 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: opacity, transform;
+}
+
+body.ground-stops-page .ground-stops-main .vi-page-container .vi-hero-card,
+body.vendors-page .vendors-main .vi-page-container .vi-hero-card {
+  animation: viCardCascade 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered cascade for the 4 pastel info cards inside the hero header */
+body.ground-stops-page .ground-stops-main .vi-info-cards-grid .vi-info-card,
+body.vendors-page .vendors-main .vi-info-cards-grid .vi-info-card {
+  animation: viCardCascade 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-cards-grid .vi-info-card:nth-child(1),
+body.vendors-page .vendors-main .vi-info-cards-grid .vi-info-card:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-cards-grid .vi-info-card:nth-child(2),
+body.vendors-page .vendors-main .vi-info-cards-grid .vi-info-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-cards-grid .vi-info-card:nth-child(3),
+body.vendors-page .vendors-main .vi-info-cards-grid .vi-info-card:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-cards-grid .vi-info-card:nth-child(4),
+body.vendors-page .vendors-main .vi-info-cards-grid .vi-info-card:nth-child(4) {
+  animation-delay: 0.16s;
+}
+
+/* Tab content & body section transitions */
+body.ground-stops-page .ground-stops-main .vi-animate-tab,
+body.vendors-page .vendors-main .vi-animate-tab {
+  animation: viTabFadeSlide 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+  will-change: opacity, transform;
+}
+
+body.ground-stops-page .ground-stops-main .vi-callout-banner,
+body.vendors-page .vendors-main .vi-callout-banner {
+  animation: viCardCascade 0.36s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+body.ground-stops-page .ground-stops-main .vi-main-col > .vi-card,
+body.vendors-page .vendors-main .vi-main-col > .vi-card {
+  animation: viCardCascade 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+body.ground-stops-page .ground-stops-main .vi-side-col > .vi-card,
+body.vendors-page .vendors-main .vi-side-col > .vi-card {
+  animation: viCardCascade 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+/* Directory entrance when navigating back from Detail page */
+body.ground-stops-page .ground-stops-main .gs-page-header,
+body.ground-stops-page .ground-stops-main .ground-stop-directory,
+body.vendors-page .vendors-main .vendor-page-header,
+body.vendors-page .vendors-main .vendor-directory-section {
+  animation: viPageEnter 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Interactive button press & hover micro-interactions */
+body.ground-stops-page .ground-stops-main .gs-btn-details,
+body.vendors-page .vendors-main .vendor-details-btn,
+body.ground-stops-page .ground-stops-main .vi-back-btn,
+body.vendors-page .vendors-main .vi-back-btn,
+body.ground-stops-page .ground-stops-main .vi-tab-btn,
+body.vendors-page .vendors-main .vi-tab-btn {
+  transition:
+    background-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.16s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-btn-details:active,
+body.vendors-page .vendors-main .vendor-details-btn:active,
+body.ground-stops-page .ground-stops-main .vi-back-btn:active,
+body.vendors-page .vendors-main .vi-back-btn:active {
+  transform: scale(0.97) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.ground-stops-page .ground-stops-main .vi-page-container,
+  body.vendors-page .vendors-main .vi-page-container,
+  body.ground-stops-page .ground-stops-main .vi-page-container .vi-hero-card,
+  body.vendors-page .vendors-main .vi-page-container .vi-hero-card,
+  body.ground-stops-page .ground-stops-main .vi-info-cards-grid .vi-info-card,
+  body.vendors-page .vendors-main .vi-info-cards-grid .vi-info-card,
+  body.ground-stops-page .ground-stops-main .vi-animate-tab,
+  body.vendors-page .vendors-main .vi-animate-tab,
+  body.ground-stops-page .ground-stops-main .vi-callout-banner,
+  body.vendors-page .vendors-main .vi-callout-banner,
+  body.ground-stops-page .ground-stops-main .vi-main-col > .vi-card,
+  body.vendors-page .vendors-main .vi-main-col > .vi-card,
+  body.ground-stops-page .ground-stops-main .vi-side-col > .vi-card,
+  body.vendors-page .vendors-main .vi-side-col > .vi-card,
+  body.ground-stops-page .ground-stops-main .gs-page-header,
+  body.ground-stops-page .ground-stops-main .ground-stop-directory,
+  body.vendors-page .vendors-main .vendor-page-header,
+  body.vendors-page .vendors-main .vendor-directory-section {
+    animation: none !important;
   }
 }
