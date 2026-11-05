@@ -477,12 +477,26 @@ export default function VendorCard({
 }) {
   const company = companyName(vendor);
   const logo = vendorLogo(vendor, company);
+  const systemLabel =
+    usableCardValue(vendor?.systemName) ||
+    usableCardValue(vendor?.displayName) ||
+    "";
   const categoryLabel = usableCardValue(vendor?.category)
     ? String(vendor.category)
         .split("•")[0]
         .replace(/\s+/g, " ")
         .trim()
     : "Operations Partner";
+  const rawContact =
+    usableCardValue(vendor?.aagItsPoc) ||
+    usableCardValue(vendor?.vendorPoc) ||
+    usableCardValue(vendor?.poc);
+  const primaryContact = rawContact
+    ? rawContact
+        .split(/\r?\n/)[0]
+        .replace(/^(?:vendor\s*reps?\s*:?|primary\s*contact\s*:?)\s*/i, "")
+        .trim()
+    : "";
   const phone = primaryCardPhone(vendor?.phone);
   const email = primaryCardEmail(vendor?.email);
   const phoneTarget = contactTarget(phone, "phone");
@@ -555,6 +569,11 @@ export default function VendorCard({
           />
         </div>
         <div className="vendor-card-heading">
+          {systemLabel && (
+            <span className="vendor-system-eyebrow" title={systemLabel}>
+              {systemLabel}
+            </span>
+          )}
           <h3 className="vendor-company-name" title={company}>
             {company}
           </h3>
@@ -622,6 +641,23 @@ export default function VendorCard({
       </header>
 
       <div className="vendor-card-contacts" aria-label="Vendor contact details">
+        {primaryContact && (
+          <div className="vendor-contact-line">
+            <span className="vendor-contact-icon icon-poc" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="7.5" r="3.5" />
+                <path d="M5 19.5c.5-3.2 3.1-5 7-5s6.5 1.8 7 5" />
+              </svg>
+            </span>
+            <span className="vendor-contact-key">Contact</span>
+            <span
+              className="vendor-contact-val vendor-contact-poc"
+              title={rawContact}
+            >
+              {primaryContact}
+            </span>
+          </div>
+        )}
         <div className="vendor-contact-line">
           <span className="vendor-contact-icon icon-phone" aria-hidden="true">
             <svg viewBox="0 0 24 24">

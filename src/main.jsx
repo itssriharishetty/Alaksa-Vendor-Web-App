@@ -13,6 +13,7 @@ import "../css/reports.css";
 import "../css/motion.css";
 import "./styles/admin-scoped.css";
 import "../css/mobile-responsive.css";
+import "../css/unified-home-theme.css";
 import App from "./App.jsx";
 
 const container = document.getElementById("root");

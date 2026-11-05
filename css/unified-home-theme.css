@@ -1,0 +1,1765 @@
+/* ==========================================================================
+   UNIFIED HOME DASHBOARD & ACARS REFERENCE THEME
+   Scoped strictly to Ground Stop Applications & Vendors right-side content.
+   Left Sidebar (.sidebar / .ias-sidebar) is 100% untouched.
+   ========================================================================== */
+
+:root {
+  --uht-bg-main: #F0F5FB;
+  --uht-bg-card: #FFFFFF;
+  --uht-navy: #001F3F;
+  --uht-blue: #007AFF;
+  --uht-blue-strong: #0066FF;
+  --uht-text-secondary: #64748B;
+  --uht-text-body: #334155;
+  --uht-border: #E2E8F0;
+  --uht-border-soft: #EEF2F6;
+  --uht-soft-blue: #EFF6FF;
+  --uht-soft-blue-border: #DBEAFE;
+  --uht-table-header: #EAF2FB;
+  --uht-green: #16A34A;
+  --uht-green-bg: #DCFCE7;
+  --uht-red: #DC2626;
+  --uht-red-bg: #FEF2F2;
+  --uht-orange: #F97316;
+  --uht-orange-bg: #FFF7ED;
+  --uht-amber-bg: #FFFBEB;
+  --uht-amber-border: #FDE68A;
+  --uht-shadow-card: 0 4px 16px rgba(15, 23, 42, 0.04);
+  --uht-shadow-hover: 0 8px 22px rgba(15, 23, 42, 0.07);
+}
+
+/* ==========================================================================
+   1. RIGHT-SIDE MAIN CONTAINERS & PAGE HEADERS
+   ========================================================================== */
+body.ground-stops-page .ground-stops-main,
+body.vendors-page .vendors-main {
+  background: var(--uht-bg-main) !important;
+  color: var(--uht-navy);
+}
+
+body.ground-stops-page .ground-stops-main::before,
+body.ground-stops-page .ground-stops-main::after,
+body.vendors-page .vendors-main::before,
+body.vendors-page .vendors-main::after {
+  display: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .top-header,
+body.vendors-page .vendors-main .top-header {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--uht-shadow-card) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .page-title h1,
+body.vendors-page .vendors-main .page-title h1 {
+  color: var(--uht-navy) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em;
+}
+
+body.ground-stops-page .ground-stops-main .page-subtitle,
+body.vendors-page .vendors-main .page-subtitle {
+  color: var(--uht-text-secondary) !important;
+}
+
+body.ground-stops-page .ground-stops-main .search-bar,
+body.vendors-page .vendors-main .search-bar {
+  background: #F8FAFC !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .search-bar:focus-within,
+body.vendors-page .vendors-main .search-bar:focus-within {
+  background: var(--uht-bg-card) !important;
+  border-color: var(--uht-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12) !important;
+}
+
+/* ==========================================================================
+   2. GROUND STOP APPLICATION CARDS (ALL 9 CARDS)
+   ========================================================================== */
+body.ground-stops-page .ground-stops-main .ground-stops-grid,
+body.ground-stops-page .ground-stops-main .ground-stop-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-card {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--uht-shadow-card) !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-card::before,
+body.ground-stops-page .ground-stops-main .ground-stop-card::after {
+  display: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--uht-shadow-hover) !important;
+  border-color: #CBD5E1 !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-header {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin-bottom: 12px !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-identity {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+/* Colored application icons matching Home dashboard */
+body.ground-stops-page .ground-stops-main .gs-card-logo {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08) !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-logo svg {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-blue {
+  background: #2563EB !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-red {
+  background: #EF4444 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-orange {
+  background: #F97316 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-pink {
+  background: #EC4899 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-purple {
+  background: #8B5CF6 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-teal {
+  background: #0D9488 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-amber {
+  background: #D97706 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-sky {
+  background: #0284C7 !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-navy {
+  background: #1E3A8A !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-title-group,
+body.ground-stops-page .ground-stops-main .gs-card-titles {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-name,
+body.ground-stops-page .ground-stops-main .gs-card-titles h2 {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--uht-navy) !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-subrow {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+}
+
+/* Criticality indicator pill (Critical Red / High Orange) */
+body.ground-stops-page .ground-stops-main .gs-criticality-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 999px !important;
+  line-height: 1.3 !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-criticality-pill .gs-criticality-dot,
+body.ground-stops-page .ground-stops-main .gs-criticality-pill i {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-critical {
+  background: var(--uht-red-bg) !important;
+  color: var(--uht-red) !important;
+  border: 1px solid #FECACA !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-critical .gs-criticality-dot,
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-critical i {
+  background: var(--uht-red) !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high {
+  background: var(--uht-orange-bg) !important;
+  color: #EA580C !important;
+  border: 1px solid #FED7AA !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high .gs-criticality-dot,
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high i {
+  background: var(--uht-orange) !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-category-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: var(--uht-text-secondary) !important;
+  background: #F1F5F9 !important;
+  border: 1px solid var(--uht-border) !important;
+  padding: 2px 8px !important;
+  border-radius: 999px !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-sla-badge,
+body.ground-stops-page .ground-stops-main .gs-sla-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--uht-blue) !important;
+  background: var(--uht-soft-blue) !important;
+  border: 1px solid var(--uht-soft-blue-border) !important;
+  border-radius: 999px !important;
+  padding: 4px 10px !important;
+  white-space: nowrap !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-description,
+body.ground-stops-page .ground-stops-main .gs-card-description {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: var(--uht-text-body) !important;
+  margin: 0 0 14px 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-details,
+body.ground-stops-page .ground-stops-main .gs-card-contact-list {
+  background: #F8FAFC !important;
+  border: 1px solid var(--uht-border-soft) !important;
+  border-radius: 12px !important;
+  padding: 10px 12px !important;
+  margin-bottom: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-footer,
+body.ground-stops-page .ground-stops-main .gs-card-footer {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid var(--uht-border-soft) !important;
+  margin-top: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-details-button {
+  background: var(--uht-soft-blue) !important;
+  color: var(--uht-blue) !important;
+  border: 1px solid var(--uht-soft-blue-border) !important;
+  border-radius: 999px !important;
+  padding: 7px 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  box-shadow: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+  flex-shrink: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .ground-stop-details-button:hover {
+  background: var(--uht-blue) !important;
+  color: #FFFFFF !important;
+  border-color: var(--uht-blue) !important;
+}
+
+/* ==========================================================================
+   3. VENDOR DIRECTORY CARDS
+   ========================================================================== */
+body.vendors-page .vendors-main .vendors-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  align-items: stretch !important;
+}
+
+body.vendors-page .vendors-main .vendor-card {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 18px !important;
+  box-shadow: var(--uht-shadow-card) !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.vendors-page .vendors-main .vendor-card::before,
+body.vendors-page .vendors-main .vendor-card::after {
+  display: none !important;
+}
+
+body.vendors-page .vendors-main .vendor-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--uht-shadow-hover) !important;
+  border-color: #CBD5E1 !important;
+}
+
+body.vendors-page .vendors-main .vendor-system-eyebrow {
+  display: block !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--uht-blue) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin-bottom: 2px !important;
+  line-height: 1.2 !important;
+}
+
+body.vendors-page .vendors-main .vendor-company-name {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--uht-navy) !important;
+  line-height: 1.25 !important;
+  margin: 0 0 6px 0 !important;
+}
+
+body.vendors-page .vendors-main .vendor-status-pill.status-active {
+  background: var(--uht-green-bg) !important;
+  color: #15803D !important;
+  border: 1px solid #BBF7D0 !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 9px !important;
+}
+
+body.vendors-page .vendors-main .vendor-support-pill {
+  background: var(--uht-soft-blue) !important;
+  color: var(--uht-blue) !important;
+  border: 1px solid var(--uht-soft-blue-border) !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 9px !important;
+}
+
+body.vendors-page .vendors-main .vendor-card-summary {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: var(--uht-text-body) !important;
+}
+
+body.vendors-page .vendors-main .vendor-card-contacts {
+  background: #F8FAFC !important;
+  border: 1px solid var(--uht-border-soft) !important;
+  border-radius: 12px !important;
+  padding: 10px 12px !important;
+}
+
+body.vendors-page .vendors-main .vendor-contact-icon {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 8px !important;
+  background: var(--uht-soft-blue) !important;
+  color: var(--uht-blue) !important;
+}
+
+body.vendors-page .vendors-main .vendor-details-btn {
+  background: var(--uht-soft-blue) !important;
+  color: var(--uht-blue) !important;
+  border: 1px solid var(--uht-soft-blue-border) !important;
+  border-radius: 999px !important;
+  padding: 7px 14px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+body.vendors-page .vendors-main .vendor-details-btn:hover {
+  background: var(--uht-blue) !important;
+  color: #FFFFFF !important;
+  border-color: var(--uht-blue) !important;
+}
+
+/* ==========================================================================
+   4. UNIFIED DETAIL HEADER & 4 PASTEL INFO CARDS (MATCHING ACARS SCREENSHOT)
+   ========================================================================== */
+body.ground-stops-page .ground-stops-main .vi-page-container,
+body.vendors-page .vendors-main .vi-page-container {
+  background: var(--uht-bg-main) !important;
+  padding: 8px 4px 36px 4px !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* A. Top Page Bar (.vi-topbar) */
+body.ground-stops-page .ground-stops-main .vi-topbar,
+body.vendors-page .vendors-main .vi-topbar {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px 4px 14px 4px !important;
+  margin-bottom: 2px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-breadcrumbs,
+body.vendors-page .vendors-main .vi-breadcrumbs,
+body.ground-stops-page .ground-stops-main .vi-breadcrumb,
+body.vendors-page .vendors-main .vi-breadcrumb {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  font-size: 12.5px !important;
+  color: var(--uht-text-secondary) !important;
+  margin-bottom: 6px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-bc-link,
+body.vendors-page .vendors-main .vi-bc-link,
+body.ground-stops-page .ground-stops-main .vi-breadcrumb-link,
+body.vendors-page .vendors-main .vi-breadcrumb-link {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 12.5px !important;
+  color: var(--uht-text-secondary) !important;
+  cursor: pointer !important;
+  font-weight: 500 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-bc-link:hover,
+body.vendors-page .vendors-main .vi-bc-link:hover,
+body.ground-stops-page .ground-stops-main .vi-breadcrumb-link:hover,
+body.vendors-page .vendors-main .vi-breadcrumb-link:hover {
+  color: var(--uht-blue) !important;
+  text-decoration: underline !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-bc-current,
+body.vendors-page .vendors-main .vi-bc-current,
+body.ground-stops-page .ground-stops-main .vi-breadcrumb-current,
+body.vendors-page .vendors-main .vi-breadcrumb-current {
+  font-weight: 700 !important;
+  color: var(--uht-navy) !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-page-title,
+body.vendors-page .vendors-main .vi-page-title {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: var(--uht-navy) !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 6px 0 !important;
+  line-height: 1.25 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-page-subtitle,
+body.vendors-page .vendors-main .vi-page-subtitle {
+  font-size: 13.5px !important;
+  line-height: 1.5 !important;
+  color: #475569 !important;
+  margin: 0 !important;
+  max-width: 920px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-topbar-right,
+body.vendors-page .vendors-main .vi-topbar-right {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-search-box,
+body.vendors-page .vendors-main .vi-search-box {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 999px !important;
+  padding: 0 14px 0 34px !important;
+  min-width: 280px !important;
+  height: 38px !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-last-updated,
+body.vendors-page .vendors-main .vi-last-updated {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+}
+
+/* B. Parent Detail Header Card (.vi-hero-card) */
+body.ground-stops-page .ground-stops-main .vi-hero-card,
+body.vendors-page .vendors-main .vi-hero-card {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  box-shadow: var(--uht-shadow-card) !important;
+  margin-bottom: 16px !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Top Row inside Parent Card: Logo + Title Left, Back Button Right */
+body.ground-stops-page .ground-stops-main .vi-hero-top-row,
+body.vendors-page .vendors-main .vi-hero-top-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  width: 100% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-identity,
+body.vendors-page .vendors-main .vi-hero-identity {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-logo-box,
+body.vendors-page .vendors-main .vi-hero-logo-box {
+  width: 72px !important;
+  height: 72px !important;
+  flex: 0 0 72px !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2ECF7 !important;
+  padding: 5px !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-logo-img,
+body.vendors-page .vendors-main .vi-hero-logo-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 11px !important;
+  display: block !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-logo-fallback,
+body.vendors-page .vendors-main .vi-hero-logo-fallback {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 11px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-logo-fallback .gs-card-logo,
+body.vendors-page .vendors-main .vi-hero-logo-fallback .gs-card-logo {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 11px !important;
+  box-shadow: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-title-group,
+body.vendors-page .vendors-main .vi-hero-title-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-title,
+body.vendors-page .vendors-main .vi-hero-title {
+  font-size: 23px !important;
+  font-weight: 800 !important;
+  color: var(--uht-navy) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-subtitle,
+body.vendors-page .vendors-main .vi-hero-subtitle {
+  font-size: 13.5px !important;
+  font-weight: 400 !important;
+  color: #475569 !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-back-btn,
+body.vendors-page .vendors-main .vi-back-btn,
+body.ground-stops-page .ground-stops-main .vi-btn-secondary,
+body.vendors-page .vendors-main .vi-btn-secondary {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 999px !important;
+  padding: 9px 18px !important;
+  height: auto !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--uht-navy) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+  white-space: nowrap !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-back-btn svg,
+body.vendors-page .vendors-main .vi-back-btn svg,
+body.ground-stops-page .ground-stops-main .vi-btn-secondary svg,
+body.vendors-page .vendors-main .vi-btn-secondary svg {
+  width: 15px !important;
+  height: 15px !important;
+  color: var(--uht-blue) !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-back-btn:hover,
+body.vendors-page .vendors-main .vi-back-btn:hover,
+body.ground-stops-page .ground-stops-main .vi-btn-secondary:hover,
+body.vendors-page .vendors-main .vi-btn-secondary:hover {
+  background: var(--uht-soft-blue) !important;
+  border-color: var(--uht-blue) !important;
+  color: var(--uht-blue) !important;
+}
+
+/* C. Four Horizontally Aligned Pastel Information Cards (.vi-info-cards-grid) */
+body.ground-stops-page .ground-stops-main .vi-info-cards-grid,
+body.vendors-page .vendors-main .vi-info-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+  width: 100% !important;
+  margin-top: 20px !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card,
+body.vendors-page .vendors-main .vi-info-card {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  padding: 16px 18px !important;
+  border-radius: 16px !important;
+  min-width: 0 !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Card 1 — Company (Soft Blue) */
+body.ground-stops-page .ground-stops-main .vi-info-card.card-blue,
+body.vendors-page .vendors-main .vi-info-card.card-blue {
+  background: #F3F8FE !important;
+  border: 1px solid #E2EEFD !important;
+}
+
+/* Card 2 — Website (Soft Purple) */
+body.ground-stops-page .ground-stops-main .vi-info-card.card-purple,
+body.vendors-page .vendors-main .vi-info-card.card-purple {
+  background: #FAF5FF !important;
+  border: 1px solid #F1E6FF !important;
+}
+
+/* Card 3 — Category / Supported Systems (Soft Green) */
+body.ground-stops-page .ground-stops-main .vi-info-card.card-green,
+body.vendors-page .vendors-main .vi-info-card.card-green {
+  background: #F2FCF6 !important;
+  border: 1px solid #DCFCE7 !important;
+}
+
+/* Card 4 — ITS Team / Support Team (Soft Amber) */
+body.ground-stops-page .ground-stops-main .vi-info-card.card-amber,
+body.vendors-page .vendors-main .vi-info-card.card-amber {
+  background: #FFFDF4 !important;
+  border: 1px solid #FEF0C7 !important;
+}
+
+/* Pastel Icon Containers inside the 4 Info Cards */
+body.ground-stops-page .ground-stops-main .vi-info-card-icon,
+body.vendors-page .vendors-main .vi-info-card-icon {
+  width: 38px !important;
+  height: 38px !important;
+  flex: 0 0 38px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-icon svg,
+body.vendors-page .vendors-main .vi-info-card-icon svg {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-icon.pastel-blue,
+body.vendors-page .vendors-main .vi-info-card-icon.pastel-blue {
+  background: #E0EEFF !important;
+  color: #0284C7 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-icon.pastel-purple,
+body.vendors-page .vendors-main .vi-info-card-icon.pastel-purple {
+  background: #F3E8FF !important;
+  color: #7C3AED !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-icon.pastel-green,
+body.vendors-page .vendors-main .vi-info-card-icon.pastel-green {
+  background: #DCFCE7 !important;
+  color: #16A34A !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-icon.pastel-amber,
+body.vendors-page .vendors-main .vi-info-card-icon.pastel-amber {
+  background: #FEF3C7 !important;
+  color: #D97706 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-body,
+body.vendors-page .vendors-main .vi-info-card-body {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-label,
+body.vendors-page .vendors-main .vi-info-card-label {
+  display: block !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: var(--uht-text-secondary) !important;
+  line-height: 1.25 !important;
+  margin: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-value,
+body.vendors-page .vendors-main .vi-info-card-value {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--uht-navy) !important;
+  line-height: 1.42 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-website-wrap,
+body.vendors-page .vendors-main .vi-info-card-website-wrap {
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-link,
+body.vendors-page .vendors-main .vi-info-card-link {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--uht-blue-strong) !important;
+  line-height: 1.42 !important;
+  text-decoration: none !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  min-width: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-link:hover,
+body.vendors-page .vendors-main .vi-info-card-link:hover {
+  text-decoration: underline !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-ext-btn,
+body.vendors-page .vendors-main .vi-info-card-ext-btn {
+  width: 24px !important;
+  height: 24px !important;
+  flex: 0 0 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #0284C7 !important;
+  border-radius: 6px !important;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-ext-btn:hover,
+body.vendors-page .vendors-main .vi-info-card-ext-btn:hover {
+  background: rgba(2, 132, 199, 0.1) !important;
+  color: var(--uht-blue-strong) !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-info-card-ext-btn svg,
+body.vendors-page .vendors-main .vi-info-card-ext-btn svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* D. Thin Horizontal Divider below Info Cards */
+body.ground-stops-page .ground-stops-main .vi-hero-divider,
+body.vendors-page .vendors-main .vi-hero-divider {
+  height: 1px !important;
+  background: var(--uht-border-soft) !important;
+  border: 0 !important;
+  margin: 20px 0 16px 0 !important;
+  width: 100% !important;
+}
+
+/* E. Rounded Pill-Shaped Navigation Tabs (.vi-hero-tabs) */
+body.ground-stops-page .ground-stops-main .vi-hero-tabs,
+body.vendors-page .vendors-main .vi-hero-tabs {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-tab,
+body.vendors-page .vendors-main .vi-hero-tab {
+  border-radius: 999px !important;
+  padding: 9px 22px !important;
+  height: auto !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  background: #F4F7FB !important;
+  color: var(--uht-navy) !important;
+  border: 1px solid var(--uht-border) !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
+  box-shadow: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-tab::after,
+body.vendors-page .vendors-main .vi-hero-tab::after {
+  display: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-tab:hover:not(.active),
+body.vendors-page .vendors-main .vi-hero-tab:hover:not(.active) {
+  background: var(--uht-soft-blue) !important;
+  border-color: var(--uht-soft-blue-border) !important;
+  color: var(--uht-blue-strong) !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-hero-tab.active,
+body.vendors-page .vendors-main .vi-hero-tab.active {
+  background: var(--uht-blue-strong) !important;
+  color: #FFFFFF !important;
+  border-color: var(--uht-blue-strong) !important;
+  box-shadow: 0 3px 8px rgba(0, 102, 255, 0.25) !important;
+}
+
+/* ==========================================================================
+   5. TWO-COLUMN DETAIL GRID & NATURAL CARD HEIGHTS (NO EMPTY STRETCHING)
+   ========================================================================== */
+body.ground-stops-page .ground-stops-main .vi-content-grid,
+body.vendors-page .vendors-main .vi-content-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 390px !important;
+  gap: 20px !important;
+  align-items: start !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-main-col,
+body.vendors-page .vendors-main .vi-main-col,
+body.ground-stops-page .ground-stops-main .vi-side-col,
+body.vendors-page .vendors-main .vi-side-col {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  height: auto !important;
+  align-self: start !important;
+  justify-content: flex-start !important;
+  min-width: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-quad-grid,
+body.vendors-page .vendors-main .vi-quad-grid,
+body.ground-stops-page .ground-stops-main .vi-deps-mid-grid,
+body.vendors-page .vendors-main .vi-deps-mid-grid,
+body.ground-stops-page .ground-stops-main .vi-deps-top-grid,
+body.vendors-page .vendors-main .vi-deps-top-grid,
+body.ground-stops-page .ground-stops-main .vi-apps-bottom-grid,
+body.vendors-page .vendors-main .vi-apps-bottom-grid {
+  align-items: start !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-quad-card,
+body.vendors-page .vendors-main .vi-quad-card,
+body.ground-stops-page .ground-stops-main .vi-dep-table-card,
+body.vendors-page .vendors-main .vi-dep-table-card,
+body.ground-stops-page .ground-stops-main .vi-dep-infra-card,
+body.vendors-page .vendors-main .vi-dep-infra-card,
+body.ground-stops-page .ground-stops-main .vi-dep-overview-card,
+body.vendors-page .vendors-main .vi-dep-overview-card,
+body.ground-stops-page .ground-stops-main .vi-deps-side-col,
+body.vendors-page .vendors-main .vi-deps-side-col,
+body.ground-stops-page .ground-stops-main .vi-dep-takeaways-card,
+body.vendors-page .vendors-main .vi-dep-takeaways-card {
+  height: auto !important;
+  flex: 0 0 auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-dep-table-card > .vi-table-wrap,
+body.vendors-page .vendors-main .vi-dep-table-card > .vi-table-wrap,
+body.ground-stops-page .ground-stops-main .vi-dep-table-card > .vi-table-wrap > .vi-table,
+body.vendors-page .vendors-main .vi-dep-table-card > .vi-table-wrap > .vi-table {
+  flex: 0 0 auto !important;
+  height: auto !important;
+}
+
+/* Criticality Information Alert Banner (.vi-alert-banner) */
+body.ground-stops-page .ground-stops-main .vi-alert-banner,
+body.vendors-page .vendors-main .vi-alert-banner {
+  background: var(--uht-amber-bg) !important;
+  border: 1px solid var(--uht-amber-border) !important;
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.05) !important;
+  height: auto !important;
+  flex: 0 0 auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-alert-icon,
+body.vendors-page .vendors-main .vi-alert-icon {
+  width: 28px !important;
+  height: 28px !important;
+  background: transparent !important;
+  color: var(--uht-orange) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin-top: 2px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-alert-icon svg,
+body.vendors-page .vendors-main .vi-alert-icon svg {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-alert-content strong,
+body.vendors-page .vendors-main .vi-alert-content strong,
+body.ground-stops-page .ground-stops-main .vi-alert-content h3,
+body.vendors-page .vendors-main .vi-alert-content h3 {
+  display: block !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  color: var(--uht-navy) !important;
+  margin: 0 0 4px 0 !important;
+  line-height: 1.35 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-alert-content p,
+body.vendors-page .vendors-main .vi-alert-content p {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: #334155 !important;
+  margin: 0 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-alert-link,
+body.vendors-page .vendors-main .vi-alert-link {
+  color: var(--uht-blue-strong) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-alert-link:hover,
+body.vendors-page .vendors-main .vi-alert-link:hover {
+  text-decoration: underline !important;
+}
+
+/* Detail Cards (.vi-card) */
+body.ground-stops-page .ground-stops-main .vi-card,
+body.vendors-page .vendors-main .vi-card,
+body.ground-stops-page .ground-stops-main .vi-systems-card,
+body.vendors-page .vendors-main .vi-systems-card,
+body.ground-stops-page .ground-stops-main .vi-side-card,
+body.vendors-page .vendors-main .vi-side-card {
+  background: var(--uht-bg-card) !important;
+  border: 1px solid var(--uht-border) !important;
+  border-radius: 18px !important;
+  padding: 18px 20px !important;
+  box-shadow: var(--uht-shadow-card) !important;
+  height: auto !important;
+  min-height: 0 !important;
+  flex: 0 0 auto !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-card-header,
+body.vendors-page .vendors-main .vi-card-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-card-icon,
+body.vendors-page .vendors-main .vi-card-icon {
+  width: 26px !important;
+  height: 26px !important;
+  background: transparent !important;
+  color: var(--uht-blue-strong) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-card-icon svg,
+body.vendors-page .vendors-main .vi-card-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-card-header h3,
+body.vendors-page .vendors-main .vi-card-header h3 {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: var(--uht-navy) !important;
+  margin: 0 !important;
+}
+
+/* ==========================================================================
+   6. ALL DETAIL-PAGE TABLES — FIXED LAYOUT, BALANCED COLUMNS, NO BROKEN WORDS
+   ========================================================================== */
+body.ground-stops-page .ground-stops-main .vi-table-wrap,
+body.vendors-page .vendors-main .vi-table-wrap {
+  width: 100% !important;
+  overflow-x: auto !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--uht-border-soft) !important;
+  height: auto !important;
+  flex: 0 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table,
+body.vendors-page .vendors-main .vi-table {
+  width: 100% !important;
+  min-width: 620px !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table thead tr,
+body.vendors-page .vendors-main .vi-table thead tr {
+  background: var(--uht-table-header) !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table th,
+body.vendors-page .vendors-main .vi-table th {
+  background: var(--uht-table-header) !important;
+  color: var(--uht-navy) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  padding: 12px 16px !important;
+  text-align: left !important;
+  border-bottom: 1px solid #DBEAFE !important;
+  vertical-align: top !important;
+  height: auto !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table tbody tr,
+body.vendors-page .vendors-main .vi-table tbody tr {
+  background: var(--uht-bg-card) !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table tbody tr:hover,
+body.vendors-page .vendors-main .vi-table tbody tr:hover {
+  background: #F8FAFC !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table td,
+body.vendors-page .vendors-main .vi-table td {
+  padding: 12px 16px !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  color: #1E293B !important;
+  border-bottom: 1px solid var(--uht-border-soft) !important;
+  vertical-align: top !important;
+  height: auto !important;
+  white-space: normal !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table tbody tr:last-child td,
+body.vendors-page .vendors-main .vi-table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Prevent mid-word breaking across all table cell classes while allowing long filenames/hostnames to wrap */
+body.ground-stops-page .ground-stops-main .vi-td-desc,
+body.vendors-page .vendors-main .vi-td-desc,
+body.ground-stops-page .ground-stops-main .vi-td-func,
+body.vendors-page .vendors-main .vi-td-func,
+body.ground-stops-page .ground-stops-main .vi-td-impact,
+body.vendors-page .vendors-main .vi-td-impact,
+body.ground-stops-page .ground-stops-main .vi-td-owner,
+body.vendors-page .vendors-main .vi-td-owner,
+body.ground-stops-page .ground-stops-main .vi-td-deps,
+body.vendors-page .vendors-main .vi-td-deps {
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-td-app,
+body.vendors-page .vendors-main .vi-td-app,
+body.ground-stops-page .ground-stops-main .vi-td-app strong,
+body.vendors-page .vendors-main .vi-td-app strong,
+body.ground-stops-page .ground-stops-main .vi-td-subname,
+body.vendors-page .vendors-main .vi-td-subname,
+body.ground-stops-page .ground-stops-main .vi-td-app-subbold,
+body.vendors-page .vendors-main .vi-td-app-subbold {
+  color: var(--uht-navy) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+
+/* Links inside tables (e.g. Related Documents titles) must wrap naturally, never nowrap */
+body.ground-stops-page .ground-stops-main .vi-table .vi-kv-link,
+body.vendors-page .vendors-main .vi-table .vi-kv-link {
+  display: inline !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+  color: var(--uht-blue-strong) !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+  padding-top: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table .vi-kv-link strong,
+body.vendors-page .vendors-main .vi-table .vi-kv-link strong {
+  color: var(--uht-blue-strong) !important;
+  font-weight: 700 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+/* 6A. Related Documents Table (.vi-docs-table): 35% / 25% / 25% / 15% */
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table,
+body.vendors-page .vendors-main .vi-table.vi-docs-table {
+  min-width: 620px !important;
+  table-layout: fixed !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table th:nth-child(1),
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table td:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-docs-table th:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-docs-table td:nth-child(1) {
+  width: 35% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table th:nth-child(2),
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table td:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-docs-table th:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-docs-table td:nth-child(2) {
+  width: 25% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table th:nth-child(3),
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table td:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-docs-table th:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-docs-table td:nth-child(3) {
+  width: 25% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table th:nth-child(4),
+body.ground-stops-page .ground-stops-main .vi-table.vi-docs-table td:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-docs-table th:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-docs-table td:nth-child(4) {
+  width: 15% !important;
+}
+
+/* 6B. Contacts & Escalation Table (.vi-contacts-table): 22% / 22% / 28% / 28% */
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table,
+body.vendors-page .vendors-main .vi-table.vi-contacts-table {
+  min-width: 640px !important;
+  table-layout: fixed !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table th:nth-child(1),
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table td:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table th:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table td:nth-child(1) {
+  width: 22% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table th:nth-child(2),
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table td:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table th:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table td:nth-child(2) {
+  width: 22% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table th:nth-child(3),
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table td:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table th:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table td:nth-child(3) {
+  width: 28% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table th:nth-child(4),
+body.ground-stops-page .ground-stops-main .vi-table.vi-contacts-table td:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table th:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-contacts-table td:nth-child(4) {
+  width: 28% !important;
+}
+
+/* 6C. Impact Overview 6-Column Table (.vi-table-6col): 19% / 21% / 14% / 20% / 14% / 12% */
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col,
+body.vendors-page .vendors-main .vi-table.vi-table-6col {
+  min-width: 720px !important;
+  table-layout: fixed !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col th:nth-child(1),
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col td:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-table-6col th:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-table-6col td:nth-child(1) {
+  width: 19% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col th:nth-child(2),
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col td:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-table-6col th:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-table-6col td:nth-child(2) {
+  width: 21% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col th:nth-child(3),
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col td:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-table-6col th:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-table-6col td:nth-child(3) {
+  width: 14% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col th:nth-child(4),
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col td:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-table-6col th:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-table-6col td:nth-child(4) {
+  width: 20% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col th:nth-child(5),
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col td:nth-child(5),
+body.vendors-page .vendors-main .vi-table.vi-table-6col th:nth-child(5),
+body.vendors-page .vendors-main .vi-table.vi-table-6col td:nth-child(5) {
+  width: 14% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col th:nth-child(6),
+body.ground-stops-page .ground-stops-main .vi-table.vi-table-6col td:nth-child(6),
+body.vendors-page .vendors-main .vi-table.vi-table-6col th:nth-child(6),
+body.vendors-page .vendors-main .vi-table.vi-table-6col td:nth-child(6) {
+  width: 12% !important;
+}
+
+/* 6D. Applications & Systems Full-Width Tab Table (.vi-apps-table): 17% / 20% / 13% / 19% / 12% / 9% / 10% */
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table,
+body.vendors-page .vendors-main .vi-table.vi-apps-table {
+  min-width: 820px !important;
+  table-layout: fixed !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(1),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(1) {
+  width: 17% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(2),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(2) {
+  width: 20% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(3),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(3) {
+  width: 13% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(4),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(4) {
+  width: 19% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(5),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(5),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(5),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(5) {
+  width: 12% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(6),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(6),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(6),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(6) {
+  width: 9% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table th:nth-child(7),
+body.ground-stops-page .ground-stops-main .vi-table.vi-apps-table td:nth-child(7),
+body.vendors-page .vendors-main .vi-table.vi-apps-table th:nth-child(7),
+body.vendors-page .vendors-main .vi-table.vi-apps-table td:nth-child(7) {
+  width: 10% !important;
+}
+
+/* 6E. Dependencies Tab Tables (.vi-dep-mini-table & .vi-dep-infra-table) */
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table,
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table {
+  min-width: 540px !important;
+  table-layout: fixed !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table th:nth-child(1),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table td:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table th:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table td:nth-child(1) {
+  width: 23% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table th:nth-child(2),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table td:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table th:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table td:nth-child(2) {
+  width: 29% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table th:nth-child(3),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table td:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table th:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table td:nth-child(3) {
+  width: 18% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table th:nth-child(4),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-mini-table td:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table th:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-dep-mini-table td:nth-child(4) {
+  width: 30% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table,
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table {
+  min-width: 620px !important;
+  table-layout: fixed !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table th:nth-child(1),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table td:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table th:nth-child(1),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table td:nth-child(1) {
+  width: 22% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table th:nth-child(2),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table td:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table th:nth-child(2),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table td:nth-child(2) {
+  width: 32% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table th:nth-child(3),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table td:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table th:nth-child(3),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table td:nth-child(3) {
+  width: 18% !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table th:nth-child(4),
+body.ground-stops-page .ground-stops-main .vi-table.vi-dep-infra-table td:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table th:nth-child(4),
+body.vendors-page .vendors-main .vi-table.vi-dep-infra-table td:nth-child(4) {
+  width: 28% !important;
+}
+
+/* ==========================================================================
+   7. VENDOR CONTACTS & ALASKA INTERNAL CONTACTS (.vi-kv-row-pastel)
+   Fixed-width icon (36px) | Consistent label (118px) | Flexible value (1fr) | Copy btn (28px)
+   ========================================================================== */
+body.ground-stops-page .ground-stops-main .vi-kv-list,
+body.vendors-page .vendors-main .vi-kv-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  height: auto !important;
+  justify-content: flex-start !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-row.vi-kv-row-pastel.has-copy,
+body.vendors-page .vendors-main .vi-kv-row.vi-kv-row-pastel.has-copy {
+  display: grid !important;
+  grid-template-columns: 36px 118px minmax(0, 1fr) 28px !important;
+  gap: 10px !important;
+  align-items: start !important;
+  padding: 11px 0 !important;
+  border-bottom: 1px solid var(--uht-border-soft) !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-row.vi-kv-row-pastel.no-copy,
+body.vendors-page .vendors-main .vi-kv-row.vi-kv-row-pastel.no-copy {
+  display: grid !important;
+  grid-template-columns: 36px 118px minmax(0, 1fr) !important;
+  gap: 10px !important;
+  align-items: start !important;
+  padding: 11px 0 !important;
+  border-bottom: 1px solid var(--uht-border-soft) !important;
+  height: auto !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-row.vi-kv-row-pastel:last-child,
+body.vendors-page .vendors-main .vi-kv-row.vi-kv-row-pastel:last-child {
+  border-bottom: none !important;
+  padding-bottom: 2px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon,
+body.vendors-page .vendors-main .vi-contact-pastel-icon {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon svg,
+body.vendors-page .vendors-main .vi-contact-pastel-icon svg {
+  width: 17px !important;
+  height: 17px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon.pastel-blue,
+body.vendors-page .vendors-main .vi-contact-pastel-icon.pastel-blue {
+  background: #E0F2FE !important;
+  color: #0284C7 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon.pastel-purple,
+body.vendors-page .vendors-main .vi-contact-pastel-icon.pastel-purple {
+  background: #F3E8FF !important;
+  color: #9333EA !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon.pastel-green,
+body.vendors-page .vendors-main .vi-contact-pastel-icon.pastel-green {
+  background: #DCFCE7 !important;
+  color: #16A34A !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon.pastel-violet,
+body.vendors-page .vendors-main .vi-contact-pastel-icon.pastel-violet {
+  background: #EDE9FE !important;
+  color: #7C3AED !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-contact-pastel-icon.pastel-amber,
+body.vendors-page .vendors-main .vi-contact-pastel-icon.pastel-amber {
+  background: #FEF3C7 !important;
+  color: #D97706 !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-label-stack,
+body.vendors-page .vendors-main .vi-kv-label-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  min-width: 0 !important;
+  padding-top: 2px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-label,
+body.vendors-page .vendors-main .vi-kv-label {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  color: var(--uht-navy) !important;
+  line-height: 1.35 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-sublabel,
+body.vendors-page .vendors-main .vi-kv-sublabel {
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  color: #475569 !important;
+  line-height: 1.35 !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-val-col,
+body.vendors-page .vendors-main .vi-kv-val-col {
+  min-width: 0 !important;
+  width: 100% !important;
+  padding-top: 2px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-val-col .vi-kv-link,
+body.vendors-page .vendors-main .vi-kv-val-col .vi-kv-link {
+  display: inline-block !important;
+  max-width: 100% !important;
+  color: var(--uht-blue-strong) !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  text-decoration: none !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-val-col .vi-kv-link:hover,
+body.vendors-page .vendors-main .vi-kv-val-col .vi-kv-link:hover {
+  text-decoration: underline !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-val-col .vi-kv-strong,
+body.vendors-page .vendors-main .vi-kv-val-col .vi-kv-strong {
+  display: block !important;
+  color: var(--uht-navy) !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-kv-val-col .vi-kv-muted,
+body.vendors-page .vendors-main .vi-kv-val-col .vi-kv-muted,
+body.ground-stops-page .ground-stops-main .vi-kv-val-col .vi-kv-multiline,
+body.vendors-page .vendors-main .vi-kv-val-col .vi-kv-multiline {
+  display: block !important;
+  color: #1E293B !important;
+  font-size: 12.5px !important;
+  line-height: 1.45 !important;
+  text-align: left !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-copy-btn,
+body.vendors-page .vendors-main .vi-copy-btn {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 7px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--uht-blue-strong) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  margin-top: 2px !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-copy-btn:hover,
+body.vendors-page .vendors-main .vi-copy-btn:hover {
+  background: var(--uht-soft-blue) !important;
+  border-color: var(--uht-soft-blue-border) !important;
+}
+
+body.ground-stops-page .ground-stops-main .vi-copy-btn svg,
+body.vendors-page .vendors-main .vi-copy-btn svg {
+  width: 15px !important;
+  height: 15px !important;
+}
+
+/* ==========================================================================
+   8. RESPONSIVE DESIGN (DESKTOP, TABLET, MOBILE)
+   ========================================================================== */
+@media (max-width: 1240px) {
+  body.ground-stops-page .ground-stops-main .ground-stops-grid,
+  body.ground-stops-page .ground-stops-main .ground-stop-grid,
+  body.vendors-page .vendors-main .vendors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-content-grid,
+  body.vendors-page .vendors-main .vi-content-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-info-cards-grid,
+  body.vendors-page .vendors-main .vi-info-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  body.ground-stops-page .ground-stops-main .ground-stops-grid,
+  body.ground-stops-page .ground-stops-main .ground-stop-grid,
+  body.vendors-page .vendors-main .vendors-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-topbar,
+  body.vendors-page .vendors-main .vi-topbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-topbar-right,
+  body.vendors-page .vendors-main .vi-topbar-right {
+    align-items: stretch !important;
+    width: 100% !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-search-box,
+  body.vendors-page .vendors-main .vi-search-box {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-hero-top-row,
+  body.vendors-page .vendors-main .vi-hero-top-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-info-cards-grid,
+  body.vendors-page .vendors-main .vi-info-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-kv-row.vi-kv-row-pastel.has-copy,
+  body.vendors-page .vendors-main .vi-kv-row.vi-kv-row-pastel.has-copy {
+    grid-template-columns: 36px minmax(96px, 0.85fr) minmax(0, 1.15fr) 28px !important;
+  }
+
+  body.ground-stops-page .ground-stops-main .vi-kv-row.vi-kv-row-pastel.no-copy,
+  body.vendors-page .vendors-main .vi-kv-row.vi-kv-row-pastel.no-copy {
+    grid-template-columns: 36px minmax(96px, 0.85fr) minmax(0, 1.15fr) !important;
+  }
+}

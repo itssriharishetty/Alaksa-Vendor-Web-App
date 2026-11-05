@@ -2,6 +2,14 @@ import React, { useState, useEffect, useMemo, useRef, useCallback } from "react"
 import { useSearchParams } from "react-router-dom";
 import { useMasterData } from "../context/MasterDataContext";
 import { getGroundStopImpactDetails } from "../data/vendorDetails";
+import {
+    DetailPageHeader,
+    DetailTabs,
+    CriticalityAlert,
+    ImpactTable,
+    ContactRow,
+    renderTextWithLinks
+} from "../components/SharedDetailComponents";
 
 const CARD_PROFILES = {
     "acars": {
@@ -13,11 +21,11 @@ const CARD_PROFILES = {
         severity: "Critical",
         description:
             "ACARS is the central text link between aircraft and the ground. It carries flight info, flight times, weather, performance data, releases and load closeouts. It is rated 24x7 critical and is on the Ground Stop list.",
-        vendor: "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft",
+        vendor: "SITA",
         poc: "Ryan Wilkins, 206-972-0228",
-        phone: "SITA: 1-888-247-2661, option 4 (Aircom). ARINC: 800-633-6882",
-        email: "SITA: Aircom.support@sitaonair.aero. ARINC: helpdesk@arinc.com",
-        team: "ITS COG FlightOps Support / ITS Flight Operations",
+        phone: "1-888-247-2661",
+        email: "Aircom.support@sitaonair.aero",
+        team: "ITS COG FlightOps Support",
         logoVariant: "logo-acars"
     },
     "wam": {
@@ -29,11 +37,11 @@ const CARD_PROFILES = {
         severity: "Critical",
         description:
             "WAM is the main dispatch tool for AS and QX. It brings together flight plans, weather, performance data and MEL information to produce the dispatch release. If WAM or any of its upstream feeds fails, flights can't be released.",
-        vendor: "Jeppesen (owned by Boeing), which runs the JetPlan flight plan server",
-        poc: "Ryan Wilkins, Adele Lunde",
-        phone: "Jeppesen: 1-800-732-2800. Say \"Flight Planning\" and give account number 83491",
+        vendor: "Jeppesen",
+        poc: "Ryan Wilkins, 206-972-0228",
+        phone: "1-800-732-2800",
         email: "opssupport@jeppesen.com",
-        team: "ITS COG Flight Operations. Verified owners: Ryan Wilkins, Adele Lunde",
+        team: "ITS COG Flight Operations",
         logoVariant: "logo-wam",
         monogram: "WAM"
     },
@@ -46,11 +54,11 @@ const CARD_PROFILES = {
         severity: "Critical",
         description:
             "JetPlan is the engine that calculates every AS and QX flight plan. If it goes down, WAM can't produce flight plans or releases, ATC filing stops, and flights can't be dispatched. That is why it is on the Ground Stop list.",
-        vendor: "Jeppesen (owned by Boeing). Vendor application hosted in-house",
-        poc: "Ryan Wilkins",
-        phone: "Sev 1: 1-800-732-2800. Say \"Flight Planning\" and give account number 83491. Other issues: 1-800-375-4973. Server help: 1-303-328-4585",
-        email: "OpsSupport@jeppesen.com",
-        team: "ITS COG Flight Operations. ITS System Owner: Ryan Wilkins",
+        vendor: "Jeppesen",
+        poc: "Ryan Wilkins, 206-972-0228",
+        phone: "1-800-732-2800",
+        email: "opssupport@jeppesen.com",
+        team: "ITS COG Flight Operations",
         logoVariant: "logo-jp",
         monogram: "JP"
     },
@@ -58,16 +66,16 @@ const CARD_PROFILES = {
         shortName: "S4A SmartSuite",
         category: "Airport Ops / Flight Ops: weight and balance and load planning",
         status: "Active",
-        sla: "24x7",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
             "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
-        vendor: "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
-        poc: "Ryan Wilkins",
+        vendor: "Smart4Aviation",
+        poc: "Ryan Wilkins, 206-972-0228",
         phone: "+48 12 379 3737",
         email: "support@smart4aviation.aero",
-        team: "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins",
+        team: "ITS Flight Operations",
         logoVariant: "logo-s4a",
         monogram: "S4A"
     },
@@ -75,16 +83,16 @@ const CARD_PROFILES = {
         shortName: "JCTE",
         category: "Crew: crew scheduling and tracking for about 10,100 crew members",
         status: "Active",
-        sla: "24x7",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
             "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1.",
         vendor: "Jeppesen",
-        poc: "Sue Rawlings",
-        phone: "+1-303-328-6412, effective 01 Apr 2026. For ProdOps Sev 1 use only. Otherwise the System Admins contact Jeppesen",
+        poc: "Sue Rawlings, 253-341-1173",
+        phone: "+1-303-328-6412",
         email: "opssupport@jeppesen.com",
-        team: "ITS JCTE System Admins. Tech Owner: Sue Rawlings",
+        team: "ITS JCTE System Admins",
         logoVariant: "logo-jcte",
         monogram: "JT"
     },
@@ -92,66 +100,66 @@ const CARD_PROFILES = {
         shortName: "AirTrak",
         category: "Flight Ops: real-time control of the operation (aircraft assignments, Irrops, flight status)",
         status: "Active",
-        sla: "24x7",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
             "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network.",
-        vendor: "None; built in-house. Key outside services: Ping Identity, Split.io, AppDynamics",
-        poc: "GK Maganty",
-        phone: "Not applicable (built in-house)",
-        email: "Not applicable (built in-house)",
-        team: "ITS Ops 360 AirtrAK (Team.Maganty@alaskaair.com)",
+        vendor: "In-house",
+        poc: "GK Maganty, 206-227-1134",
+        phone: "206-227-1134",
+        email: "Team.Maganty@alaskaair.com",
+        team: "ITS Ops 360 AirtrAK",
         logoVariant: "logo-airtrack",
         monogram: "AT"
     },
     "pilot-briefing": {
         shortName: "Pilot Briefing",
-        category: "Pilot Briefing",
-        status: "Active",
-        sla: "15 min",
-        slaIcon: "phone",
-        severity: "High",
-        description:
-            "JetPack (Pilot Mobile) / Pilot Briefing is an iPad app for AS and QX pilots. Pilots use JetPack for their pre-flight procedures and while en-route.",
-        vendor: "NA",
-        poc: "Ryan Wilkins",
-        phone: "NA",
-        email: "NA",
-        team: "ITS Flight Operations",
-        logoVariant: "logo-pb",
-        monogram: "PB"
-    },
-    "aircraft-maintenance": {
-        shortName: "Aircraft Maintenance",
-        category: "Aircraft Maintenance",
-        status: "Active",
-        sla: "15 min",
-        slaIcon: "phone",
-        severity: "High",
-        description:
-            "Trax is the core application for the Mainatenace division. Trax provides modules for Inventory Management, Order Management, Engineering Controls, Planning Financials, Work Orders, and Defect Tracking etc...",
-        vendor: "Trax",
-        poc: "Brad Dufour",
-        phone: "305-622-7400, TRAX 24x7Support (877-264-8729)",
-        email: "AS Trax: Jairo.arias@trax.aero, QX Trax: Camilo.Sarmiento@trax.aero",
-        team: "ITS COG M&E App Support",
-        logoVariant: "logo-am",
-        monogram: "AM"
-    },
-    "aims": {
-        shortName: "AIMS",
-        category: "AIMS, Horizon Crew Tracking, eCrew",
+        category: "Flight Ops: briefing packets (flight paperwork). Printing them before takeoff is an FAA requirement",
         status: "Active",
         sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
-            "AIMS/Horizon Crew Scheduling is used for scheduling pilots and flight attendants on Horizon flights. There is a web appliction used by the crews to access information, bid for lines and trade trips.",
-        vendor: "AIMS (in Athens Greece)",
-        poc: "Sue R",
-        phone: "00-30-210-960-6000",
-        email: "aims@aims.aero / Support247@aims.aero",
+            "Pilot Briefing produces the FAA-required briefing packet for every flight. If a major part fails, the whole system goes down. If a minor part fails, packets come out incomplete or won't print.",
+        vendor: "In-house",
+        poc: "Ryan Wilkins, 206-972-0228",
+        phone: "206-972-0228",
+        email: "ITS.Service.Desk@alaskaair.com",
+        team: "ITS COG Flight Operations",
+        logoVariant: "logo-pb",
+        monogram: "PB"
+    },
+    "aircraft-maintenance": {
+        shortName: "Aircraft Maintenance Status (AMS)",
+        category: "Maintenance & Engineering: tracks aircraft from removal from service to return to service",
+        status: "Active",
+        sla: "15 min",
+        slaIcon: "phone",
+        severity: "High",
+        description:
+            "AMS is the system of record for which aircraft are out of service. When AMS and Informix fall out of sync, other systems show the wrong OTS status, including AirTrak.",
+        vendor: "In-house",
+        poc: "Brad Dufour, +1 614-779-1493",
+        phone: "+1 614-779-1493",
+        email: "Jerred.Slavata@alaskaair.com",
+        team: "ITS COG M&E App Support",
+        logoVariant: "logo-am",
+        monogram: "AM"
+    },
+    "aims": {
+        shortName: "AIMS (Horizon Crew Scheduling)",
+        category: "Crew: scheduling pilots and flight attendants (FAs) for Horizon, including bids and trip trades. QX only",
+        status: "Active",
+        sla: "15 min",
+        slaIcon: "phone",
+        severity: "Critical",
+        description:
+            "AIMS is the system of record for Horizon crew schedules. If it goes down, QX schedulers can't manage crews, and crew data stops flowing to VisOps, AirTrak and payroll.",
+        vendor: "AIMS",
+        poc: "Adam Kalb, 425-578-4570",
+        phone: "+30 210 940 2300",
+        email: "aims@aims.aero",
         team: "ITS COG Crew Support",
         logoVariant: "logo-aims",
         monogram: "AIMS"
@@ -822,7 +830,7 @@ export default function GroundStops() {
                                     <div key={svc.name || idx} className="ground-stop-info-row">
                                         <dt>{svc.name}</dt>
                                         <dd>
-                                            <strong>{svc.function}</strong> — {svc.description} (Owner: {svc.owner}; Dependencies: {svc.dependencies}; Impact: {svc.impact})
+                                            <strong>{svc.function}</strong> - {svc.description} (Owner: {svc.owner}; Dependencies: {svc.dependencies}; Impact: {svc.impact})
                                         </dd>
                                     </div>
                                 ))}
@@ -1266,6 +1274,20 @@ export default function GroundStops() {
                                 ? `mailto:${[...new Set(emailMatches)].join(",")}`
                                 : "";
                             const isFav = favoriteAppKeys.includes(key);
+                            const rawCardSeverity = String(
+                                (isEdited && record.severity) ||
+                                    profile.severity ||
+                                    record.severity ||
+                                    record.criticality ||
+                                    "Critical"
+                            ).trim();
+                            const isHighCardSeverity =
+                                /high|sev\s*2/i.test(rawCardSeverity) &&
+                                !/crit|sev\s*1/i.test(rawCardSeverity);
+                            const cardSeverityLabel = isHighCardSeverity ? "High" : "Critical";
+                            const cardSeverityClass = isHighCardSeverity
+                                ? "severity-high"
+                                : "severity-critical";
 
                             return (
                                 <article
@@ -1284,9 +1306,18 @@ export default function GroundStops() {
                                         {renderLogoBadge(key)}
                                         <div className="gs-card-titles">
                                             <h2 title={record.name || title}>{title}</h2>
-                                            <span className="gs-category-pill" title={category}>
-                                                {category}
-                                            </span>
+                                            <div className="gs-card-subrow">
+                                                <span
+                                                    className={`gs-criticality-pill ${cardSeverityClass}`}
+                                                    title={`Criticality: ${cardSeverityLabel}`}
+                                                >
+                                                    <i aria-hidden="true"></i>
+                                                    <span>{cardSeverityLabel}</span>
+                                                </span>
+                                                <span className="gs-category-pill" title={category}>
+                                                    {category}
+                                                </span>
+                                            </div>
                                         </div>
                                         <div className="gs-card-badges">
                                             <span className="gs-sla-pill">
@@ -1530,7 +1561,7 @@ export default function GroundStops() {
                                     <>
                                         <h1 id="viModalTitle" className="vi-page-title">
                                             {impactData.dependenciesTabTitle ||
-                                                `${impactData.name} – Dependencies`}
+                                                `${impactData.name} - Dependencies`}
                                         </h1>
                                         <p className="vi-page-subtitle">
                                             {impactData.dependenciesTabSubtitle ||
@@ -1620,224 +1651,40 @@ export default function GroundStops() {
                             </div>
                         </header>
 
-                        {/* HERO SUMMARY CARD + TAB BAR */}
-                        <section className="vi-hero-card" aria-label="Application summary">
-                            <div className="vi-hero-main">
-                                <div className="vi-hero-logo-box">
-                                    {impactData.logo ? (
-                                        <img
-                                            src={impactData.logo}
-                                            alt={impactData.name}
-                                            className="vi-hero-logo-img"
-                                        />
-                                    ) : (
-                                        <div className="vi-hero-logo-fallback">
-                                            {impactApp ? renderLogoBadge(impactApp.key) : null}
-                                        </div>
-                                    )}
-                                </div>
-
-                                <div className="vi-hero-info">
-                                    <div className="vi-hero-header-row">
-                                        <div className="vi-hero-title-group">
-                                            <h2 className="vi-hero-title">{impactData.name}</h2>
-                                            <p className="vi-hero-subtitle">
-                                                {impactData.subtitle}
-                                            </p>
-                                        </div>
-
-                                        <div className="vi-hero-actions">
-                                            {impactTab !== "overview" ? (
-                                                <button
-                                                    type="button"
-                                                    className="vi-btn-secondary"
-                                                    onClick={() => setImpactTab("overview")}
-                                                >
-                                                    <svg
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        aria-hidden="true"
-                                                    >
-                                                        <path d="M19 12H5" />
-                                                        <path d="m12 19-7-7 7-7" />
-                                                    </svg>
-                                                    <span>Back to Vendor Details</span>
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    className="vi-btn-secondary"
-                                                    onClick={closeImpactView}
-                                                >
-                                                    <svg
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        aria-hidden="true"
-                                                    >
-                                                        <path d="M19 12H5" />
-                                                        <path d="m12 19-7-7 7-7" />
-                                                    </svg>
-                                                    <span>Back to Ground Stop Applications</span>
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                    {/* 4-ITEM METADATA STRIP */}
-                                    <div className="vi-meta-row">
-                                        <div className="vi-meta-item">
-                                            <span className="vi-meta-icon" aria-hidden="true">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="1.9"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <rect x="4" y="2" width="16" height="20" rx="2" />
-                                                    <path d="M9 22v-4h6v4" />
-                                                    <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01" />
-                                                </svg>
-                                            </span>
-                                            <div className="vi-meta-text">
-                                                <span className="vi-meta-label">Company</span>
-                                                <strong className="vi-meta-value">
-                                                    {impactData.company}
-                                                </strong>
-                                            </div>
-                                        </div>
-
-                                        <div className="vi-meta-item">
-                                            <span className="vi-meta-icon" aria-hidden="true">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="1.9"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <circle cx="12" cy="12" r="10" />
-                                                    <path d="M2 12h20" />
-                                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                                                </svg>
-                                            </span>
-                                            <div className="vi-meta-text">
-                                                <span className="vi-meta-label">Website</span>
-                                                {/^https?:\/\//i.test(String(impactData.website || "")) ? (
-                                                    <a
-                                                        href={impactData.website}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="vi-meta-link"
-                                                    >
-                                                        <span>{impactData.website}</span>
-                                                        <svg
-                                                            viewBox="0 0 24 24"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                                            <polyline points="15 3 21 3 21 9" />
-                                                            <line x1="10" y1="14" x2="21" y2="3" />
-                                                        </svg>
-                                                    </a>
-                                                ) : (
-                                                    <strong className="vi-meta-value">
-                                                        {impactData.website}
-                                                    </strong>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        <div className="vi-meta-item">
-                                            <span className="vi-meta-icon" aria-hidden="true">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="1.9"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                                                    <line x1="7" y1="7" x2="7.01" y2="7" />
-                                                </svg>
-                                            </span>
-                                            <div className="vi-meta-text">
-                                                <span className="vi-meta-label">Category</span>
-                                                <strong className="vi-meta-value">
-                                                    {impactData.category}
-                                                </strong>
-                                            </div>
-                                        </div>
-
-                                        <div className="vi-meta-item">
-                                            <span className="vi-meta-icon" aria-hidden="true">
-                                                <svg
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="1.9"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                >
-                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                                    <circle cx="9" cy="7" r="4" />
-                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                                </svg>
-                                            </span>
-                                            <div className="vi-meta-text">
-                                                <span className="vi-meta-label">ITS Team</span>
-                                                <strong className="vi-meta-value">
-                                                    {impactData.itsTeam}
-                                                </strong>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* HERO TABS */}
-                            <div className="vi-hero-tabs" role="tablist">
-                                {[
-                                    { key: "overview", label: "Impact Overview" },
-                                    { key: "dependencies", label: "Dependencies" },
-                                    { key: "contacts", label: "Contacts" },
-                                    { key: "documents", label: "Related Documents" }
-                                ].map((tab) => (
-                                    <button
-                                        key={tab.key}
-                                        type="button"
-                                        role="tab"
-                                        aria-selected={impactTab === tab.key ? "true" : "false"}
-                                        className={`vi-hero-tab${
-                                            impactTab === tab.key ? " active" : ""
-                                        }`}
-                                        onClick={() => {
-                                            setImpactTab(tab.key);
-                                            setSelectedAppDetail(null);
-                                        }}
-                                    >
-                                        {tab.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </section>
+                        {/* HERO SUMMARY CARD + 4 PASTEL INFO CARDS + TAB BAR */}
+                        <DetailPageHeader
+                            ariaLabel="Application summary"
+                            logoSrc={impactData.logo}
+                            logoAlt={impactData.name}
+                            fallbackLogo={impactApp ? renderLogoBadge(impactApp.key) : null}
+                            title={impactData.name}
+                            subtitle={impactData.subtitle}
+                            backLabel={
+                                impactTab !== "overview"
+                                    ? "Back to Vendor Details"
+                                    : "Back to Ground Stop Applications"
+                            }
+                            onBack={
+                                impactTab !== "overview"
+                                    ? () => setImpactTab("overview")
+                                    : closeImpactView
+                            }
+                            company={impactData.company}
+                            website={impactData.website}
+                            category={impactData.category}
+                            itsTeam={impactData.itsTeam}
+                            tabs={[
+                                { key: "overview", label: "Impact Overview" },
+                                { key: "dependencies", label: "Dependencies" },
+                                { key: "contacts", label: "Contacts" },
+                                { key: "documents", label: "Related Documents" }
+                            ]}
+                            activeTab={impactTab}
+                            onSelectTab={(key) => {
+                                setImpactTab(key);
+                                setSelectedAppDetail(null);
+                            }}
+                        />
 
                         {impactTab === "systems" ? (
                             /* FULL-WIDTH APPLICATIONS & SYSTEMS TAB LAYOUT */
@@ -2071,7 +1918,7 @@ export default function GroundStops() {
                                     <footer className="vi-apps-pagination-bar">
                                         <span className="vi-apps-showing-text">
                                             Showing{" "}
-                                            {filteredAppsTabSystems.length > 0 ? "1" : "0"} –{" "}
+                                            {filteredAppsTabSystems.length > 0 ? "1" : "0"} -{" "}
                                             {filteredAppsTabSystems.length} of{" "}
                                             {impactData.impactedSystems.length} applications
                                         </span>
@@ -2921,7 +2768,7 @@ export default function GroundStops() {
                                                         ? item
                                                         : `${item.name}${
                                                               item.description
-                                                                  ? ` — ${item.description}`
+                                                                  ? ` - ${item.description}`
                                                                   : ""
                                                           }`}
                                                 </li>
@@ -2960,7 +2807,7 @@ export default function GroundStops() {
                                                         ? item
                                                         : `${item.name}${
                                                               item.description
-                                                                  ? ` — ${item.description}`
+                                                                  ? ` - ${item.description}`
                                                                   : ""
                                                           }`}
                                                 </li>
@@ -3029,111 +2876,29 @@ export default function GroundStops() {
                                 {/* LEFT MAIN COLUMN */}
                                 <div className="vi-main-col">
                                     {(impactTab === "overview" || impactTab === "systems") && (
-                                        <div className="vi-alert-banner" role="note">
-                                            <span className="vi-alert-icon" aria-hidden="true">
-                                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                                                    <line
-                                                        x1="12"
-                                                        y1="9"
-                                                        x2="12"
-                                                        y2="13"
-                                                        stroke="#FFFFFF"
-                                                        strokeWidth="2.2"
-                                                        strokeLinecap="round"
-                                                    />
-                                                    <circle cx="12" cy="17" r="1.2" fill="#FFFFFF" />
-                                                </svg>
-                                            </span>
-                                            <div className="vi-alert-content">
-                                                <strong>
-                                                    {impactData.impactCallout?.title ||
-                                                        impactData.criticalityBannerTitle ||
-                                                        (impactData.impactCallout?.level
-                                                            ? `${impactData.impactCallout.level} Operational Impact`
-                                                            : `Operational Impact if ${impactData.name} is Unavailable`)}
-                                                </strong>
-                                                <p>
-                                                    {impactData.impactCallout?.message ||
-                                                        impactData.impactCallout?.description ||
-                                                        impactData.criticalityHint ||
-                                                        impactData.impactAlert}
-                                                </p>
-                                            </div>
-                                        </div>
+                                        <CriticalityAlert
+                                            title={
+                                                impactData.impactCallout?.title ||
+                                                impactData.criticalityBannerTitle ||
+                                                (impactData.impactCallout?.level
+                                                    ? `${impactData.impactCallout.level} Operational Impact`
+                                                    : `Operational Impact if ${impactData.name} is Unavailable`)
+                                            }
+                                            message={
+                                                impactData.impactCallout?.message ||
+                                                impactData.impactCallout?.description ||
+                                                impactData.criticalityHint ||
+                                                impactData.impactAlert
+                                            }
+                                        />
                                     )}
 
                                     {(impactTab === "overview" || impactTab === "systems") && (
-                                        <section
-                                            className="vi-card vi-systems-card"
-                                            aria-label="Applications and Systems Impacted"
-                                        >
-                                            <header className="vi-card-header">
-                                                <span
-                                                    className="vi-card-icon icon-blue"
-                                                    aria-hidden="true"
-                                                >
-                                                    <svg
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                    >
-                                                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                                                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                                                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                                                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
-                                                    </svg>
-                                                </span>
-                                                <h3>Applications &amp; Systems Impacted</h3>
-                                            </header>
-
-                                            <div className="vi-table-wrap">
-                                                <table className="vi-table vi-table-6col">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Application / System</th>
-                                                            <th>Short Description</th>
-                                                            <th>Business Function</th>
-                                                            <th>
-                                                                Impact if Down ({impactData.name})
-                                                            </th>
-                                                            <th>Direct Dependencies</th>
-                                                            <th>ITS Owner</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {filteredImpactedSystems.map((sys) => (
-                                                            <tr key={sys.id}>
-                                                                <td className="vi-td-app">
-                                                                    <strong>{sys.name}</strong>
-                                                                    {sys.subName ? (
-                                                                        <div className="vi-td-subname">
-                                                                            {sys.subName}
-                                                                        </div>
-                                                                    ) : null}
-                                                                </td>
-                                                                <td className="vi-td-desc">
-                                                                    {sys.description}
-                                                                </td>
-                                                                <td className="vi-td-func">
-                                                                    {sys.businessFunction}
-                                                                </td>
-                                                                <td className="vi-td-impact">{sys.impact}</td>
-                                                                <td className="vi-td-desc">
-                                                                    {sys.dependencies || "—"}
-                                                                </td>
-                                                                <td className="vi-td-owner">
-                                                                    {sys.owner || impactData.itsTeam}
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </section>
+                                        <ImpactTable
+                                            systemName={impactData.name}
+                                            systems={filteredImpactedSystems}
+                                            defaultOwner={impactData.itsTeam}
+                                        />
                                     )}
 
                                     {impactTab === "overview" && (
@@ -3260,7 +3025,13 @@ export default function GroundStops() {
                                             </header>
 
                                             <div className="vi-table-wrap">
-                                                <table className="vi-table">
+                                                <table className="vi-table vi-contacts-table">
+                                                    <colgroup>
+                                                        <col style={{ width: "22%" }} />
+                                                        <col style={{ width: "22%" }} />
+                                                        <col style={{ width: "28%" }} />
+                                                        <col style={{ width: "28%" }} />
+                                                    </colgroup>
                                                     <thead>
                                                         <tr>
                                                             <th>Contact Role</th>
@@ -3439,7 +3210,13 @@ export default function GroundStops() {
                                                 <h3>Related Runbooks &amp; Documentation</h3>
                                             </header>
                                             <div className="vi-table-wrap">
-                                                <table className="vi-table">
+                                                <table className="vi-table vi-docs-table">
+                                                    <colgroup>
+                                                        <col style={{ width: "35%" }} />
+                                                        <col style={{ width: "25%" }} />
+                                                        <col style={{ width: "25%" }} />
+                                                        <col style={{ width: "15%" }} />
+                                                    </colgroup>
                                                     <thead>
                                                         <tr>
                                                             <th>Document Title</th>
@@ -3507,215 +3284,75 @@ export default function GroundStops() {
                                         </header>
 
                                         <div className="vi-kv-list">
-                                            <div className="vi-kv-row">
-                                                <span className="vi-kv-label">
-                                                    {impactData.vendorContacts.supportEmailNote
-                                                        ? `Support Email (${impactData.vendorContacts.supportEmailNote})`
-                                                        : "Support Email"}
-                                                </span>
-                                                <div className="vi-kv-val-group">
-                                                    {String(
+                                            <ContactRow
+                                                iconType="email-blue"
+                                                label="Support Email"
+                                                sublabel={impactData.vendorContacts.supportEmailNote}
+                                                value={impactData.vendorContacts.supportEmail}
+                                                href={
+                                                    String(
                                                         impactData.vendorContacts.supportEmail || ""
-                                                    ).includes("@") ? (
-                                                        <a
-                                                            href={`mailto:${impactData.vendorContacts.supportEmail}`}
-                                                            className="vi-kv-link"
-                                                            title={
-                                                                impactData.vendorContacts.supportEmailNote ||
-                                                                impactData.vendorContacts.supportEmail
-                                                            }
-                                                        >
-                                                            {impactData.vendorContacts.supportEmail}
-                                                        </a>
-                                                    ) : (
-                                                        <strong className="vi-kv-strong">
-                                                            {impactData.vendorContacts.supportEmail}
-                                                        </strong>
-                                                    )}
-                                                    <button
-                                                        type="button"
-                                                        className="vi-copy-btn"
-                                                        title="Copy Support Email"
-                                                        aria-label="Copy Support Email"
-                                                        onClick={() =>
-                                                            handleCopyText(
-                                                                impactData.vendorContacts.supportEmail,
-                                                                "email"
-                                                            )
-                                                        }
-                                                    >
-                                                        {copiedField === "email" ? (
-                                                            <svg
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                stroke="#16A34A"
-                                                                strokeWidth="2.4"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                            >
-                                                                <polyline points="20 6 9 17 4 12" />
-                                                            </svg>
-                                                        ) : (
-                                                            <svg
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                stroke="currentColor"
-                                                                strokeWidth="2"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                            >
-                                                                <rect
-                                                                    x="9"
-                                                                    y="9"
-                                                                    width="13"
-                                                                    height="13"
-                                                                    rx="2"
-                                                                    ry="2"
-                                                                />
-                                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                                                            </svg>
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </div>
+                                                    ).includes("@")
+                                                        ? `mailto:${impactData.vendorContacts.supportEmail}`
+                                                        : undefined
+                                                }
+                                                copyKey="email"
+                                                copiedField={copiedField}
+                                                onCopy={handleCopyText}
+                                            />
 
                                             {impactData.vendorContacts.secondaryEmail && (
-                                                <div className="vi-kv-row">
-                                                    <span className="vi-kv-label">
-                                                        {impactData.vendorContacts.secondaryEmailNote
-                                                            ? `Secondary Email (${impactData.vendorContacts.secondaryEmailNote})`
-                                                            : "Secondary Email"}
-                                                    </span>
-                                                    <div className="vi-kv-val-group">
-                                                        <a
-                                                            href={`mailto:${impactData.vendorContacts.secondaryEmail}`}
-                                                            className="vi-kv-link"
-                                                            title={
-                                                                impactData.vendorContacts.secondaryEmailNote ||
-                                                                impactData.vendorContacts.secondaryEmail
-                                                            }
-                                                        >
-                                                            {impactData.vendorContacts.secondaryEmail}
-                                                        </a>
-                                                        <button
-                                                            type="button"
-                                                            className="vi-copy-btn"
-                                                            title="Copy Secondary Email"
-                                                            aria-label="Copy Secondary Email"
-                                                            onClick={() =>
-                                                                handleCopyText(
-                                                                    impactData.vendorContacts.secondaryEmail,
-                                                                    "secondaryEmail"
-                                                                )
-                                                            }
-                                                        >
-                                                            {copiedField === "secondaryEmail" ? (
-                                                                <svg
-                                                                    viewBox="0 0 24 24"
-                                                                    fill="none"
-                                                                    stroke="#16A34A"
-                                                                    strokeWidth="2.4"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                >
-                                                                    <polyline points="20 6 9 17 4 12" />
-                                                                </svg>
-                                                            ) : (
-                                                                <svg
-                                                                    viewBox="0 0 24 24"
-                                                                    fill="none"
-                                                                    stroke="currentColor"
-                                                                    strokeWidth="2"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                >
-                                                                    <rect
-                                                                        x="9"
-                                                                        y="9"
-                                                                        width="13"
-                                                                        height="13"
-                                                                        rx="2"
-                                                                        ry="2"
-                                                                    />
-                                                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                                                                </svg>
-                                                            )}
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="email-purple"
+                                                    label="Secondary Email"
+                                                    sublabel={
+                                                        impactData.vendorContacts.secondaryEmailNote
+                                                    }
+                                                    value={impactData.vendorContacts.secondaryEmail}
+                                                    href={
+                                                        String(
+                                                            impactData.vendorContacts
+                                                                .secondaryEmail || ""
+                                                        ).includes("@")
+                                                            ? `mailto:${impactData.vendorContacts.secondaryEmail}`
+                                                            : undefined
+                                                    }
+                                                    copyKey="secondaryEmail"
+                                                    copiedField={copiedField}
+                                                    onCopy={handleCopyText}
+                                                />
                                             )}
 
-                                            <div className="vi-kv-row">
-                                                <span className="vi-kv-label">Support Phone</span>
-                                                <div className="vi-kv-val-group">
-                                                    <strong className="vi-kv-strong">
-                                                        {impactData.vendorContacts.supportPhone}
-                                                    </strong>
-                                                    <button
-                                                        type="button"
-                                                        className="vi-copy-btn"
-                                                        title="Copy Support Phone"
-                                                        aria-label="Copy Support Phone"
-                                                        onClick={() =>
-                                                            handleCopyText(
-                                                                impactData.vendorContacts.supportPhone,
-                                                                "phone"
-                                                            )
-                                                        }
-                                                    >
-                                                        {copiedField === "phone" ? (
-                                                            <svg
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                stroke="#16A34A"
-                                                                strokeWidth="2.4"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                            >
-                                                                <polyline points="20 6 9 17 4 12" />
-                                                            </svg>
-                                                        ) : (
-                                                            <svg
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                stroke="currentColor"
-                                                                strokeWidth="2"
-                                                                strokeLinecap="round"
-                                                                strokeLinejoin="round"
-                                                            >
-                                                                <rect
-                                                                    x="9"
-                                                                    y="9"
-                                                                    width="13"
-                                                                    height="13"
-                                                                    rx="2"
-                                                                    ry="2"
-                                                                />
-                                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                                                            </svg>
-                                                        )}
-                                                    </button>
-                                                </div>
-                                            </div>
+                                            <ContactRow
+                                                iconType="phone-green"
+                                                label="Support Phone"
+                                                value={impactData.vendorContacts.supportPhone}
+                                                copyKey="phone"
+                                                copiedField={copiedField}
+                                                onCopy={handleCopyText}
+                                            />
 
                                             {impactData.vendorContacts.technicalSupport && (
-                                                <div className="vi-kv-row">
-                                                    <span className="vi-kv-label">Technical Support</span>
-                                                    <span className="vi-kv-muted">
-                                                        {impactData.vendorContacts.technicalSupport}
-                                                    </span>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="support-violet"
+                                                    label="Technical Support"
+                                                    value={
+                                                        impactData.vendorContacts.technicalSupport
+                                                    }
+                                                    muted
+                                                    copyKey="techSupport"
+                                                    copiedField={copiedField}
+                                                    onCopy={handleCopyText}
+                                                />
                                             )}
 
                                             {impactData.vendorContacts.supportHours && (
-                                                <div className="vi-kv-row vi-kv-row-top">
-                                                    <span className="vi-kv-label">
-                                                        Support Service Hours
-                                                    </span>
-                                                    <span className="vi-kv-multiline">
-                                                        {impactData.vendorContacts.supportHours}
-                                                    </span>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="clock-amber"
+                                                    label="Support Service Hours"
+                                                    value={impactData.vendorContacts.supportHours}
+                                                    multiline
+                                                />
                                             )}
                                         </div>
                                     </section>
@@ -3724,84 +3361,95 @@ export default function GroundStops() {
                                     <section className="vi-card vi-side-card">
                                         <header className="vi-card-header">
                                             <span
-                                                className="vi-card-icon icon-blue-solid"
+                                                className="vi-card-icon icon-blue"
                                                 aria-hidden="true"
                                             >
-                                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z" />
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                                    <circle cx="9" cy="7" r="4" />
+                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                                 </svg>
                                             </span>
                                             <h3>Alaska Internal Contacts</h3>
                                         </header>
 
                                         <div className="vi-kv-list">
-                                            <div className="vi-kv-row">
-                                                <span className="vi-kv-label">ITS Team</span>
-                                                <strong className="vi-kv-strong">
-                                                    {impactData.internalContacts.itsTeam}
-                                                </strong>
-                                            </div>
+                                            <ContactRow
+                                                iconType="team-blue"
+                                                label="ITS Team"
+                                                value={impactData.internalContacts.itsTeam}
+                                            />
 
                                             {impactData.internalContacts.itsTeamNote && (
-                                                <div className="vi-kv-row vi-kv-row-top">
-                                                    <span className="vi-kv-label">ITS Team Scope</span>
-                                                    <span className="vi-kv-multiline">
-                                                        {impactData.internalContacts.itsTeamNote}
-                                                    </span>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="shield-green"
+                                                    label="ITS Team Scope"
+                                                    value={impactData.internalContacts.itsTeamNote}
+                                                    multiline
+                                                />
                                             )}
 
-                                            <div className="vi-kv-row">
-                                                <span className="vi-kv-label">Application Owner</span>
-                                                <span
-                                                    className={
-                                                        String(
-                                                            impactData.internalContacts.applicationOwner || ""
-                                                        ).startsWith("(")
-                                                            ? "vi-kv-muted"
-                                                            : "vi-kv-strong"
-                                                    }
-                                                >
-                                                    {impactData.internalContacts.applicationOwner}
-                                                </span>
-                                            </div>
+                                            <ContactRow
+                                                iconType="user-purple"
+                                                label="Application Owner"
+                                                value={impactData.internalContacts.applicationOwner}
+                                                muted={String(
+                                                    impactData.internalContacts.applicationOwner ||
+                                                        ""
+                                                ).startsWith("(")}
+                                                copyKey="appOwner"
+                                                copiedField={copiedField}
+                                                onCopy={handleCopyText}
+                                            />
 
                                             {impactData.internalContacts.systemAdministration && (
-                                                <div className="vi-kv-row vi-kv-row-top">
-                                                    <span className="vi-kv-label">
-                                                        System Administration
-                                                    </span>
-                                                    <span className="vi-kv-multiline">
-                                                        {impactData.internalContacts.systemAdministration}
-                                                    </span>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="support-violet"
+                                                    label="System Administration"
+                                                    value={
+                                                        impactData.internalContacts
+                                                            .systemAdministration
+                                                    }
+                                                    multiline
+                                                />
                                             )}
 
-                                            <div className="vi-kv-row vi-kv-row-top">
-                                                <span className="vi-kv-label">Business Owner</span>
-                                                <strong className="vi-kv-strong">
-                                                    {impactData.internalContacts.businessOwner}
-                                                </strong>
-                                            </div>
+                                            <ContactRow
+                                                iconType="user-purple"
+                                                label="Business Owner"
+                                                value={impactData.internalContacts.businessOwner}
+                                                multiline
+                                            />
 
                                             {impactData.internalContacts.passwordSupport && (
-                                                <div className="vi-kv-row">
-                                                    <span className="vi-kv-label">Password Support</span>
-                                                    <span className="vi-kv-muted">
-                                                        {impactData.internalContacts.passwordSupport}
-                                                    </span>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="phone-green"
+                                                    label="Password Support"
+                                                    value={
+                                                        impactData.internalContacts.passwordSupport
+                                                    }
+                                                    muted
+                                                />
                                             )}
 
                                             {impactData.internalContacts.everbridgeContacts && (
-                                                <div className="vi-kv-row vi-kv-row-top">
-                                                    <span className="vi-kv-label">
-                                                        Everbridge Focal Contacts
-                                                    </span>
-                                                    <span className="vi-kv-multiline">
-                                                        {impactData.internalContacts.everbridgeContacts}
-                                                    </span>
-                                                </div>
+                                                <ContactRow
+                                                    iconType="clock-amber"
+                                                    label="Everbridge Focal Contacts"
+                                                    value={
+                                                        impactData.internalContacts
+                                                            .everbridgeContacts
+                                                    }
+                                                    multiline
+                                                />
                                             )}
                                         </div>
                                     </section>

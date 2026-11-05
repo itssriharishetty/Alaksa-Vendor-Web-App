@@ -154,14 +154,13 @@ await runTest("3. Application relationships are preserved (including multi-appli
     "Jeppesen must include both primary systems and linked applications"
   );
 
-  // Check TRAX (2 vendor rows: AS TRAX System, QX TRAX System + Aircraft Maintenance application)
+  // Check TRAX (2 vendor rows: AS TRAX System, QX TRAX System)
   const traxRecords = records.filter((r) => r.vendorName === "TRAX");
   assert.equal(traxRecords.length, 2, "TRAX must have 2 vendor records");
   assert.ok(
     traxRecords[0].allSystems.includes("AS TRAX System") &&
-      traxRecords[0].allSystems.includes("QX TRAX System") &&
-      traxRecords[0].allSystems.includes("Aircraft Maintenance"),
-    "TRAX must include AS TRAX System, QX TRAX System, and Aircraft Maintenance"
+      traxRecords[0].allSystems.includes("QX TRAX System"),
+    "TRAX must include AS TRAX System and QX TRAX System"
   );
 });
 
@@ -715,7 +714,10 @@ await runTest("15. ACARS (SITA / AIRCOM) Vendor Impact Details contain complete 
   );
   assert.equal(details.vendorContacts.supportEmail, "Aircom.support@sitaonair.aero");
   assert.equal(details.vendorContacts.secondaryEmail, "helpdesk@arinc.com");
-  assert.equal(details.vendorContacts.accountManager, "(Add Account Manager)");
+  assert.equal(
+    details.vendorContacts.accountManager,
+    "Not verified (blank in ITS Vendor Information - 2026.xlsx; ARINC lists rotating Senior On-Duty Ops Manager 24x7)"
+  );
   assert.ok(details.vendorContacts.namedEscalationContact.includes("410-266-4029"));
   assert.ok(details.vendorContacts.namedEscalationContact.includes("AOC@arinc.com"));
   assert.ok(details.vendorContacts.companyNote.includes("ARINC (Collins Aerospace) for messages to the aircraft"));
@@ -732,15 +734,13 @@ await runTest("15. ACARS (SITA / AIRCOM) Vendor Impact Details contain complete 
   );
   assert.equal(details.internalContacts.passwordSupport, "Service Desk: 1-877-238-1077");
 
-  // Verify 9 source documents (3 Main Sources + 6 Additional Sources)
-  assert.equal(details.relatedDocuments.length, 9);
-  assert.equal(
-    details.relatedDocuments.filter((d) => d.updated === "Main Source").length,
-    3
+  // Verify 12 source documents with verified document dates from the Document-Date Register
+  assert.equal(details.relatedDocuments.length, 12);
+  assert.ok(
+    details.relatedDocuments.some((d) => d.title === "ACARS System Summary.docx" && d.updated === "2026-09-22")
   );
-  assert.equal(
-    details.relatedDocuments.filter((d) => d.updated === "Additional Source").length,
-    6
+  assert.ok(
+    details.relatedDocuments.some((d) => d.title === "ACARS Messenger System Summary.docx" && d.updated === "2026-08-14")
   );
   for (const doc of details.relatedDocuments) {
     assert.ok(
@@ -854,14 +854,12 @@ await runTest("17. Ground Stop Application ACARS contains complete ACARS Ground 
 
   const groundStopsSource = await readFile(resolve(rootDir, "src/pages/GroundStops.jsx"), "utf8");
   assert.ok(
-    groundStopsSource.includes(
-      "SITA for the Aircom Server product. ARINC (Collins Aerospace) for messages to the aircraft"
-    ),
-    "GroundStops.jsx CARD_PROFILES.acars must include updated vendor"
+    groundStopsSource.includes('vendor: "SITA"'),
+    "GroundStops.jsx CARD_PROFILES.acars must include simplified vendor"
   );
   assert.ok(
-    groundStopsSource.includes("SITA: 1-888-247-2661, option 4 (Aircom). ARINC: 800-633-6882"),
-    "GroundStops.jsx CARD_PROFILES.acars must include updated phone numbers"
+    groundStopsSource.includes('phone: "1-888-247-2661"'),
+    "GroundStops.jsx CARD_PROFILES.acars must include simplified phone number"
   );
 });
 
@@ -1100,7 +1098,7 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
   assert.equal(acarsDetails.impactedSystems.length, 5);
   assert.equal(acarsDetails.upstreamDependencies.length, 5);
   assert.equal(acarsDetails.downstreamConsumers.length, 9);
-  assert.equal(acarsDetails.relatedDocuments.length, 9);
+  assert.equal(acarsDetails.relatedDocuments.length, 12);
 
   // Verify WAM Ground Stop card resolves full WAM (Flight Planning System / Worksheet) Impact Details
   const wamDetails = getGroundStopImpactDetails({
@@ -1113,7 +1111,10 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
     wamDetails.company,
     "Jeppesen (owned by Boeing), which runs the JetPlan flight plan server"
   );
-  assert.equal(wamDetails.website, "(Add WAM URL)");
+  assert.equal(
+    wamDetails.website,
+    "https://worksheet.webui.alaskaair.com/foworksheetui/index.html?airline=AS&desk=B&shift=3"
+  );
   assert.equal(wamDetails.category, "Flight Ops / Dispatch: flight planning and releases");
   assert.equal(
     wamDetails.itsTeam,
@@ -1190,7 +1191,7 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
   assert.equal(s4aDetails.validationChecklist.length, 9);
   assert.equal(s4aDetails.vendorContacts.communicationGuidelines.length, 4);
   assert.equal(s4aDetails.vendorContacts.responseSlas.length, 4);
-  assert.equal(s4aDetails.relatedDocuments.length, 8);
+  assert.equal(s4aDetails.relatedDocuments.length, 9);
 
   // JCTE uses the rich JCTE (Jeppesen Crew Tracking Enterprise) Ground Stop application profile
   const jcteDetails = getGroundStopImpactDetails({
@@ -1220,7 +1221,7 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
   assert.equal(jcteDetails.validationChecklist.length, 9);
   assert.equal(jcteDetails.vendorContacts.communicationGuidelines.length, 3);
   assert.equal(jcteDetails.vendorContacts.responseSlas.length, 4);
-  assert.equal(jcteDetails.relatedDocuments.length, 7);
+  assert.equal(jcteDetails.relatedDocuments.length, 8);
 
   // AirTrak uses the rich AirTrak Ground Stop application profile
   const airtrackDetails = getGroundStopImpactDetails({
@@ -1258,6 +1259,129 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
   assert.equal(airtrackDetails.vendorContacts.communicationGuidelines.length, 3);
   assert.equal(airtrackDetails.vendorContacts.responseSlas.length, 4);
   assert.equal(airtrackDetails.relatedDocuments.length, 7);
+
+  // Verify Pilot Briefing profile matches the updated authoritative specification
+  const pbDetails = getGroundStopImpactDetails({
+    key: "pilot-briefing",
+    record: apps["pilot-briefing"] || {}
+  });
+  assert.ok(pbDetails, "Expected Pilot Briefing impact details to resolve");
+  assert.equal(
+    pbDetails.subtitle,
+    "Pilot Briefing. Also called JetStream, Briefing Packets. JetPack is a separate pilot mobile app, not another name for it · Criticality: Ground Stop. 24x7, critical to operations"
+  );
+  assert.equal(
+    pbDetails.company,
+    "None; built in-house. Weather data comes from The Weather Company"
+  );
+  assert.equal(
+    pbDetails.website,
+    "JetStream website: http://fogsweb.insideaag.com/jetstreamwebsite/jetstream.aspx. Airline Ops Portal: http://fogsweb.insideaag.com/fogswebportal/"
+  );
+  assert.equal(
+    pbDetails.category,
+    "Flight Ops: briefing packets (flight paperwork). Printing them before takeoff is an FAA requirement"
+  );
+  assert.equal(
+    pbDetails.itsTeam,
+    "ITS Flight Operations. Technical Owners: Ryan Wilkins, Adele Lunde"
+  );
+  assert.equal(
+    pbDetails.vendorContacts.supportPhone,
+    "Not applicable (built in-house). Weather vendor: 1-800-872-2359 (option 3) / PilotBrief@weather.com"
+  );
+  assert.equal(pbDetails.vendorContacts.supportEmail, "PilotBrief@weather.com");
+  assert.equal(pbDetails.vendorContacts.supportHours, "24x7");
+  assert.equal(pbDetails.impactedSystems.length, 4);
+  assert.equal(pbDetails.upstreamDependencies.length, 5);
+  assert.equal(pbDetails.downstreamConsumers.length, 2);
+  assert.equal(pbDetails.dependenciesTab.infrastructureTable.length, 6);
+  assert.equal(pbDetails.typicalBusinessImpact.length, 3);
+  assert.equal(pbDetails.knownWorkarounds.length, 3);
+  assert.equal(pbDetails.validationChecklist.length, 10);
+  assert.equal(pbDetails.vendorContacts.communicationGuidelines.length, 2);
+  assert.equal(pbDetails.vendorContacts.responseSlas.length, 2);
+  assert.equal(pbDetails.relatedDocuments.length, 8);
+
+  // Verify Aircraft Maintenance profile matches the updated authoritative specification
+  const amsDetails = getGroundStopImpactDetails({
+    key: "aircraft-maintenance",
+    record: apps["aircraft-maintenance"] || {}
+  });
+  assert.ok(amsDetails, "Expected Aircraft Maintenance impact details to resolve");
+  assert.equal(
+    amsDetails.subtitle,
+    "Aircraft Maintenance Status (AMS). Also called ME Portal, Out of Service Recovery, OTS Recovery · Criticality: On the Ground Stop list in the SOP tracker (not listed in Ground Stop Applications List.docx 2026-08-18). The system summary rates it Sev 2 · 24x7"
+  );
+  assert.equal(
+    amsDetails.company,
+    "None; built in-house. Uses Twilio for its chat and timeline features"
+  );
+  assert.equal(amsDetails.website, "https://me-meportal.alaskaair.com/");
+  assert.equal(
+    amsDetails.category,
+    "Maintenance & Engineering: tracks aircraft from removal from service to return to service"
+  );
+  assert.equal(
+    amsDetails.itsTeam,
+    "ITS COG M&E App Support. ITS System Owner: Jerred Slavata"
+  );
+  assert.equal(amsDetails.vendorContacts.supportPhone, "Not applicable (built in-house)");
+  assert.equal(amsDetails.vendorContacts.supportEmail, "Not applicable (built in-house)");
+  assert.equal(amsDetails.vendorContacts.supportHours, "ITS COG M&E APP Support: 24x7");
+  assert.equal(amsDetails.impactedSystems.length, 4);
+  assert.equal(amsDetails.upstreamDependencies.length, 3);
+  assert.equal(amsDetails.downstreamConsumers.length, 3);
+  assert.equal(amsDetails.dependenciesTab.infrastructureTable.length, 6);
+  assert.equal(amsDetails.typicalBusinessImpact.length, 3);
+  assert.equal(amsDetails.knownWorkarounds.length, 3);
+  assert.equal(amsDetails.validationChecklist.length, 7);
+  assert.equal(amsDetails.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(amsDetails.vendorContacts.responseSlas.length, 3);
+  assert.equal(amsDetails.relatedDocuments.length, 9);
+
+  // Verify AIMS Ground Stop profile matches the updated authoritative specification
+  const aimsGsDetails = getGroundStopImpactDetails({
+    key: "aims",
+    record: apps["aims"] || {}
+  });
+  assert.ok(aimsGsDetails, "Expected AIMS Ground Stop impact details to resolve");
+  assert.equal(
+    aimsGsDetails.subtitle,
+    "AIMS (Aviation Information Management System). Also called Horizon Crew Scheduling / Tracking, and eCrew for the web app · Criticality: Ground Stop. The scheduler app (through Citrix) is Sev 1; the eCrew web app is Sev 2"
+  );
+  assert.equal(aimsGsDetails.company, "AIMS, based in Athens, Greece");
+  assert.equal(aimsGsDetails.website, "eCrew: ecrew.horizonair.com");
+  assert.equal(
+    aimsGsDetails.category,
+    "Crew: scheduling pilots and flight attendants (FAs) for Horizon, including bids and trip trades. QX only"
+  );
+  assert.equal(
+    aimsGsDetails.itsTeam,
+    "ITS COG Crew Support (Sue Rawlings). Technical Owner: Adam Kalb"
+  );
+  assert.equal(
+    aimsGsDetails.vendorContacts.supportPhone,
+    "+30 210 940 2300 (00-30-210-940-2300 in vendor workbook). Voicemail: 1-305-468-6336"
+  );
+  assert.equal(
+    aimsGsDetails.vendorContacts.supportEmail,
+    "aims@aims.aero (conflict across sources: ITS Vendor Information - 2026.xlsx lists aims@aims.aero; older summary lists aims@aims.aero and Support247@aims.aero; 2026-09-14 summary lists aims@aimsmail.com)"
+  );
+  assert.equal(
+    aimsGsDetails.vendorContacts.supportHours,
+    "Not verified (support-hours cells in system summary are blank; 4-hour statement is operational impact tolerance, not a support or contractual SLA)"
+  );
+  assert.equal(aimsGsDetails.impactedSystems.length, 4);
+  assert.equal(aimsGsDetails.upstreamDependencies.length, 3);
+  assert.equal(aimsGsDetails.downstreamConsumers.length, 4);
+  assert.equal(aimsGsDetails.dependenciesTab.infrastructureTable.length, 6);
+  assert.equal(aimsGsDetails.typicalBusinessImpact.length, 4);
+  assert.equal(aimsGsDetails.knownWorkarounds.length, 4);
+  assert.equal(aimsGsDetails.validationChecklist.length, 9);
+  assert.equal(aimsGsDetails.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(aimsGsDetails.vendorContacts.responseSlas.length, 3);
+  assert.equal(aimsGsDetails.relatedDocuments.length, 14);
 
   // Verify all 9 Ground Stop applications resolve complete Impact Details
   const groundStopKeys = [
@@ -1297,6 +1421,59 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
     assert.ok(details.vendorContacts && details.internalContacts);
     assert.ok(Array.isArray(details.relatedDocuments) && details.relatedDocuments.length >= 1);
   }
+});
+
+// ============================================================================
+// 21. Unified DetailPageHeader, 4 pastel DetailInfoCards, table widths, and ContactRow alignment
+// ============================================================================
+await runTest("21. Unified DetailPageHeader, 4 pastel DetailInfoCards, table widths (35/25/25/15%), and ContactRow alignment are configured", async () => {
+  const gsPageSource = await readFile(resolve(rootDir, "src/pages/GroundStops.jsx"), "utf8");
+  const vendorsPageSource = await readFile(resolve(rootDir, "src/pages/Vendors.jsx"), "utf8");
+  const sharedCompSource = await readFile(resolve(rootDir, "src/components/SharedDetailComponents.jsx"), "utf8");
+  const unifiedCssSource = await readFile(resolve(rootDir, "css/unified-home-theme.css"), "utf8");
+
+  assert.ok(
+    sharedCompSource.includes("export function DetailPageHeader") &&
+      sharedCompSource.includes("export function DetailInfoCard") &&
+      sharedCompSource.includes("export function DetailTabNavigation") &&
+      sharedCompSource.includes("export function StatusBadge"),
+    "SharedDetailComponents.jsx must export DetailPageHeader, DetailInfoCard, DetailTabNavigation, and StatusBadge"
+  );
+  assert.ok(
+    gsPageSource.includes("<DetailPageHeader") && vendorsPageSource.includes("<DetailPageHeader"),
+    "Both GroundStops.jsx and Vendors.jsx must render the unified <DetailPageHeader> component"
+  );
+  assert.ok(
+    unifiedCssSource.includes(".vi-info-card.card-blue") &&
+      unifiedCssSource.includes(".vi-info-card.card-purple") &&
+      unifiedCssSource.includes(".vi-info-card.card-green") &&
+      unifiedCssSource.includes(".vi-info-card.card-amber"),
+    "unified-home-theme.css must define the 4 pastel info card styles (blue, purple, green, amber)"
+  );
+  assert.ok(
+    gsPageSource.includes("vi-docs-table") && vendorsPageSource.includes("vi-docs-table"),
+    "Both GroundStops.jsx and Vendors.jsx must use vi-docs-table for Related Documents"
+  );
+  assert.ok(
+    gsPageSource.includes("vi-contacts-table") && vendorsPageSource.includes("vi-contacts-table"),
+    "Both GroundStops.jsx and Vendors.jsx must use vi-contacts-table for Contacts & Escalation"
+  );
+  assert.ok(
+    unifiedCssSource.includes("width: 35% !important") &&
+      unifiedCssSource.includes("width: 25% !important") &&
+      unifiedCssSource.includes("width: 15% !important"),
+    "unified-home-theme.css must define 35% / 25% / 25% / 15% column widths for .vi-docs-table"
+  );
+  assert.ok(
+    unifiedCssSource.includes("table-layout: fixed !important") &&
+      unifiedCssSource.includes("word-break: normal !important"),
+    "unified-home-theme.css must enforce table-layout: fixed and word-break: normal"
+  );
+  assert.ok(
+    sharedCompSource.includes("vi-kv-val-col") &&
+      unifiedCssSource.includes("grid-template-columns: 36px 118px minmax(0, 1fr) 28px !important"),
+    "ContactRow must use a 4-column grid (icon, label, flexible value, fixed copy button)"
+  );
 });
 
 const passedCount = results.filter((r) => r.passed).length;

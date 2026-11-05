@@ -10,6 +10,14 @@ import VendorCard, {
   vendorStatusInfo
 } from "../components/VendorCard";
 import { getVendorImpactDetails } from "../data/vendorDetails";
+import {
+  DetailPageHeader,
+  DetailTabs,
+  CriticalityAlert,
+  ImpactTable,
+  ContactRow,
+  renderTextWithLinks
+} from "../components/SharedDetailComponents";
 
 function searchableText(vendor) {
   return [
@@ -844,7 +852,7 @@ export default function Vendors() {
                     <>
                       <h1 id="viModalTitle" className="vi-page-title">
                         {impactData.dependenciesTabTitle ||
-                          `${impactData.name} – Dependencies`}
+                          `${impactData.name} - Dependencies`}
                       </h1>
                       <p className="vi-page-subtitle">
                         {impactData.dependenciesTabSubtitle ||
@@ -934,224 +942,40 @@ export default function Vendors() {
                 </div>
               </header>
 
-              {/* HERO SUMMARY CARD + TAB BAR */}
-              <section className="vi-hero-card" aria-label="Vendor summary">
-                <div className="vi-hero-main">
-                  <div className="vi-hero-logo-box">
-                    {impactData.logo ? (
-                      <img
-                        src={impactData.logo}
-                        alt={impactData.name}
-                        className="vi-hero-logo-img"
-                      />
-                    ) : (
-                      <div className="vi-hero-logo-fallback">
-                        {renderModalFallbackIcon(impactVendor, vendors)}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="vi-hero-info">
-                    <div className="vi-hero-header-row">
-                      <div className="vi-hero-title-group">
-                        <h2 className="vi-hero-title">{impactData.name}</h2>
-                        <p className="vi-hero-subtitle">
-                          {impactData.subtitle}
-                        </p>
-                      </div>
-
-                      <div className="vi-hero-actions">
-                        {impactTab !== "overview" ? (
-                          <button
-                            type="button"
-                            className="vi-btn-secondary"
-                            onClick={() => setImpactTab("overview")}
-                          >
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <path d="M19 12H5" />
-                              <path d="m12 19-7-7 7-7" />
-                            </svg>
-                            <span>Back to Vendor Details</span>
-                          </button>
-                        ) : (
-                          <button
-                            type="button"
-                            className="vi-btn-secondary"
-                            onClick={closeImpactView}
-                          >
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <path d="M19 12H5" />
-                              <path d="m12 19-7-7 7-7" />
-                            </svg>
-                            <span>Back to Vendors</span>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* 4-ITEM METADATA STRIP */}
-                    <div className="vi-meta-row">
-                      <div className="vi-meta-item">
-                        <span className="vi-meta-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.9"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <rect x="4" y="2" width="16" height="20" rx="2" />
-                            <path d="M9 22v-4h6v4" />
-                            <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01" />
-                          </svg>
-                        </span>
-                        <div className="vi-meta-text">
-                          <span className="vi-meta-label">Company</span>
-                          <strong className="vi-meta-value">
-                            {impactData.company}
-                          </strong>
-                        </div>
-                      </div>
-
-                      <div className="vi-meta-item">
-                        <span className="vi-meta-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.9"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M2 12h20" />
-                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                          </svg>
-                        </span>
-                        <div className="vi-meta-text">
-                          <span className="vi-meta-label">Website</span>
-                          {/^https?:\/\//i.test(String(impactData.website || "")) ? (
-                            <a
-                              href={impactData.website}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="vi-meta-link"
-                            >
-                              <span>{impactData.website}</span>
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                aria-hidden="true"
-                              >
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                <polyline points="15 3 21 3 21 9" />
-                                <line x1="10" y1="14" x2="21" y2="3" />
-                              </svg>
-                            </a>
-                          ) : (
-                            <strong className="vi-meta-value">
-                              {impactData.website}
-                            </strong>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="vi-meta-item">
-                        <span className="vi-meta-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.9"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
-                            <line x1="7" y1="7" x2="7.01" y2="7" />
-                          </svg>
-                        </span>
-                        <div className="vi-meta-text">
-                          <span className="vi-meta-label">Category</span>
-                          <strong className="vi-meta-value">
-                            {impactData.category}
-                          </strong>
-                        </div>
-                      </div>
-
-                      <div className="vi-meta-item">
-                        <span className="vi-meta-icon" aria-hidden="true">
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.9"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                          </svg>
-                        </span>
-                        <div className="vi-meta-text">
-                          <span className="vi-meta-label">ITS Team</span>
-                          <strong className="vi-meta-value">
-                            {impactData.itsTeam}
-                          </strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* HERO TABS */}
-                <div className="vi-hero-tabs" role="tablist">
-                  {[
-                    { key: "overview", label: "Impact Overview" },
-                    { key: "dependencies", label: "Dependencies" },
-                    { key: "contacts", label: "Contacts" },
-                    { key: "documents", label: "Related Documents" }
-                  ].map(tab => (
-                    <button
-                      key={tab.key}
-                      type="button"
-                      role="tab"
-                      aria-selected={impactTab === tab.key ? "true" : "false"}
-                      className={`vi-hero-tab${
-                        impactTab === tab.key ? " active" : ""
-                      }`}
-                      onClick={() => {
-                        setImpactTab(tab.key);
-                        setSelectedAppDetail(null);
-                      }}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-              </section>
+              {/* HERO SUMMARY CARD + 4 PASTEL INFO CARDS + TAB BAR */}
+              <DetailPageHeader
+                ariaLabel="Vendor summary"
+                logoSrc={impactData.logo}
+                logoAlt={impactData.name}
+                fallbackLogo={renderModalFallbackIcon(impactVendor, vendors)}
+                title={impactData.name}
+                subtitle={impactData.subtitle}
+                backLabel={
+                  impactTab !== "overview"
+                    ? "Back to Vendor Details"
+                    : "Back to Vendors"
+                }
+                onBack={
+                  impactTab !== "overview"
+                    ? () => setImpactTab("overview")
+                    : closeImpactView
+                }
+                company={impactData.company}
+                website={impactData.website}
+                category={impactData.category}
+                itsTeam={impactData.itsTeam}
+                tabs={[
+                  { key: "overview", label: "Impact Overview" },
+                  { key: "dependencies", label: "Dependencies" },
+                  { key: "contacts", label: "Contacts" },
+                  { key: "documents", label: "Related Documents" }
+                ]}
+                activeTab={impactTab}
+                onSelectTab={key => {
+                  setImpactTab(key);
+                  setSelectedAppDetail(null);
+                }}
+              />
 
               {impactTab === "systems" ? (
                 /* FULL-WIDTH APPLICATIONS & SYSTEMS TAB LAYOUT */
@@ -2262,7 +2086,7 @@ export default function Vendors() {
                               ? item
                               : `${item.name}${
                                   item.description
-                                    ? ` — ${item.description}`
+                                    ? ` - ${item.description}`
                                     : ""
                                 }`}
                           </li>
@@ -2302,7 +2126,7 @@ export default function Vendors() {
                               ? item
                               : `${item.name}${
                                   item.description
-                                    ? ` — ${item.description}`
+                                    ? ` - ${item.description}`
                                     : ""
                                 }`}
                           </li>
@@ -2374,107 +2198,27 @@ export default function Vendors() {
                 <div className="vi-main-col">
                   {/* AMBER WARNING CALLOUT */}
                   {(impactTab === "overview" || impactTab === "systems") && (
-                    <div className="vi-alert-banner" role="note">
-                      <span className="vi-alert-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-                          <line
-                            x1="12"
-                            y1="9"
-                            x2="12"
-                            y2="13"
-                            stroke="#FFFFFF"
-                            strokeWidth="2.2"
-                            strokeLinecap="round"
-                          />
-                          <circle cx="12" cy="17" r="1.2" fill="#FFFFFF" />
-                        </svg>
-                      </span>
-                      <div className="vi-alert-content">
-                        <strong>
-                          {impactData.impactCallout.title ||
-                            (impactData.impactCallout.level
-                              ? `${impactData.impactCallout.level} Operational Impact`
-                              : `Operational Impact if ${impactData.name} is Unavailable`)}
-                        </strong>
-                        <p>
-                          {impactData.impactCallout.message ||
-                            impactData.impactCallout.description}
-                        </p>
-                      </div>
-                    </div>
+                    <CriticalityAlert
+                      title={
+                        impactData.impactCallout.title ||
+                        (impactData.impactCallout.level
+                          ? `${impactData.impactCallout.level} Operational Impact`
+                          : `Operational Impact if ${impactData.name} is Unavailable`)
+                      }
+                      message={
+                        impactData.impactCallout.message ||
+                        impactData.impactCallout.description
+                      }
+                    />
                   )}
 
                   {/* APPLICATIONS & SYSTEMS IMPACTED TABLE CARD */}
                   {(impactTab === "overview" || impactTab === "systems") && (
-                    <section
-                      className="vi-card vi-systems-card"
-                      aria-label="Applications and Systems Impacted"
-                    >
-                      <header className="vi-card-header">
-                        <span
-                          className="vi-card-icon icon-blue"
-                          aria-hidden="true"
-                        >
-                          <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <rect x="3" y="3" width="7" height="7" rx="1.5" />
-                            <rect x="14" y="3" width="7" height="7" rx="1.5" />
-                            <rect x="3" y="14" width="7" height="7" rx="1.5" />
-                            <rect x="14" y="14" width="7" height="7" rx="1.5" />
-                          </svg>
-                        </span>
-                        <h3>Applications &amp; Systems Impacted</h3>
-                      </header>
-
-                      <div className="vi-table-wrap">
-                        <table className="vi-table vi-table-6col">
-                          <thead>
-                            <tr>
-                              <th>Application / System</th>
-                              <th>Short Description</th>
-                              <th>Business Function</th>
-                              <th>Impact if Down ({impactData.name})</th>
-                              <th>Direct Dependencies</th>
-                              <th>ITS Owner</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {filteredImpactedSystems.map(sys => (
-                              <tr key={sys.id}>
-                                <td className="vi-td-app">
-                                  <strong>{sys.name}</strong>
-                                  {sys.subName ? (
-                                    <div className="vi-td-subname">
-                                      {sys.subName}
-                                    </div>
-                                  ) : null}
-                                </td>
-                                <td className="vi-td-desc">
-                                  {sys.description}
-                                </td>
-                                <td className="vi-td-func">
-                                  {sys.businessFunction}
-                                </td>
-                                <td className="vi-td-impact">{sys.impact}</td>
-                                <td className="vi-td-desc">
-                                  {sys.dependencies || "—"}
-                                </td>
-                                <td className="vi-td-owner">
-                                  {sys.owner || impactData.itsTeam}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
+                    <ImpactTable
+                      systemName={impactData.name}
+                      systems={filteredImpactedSystems}
+                      defaultOwner={impactData.itsTeam}
+                    />
                   )}
 
                   {impactTab === "overview" && (
@@ -2599,7 +2343,13 @@ export default function Vendors() {
                       </header>
 
                       <div className="vi-table-wrap">
-                        <table className="vi-table">
+                        <table className="vi-table vi-contacts-table">
+                          <colgroup>
+                            <col style={{ width: "22%" }} />
+                            <col style={{ width: "22%" }} />
+                            <col style={{ width: "28%" }} />
+                            <col style={{ width: "28%" }} />
+                          </colgroup>
                           <thead>
                             <tr>
                               <th>Contact Role</th>
@@ -2779,7 +2529,13 @@ export default function Vendors() {
                         <h3>Related Runbooks &amp; Documentation</h3>
                       </header>
                       <div className="vi-table-wrap">
-                        <table className="vi-table">
+                        <table className="vi-table vi-docs-table">
+                          <colgroup>
+                            <col style={{ width: "35%" }} />
+                            <col style={{ width: "25%" }} />
+                            <col style={{ width: "25%" }} />
+                            <col style={{ width: "15%" }} />
+                          </colgroup>
                           <thead>
                             <tr>
                               <th>Document Title</th>
@@ -2847,215 +2603,68 @@ export default function Vendors() {
                     </header>
 
                     <div className="vi-kv-list">
-                      <div className="vi-kv-row">
-                        <span className="vi-kv-label">
-                          {impactData.vendorContacts.supportEmailNote
+                      <ContactRow
+                        label={
+                          impactData.vendorContacts.supportEmailNote
                             ? `Support Email (${impactData.vendorContacts.supportEmailNote})`
-                            : "Support Email"}
-                        </span>
-                        <div className="vi-kv-val-group">
-                          {String(
-                            impactData.vendorContacts.supportEmail || ""
-                          ).includes("@") ? (
-                            <a
-                              href={`mailto:${impactData.vendorContacts.supportEmail}`}
-                              className="vi-kv-link"
-                              title={
-                                impactData.vendorContacts.supportEmailNote ||
-                                impactData.vendorContacts.supportEmail
-                              }
-                            >
-                              {impactData.vendorContacts.supportEmail}
-                            </a>
-                          ) : (
-                            <strong className="vi-kv-strong">
-                              {impactData.vendorContacts.supportEmail}
-                            </strong>
-                          )}
-                          <button
-                            type="button"
-                            className="vi-copy-btn"
-                            title="Copy Support Email"
-                            aria-label="Copy Support Email"
-                            onClick={() =>
-                              handleCopyText(
-                                impactData.vendorContacts.supportEmail,
-                                "email"
-                              )
-                            }
-                          >
-                            {copiedField === "email" ? (
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#16A34A"
-                                strokeWidth="2.4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
-                            ) : (
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <rect
-                                  x="9"
-                                  y="9"
-                                  width="13"
-                                  height="13"
-                                  rx="2"
-                                  ry="2"
-                                />
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                              </svg>
-                            )}
-                          </button>
-                        </div>
-                      </div>
+                            : "Support Email"
+                        }
+                        value={impactData.vendorContacts.supportEmail}
+                        note={impactData.vendorContacts.supportEmailNote}
+                        isEmail={String(
+                          impactData.vendorContacts.supportEmail || ""
+                        ).includes("@")}
+                        iconType="email"
+                        copyField="email"
+                        copiedField={copiedField}
+                        onCopy={handleCopyText}
+                      />
 
                       {impactData.vendorContacts.secondaryEmail && (
-                        <div className="vi-kv-row">
-                          <span className="vi-kv-label">
-                            {impactData.vendorContacts.secondaryEmailNote
+                        <ContactRow
+                          label={
+                            impactData.vendorContacts.secondaryEmailNote
                               ? `Runway / NOTAM Email (${impactData.vendorContacts.secondaryEmailNote})`
-                              : "Runway / NOTAM Email"}
-                          </span>
-                          <div className="vi-kv-val-group">
-                            <a
-                              href={`mailto:${impactData.vendorContacts.secondaryEmail}`}
-                              className="vi-kv-link"
-                              title={
-                                impactData.vendorContacts.secondaryEmailNote ||
-                                impactData.vendorContacts.secondaryEmail
-                              }
-                            >
-                              {impactData.vendorContacts.secondaryEmail}
-                            </a>
-                            <button
-                              type="button"
-                              className="vi-copy-btn"
-                              title="Copy Secondary Email"
-                              aria-label="Copy Secondary Email"
-                              onClick={() =>
-                                handleCopyText(
-                                  impactData.vendorContacts.secondaryEmail,
-                                  "secondaryEmail"
-                                )
-                              }
-                            >
-                              {copiedField === "secondaryEmail" ? (
-                                <svg
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="#16A34A"
-                                  strokeWidth="2.4"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                >
-                                  <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                              ) : (
-                                <svg
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                >
-                                  <rect
-                                    x="9"
-                                    y="9"
-                                    width="13"
-                                    height="13"
-                                    rx="2"
-                                    ry="2"
-                                  />
-                                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                                </svg>
-                              )}
-                            </button>
-                          </div>
-                        </div>
+                              : "Runway / NOTAM Email"
+                          }
+                          value={impactData.vendorContacts.secondaryEmail}
+                          note={impactData.vendorContacts.secondaryEmailNote}
+                          isEmail={true}
+                          iconType="secondaryEmail"
+                          copyField="secondaryEmail"
+                          copiedField={copiedField}
+                          onCopy={handleCopyText}
+                        />
                       )}
 
-                      <div className="vi-kv-row">
-                        <span className="vi-kv-label">Support Phone</span>
-                        <div className="vi-kv-val-group">
-                          <strong className="vi-kv-strong">
-                            {impactData.vendorContacts.supportPhone}
-                          </strong>
-                          <button
-                            type="button"
-                            className="vi-copy-btn"
-                            title="Copy Support Phone"
-                            aria-label="Copy Support Phone"
-                            onClick={() =>
-                              handleCopyText(
-                                impactData.vendorContacts.supportPhone,
-                                "phone"
-                              )
-                            }
-                          >
-                            {copiedField === "phone" ? (
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#16A34A"
-                                strokeWidth="2.4"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <polyline points="20 6 9 17 4 12" />
-                              </svg>
-                            ) : (
-                              <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              >
-                                <rect
-                                  x="9"
-                                  y="9"
-                                  width="13"
-                                  height="13"
-                                  rx="2"
-                                  ry="2"
-                                />
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                              </svg>
-                            )}
-                          </button>
-                        </div>
-                      </div>
+                      <ContactRow
+                        label="Support Phone"
+                        value={impactData.vendorContacts.supportPhone}
+                        iconType="phone"
+                        copyField="phone"
+                        copiedField={copiedField}
+                        onCopy={handleCopyText}
+                      />
 
                       {impactData.vendorContacts.technicalSupport && (
-                        <div className="vi-kv-row">
-                          <span className="vi-kv-label">Technical Support</span>
-                          <span className="vi-kv-muted">
-                            {impactData.vendorContacts.technicalSupport}
-                          </span>
-                        </div>
+                        <ContactRow
+                          label="Technical Support"
+                          value={impactData.vendorContacts.technicalSupport}
+                          isMuted={true}
+                          iconType="technical"
+                          copyField="technicalSupport"
+                          copiedField={copiedField}
+                          onCopy={handleCopyText}
+                        />
                       )}
 
                       {impactData.vendorContacts.supportHours && (
-                        <div className="vi-kv-row vi-kv-row-top">
-                          <span className="vi-kv-label">
-                            Support Service Hours
-                          </span>
-                          <span className="vi-kv-multiline">
-                            {impactData.vendorContacts.supportHours}
-                          </span>
-                        </div>
+                        <ContactRow
+                          label="Support Service Hours"
+                          value={impactData.vendorContacts.supportHours}
+                          isMultiline={true}
+                          iconType="hours"
+                        />
                       )}
                     </div>
                   </section>
@@ -3075,73 +2684,61 @@ export default function Vendors() {
                     </header>
 
                     <div className="vi-kv-list">
-                      <div className="vi-kv-row">
-                        <span className="vi-kv-label">ITS Team</span>
-                        <strong className="vi-kv-strong">
-                          {impactData.internalContacts.itsTeam}
-                        </strong>
-                      </div>
+                      <ContactRow
+                        label="ITS Team"
+                        value={impactData.internalContacts.itsTeam}
+                        iconType="team"
+                      />
 
                       {impactData.internalContacts.itsTeamNote && (
-                        <div className="vi-kv-row vi-kv-row-top">
-                          <span className="vi-kv-label">ITS Team Scope</span>
-                          <span className="vi-kv-multiline">
-                            {impactData.internalContacts.itsTeamNote}
-                          </span>
-                        </div>
+                        <ContactRow
+                          label="ITS Team Scope"
+                          value={impactData.internalContacts.itsTeamNote}
+                          isMultiline={true}
+                          iconType="scope"
+                        />
                       )}
 
-                      <div className="vi-kv-row">
-                        <span className="vi-kv-label">Application Owner</span>
-                        <span
-                          className={
-                            String(
-                              impactData.internalContacts.applicationOwner || ""
-                            ).startsWith("(")
-                              ? "vi-kv-muted"
-                              : "vi-kv-strong"
-                          }
-                        >
-                          {impactData.internalContacts.applicationOwner}
-                        </span>
-                      </div>
+                      <ContactRow
+                        label="Application Owner"
+                        value={impactData.internalContacts.applicationOwner}
+                        isMuted={String(
+                          impactData.internalContacts.applicationOwner || ""
+                        ).startsWith("(")}
+                        iconType="owner"
+                      />
 
                       {impactData.internalContacts.systemAdministration && (
-                        <div className="vi-kv-row vi-kv-row-top">
-                          <span className="vi-kv-label">
-                            System Administration
-                          </span>
-                          <span className="vi-kv-multiline">
-                            {impactData.internalContacts.systemAdministration}
-                          </span>
-                        </div>
+                        <ContactRow
+                          label="System Administration"
+                          value={impactData.internalContacts.systemAdministration}
+                          isMultiline={true}
+                          iconType="admin"
+                        />
                       )}
 
-                      <div className="vi-kv-row vi-kv-row-top">
-                        <span className="vi-kv-label">Business Owner</span>
-                        <strong className="vi-kv-strong">
-                          {impactData.internalContacts.businessOwner}
-                        </strong>
-                      </div>
+                      <ContactRow
+                        label="Business Owner"
+                        value={impactData.internalContacts.businessOwner}
+                        iconType="business"
+                      />
 
                       {impactData.internalContacts.passwordSupport && (
-                        <div className="vi-kv-row">
-                          <span className="vi-kv-label">Password Support</span>
-                          <span className="vi-kv-muted">
-                            {impactData.internalContacts.passwordSupport}
-                          </span>
-                        </div>
+                        <ContactRow
+                          label="Password Support"
+                          value={impactData.internalContacts.passwordSupport}
+                          isMuted={true}
+                          iconType="password"
+                        />
                       )}
 
                       {impactData.internalContacts.everbridgeContacts && (
-                        <div className="vi-kv-row vi-kv-row-top">
-                          <span className="vi-kv-label">
-                            Everbridge Focal Contacts
-                          </span>
-                          <span className="vi-kv-multiline">
-                            {impactData.internalContacts.everbridgeContacts}
-                          </span>
-                        </div>
+                        <ContactRow
+                          label="Everbridge Focal Contacts"
+                          value={impactData.internalContacts.everbridgeContacts}
+                          isMultiline={true}
+                          iconType="everbridge"
+                        />
                       )}
                     </div>
                   </section>
