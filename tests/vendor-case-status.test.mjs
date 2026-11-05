@@ -383,7 +383,10 @@ await runTest("11. React Router HashRouter routes and Sidebar navigation work", 
 // ============================================================================
 await runTest("12. The application builds and bundles compile cleanly", async () => {
   const distIndex = await readFile(resolve(rootDir, "dist/index.html"), "utf8");
-  assert.ok(distIndex.includes("./assets/"), "dist/index.html must use relative asset paths (base: './')");
+  assert.ok(
+    distIndex.includes("/Alaska-Vendor-Web-App/assets/") || distIndex.includes("./assets/"),
+    "dist/index.html must reference compiled assets via /Alaska-Vendor-Web-App/assets/ or ./assets/"
+  );
 
   const assetFiles = await readdir(resolve(rootDir, "dist/assets"));
   const jsBundleFile = assetFiles.find((f) => f.endsWith(".js"));

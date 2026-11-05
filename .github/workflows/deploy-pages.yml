@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - srihari-work
   workflow_dispatch:
 
 permissions:

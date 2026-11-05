@@ -13,6 +13,36 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  * `crossorigin` attributes) and preserves `public/...` and `js/data/master-data.js`
  * relative paths for zero-server local execution.
  */
+const DEV_INDEX_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AS | Vendor Dashboard</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="scroll-shell ias-shell home-page">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
+`;
+
+function rootEntryNormalizePlugin() {
+  return {
+    name: "root-entry-normalize",
+    enforce: "pre",
+    config() {
+      fs.writeFileSync(path.resolve(__dirname, "index.html"), DEV_INDEX_HTML, "utf8");
+    }
+  };
+}
+
 function fileProtocolPlugin() {
   return {
     name: "file-protocol-compatibility",
@@ -39,12 +69,23 @@ function fileProtocolPlugin() {
         fs.copyFileSync(srcMasterData, path.resolve(destMasterDataDir, "master-data.js"));
       }
 
-      // GitHub Pages SPA fallback (404.html) & .nojekyll marker
+      // GitHub Pages SPA fallback (404.html) & .nojekyll marker in dist/
       const distIndex = path.resolve(distDir, "index.html");
       if (fs.existsSync(distIndex)) {
         fs.copyFileSync(distIndex, path.resolve(distDir, "404.html"));
+
+        // Also update root index.html & 404.html so branch-root GitHub Pages deployments
+        // load ./dist/assets/* instead of requesting uncompiled /src/main.jsx (404)
+        const distHtml = fs.readFileSync(distIndex, "utf8");
+        const rootHtml = distHtml
+          .replace(/href="\.\/favicon\.png"/g, 'href="./public/favicon.png"')
+          .replace(/src="\.\/assets\//g, 'src="./dist/assets/')
+          .replace(/href="\.\/assets\//g, 'href="./dist/assets/');
+        fs.writeFileSync(path.resolve(__dirname, "index.html"), rootHtml, "utf8");
+        fs.writeFileSync(path.resolve(__dirname, "404.html"), rootHtml, "utf8");
       }
       fs.writeFileSync(path.resolve(distDir, ".nojekyll"), "");
+      fs.writeFileSync(path.resolve(__dirname, ".nojekyll"), "");
     }
   };
 }
@@ -61,8 +102,9 @@ const MIME_TYPES = {
 
 function publicPathRewritePlugin() {
   const servePublicPrefix = (req, res, next) => {
-    if (req.url && req.url.startsWith("/public/")) {
-      const cleanPath = decodeURIComponent(req.url.split("?")[0]).replace(/^\/+/, "");
+    const normalizedUrl = req.url ? req.url.replace(/^\/Alaska-Vendor-Web-App\//, "/") : "";
+    if (normalizedUrl && normalizedUrl.startsWith("/public/")) {
+      const cleanPath = decodeURIComponent(normalizedUrl.split("?")[0]).replace(/^\/+/, "");
       const filePath = path.resolve(__dirname, cleanPath);
       if (filePath.startsWith(path.resolve(__dirname, "public")) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
         const ext = path.extname(filePath).toLowerCase();
@@ -86,8 +128,8 @@ function publicPathRewritePlugin() {
 }
 
 export default defineConfig({
-  base: process.env.VITE_BASE_PATH || "./",
-  plugins: [react(), publicPathRewritePlugin(), fileProtocolPlugin()],
+  base: "./",
+  plugins: [ rootEntryNormalizePlugin(), react(), publicPathRewritePlugin(), fileProtocolPlugin()],
   build: {
     outDir: "dist",
     emptyOutDir: true,
