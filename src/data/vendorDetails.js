@@ -5,7 +5,7 @@ export const VENDOR_IMPACT_DETAILS = {
     breadcrumbTrail: ["Vendors", "Accelya", "Vendor Impact"],
     pageTitle: "Accelya - Vendor Impact Details",
     pageSubtitle:
-      "View applications, systems, dependencies and business impact if this vendor experiences an outage or degraded service.",
+      "Accelya provides the Revera passenger revenue accounting suite for ticket sales, audit, and financial settlement.",
     applicationsTabTitle: "Accelya",
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle:
@@ -382,8 +382,9 @@ export const VENDOR_IMPACT_DETAILS = {
     id: "aerodata",
     name: "AeroData",
     breadcrumbTrail: ["Vendors", "AeroData", "Vendor Impact"],
-    pageTitle: "Vendor Impact Details",
-    pageSubtitle: "Quickly identify which Alaska systems are affected when a vendor has an issue.",
+    pageTitle: "AeroData - Vendor Impact Details",
+    pageSubtitle:
+      "AeroData provides aircraft performance, runway analysis, and weight and balance data for flight operations.",
     applicationsTabTitle: "AeroData",
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle:
@@ -835,7 +836,7 @@ export const VENDOR_IMPACT_DETAILS = {
     breadcrumbTrail: ["Ground Stop Applications", "ACARS", "Impact Details"],
     pageTitle: "ACARS Ground System (ACARS / AIRCOM) - Impact Details",
     pageSubtitle:
-      "ACARS is the central text link between aircraft and the ground. It carries flight info, flight times, weather, performance data, releases and load closeouts. Rated 24x7 critical and on the Ground Stop list.",
+      "ACARS provides aircraft-to-ground messaging for flight operations, weather, and operational updates.",
     applicationsTabTitle: "ACARS Ground System",
     applicationsTabSubheading: "Applications & Systems (ACARS Components)",
     applicationsTabSubtitle:
@@ -1401,7 +1402,7 @@ export const VENDOR_IMPACT_DETAILS = {
     breadcrumbTrail: ["Ground Stop Applications", "WAM", "Impact Details"],
     pageTitle: "WAM (Flight Planning System / Worksheet) - Impact Details",
     pageSubtitle:
-      "WAM is the main dispatch tool for AS and QX. It brings together flight plans, weather, performance data and MEL information to produce the dispatch release. If WAM or any of its upstream feeds fails, flights can't be released.",
+      "WAM supports flight planning workflows and operational flight plan preparation.",
     applicationsTabTitle: "WAM (Flight Planning System / Worksheet)",
     applicationsTabSubheading: "Applications & Systems (WAM Components)",
     applicationsTabSubtitle:
@@ -1934,7 +1935,7 @@ export const VENDOR_IMPACT_DETAILS = {
     pageTitle:
       "JetPlan (Jeppesen Flight Planning engine) - Impact Details",
     pageSubtitle:
-      "JetPlan is the engine that calculates every AS and QX flight plan. If it goes down, WAM can't produce flight plans or releases, ATC filing stops, and flights can't be dispatched. That is why it is on the Ground Stop list.",
+      "JetPlan calculates flight plans and routing for Alaska and Horizon dispatch operations.",
     applicationsTabTitle: "JetPlan (Jeppesen Flight Planning engine)",
     applicationsTabSubheading: "Applications & Systems (JetPlan Components)",
     applicationsTabSubtitle:
@@ -2440,7 +2441,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "S4A SmartSuite - Application Impact Details",
     pageSubtitle:
-      "Also called Smart4Aviation, SmartLoad, SmartComm, Weight and Balance. Tier 1 and Ground Stop eligible. View S4A components, dependencies, business impact, workarounds, contacts, SLAs and related documentation.",
+      "S4A SmartSuite provides flight operations modules including SmartBrief, SmartLoad weight and balance, and SmartComm messaging.",
     applicationsTabTitle: "S4A SmartSuite (Smart4Aviation / SmartLoad / SmartComm / Weight and Balance)",
     applicationsTabSubheading: "Applications & Systems (S4A components)",
     applicationsTabSubtitle:
@@ -2986,7 +2987,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "Pilot Briefing - Application Impact Details",
     pageSubtitle:
-      "Pilot Briefing produces the FAA-required briefing packet for every flight. If a major part fails, the whole system goes down. If a minor part fails, packets come out incomplete or won't print.",
+      "Pilot Briefing generates and distributes pre-departure flight briefing packets for flight crews.",
     applicationsTabTitle: "Pilot Briefing (JetStream / Briefing Packets)",
     applicationsTabSubheading: "Applications & Systems (Pilot Briefing Components)",
     applicationsTabSubtitle:
@@ -3456,7 +3457,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "Aircraft Maintenance Status (AMS) - Application Impact Details",
     pageSubtitle:
-      "AMS is the system of record for which aircraft are out of service. When AMS and Informix fall out of sync, other systems show the wrong OTS status, including AirTrak.",
+      "AMS tracks out-of-service aircraft maintenance events and distributes status updates to operational systems.",
     applicationsTabTitle: "Aircraft Maintenance Status (AMS / ME Portal / Out of Service Recovery / OTS Recovery)",
     applicationsTabSubheading: "Applications & Systems (AMS Components)",
     applicationsTabSubtitle:
@@ -3893,7 +3894,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "JCTE (Jeppesen Crew Tracking Enterprise) - Application Impact Details",
     pageSubtitle:
-      "JCTE is the system of record for Alaska crew scheduling and tracking. If it goes down, schedulers can't manage crews and crew members can't see schedules or check in. When it causes flight delays, it is treated as Sev 1.",
+      "JCTE supports Alaska Airlines crew scheduling, crew tracking, and crew member check-in workflows.",
     applicationsTabTitle: "JCTE (Jeppesen Crew Tracking Enterprise)",
     applicationsTabSubheading: "Applications & Systems (JCTE Components)",
     applicationsTabSubtitle:
@@ -4341,7 +4342,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "AirTrak - Application Impact Details",
     pageSubtitle:
-      "AirTrak is the AOC's real-time control tool for AS and QX. Teams use it for aircraft swaps, aircraft movement, Irrops and watching the whole system. If it goes down, the AOC loses real-time visibility and can't take action across the network.",
+      "AirTrak provides real-time operational control for flight tracking, aircraft routing, and irregular operations management.",
     applicationsTabTitle: "AirTrak (AOC App / Ops360 / Irrops)",
     applicationsTabSubheading: "Applications & Systems (AirTrak Components)",
     applicationsTabSubtitle:
@@ -4913,7 +4914,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "AIMS (Horizon Crew Scheduling) - Application Impact Details",
     pageSubtitle:
-      "AIMS is the system of record for Horizon crew schedules. If it goes down, QX schedulers can't manage crews, and crew data stops flowing to VisOps, AirTrak and payroll.",
+      "AIMS manages Horizon Air pilot and flight attendant crew scheduling, tracking, and eCrew web access.",
     applicationsTabTitle: "AIMS (Aviation Information Management System / Horizon Crew Scheduling / eCrew)",
     applicationsTabSubheading: "Applications & Systems (AIMS Components)",
     applicationsTabSubtitle:
@@ -5416,7 +5417,7 @@ export const VENDOR_IMPACT_DETAILS = {
     breadcrumbTrail: ["Vendors", "AIMS", "Vendor Impact"],
     pageTitle: "AIMS - Vendor Impact Details",
     pageSubtitle:
-      "View applications, systems, dependencies and business impact if AIMS experiences an outage or degraded service.",
+      "AIMS supports Horizon Air crew scheduling, crew tracking, and eCrew operational workflows.",
     applicationsTabTitle: "AIMS",
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle:
@@ -5858,7 +5859,7 @@ export const VENDOR_IMPACT_DETAILS = {
     ],
     pageTitle: "Alvaria - Vendor Impact Details",
     pageSubtitle:
-      "View applications, systems, dependencies and business impact if Alvaria experiences an outage or degraded service.",
+      "Alvaria provides contact center workforce management, agent scheduling, and adherence tracking.",
     applicationsTabTitle: "Applications & Systems Using Alvaria",
     applicationsTabSubheading:
       "Overview of all Alaska Airlines Contact Center workforce-management and employee self-service applications that depend on Alvaria.",
@@ -6376,7 +6377,7 @@ export const VENDOR_IMPACT_DETAILS = {
     breadcrumbTrail: ["Vendors", "Avtec", "Vendor Impact"],
     pageTitle: "Avtec - Vendor Impact Details",
     pageSubtitle:
-      "View applications, systems, dependencies and business impact if Avtec experiences an outage or degraded service.",
+      "Avtec Scout provides dispatch radio, air-to-ground, and telephony console communications for Alaska and Horizon operations.",
     applicationsTabTitle: "Avtec",
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle:
@@ -7353,13 +7354,81 @@ export function buildTemplateVendorImpactDetails(vendor, allVendors = []) {
     .slice(0, 5)
     .map(item => item.name);
 
+  const vendorShortDescriptions = {
+    smart4aviation:
+      "Smart4Aviation supports S4A weight and balance and flight operations workflows.",
+    "aircraft-performance":
+      "Dynamic Source provides aircraft performance data for Alaska Airlines flight operations.",
+    arinc:
+      "ARINC provides aircraft-to-ground communications and operational messaging services for Flight Operations.",
+    "jeppesen-flight-planning":
+      "Jeppesen supports Flight Planning and JCTE crew tracking systems for Flight Operations and Crew Systems.",
+    "jcte-crew":
+      "Jeppesen supports JCTE crew tracking and flight planning systems for Crew Systems and Flight Operations.",
+    "ibm-weather":
+      "TWC/The Weather Company provides operational weather data feeds for Flight Operations.",
+    "wsi-fusion":
+      "WSI Fusion provides weather feed and fusion services for Flight Operations.",
+    "weather-feed":
+      "WSI Fusion provides weather feed and fusion services for Flight Operations.",
+    sabre:
+      "SABRE supports passenger reservations, CSA Mobile boarding and lobby applications, and RAIN airport operations.",
+    "image-reservations":
+      "SABRE supports Image Reservations, passenger reservations, CSA Mobile applications, and RAIN airport operations.",
+    "csa-mobile-boarding":
+      "SABRE supports CSA Mobile Boarding Agent, lobby applications, passenger reservations, and airport operations.",
+    "csa-mobile-lobby":
+      "SABRE supports CSA Mobile Lobby, boarding agent applications, passenger reservations, and airport operations.",
+    rain:
+      "SABRE supports RAIN (Helios / Nimbus), passenger reservations, and CSA Mobile airport applications.",
+    boeing:
+      "Boeing provides Boeing Toolbox maintenance and engineering documentation services.",
+    ncr:
+      "NCR Corporation supports Web and Kiosk Check-In self-service guest workflows.",
+    tibco:
+      "Tibco provides enterprise middleware and integration messaging services.",
+    baggage:
+      "Supports airport baggage handling operations in coordination with Port of ANC Facilities and POS Service Desk.",
+    "real-time-gates":
+      "Inform supports Real Time Gates (RTG / Groundstar) gate assignment and airport operations.",
+    "as-trax":
+      "TRAX provides aircraft maintenance and engineering management for AS TRAX and QX TRAX systems.",
+    "qx-trax":
+      "TRAX provides aircraft maintenance and engineering management for QX TRAX and AS TRAX systems.",
+    icargo:
+      "iBS Software, PLC provides the iCargo platform for cargo management and operations.",
+    "cargo-spot":
+      "CHAMP, Airclic, and SmartKargo support Cargo Spot cargo payment and freight operations.",
+    "shopping-service":
+      "Microsoft Azure hosts the Shopping Service System (QPX, QPXconnect, QPXReshop, and QPXmerchandising manager) for e-commerce.",
+    "solar-mileage":
+      "Oracle Corporation supports the SOLAR Mileage Plan (Siebel / LMS) loyalty platform.",
+    "peoplesoft-financials":
+      "Oracle and ERPA support PeopleSoft Financials (PSFin) corporate financial applications.",
+    "information-display":
+      "Information Display Applications (Web UI) provide airport flight, gate, lobby, and ramp information displays (FIDS, GIDS, LIDS, RIDS, xIDS).",
+    "peoplesoft-hcm":
+      "Oracle supports PeopleSoft HCM (PSHCM) corporate human capital management applications.",
+    nettracer:
+      "NetTracer provides baggage tracking and irregular baggage resolution services for airport operations.",
+    five9:
+      "Five9 provides the Intelligent Cloud Contact Center platform for contact center agents."
+  };
+
+  const rawId = String(vendor.id || "").trim().toLowerCase();
+  const resolvedShortDescription =
+    vendorShortDescriptions[rawId] ||
+    vendorShortDescriptions[id] ||
+    (systemName && systemName.toLowerCase() !== displayName.toLowerCase()
+      ? `${displayName} supports ${systemName} for ${category} (${itsTeam}).`
+      : `${displayName} provides ${category.toLowerCase()} services supported by ${itsTeam}.`);
+
   return {
     id,
     name: displayName,
     breadcrumbTrail: ["Vendors", displayName, "Vendor Impact"],
     pageTitle: `${displayName} - Vendor Impact Details`,
-    pageSubtitle:
-      "View applications, systems, dependencies and business impact if this vendor experiences an outage or degraded service.",
+    pageSubtitle: resolvedShortDescription,
     applicationsTabTitle: displayName,
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle: `View all Alaska applications and systems that depend on ${displayName}, including business function, dependencies, and expected impact if this vendor experiences an outage or degraded service.`,
@@ -7934,8 +8003,8 @@ function buildGroundStopImpactDetails(appItem) {
     id: key,
     name: displayName,
     breadcrumbTrail: ["Ground Stop Applications", displayName, "Application Impact"],
-    pageTitle: `${displayName} - Vendor Impact Details`,
-    pageSubtitle: `View applications, systems, dependencies and business impact if ${fullName} (${company}) experiences an outage or degraded service.`,
+    pageTitle: `${displayName} - Impact Details`,
+    pageSubtitle: descriptionText,
     applicationsTabTitle: displayName,
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle: descriptionText,

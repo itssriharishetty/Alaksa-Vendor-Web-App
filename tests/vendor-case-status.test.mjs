@@ -1474,6 +1474,43 @@ await runTest("21. Unified DetailPageHeader, 4 pastel DetailInfoCards, table wid
       unifiedCssSource.includes("grid-template-columns: 36px 118px minmax(0, 1fr) 28px !important"),
     "ContactRow must use a 4-column grid (icon, label, flexible value, fixed copy button)"
   );
+  assert.ok(
+    !sharedCompSource.includes("vi-hero-logo-box") &&
+      sharedCompSource.includes('className="vi-hero-title vi-page-title"') &&
+      sharedCompSource.includes('className="vi-hero-subtitle vi-page-subtitle"'),
+    "DetailPageHeader must render vi-hero-title with short description directly underneath and no redundant logo header block"
+  );
+  assert.ok(
+    !gsPageSource.includes('id="viModalTitle"') && !vendorsPageSource.includes('id="viModalTitle"'),
+    "GroundStops.jsx and Vendors.jsx must not duplicate #viModalTitle outside DetailPageHeader"
+  );
+  assert.ok(
+    !gsPageSource.includes("vi-breadcrumb") &&
+      !vendorsPageSource.includes("vi-breadcrumb") &&
+      !gsPageSource.includes("vi-topbar") &&
+      !vendorsPageSource.includes("vi-topbar"),
+    "GroundStops.jsx and Vendors.jsx must not render breadcrumbs, search box, or 3-dot menu above the white detail card"
+  );
+  assert.ok(
+    sharedCompSource.includes("Last updated: {lastUpdated}") &&
+      gsPageSource.includes("lastUpdated={impactData.lastUpdated}") &&
+      vendorsPageSource.includes("lastUpdated={impactData.lastUpdated}"),
+    "DetailPageHeader must render 'Last updated: {lastUpdated}' inside the white detail card"
+  );
+
+  const acarsCheck = getGroundStopImpactDetails({ key: "acars", record: {} });
+  assert.equal(acarsCheck.pageTitle, "ACARS Ground System (ACARS / AIRCOM) - Impact Details");
+  assert.equal(
+    acarsCheck.pageSubtitle,
+    "ACARS provides aircraft-to-ground messaging for flight operations, weather, and operational updates."
+  );
+
+  const wamCheck = getGroundStopImpactDetails({ key: "wam", record: {} });
+  assert.equal(wamCheck.pageTitle, "WAM (Flight Planning System / Worksheet) - Impact Details");
+  assert.equal(
+    wamCheck.pageSubtitle,
+    "WAM supports flight planning workflows and operational flight plan preparation."
+  );
 });
 
 const passedCount = results.filter((r) => r.passed).length;

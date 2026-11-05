@@ -263,18 +263,16 @@ export const DetailTabs = DetailTabNavigation;
  * and all Vendor detail pages.
  * Renders:
  * - Large white rounded parent card (.vi-hero-card)
- * - Top row: Logo on top-left, Bold navy title + subtitle beside logo, Rounded Back button on top-right
+ * - Top row: Primary heading (.vi-hero-title) + short meaningful description directly underneath, Rounded Back button on top-right
  * - Middle row: Four equal-width pastel information cards (Company, Website, Category, ITS Team)
  * - Thin horizontal divider
  * - Bottom row: Rounded pill-shaped navigation tabs
  */
 export function DetailPageHeader({
   ariaLabel = "Application summary",
-  logoSrc,
-  logoAlt,
-  fallbackLogo,
   title,
   subtitle,
+  lastUpdated,
   backLabel = "Back to Ground Stop Applications",
   onBack,
   infoCards,
@@ -323,48 +321,47 @@ export function DetailPageHeader({
 
   return (
     <section className="vi-hero-card" aria-label={ariaLabel}>
-      {/* TOP HEADER ROW: LOGO + TITLE/SUBTITLE LEFT, BACK BUTTON RIGHT */}
+      {/* TOP HEADER ROW: PRIMARY TITLE + SHORT DESCRIPTION LEFT, LAST UPDATED + BACK BUTTON RIGHT */}
       <div className="vi-hero-top-row">
         <div className="vi-hero-identity">
-          <div className="vi-hero-logo-box">
-            {logoSrc ? (
-              <img
-                src={logoSrc}
-                alt={logoAlt || title}
-                className="vi-hero-logo-img"
-              />
-            ) : (
-              <div className="vi-hero-logo-fallback">{fallbackLogo}</div>
-            )}
-          </div>
-
           <div className="vi-hero-title-group">
-            <h2 className="vi-hero-title">{title}</h2>
-            {subtitle ? <p className="vi-hero-subtitle">{subtitle}</p> : null}
+            <h1 id="viModalTitle" className="vi-hero-title vi-page-title">
+              {title}
+            </h1>
+            {subtitle ? (
+              <p className="vi-hero-subtitle vi-page-subtitle">{subtitle}</p>
+            ) : null}
           </div>
         </div>
 
-        {onBack ? (
+        {lastUpdated || onBack ? (
           <div className="vi-hero-actions">
-            <button
-              type="button"
-              className="vi-btn-secondary vi-back-btn"
-              onClick={onBack}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+            {lastUpdated ? (
+              <span className="vi-last-updated">
+                Last updated: {lastUpdated}
+              </span>
+            ) : null}
+            {onBack ? (
+              <button
+                type="button"
+                className="vi-btn-secondary vi-back-btn"
+                onClick={onBack}
               >
-                <path d="M19 12H5" />
-                <path d="m12 19-7-7 7-7" />
-              </svg>
-              <span>{backLabel}</span>
-            </button>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M19 12H5" />
+                  <path d="m12 19-7-7 7-7" />
+                </svg>
+                <span>{backLabel}</span>
+              </button>
+            ) : null}
           </div>
         ) : null}
       </div>
