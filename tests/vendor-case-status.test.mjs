@@ -1158,6 +1158,40 @@ await runTest("20. Ground Stop Applications View Details opens full-page Impact 
   assert.equal(jetplanDetails.vendorContacts.responseSlas.length, 5);
   assert.equal(jetplanDetails.relatedDocuments.length, 9);
 
+  // S4A uses the rich S4A SmartSuite Ground Stop application profile
+  const s4aDetails = getGroundStopImpactDetails({
+    key: "Smart4Aviation (S4A)",
+    record: apps["Smart4Aviation (S4A)"] || {}
+  });
+  assert.ok(s4aDetails, "S4A Ground Stop impact details must exist");
+  assert.equal(s4aDetails.name, "S4A SmartSuite");
+  assert.equal(
+    s4aDetails.company,
+    "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers"
+  );
+  assert.equal(s4aDetails.website, "https://smartsuite.insideaag.com/");
+  assert.equal(
+    s4aDetails.category,
+    "Airport Ops / Flight Ops: weight and balance and load planning"
+  );
+  assert.equal(
+    s4aDetails.itsTeam,
+    "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins"
+  );
+  assert.equal(s4aDetails.supportPhone, "+48 12 379 3737");
+  assert.equal(s4aDetails.supportEmail, "support@smart4aviation.aero");
+  assert.equal(s4aDetails.supportHours, "24x7");
+  assert.equal(s4aDetails.impactedSystems.length, 5);
+  assert.equal(s4aDetails.upstreamDependencies.length, 4);
+  assert.equal(s4aDetails.downstreamConsumers.length, 7);
+  assert.equal(s4aDetails.dependenciesTab.infrastructureTable.length, 6);
+  assert.equal(s4aDetails.typicalBusinessImpact.length, 4);
+  assert.equal(s4aDetails.knownWorkarounds.length, 4);
+  assert.equal(s4aDetails.validationChecklist.length, 9);
+  assert.equal(s4aDetails.vendorContacts.communicationGuidelines.length, 4);
+  assert.equal(s4aDetails.vendorContacts.responseSlas.length, 4);
+  assert.equal(s4aDetails.relatedDocuments.length, 8);
+
   // Verify all 9 Ground Stop applications resolve complete Impact Details
   const groundStopKeys = [
     "acars",

@@ -567,33 +567,131 @@
     "Smart4Aviation (S4A)": {
       "id": "Smart4Aviation (S4A)",
       "name": "Smart4Aviation (S4A)",
+      "fullName": "S4A SmartSuite. Also called Smart4Aviation, SmartLoad, SmartComm, Weight and Balance",
       "icon": "public/applications/s4a.png",
-      "function": "Weight and Balance Management",
-      "category": "Weight and Balance",
-      "vendor": "Smart4Aviation",
-      "vendorPOC": "NA",
-      "aagPOC": "Arun Sharma / Ryan Wilkins",
-      "aagTeam": "ITS Flight Operations",
-      "environment": "Production",
-      "criticality": "High",
+      "function": "Airport Ops / Flight Ops: weight and balance and load planning",
+      "category": "Airport Ops / Flight Ops: weight and balance and load planning",
+      "vendor": "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
+      "vendorPOC": "Smart4Aviation Support (+48 12 379 3737 / support@smart4aviation.aero) | Account Manager: (Add Account Manager)",
+      "aagPOC": "Ryan Wilkins",
+      "aagTeam": "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins",
+      "environment": "Production (In-house Linux servers in IGQ and SE4)",
+      "criticality": "Tier 1 and Ground Stop eligible. Impact is high if fully down, medium if only some services or data types are affected",
       "severity": "High",
       "status": "Operational",
-      "response": "15 minutes",
-      "resolution": "TBD",
-      "escalation": "Email Support Desk. If no response or urgent matter, call help line to escalate.",
-      "supportModel": "S4A + ITS Flight Operations",
+      "response": "P1 updates: every 15–30 minutes (the runbook marks this as still to be confirmed). Leadership must be engaged for P1 | Sev 1: all CLP users down, or the URL is down | Sev 2: some users, or a critical inbound queue alert | Vendor response SLA: (Add Smart4Aviation response SLA)",
+      "resolution": "24x7 Support",
+      "escalation": "email the support desk first. If there's no response or it's urgent, call the help line",
+      "supportModel": "24x7 (Application Admin: Arun Sharma, Ryan Wilkins 07:00–15:30 with on-call 24/7; System Admin: ITS JCTE System Admins on-call 24/7)",
       "phone": "+48 12 379 3737",
-      "phoneNote": "NA",
-      "email": "support@smart4aviation.com",
-      "description": "S4A Incorporates data from other systems in order to automate the load management process. The system continually monitors the planned load and informs CLP (Centralized Load Planner) when they may need to investigate and take action. \n When the actual load is submitted, S4A evaluates it to ensure the aircraft is within weight and balance limits and sends a Load Closeout to the aircraft.",
-      "supportDescription": "Support follows the approved vendor and AAG ITS operational escalation model.",
+      "phoneNote": "Smart4Aviation Support (24x7) | Service Desk: 1-877-238-1077",
+      "email": "support@smart4aviation.aero",
+      "portalUrl": "https://smartsuite.insideaag.com/",
+      "description": "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+      "supportDescription": "When escalating, give: user name, role, flight number, flight date, departure city, and a description of the issue. Page or call each on-call contact twice within 90 seconds; if no response in 5 minutes, escalate to the next tier. For vendor issues, email the details and logs first, then call the help desk.",
       "escalationSteps": [
-        "Validate operational impact.",
-        "Contact the on-call from ITS Flight Operations support team on-call.",
-        "Notify the Vendor S4A Smartsuite: support@smart4aviation.com, via e-mail or phone +48 12 379 3737.",
-        "Escalate according to the documented support process."
+        "Open the S4A URL (https://smartsuite.insideaag.com/) and click SAML Login. A \"no access\" page means the site is up; any other error means it's down. If it's down: open a Sev 1, call the JCTE System Admin on-call, and notify the FltOps on-call and the S4A Product Admin.",
+        "Confirm scope. All CLP users down is Sev 1; otherwise start at Sev 2.",
+        "Check S4AP inbound queue alerts. A warning is Sev 3; a critical alert is Sev 2. Contact the JCTE System Admin on-call.",
+        "Check outbound queue backups. Reassign to Middleware, then check the receiving service (FAACertWS, ZeroFuelWeightWS, RealTimeAlertsWS).",
+        "Green \"unrecoverable error\" message: this is a network or infrastructure problem. One station is Sev 2; multiple stations is Sev 1.",
+        "JBoss alert: if the JCTE admin doesn't respond within 5 minutes, follow the S4A instructions for ProdOps.",
+        "Flights missing from desks: check the FOVerifySked job and contact COG FltOps.",
+        "MEL data not updating: check that MtxEventPublisher is running on TUKVVAPP22, then check MQ and TIBCO.",
+        "Check for recent changes to Middleware or TIBCO."
       ],
-      "key": "Smart4Aviation (S4A)"
+      "key": "Smart4Aviation (S4A)",
+      "overview": {
+        "purpose": "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+        "HostingEnvironment": "Linux servers in IGQ and SE4 (app, MQ and CS tiers) + PostgreSQL databases (s4a.wbpgdb.insideaag.com, SE4prS4Awbdb02)",
+        "PrimaryFunctionalAreas": [
+          "SmartLoad: Plans the load and calculates weight and balance (Load planning, Load Closeout)",
+          "SmartComm: Alerts, messaging and message templates (Communications)",
+          "SmartOps: Gantt view of flight schedules and tail numbers (Flight overview)",
+          "App / MQ / CS servers: Linux servers in IGQ and SE4 (Hosting)",
+          "PostgreSQL databases: s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02 (Data storage and reporting)"
+        ]
+      },
+      "triageChecklist": [
+        "Open the S4A URL and click SAML Login. A \"no access\" page means the site is up; any other error means it's down. If it's down: open a Sev 1, call the JCTE System Admin on-call, and notify the FltOps on-call and the S4A Product Admin.",
+        "Confirm scope. All CLP users down is Sev 1; otherwise start at Sev 2.",
+        "Check S4AP inbound queue alerts. A warning is Sev 3; a critical alert is Sev 2. Contact the JCTE System Admin on-call.",
+        "Check outbound queue backups. Reassign to Middleware, then check the receiving service (FAACertWS, ZeroFuelWeightWS, RealTimeAlertsWS).",
+        "Green \"unrecoverable error\" message: this is a network or infrastructure problem. One station is Sev 2; multiple stations is Sev 1.",
+        "JBoss alert: if the JCTE admin doesn't respond within 5 minutes, follow the S4A instructions for ProdOps.",
+        "Flights missing from desks: check the FOVerifySked job and contact COG FltOps.",
+        "MEL data not updating: check that MtxEventPublisher is running on TUKVVAPP22, then check MQ and TIBCO.",
+        "Check for recent changes to Middleware or TIBCO."
+      ],
+      "dependencies": {
+        "upstream": [
+          "MQ S4AP inbound queues: Flight, PAX, Baggage, Cargo, MEL, Crew, Fuel, EXT_ACARS, Assignment, FP_JEPPESEN, COMM_MESSAGE, XML_COMM",
+          "Aircom (ACARS ground), RSA Mobile, iCargo",
+          "Sabre (reservations and Flight Record Data), Visops, Crew Management, Dispatch (fuel requirements), M&E (MEL through MtxEventPublisher)",
+          "JetPlan / Jeppesen flight plans"
+        ],
+        "downstream": [
+          "ACARS / aircraft: Load Closeout and fuel slip, through FO.FLIGHT.LOAD.ACARS.UPLINK",
+          "FAA Cert database (FINAL_LOAD_OUTBOUND)",
+          "Estimated zero fuel weight (EZFW) / ZeroFuelWeightWS (fltops)",
+          "AirClic / ULD Planeside tool (COMM_ALERT_OUTBOUND)",
+          "Fuel vendors (fuel slips sent by email through outbound.alaskaair.com)",
+          "Countdown and Ad-Hoc data feeds, PST, Turn Timeline",
+          "CLP, stations and ramp agents"
+        ]
+      },
+      "supportContacts": [
+        {
+          "team": "Smart4Aviation Support",
+          "contact": "+48 12 379 3737 / support@smart4aviation.aero",
+          "notes": "Escalation: email the support desk first. If there's no response or it's urgent, call the help line | Account Manager: (Add Account Manager)"
+        },
+        {
+          "team": "ITS System Owner & Technical Owners",
+          "contact": "Ryan Wilkins (ITS Flight Operations) | Technical Owners: Ryan Wilkins, Adele Lunde",
+          "notes": "Application Admin: Arun Sharma, Ryan Wilkins (ITS Apps-Airline Ops), 07:00–15:30, with on-call 24/7"
+        },
+        {
+          "team": "System Admin & Service Desk",
+          "contact": "ITS JCTE System Admins on-call, 24/7 | Service Desk: 1-877-238-1077",
+          "notes": "Business Owner: (Add Business Owner). The runbook lists N/A"
+        }
+      ],
+      "links": [
+        {
+          "label": "ITS Operations Runbook_S4A_SmartSuite_v1.1_0406_2026.docx",
+          "url": "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B97741431-AD50-495E-BF14-0B66DDF51F08%7D&file=ITS%20Operations%20Runbook_S4A_SmartSuite_v1.1_0406_2026.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        {
+          "label": "S4A_Triage_Troubleshooting.docx",
+          "url": "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B06828A43-BB4C-42CD-870E-C2C4C607C9EC%7D&file=S4A_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        {
+          "label": "S4A (Smart4Aviation) IT Support Documentation.docx",
+          "url": "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BC715869B-33B8-41C2-8C4B-B84C73EAEB6C%7D&file=S4A%20(Smart4Aviation)%20IT%20Support%20Documentation.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        {
+          "label": "S4A (Smart4Aviation) System Summary.docx",
+          "url": "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B5DFC0539-A7FA-4D53-AF6D-CDC9720C0F9E%7D&file=S4A%20(Smart4Aviation)%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        {
+          "label": "Monitoring alert for Jboss services for S4A.docx",
+          "url": "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BBBAF6694-880E-4D77-8F81-ABC9B9C07818%7D&file=Monitoring%20alert%20for%20Jboss%20services%20for%20S4A.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        {
+          "label": "S4A System Logical_Orig.pdf",
+          "url": "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/Aircraft%20Weight%20and%20Balance/Weight%20and%20Balance%20-%20S4A%20Additional%20Docs/Logical%20Diagram/S4A%20System%20Logical_Orig.pdf?web=1"
+        },
+        {
+          "label": "MtxEventPublisher Service (M&E) System Summary.docx",
+          "url": "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BC6CC21A6-60FF-425F-8CDD-23CB5752EA51%7D&file=MtxEventPublisher%20Service%20(M%26E)%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        {
+          "label": "Executive Summary of Incidents 2025-12 to Current Date.xlsx",
+          "url": "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7BE5D240DC-3123-4D8D-8A59-CF1533D32C5B%7D&file=Executive%20Summary%20of%20Incidents%202025-12%20to%20Current%20Date.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        }
+      ],
+      "lastUpdated": "Nov 04, 2026 (ITS Operations Runbook_S4A_SmartSuite_v1.1_0406_2026)"
     },
     "brockSmartsuite": {
       "id": "brockSmartsuite",

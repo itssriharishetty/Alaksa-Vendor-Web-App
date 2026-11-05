@@ -2389,6 +2389,601 @@ export const VENDOR_IMPACT_DETAILS = {
       }
     ]
   },
+  "Smart4Aviation (S4A)": {
+    id: "Smart4Aviation (S4A)",
+    name: "S4A SmartSuite",
+    breadcrumbTrail: [
+      "Ground Stop Applications",
+      "S4A SmartSuite",
+      "Application Impact Details"
+    ],
+    pageTitle: "S4A SmartSuite – Application Impact Details",
+    pageSubtitle:
+      "Also called Smart4Aviation, SmartLoad, SmartComm, Weight and Balance. Tier 1 and Ground Stop eligible. View S4A components, dependencies, business impact, workarounds, contacts, SLAs and related documentation.",
+    applicationsTabTitle: "S4A SmartSuite (Smart4Aviation / SmartLoad / SmartComm / Weight and Balance)",
+    applicationsTabSubheading: "Applications & Systems (S4A components)",
+    applicationsTabSubtitle:
+      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+    applicationsCardSubtitle:
+      "This list shows the core S4A components, their business functions, operational impact if down, key dependencies, and primary technical owners.",
+    dependenciesTabTitle: "S4A SmartSuite – Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream data feeds, downstream consumers, and hosting & network infrastructure for S4A SmartSuite.",
+    businessImpactTabTitle: "S4A SmartSuite – Business Impact & Workarounds",
+    businessImpactTabSubtitle:
+      "Operational consequences, documented workarounds, and incident validation steps for S4A outages or degraded service.",
+    contactsTabTitle: "S4A SmartSuite – Contacts & SLAs",
+    contactsTabSubtitle:
+      "Escalation points, communication rules, and response targets for S4A incidents.",
+    relatedDocumentsTabTitle: "S4A SmartSuite – Related Documents",
+    relatedDocumentsTabSubtitle:
+      "Runbooks, triage guides, architecture diagrams, and operational documentation for S4A SmartSuite.",
+    company: "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
+    logo: "public/vendors/smart4aviation.jpg",
+    status: "Active",
+    tier: "Tier 1 — Ground Stop Eligible",
+    criticality:
+      "Tier 1 and Ground Stop eligible. Impact is high if fully down, medium if only some services or data types are affected",
+    criticalityBannerTitle:
+      "Criticality: Tier 1 and Ground Stop eligible — Impact is high if fully down, medium if only some services or data types are affected",
+    criticalityHint:
+      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time. Web App URL: https://smartsuite.insideaag.com/",
+    impactAlert:
+      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+    website: "https://smartsuite.insideaag.com/",
+    supportPortalUrl: "https://smartsuite.insideaag.com/",
+    category: "Airport Ops / Flight Ops: weight and balance and load planning",
+    itsTeam:
+      "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins",
+    primaryItsOwner: "Ryan Wilkins (ITS Flight Operations)",
+    supportPhone: "+48 12 379 3737",
+    supportPhoneNote: "Smart4Aviation Support (24x7) — email the support desk first; call if urgent",
+    secondaryPhone: "1-877-238-1077",
+    secondaryPhoneNote: "Alaska Service Desk",
+    supportEmail: "support@smart4aviation.aero",
+    supportEmailNote: "Smart4Aviation Support (email details and logs first, then call)",
+    supportHours: "24x7",
+    escalationText:
+      "Email the support desk first (support@smart4aviation.aero). If there's no response or it's urgent, call the help line (+48 12 379 3737)",
+    summaryMetrics: {
+      totalSystems: 5,
+      tier0Count: 5,
+      tier1Count: 0,
+      upstreamDeps: 4,
+      downstreamDeps: 7
+    },
+    impactedSystems: [
+      {
+        name: "SmartLoad",
+        category: "Load planning, Load Closeout",
+        criticality: "Tier 1 / Ground Stop",
+        purpose: "Plans the load and calculates weight and balance",
+        shortDescription: "Plans the load and calculates weight and balance",
+        businessFunction: "Load planning, Load Closeout",
+        impactIfDown: "CLP can't produce Load Closeouts",
+        keyDependencies: "MQ S4AP, PostgreSQL",
+        technicalOwner: "ITS Apps-Airline Ops",
+        status: "Operational"
+      },
+      {
+        name: "SmartComm",
+        category: "Communications",
+        criticality: "Tier 1 / Ground Stop",
+        purpose: "Alerts, messaging and message templates",
+        shortDescription: "Alerts, messaging and message templates",
+        businessFunction: "Communications",
+        impactIfDown: "No alerts or messages to stations or aircraft",
+        keyDependencies: "MQ, TIBCO, ACARS",
+        technicalOwner: "ITS Apps-Airline Ops",
+        status: "Operational"
+      },
+      {
+        name: "SmartOps",
+        category: "Flight overview",
+        criticality: "Tier 1 / Ground Stop",
+        purpose: "Gantt view of flight schedules and tail numbers",
+        shortDescription: "Gantt view of flight schedules and tail numbers",
+        businessFunction: "Flight overview",
+        impactIfDown: "No flight view for CLP",
+        keyDependencies: "Flight event feeds",
+        technicalOwner: "ITS Apps-Airline Ops",
+        status: "Operational"
+      },
+      {
+        name: "App / MQ / CS servers",
+        category: "Hosting",
+        criticality: "Tier 1 / Ground Stop",
+        purpose: "Linux servers in IGQ and SE4 (app, MQ and CS tiers)",
+        shortDescription: "Linux servers in IGQ and SE4 (app, MQ and CS tiers)",
+        businessFunction: "Hosting",
+        impactIfDown: "Whole system down",
+        keyDependencies: "JBoss, PostgreSQL",
+        technicalOwner: "ITS JCTE System Admins",
+        status: "Operational"
+      },
+      {
+        name: "PostgreSQL databases",
+        category: "Data storage and reporting",
+        criticality: "Tier 1 / Ground Stop",
+        purpose: "s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02",
+        shortDescription: "s4a.wbpgdb.insideaag.com, plus reporting database SE4prS4Awbdb02",
+        businessFunction: "Data storage and reporting",
+        impactIfDown: "App fails, reporting fails",
+        keyDependencies: "Database servers",
+        technicalOwner: "ITS JCTE System Admins",
+        status: "Operational"
+      }
+    ],
+    upstreamDependencies: [
+      {
+        name: "MQ S4AP inbound queues: Flight, PAX, Baggage, Cargo, MEL, Crew, Fuel, EXT_ACARS, Assignment, FP_JEPPESEN, COMM_MESSAGE, XML_COMM",
+        type: "IBM MQ Inbound Queues (S4AP)",
+        protocol: "IBM MQ (S4AP)",
+        impactIfUnavailable:
+          "Inbound flight, passenger, baggage, cargo, MEL, crew, fuel, ACARS, assignment, flight plan, or comm messages do not reach S4A."
+      },
+      {
+        name: "Aircom (ACARS ground), RSA Mobile, iCargo",
+        type: "Aircraft Comms, Ramp & Cargo Systems",
+        protocol: "MQ / ACARS / Data Feeds",
+        impactIfUnavailable:
+          "ACARS ground messages, ramp baggage/loading updates, and cargo weights do not flow into S4A."
+      },
+      {
+        name: "Sabre (reservations and Flight Record Data), Visops, Crew Management, Dispatch (fuel requirements), M&E (MEL through MtxEventPublisher)",
+        type: "Core Airline Operations Feeds",
+        protocol: "MQ / TIBCO / MtxEventPublisher",
+        impactIfUnavailable:
+          "Missing passenger counts, flight schedule updates, crew data, fuel requirements, or MEL weight/balance restrictions."
+      },
+      {
+        name: "JetPlan / Jeppesen flight plans",
+        type: "Flight Planning Feed",
+        protocol: "FP_JEPPESEN Queue",
+        impactIfUnavailable:
+          "Planned flight weights, fuel, and routing data from JetPlan do not populate automatically in S4A."
+      }
+    ],
+    downstreamConsumers: [
+      {
+        name: "ACARS / aircraft: Load Closeout and fuel slip, through FO.FLIGHT.LOAD.ACARS.UPLINK",
+        type: "Aircraft Uplink",
+        criticality: "Ground Stop",
+        impactIfVendorFails:
+          "No automated Load Closeout or fuel slip sent to the aircraft; stations must print final numbers and read them to the crew."
+      },
+      {
+        name: "FAA Cert database (FINAL_LOAD_OUTBOUND)",
+        type: "Regulatory / Final Load Feed",
+        criticality: "High",
+        impactIfVendorFails:
+          "Final load closeout records do not flow to the FAA Cert database (FAACertWS)."
+      },
+      {
+        name: "Estimated zero fuel weight (EZFW) / ZeroFuelWeightWS (fltops)",
+        type: "Flight Ops Weight Feed",
+        criticality: "High",
+        impactIfVendorFails:
+          "Estimated zero fuel weight (EZFW) updates are not sent to Flight Ops (ZeroFuelWeightWS)."
+      },
+      {
+        name: "AirClic / ULD Planeside tool (COMM_ALERT_OUTBOUND)",
+        type: "Ramp / Planeside Alerts",
+        criticality: "High",
+        impactIfVendorFails:
+          "Outbound load alerts and communications do not reach AirClic / ULD Planeside tools."
+      },
+      {
+        name: "Fuel vendors (fuel slips sent by email through outbound.alaskaair.com)",
+        type: "Fuel Vendor Notification",
+        criticality: "High",
+        impactIfVendorFails:
+          "Automated fuel slips are not emailed to fuel vendors through outbound.alaskaair.com."
+      },
+      {
+        name: "Countdown and Ad-Hoc data feeds, PST, Turn Timeline",
+        type: "Operational Dashboards & Feeds",
+        criticality: "Medium",
+        impactIfVendorFails:
+          "Downstream operational tracking tools (Countdown, Ad-Hoc data feeds, PST, Turn Timeline) lack load closeout updates."
+      },
+      {
+        name: "CLP, stations and ramp agents",
+        type: "Operational End Users",
+        criticality: "Ground Stop",
+        impactIfVendorFails:
+          "Centralized Load Planners (CLP), station agents, and ramp agents cannot automate load planning or closeout."
+      }
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream feeds (MQ S4AP inbound queues, Aircom/RSA Mobile/iCargo, Sabre/Visops/Crew/Dispatch/M&E, and JetPlan flight plans) flowing into S4A SmartSuite to deliver Load Closeouts to ACARS/aircraft, FAA Cert DB, EZFW, AirClic, fuel vendors, and CLP/stations.",
+      diagramUpstream: [
+        {
+          id: "s4a-up-1",
+          name: "MQ S4AP Inbound Queues",
+          subtitle: "Flight, PAX, Baggage, Cargo, MEL, Crew, Fuel, EXT_ACARS, Assignment, FP_JEPPESEN, COMM_MESSAGE, XML_COMM",
+          iconType: "transfer"
+        },
+        {
+          id: "s4a-up-2",
+          name: "Aircom, RSA Mobile, iCargo",
+          subtitle: "ACARS ground, ramp & cargo feeds",
+          iconType: "network"
+        },
+        {
+          id: "s4a-up-3",
+          name: "Sabre, Visops, Crew, Dispatch, M&E",
+          subtitle: "Reservations, Flight Record Data, fuel, MEL (MtxEventPublisher)",
+          iconType: "database"
+        },
+        {
+          id: "s4a-up-4",
+          name: "JetPlan / Jeppesen",
+          subtitle: "Jeppesen flight plans",
+          iconType: "doc"
+        }
+      ],
+      diagramServices: [
+        "SmartLoad (Load planning & Closeout)",
+        "SmartComm (Alerts & messaging)",
+        "SmartOps (Gantt flight overview)",
+        "IGQ & SE4 App / MQ / CS / PostgreSQL"
+      ],
+      diagramDownstream: [
+        {
+          id: "s4a-down-1",
+          name: "ACARS / Aircraft",
+          subtitle: "Load Closeout & fuel slip (FO.FLIGHT.LOAD.ACARS.UPLINK)",
+          iconType: "nodes"
+        },
+        {
+          id: "s4a-down-2",
+          name: "FAA Cert DB & EZFW",
+          subtitle: "FINAL_LOAD_OUTBOUND & ZeroFuelWeightWS (fltops)",
+          iconType: "database"
+        },
+        {
+          id: "s4a-down-3",
+          name: "AirClic / ULD Planeside",
+          subtitle: "COMM_ALERT_OUTBOUND",
+          iconType: "ticket"
+        },
+        {
+          id: "s4a-down-4",
+          name: "Fuel Vendors & Operational Feeds",
+          subtitle: "outbound.alaskaair.com, Countdown, Ad-Hoc, PST, Turn Timeline",
+          iconType: "chart"
+        },
+        {
+          id: "s4a-down-5",
+          name: "CLP, Stations & Ramp Agents",
+          subtitle: "Centralized Load Planners & station teams",
+          iconType: "team"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 4, tone: "red" },
+        { label: "Downstream Consumers", count: 7, tone: "green" },
+        { label: "S4A Components", count: 5, tone: "blue" },
+        { label: "Infrastructure Components", count: 6, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time."
+      ],
+      upstreamTable: [
+        {
+          id: "s4a-upt-1",
+          name: "MQ S4AP inbound queues: Flight, PAX, Baggage, Cargo, MEL, Crew, Fuel, EXT_ACARS, Assignment, FP_JEPPESEN, COMM_MESSAGE, XML_COMM",
+          description: "Inbound IBM MQ queues on S4AP delivering operational feeds into S4A SmartSuite.",
+          type: "Internal / MQ",
+          impact: "Missing passenger, baggage, cargo, crew, fuel, MEL, or flight plan data in S4A."
+        },
+        {
+          id: "s4a-upt-2",
+          name: "Aircom (ACARS ground), RSA Mobile, iCargo",
+          description: "Aircraft communications, ramp baggage scanning, and cargo management feeds.",
+          type: "Internal / Operational",
+          impact: "ACARS messages, baggage loading scans, or cargo weights fail to update in S4A."
+        },
+        {
+          id: "s4a-upt-3",
+          name: "Sabre (reservations and Flight Record Data), Visops, Crew Management, Dispatch (fuel requirements), M&E (MEL through MtxEventPublisher)",
+          description: "Core airline operations feeds for passenger counts, schedule, crew, fuel, and MEL items.",
+          type: "Internal / Core Feeds",
+          impact: "Missing passenger counts, fuel requirements, or MEL updates force manual workarounds at closeout."
+        },
+        {
+          id: "s4a-upt-4",
+          name: "JetPlan / Jeppesen flight plans",
+          description: "Flight planning data fed from JetPlan / Jeppesen.",
+          type: "Internal / Flight Ops",
+          impact: "Planned flight weights and fuel figures do not populate automatically."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "s4a-dwt-1",
+          name: "ACARS / aircraft: Load Closeout and fuel slip, through FO.FLIGHT.LOAD.ACARS.UPLINK",
+          description: "Sends final Load Closeout and fuel slip to the aircraft via IBM MQ and ACARS.",
+          type: "Aircraft Uplink",
+          impact: "No automated Load Closeouts or final numbers to aircraft; stations must print and read them to the crew."
+        },
+        {
+          id: "s4a-dwt-2",
+          name: "FAA Cert database (FINAL_LOAD_OUTBOUND)",
+          description: "Outbound queue feeding final load records to FAACertWS / FAA Cert database.",
+          type: "Regulatory Database",
+          impact: "Final load records do not update in the FAA Cert database."
+        },
+        {
+          id: "s4a-dwt-3",
+          name: "Estimated zero fuel weight (EZFW) / ZeroFuelWeightWS (fltops)",
+          description: "Outbound feed providing estimated zero fuel weight (EZFW) to Flight Ops.",
+          type: "Internal / Flight Ops",
+          impact: "ZeroFuelWeightWS does not receive EZFW updates."
+        },
+        {
+          id: "s4a-dwt-4",
+          name: "AirClic / ULD Planeside tool (COMM_ALERT_OUTBOUND)",
+          description: "Outbound communication and alert feed to AirClic / ULD Planeside tools.",
+          type: "Internal / Ramp Tools",
+          impact: "Planeside ramp tools do not receive load alerts."
+        },
+        {
+          id: "s4a-dwt-5",
+          name: "Fuel vendors (fuel slips sent by email through outbound.alaskaair.com)",
+          description: "Automated email delivery of fuel slips to fuel vendors via outbound.alaskaair.com.",
+          type: "External / Vendors",
+          impact: "Fuel vendors do not receive automated fuel slips by email."
+        },
+        {
+          id: "s4a-dwt-6",
+          name: "Countdown and Ad-Hoc data feeds, PST, Turn Timeline",
+          description: "Downstream operational data feeds and turn tracking dashboards.",
+          type: "Internal / Dashboards",
+          impact: "Countdown, Ad-Hoc feeds, PST, and Turn Timeline lack load status updates."
+        },
+        {
+          id: "s4a-dwt-7",
+          name: "CLP, stations and ramp agents",
+          description: "Centralized Load Planners, station customer service agents, and ramp teams.",
+          type: "Internal Teams",
+          impact: "CLP plans flights manually in the FlexLoad spreadsheet; stations print final numbers and read them to the aircraft."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "s4a-inf-1",
+          component: "IGQ servers",
+          description:
+            "IGQprS4Awbap01–03 (app), IGQprS4Awbmq01–02 (MQ), IGQprS4Awbcs01–03 (CS), IGQprS4Awbdb01 (database)",
+          owner: "ITS JCTE System Admins",
+          impact: "Hosts primary IGQ application, MQ, CS, and database tiers."
+        },
+        {
+          id: "s4a-inf-2",
+          component: "SE4 servers",
+          description:
+            "SE4prS4Awbapp01–03, SE4prS4Amqwb01–02, SE4prS4Awbcs01–03, SE4prS4Awbdb01, plus reporting database SE4prS4Awbdb02",
+          owner: "ITS JCTE System Admins",
+          impact: "Hosts SE4 application, MQ, CS, database, and reporting database tiers."
+        },
+        {
+          id: "s4a-inf-3",
+          component: "IBM MQ",
+          description:
+            "S4AP (all COMM.V1.* queues) and QMMFP (FO.FLIGHT.EVENTS, FO.FLIGHT.LOAD.ACARS.UPLINK)",
+          owner: "ITS Middleware / JCTE System Admins",
+          impact: "Carries all inbound S4AP queues and outbound QMMFP flight events and ACARS load uplinks."
+        },
+        {
+          id: "s4a-inf-4",
+          component: "TIBCO, Prod DNA server farm, and FltOps Informix database",
+          description:
+            "TIBCO, the Prod DNA server farm, and the FltOps Informix database",
+          owner: "ITS Middleware / Flight Ops",
+          impact: "Middleware routing and Flight Ops database integration."
+        },
+        {
+          id: "s4a-inf-5",
+          component: "Monitoring",
+          description:
+            "AppDynamics (S4ASmartSuite_WBPROD), the S4A WB status dashboard, and Sumo Logic (_sourcecategory = prod/its/non-sensitive/crew/s4a/app)",
+          owner: "ITS Flight Ops / JCTE System Admins",
+          impact: "Application performance monitoring, WB status visibility, and log aggregation."
+        },
+        {
+          id: "s4a-inf-6",
+          component: "Firewall / network rules",
+          description: "(Add firewall details)",
+          owner: "ITS Network",
+          impact: "(Add firewall details)"
+        }
+      ]
+    },
+    keyTakeaways:
+      "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+    typicalBusinessImpact: [
+      "No automated Load Closeouts or final numbers to aircraft",
+      "Flight delays. In INC3406923, Flight 305 SEA-MIA was delayed 7–10 minutes because of a bag count issue",
+      "Missing passenger or bag counts force manual workarounds at closeout. RRT0 on 2026-01-21 was caused by a middleware change",
+      "QX flights didn't get passenger count closure or final load numbers (INC00020920, 11/3/2026)"
+    ],
+    knownWorkarounds: [
+      "CLP plans flights manually in the FlexLoad spreadsheet. Stations print the final numbers and read them to the aircraft",
+      "For missing passenger counts, call the CSAs (customer service agents) manually",
+      "If a middleware change caused the issue, roll back the change request (CR)",
+      "DR failover per S4A_Smartload_DR.xlsx"
+    ],
+    validationChecklist: [
+      "Open the S4A URL and click SAML Login. A \"no access\" page means the site is up; any other error means it's down. If it's down: open a Sev 1, call the JCTE System Admin on-call, and notify the FltOps on-call and the S4A Product Admin.",
+      "Confirm scope. All CLP users down is Sev 1; otherwise start at Sev 2.",
+      "Check S4AP inbound queue alerts. A warning is Sev 3; a critical alert is Sev 2. Contact the JCTE System Admin on-call.",
+      "Check outbound queue backups. Reassign to Middleware, then check the receiving service (FAACertWS, ZeroFuelWeightWS, RealTimeAlertsWS).",
+      "Green \"unrecoverable error\" message: this is a network or infrastructure problem. One station is Sev 2; multiple stations is Sev 1.",
+      "JBoss alert: if the JCTE admin doesn't respond within 5 minutes, follow the S4A instructions for ProdOps.",
+      "Flights missing from desks: check the FOVerifySked job and contact COG FltOps.",
+      "MEL data not updating: check that MtxEventPublisher is running on TUKVVAPP22, then check MQ and TIBCO.",
+      "Check for recent changes to Middleware or TIBCO."
+    ],
+    vendorContacts: {
+      companyNote:
+        "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
+      categoryNote:
+        "Application Name: S4A SmartSuite. Also called Smart4Aviation, SmartLoad, SmartComm, Weight and Balance • Criticality: Tier 1 and Ground Stop eligible. Impact is high if fully down, medium if only some services or data types are affected • Web App URL: https://smartsuite.insideaag.com/",
+      supportEmail: "support@smart4aviation.aero",
+      supportEmailNote: "Smart4Aviation Support",
+      supportPhone: "+48 12 379 3737",
+      technicalSupport:
+        "Smart4Aviation Support: +48 12 379 3737 / support@smart4aviation.aero • Escalation: email the support desk first. If there's no response or it's urgent, call the help line",
+      accountManager: "(Add Account Manager)",
+      namedEscalationContact:
+        "Escalation: email the support desk first. If there's no response or it's urgent, call the help line (+48 12 379 3737)",
+      supportHours: "24x7",
+      escalation:
+        "Vendor Contacts:\n• Smart4Aviation Support: +48 12 379 3737 / support@smart4aviation.aero\n• Escalation: email the support desk first. If there's no response or it's urgent, call the help line\n• Account Manager: (Add Account Manager)\n\nCommunication Guidelines:\n• When escalating, give: user name, role, flight number, flight date, departure city, and a description of the issue.\n• Page or call each on-call contact twice within 90 seconds. If there's no response in 5 minutes, escalate to the next tier.\n• P2: create a Teams channel named with the MI number. RRT0: name the channel RRT0YYYYMMDD0X – Title.\n• For vendor issues, email the details and logs first, then call the help desk.",
+      communicationGuidelines: [
+        "When escalating, give: user name, role, flight number, flight date, departure city, and a description of the issue.",
+        "Page or call each on-call contact twice within 90 seconds. If there's no response in 5 minutes, escalate to the next tier.",
+        "P2: create a Teams channel named with the MI number. RRT0: name the channel RRT0YYYYMMDD0X – Title.",
+        "For vendor issues, email the details and logs first, then call the help desk."
+      ],
+      responseSlas: [
+        {
+          label: "P1 updates",
+          priority: "P1 updates",
+          level: "Leadership Engaged",
+          description:
+            "every 15–30 minutes (the runbook marks this as still to be confirmed). Leadership must be engaged for P1",
+          target: "Every 15–30 minutes (TBC)",
+          value:
+            "every 15–30 minutes (the runbook marks this as still to be confirmed). Leadership must be engaged for P1"
+        },
+        {
+          label: "Sev 1",
+          priority: "Sev 1",
+          level: "Critical / Ground Stop Eligible",
+          description: "all CLP users down, or the URL is down",
+          target: "All CLP users down, or the URL is down",
+          value: "all CLP users down, or the URL is down"
+        },
+        {
+          label: "Sev 2",
+          priority: "Sev 2",
+          level: "High Operational Impact",
+          description: "some users, or a critical inbound queue alert",
+          target: "Some users, or a critical inbound queue alert",
+          value: "some users, or a critical inbound queue alert"
+        },
+        {
+          label: "Vendor response SLA",
+          priority: "Vendor response SLA",
+          level: "Smart4Aviation SLA",
+          description: "(Add Smart4Aviation response SLA)",
+          target: "(Add Smart4Aviation response SLA)",
+          value: "(Add Smart4Aviation response SLA)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam:
+        "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins",
+      itsTeamNote:
+        "Technical Owners: Ryan Wilkins, Adele Lunde • System Admin: ITS JCTE System Admins on-call, 24/7",
+      applicationOwner:
+        "ITS System Owner: Ryan Wilkins (ITS Flight Operations) • Technical Owners: Ryan Wilkins, Adele Lunde",
+      onCallSupport:
+        "Application Admin: Arun Sharma, Ryan Wilkins (ITS Apps-Airline Ops), 07:00–15:30, with on-call 24/7",
+      systemAdministration: "ITS JCTE System Admins on-call, 24/7",
+      businessOwner: "(Add Business Owner). The runbook lists N/A",
+      passwordSupport: "Service Desk: 1-877-238-1077",
+      everbridgeContacts:
+        "ITS Flight Operations on-call • ITS Apps-Airline Ops (Arun Sharma, Ryan Wilkins) • ITS JCTE System Admins on-call, 24/7"
+    },
+    incidentHistory: [
+      {
+        id: "INC00020920 (2026-11-03)",
+        date: "2026-11-03",
+        duration: "Documented Incident",
+        severity: "High",
+        title: "QX flights didn't get passenger count closure or final load numbers",
+        rootCause:
+          "QX flights didn't get passenger count closure or final load numbers (INC00020920, 11/3/2026).",
+        resolution:
+          "Manual passenger count and load number verification per S4A triage guidelines."
+      },
+      {
+        id: "RRT0 (2026-01-21) & INC3406923",
+        date: "2026-01-21",
+        duration: "7–10 min flight delay",
+        severity: "RRT0 / Sev 1",
+        title: "Middleware change caused missing counts (RRT0); Flight 305 SEA-MIA delayed (INC3406923)",
+        rootCause:
+          "In INC3406923, Flight 305 SEA-MIA was delayed 7–10 minutes because of a bag count issue. Missing passenger or bag counts force manual workarounds at closeout; RRT0 on 2026-01-21 was caused by a middleware change.",
+        resolution:
+          "Roll back the middleware change request (CR) and use manual closeout workarounds."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "ITS Operations Runbook_S4A_SmartSuite_v1.1_0406_2026.docx",
+        type: "Primary Source — S4A SmartSuite Operations Runbook (Word)",
+        owner: "ITS Flight Operations",
+        updated: "2026-04-06 (v1.1)",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B97741431-AD50-495E-BF14-0B66DDF51F08%7D&file=ITS%20Operations%20Runbook_S4A_SmartSuite_v1.1_0406_2026.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "S4A_Triage_Troubleshooting.docx",
+        type: "Primary Source — S4A Triage & Troubleshooting (Word)",
+        owner: "ITS Flight Operations",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B06828A43-BB4C-42CD-870E-C2C4C607C9EC%7D&file=S4A_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "S4A (Smart4Aviation) IT Support Documentation.docx",
+        type: "Primary Source — S4A IT Support Documentation (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BC715869B-33B8-41C2-8C4B-B84C73EAEB6C%7D&file=S4A%20(Smart4Aviation)%20IT%20Support%20Documentation.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "S4A (Smart4Aviation) System Summary.docx",
+        type: "Primary Source — S4A System Summary (Word)",
+        owner: "ITS Flight Operations",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B5DFC0539-A7FA-4D53-AF6D-CDC9720C0F9E%7D&file=S4A%20(Smart4Aviation)%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Monitoring alert for Jboss services for S4A.docx",
+        type: "Primary Source — JBoss Services Monitoring Alert for S4A (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BBBAF6694-880E-4D77-8F81-ABC9B9C07818%7D&file=Monitoring%20alert%20for%20Jboss%20services%20for%20S4A.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "S4A System Logical_Orig.pdf",
+        type: "Primary Source — S4A System Logical Diagram (PDF)",
+        owner: "ITS Flight Operations",
+        updated: "Current",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/Aircraft%20Weight%20and%20Balance/Weight%20and%20Balance%20-%20S4A%20Additional%20Docs/Logical%20Diagram/S4A%20System%20Logical_Orig.pdf?web=1"
+      },
+      {
+        title: "MtxEventPublisher Service (M&E) System Summary.docx",
+        type: "Additional Source — MtxEventPublisher Service System Summary (Word)",
+        owner: "ITS Maintenance & Engineering",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BC6CC21A6-60FF-425F-8CDD-23CB5752EA51%7D&file=MtxEventPublisher%20Service%20(M%26E)%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Executive Summary of Incidents 2025-12 to Current Date.xlsx",
+        type: "Additional Source — Executive Summary of Incidents (Excel)",
+        owner: "ITS Production Operations",
+        updated: "2025-12 to Current",
+        url: "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7BE5D240DC-3123-4D8D-8A59-CF1533D32C5B%7D&file=Executive%20Summary%20of%20Incidents%202025-12%20to%20Current%20Date.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      }
+    ]
+  },
   "aims-vendor": {
     id: "aims-vendor",
     name: "AIMS",
@@ -5071,6 +5666,9 @@ export function getGroundStopImpactDetails(appItem) {
 
   if (lowerKey === "acars" || lowerKey === "sita") {
     return VENDOR_IMPACT_DETAILS.sita;
+  }
+  if (lowerKey === "smart4aviation (s4a)" || lowerKey === "s4a") {
+    return VENDOR_IMPACT_DETAILS["Smart4Aviation (S4A)"];
   }
   if (lowerKey === "aims" || lowerKey === "aims-vendor") {
     return VENDOR_IMPACT_DETAILS["aims-vendor"];

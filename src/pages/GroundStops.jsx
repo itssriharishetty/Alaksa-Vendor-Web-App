@@ -55,19 +55,19 @@ const CARD_PROFILES = {
         monogram: "JP"
     },
     "Smart4Aviation (S4A)": {
-        shortName: "S4A",
-        category: "Weight and Balance",
+        shortName: "S4A SmartSuite",
+        category: "Airport Ops / Flight Ops: weight and balance and load planning",
         status: "Active",
-        sla: "15 min",
+        sla: "24x7",
         slaIcon: "phone",
-        severity: "High",
+        severity: "Critical",
         description:
-            "S4A Incorporates data from other systems in order to automate the load management process. The system continually monitors the planned load and informs CLP (Centralized Load Planner) when they may need to investigate and take action.",
-        vendor: "Smart4Aviation",
-        poc: "Arun Sharma / Ryan Wilkins",
+            "S4A pulls in flight, passenger, bag, cargo, crew, fuel and MEL data to automate weight and balance. It checks the actual load and sends the Load Closeout to the aircraft. If S4A is down, aircraft can't be safely prepared to depart on time.",
+        vendor: "Smart4Aviation (based in Poland). Vendor application on in-house Linux servers",
+        poc: "Ryan Wilkins",
         phone: "+48 12 379 3737",
-        email: "support@smart4aviation.com",
-        team: "ITS Flight Operations",
+        email: "support@smart4aviation.aero",
+        team: "ITS Flight Operations. System Owner: Ryan Wilkins. Servers supported by the ITS JCTE System Admins",
         logoVariant: "logo-s4a",
         monogram: "S4A"
     },
