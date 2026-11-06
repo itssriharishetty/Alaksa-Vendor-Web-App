@@ -146,6 +146,7 @@ export default defineConfig({
     emptyOutDir: true,
     assetsDir: "assets",
     cssCodeSplit: false,
+    chunkSizeWarningLimit: 1500,
     rollupOptions: {
       output: {
         format: "iife",

@@ -10,6 +10,7 @@ import GroundStops from "./pages/GroundStops.jsx";
 import VendorCaseStatus from "./pages/VendorCaseStatus.jsx";
 import Favorites from "./pages/Favorites.jsx";
 import Reports from "./pages/Reports.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -33,9 +34,10 @@ export default function App() {
             <Route path="/vendor-case-status" element={<VendorCaseStatus />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </HashRouter>
     </MasterDataProvider>
