@@ -7713,46 +7713,255 @@ export function buildTemplateVendorImpactDetails(vendor, allVendors = []) {
   };
 }
 
+function readStoredArray(storageKey) {
+  if (typeof localStorage === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(storageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function applyAdminImpactOverrides(baseDetails, sourceObj, isGroundStop = false) {
+  if (!baseDetails) return null;
+  let storedMatch = null;
+  if (isGroundStop) {
+    const key = String(sourceObj?.key || sourceObj?.id || sourceObj?.record?.key || sourceObj?.record?.id || "").trim();
+    const storedApps = readStoredArray("productionOperationsApplications");
+    storedMatch = storedApps.find(
+      (a) => a && (a.key === key || a.id === key || (sourceObj?.record?.id && a.id === sourceObj.record.id))
+    );
+  } else {
+    const id = String(sourceObj?.id || "").trim();
+    const sourceRow = sourceObj?.sourceRow;
+    const storedVendors = readStoredArray("productionOperationsVendors");
+    storedMatch = storedVendors.find(
+      (v) =>
+        v &&
+        ((id && (v.id === id || v.id === `its-application-vendors-${sourceRow}`)) ||
+          (sourceRow != null && Number(v.sourceRow) === Number(sourceRow)))
+    );
+  }
+
+  const record = isGroundStop ? { ...(sourceObj?.record || sourceObj || {}), ...(storedMatch || {}) } : { ...(sourceObj || {}), ...(storedMatch || {}) };
+  if (!record.adminEdited && !record.impactOverrides) {
+    return baseDetails;
+  }
+
+  const cloned = JSON.parse(JSON.stringify(baseDetails));
+  const io = record.impactOverrides && typeof record.impactOverrides === "object" ? record.impactOverrides : {};
+
+  if (isGroundStop) {
+    if (record.shortName || record.name) cloned.name = record.shortName || record.name;
+    if (record.category) cloned.category = record.category;
+    if (record.status) cloned.status = record.status;
+    if (record.vendor) cloned.company = record.vendor;
+    if (record.website) cloned.website = record.website;
+    if (record.aagTeam) {
+      cloned.itsTeam = record.aagTeam;
+      if (cloned.internalContacts) cloned.internalContacts.itsTeam = record.aagTeam;
+    }
+    if (record.aagPOC && cloned.internalContacts) {
+      cloned.internalContacts.applicationOwner = record.aagPOC;
+    }
+    if (record.phone && cloned.vendorContacts) {
+      cloned.vendorContacts.supportPhone = record.phone;
+    }
+    if (record.email && cloned.vendorContacts) {
+      cloned.vendorContacts.supportEmail = record.email;
+    }
+    if (record.lastUpdated) cloned.lastUpdated = record.lastUpdated;
+  } else {
+    const vCompany = record.vendorCompanyName || record.company || record.vendor;
+    if (vCompany) {
+      cloned.company = vCompany;
+      cloned.name = vCompany;
+    }
+    if (record.category) cloned.category = record.category;
+    if (record.status) cloned.status = record.status;
+    if (record.website || record.portalUrl) cloned.website = record.website || record.portalUrl;
+    if (record.aagItsTeam) {
+      cloned.itsTeam = record.aagItsTeam;
+      if (cloned.internalContacts) cloned.internalContacts.itsTeam = record.aagItsTeam;
+    }
+    if (record.aagItsPOC && cloned.internalContacts) {
+      cloned.internalContacts.applicationOwner = record.aagItsPOC;
+    }
+    if ((record.contactNumbers || record.phone) && cloned.vendorContacts) {
+      cloned.vendorContacts.supportPhone = record.contactNumbers || record.phone;
+    }
+    if ((record.emailAddress || record.email) && cloned.vendorContacts) {
+      cloned.vendorContacts.supportEmail = record.emailAddress || record.email;
+    }
+    if ((record.vendorPOC || record.vendorPoc) && cloned.vendorContacts) {
+      cloned.vendorContacts.accountManager = record.vendorPOC || record.vendorPoc;
+    }
+    if ((record.prodOpsEscalationProcess || record.escalation) && cloned.vendorContacts) {
+      cloned.vendorContacts.escalation = record.prodOpsEscalationProcess || record.escalation;
+    }
+    if (record.lastUpdated || record.infoUpdatedDate) {
+      cloned.lastUpdated = record.lastUpdated || record.infoUpdatedDate;
+    }
+  }
+
+  if (io.pageTitle) cloned.pageTitle = io.pageTitle;
+  if (io.pageSubtitle) cloned.pageSubtitle = io.pageSubtitle;
+  if (io.subtitle) cloned.subtitle = io.subtitle;
+  if (io.company) cloned.company = io.company;
+  if (io.website) cloned.website = io.website;
+  if (io.category) cloned.category = io.category;
+  if (io.itsTeam) cloned.itsTeam = io.itsTeam;
+  if (io.status) cloned.status = io.status;
+  if (io.lastUpdated) cloned.lastUpdated = io.lastUpdated;
+
+  if (io.impactCallout && typeof io.impactCallout === "object") {
+    cloned.impactCallout = {
+      ...(cloned.impactCallout || {}),
+      ...io.impactCallout
+    };
+  }
+
+  if (Array.isArray(io.impactedSystems)) {
+    cloned.impactedSystems = io.impactedSystems;
+    if (cloned.impactSummary) {
+      cloned.impactSummary.potential = io.impactedSystems.length;
+    }
+  }
+
+  if (Array.isArray(io.typicalBusinessImpact)) {
+    cloned.typicalBusinessImpact = io.typicalBusinessImpact;
+  }
+
+  if (Array.isArray(io.knownWorkarounds)) {
+    cloned.knownWorkarounds = io.knownWorkarounds;
+  }
+
+  if (Array.isArray(io.validationChecklist)) {
+    cloned.validationChecklist = io.validationChecklist;
+  }
+
+  if (Array.isArray(io.upstreamDependencies)) {
+    cloned.upstreamDependencies = io.upstreamDependencies;
+  }
+
+  if (Array.isArray(io.downstreamConsumers)) {
+    cloned.downstreamConsumers = io.downstreamConsumers;
+  }
+
+  if (io.dependenciesTab && typeof io.dependenciesTab === "object") {
+    cloned.dependenciesTab = {
+      ...(cloned.dependenciesTab || {}),
+      ...io.dependenciesTab
+    };
+    if (Array.isArray(io.dependenciesTab.upstreamTable)) {
+      cloned.dependenciesTab.upstreamTable = io.dependenciesTab.upstreamTable;
+      cloned.dependenciesTab.diagramUpstream = io.dependenciesTab.upstreamTable.slice(0, 4).map((row, idx) => ({
+        id: row.id || `dup-${idx + 1}`,
+        name: (row.name || "").slice(0, 42),
+        subtitle: (row.description || "Upstream Dependency").slice(0, 48),
+        iconType: ["network", "transfer", "doc", "ticket"][idx % 4]
+      }));
+    }
+    if (Array.isArray(io.dependenciesTab.downstreamTable)) {
+      cloned.dependenciesTab.downstreamTable = io.dependenciesTab.downstreamTable;
+      cloned.dependenciesTab.diagramDownstream = io.dependenciesTab.downstreamTable.slice(0, 5).map((row, idx) => ({
+        id: row.id || `ddn-${idx + 1}`,
+        name: (row.name || "").slice(0, 42),
+        subtitle: (row.description || "Operational Consumer").slice(0, 48),
+        iconType: ["team", "nodes", "chart", "database", "users"][idx % 5]
+      }));
+    }
+    if (Array.isArray(io.dependenciesTab.infrastructureTable)) {
+      cloned.dependenciesTab.infrastructureTable = io.dependenciesTab.infrastructureTable;
+    }
+    if (Array.isArray(cloned.dependenciesTab.summaryStats)) {
+      cloned.dependenciesTab.summaryStats = [
+        {
+          label: "Upstream Dependencies",
+          count: (cloned.dependenciesTab.upstreamTable || []).length,
+          tone: "red"
+        },
+        {
+          label: "Downstream Consumers",
+          count: (cloned.dependenciesTab.downstreamTable || []).length,
+          tone: "green"
+        },
+        {
+          label: "Impacted Applications",
+          count: (cloned.impactedSystems || []).length,
+          tone: "blue"
+        },
+        {
+          label: "Infrastructure Components",
+          count: (cloned.dependenciesTab.infrastructureTable || []).length,
+          tone: "purple"
+        }
+      ];
+    }
+  }
+
+  if (io.vendorContacts && typeof io.vendorContacts === "object") {
+    cloned.vendorContacts = {
+      ...(cloned.vendorContacts || {}),
+      ...io.vendorContacts
+    };
+  }
+
+  if (io.internalContacts && typeof io.internalContacts === "object") {
+    cloned.internalContacts = {
+      ...(cloned.internalContacts || {}),
+      ...io.internalContacts
+    };
+  }
+
+  if (Array.isArray(io.relatedDocuments)) {
+    cloned.relatedDocuments = io.relatedDocuments;
+  } else if (Array.isArray(io.documents)) {
+    cloned.relatedDocuments = io.documents;
+  }
+
+  return cloned;
+}
+
 export function getVendorImpactDetails(vendor, allVendors = []) {
   if (!vendor) return null;
   const id = String(vendor.id || "").trim().toLowerCase();
+  let base = null;
   if (id === "aims" || id === "aims-vendor") {
-    return VENDOR_IMPACT_DETAILS["aims-vendor"];
+    base = VENDOR_IMPACT_DETAILS["aims-vendor"];
+  } else if (id && VENDOR_IMPACT_DETAILS[id]) {
+    base = VENDOR_IMPACT_DETAILS[id];
+  } else if (id === "aircraft-performance-aerodata") {
+    base = VENDOR_IMPACT_DETAILS.aerodata;
+  } else if (id === "acars") {
+    base = VENDOR_IMPACT_DETAILS.sita;
+  } else {
+    const company = String(vendor.company || vendor.vendor || vendor.displayName || vendor.systemName || "")
+      .trim()
+      .toLowerCase();
+    const sysName = String(vendor.systemName || vendor.displayName || "")
+      .trim()
+      .toLowerCase();
+    if (company.includes("accelya")) {
+      base = VENDOR_IMPACT_DETAILS.accelya;
+    } else if (company.includes("aerodata")) {
+      base = VENDOR_IMPACT_DETAILS.aerodata;
+    } else if (company.includes("sita") || sysName.includes("acars")) {
+      base = VENDOR_IMPACT_DETAILS.sita;
+    } else if (company.includes("aims") || sysName.includes("aims")) {
+      base = VENDOR_IMPACT_DETAILS["aims-vendor"];
+    } else if (company.includes("alvaria") || sysName.includes("alvaria")) {
+      base = VENDOR_IMPACT_DETAILS.alvaria;
+    } else if (company.includes("avtec") || sysName.includes("avtec")) {
+      base = VENDOR_IMPACT_DETAILS.avtec;
+    } else {
+      base = buildTemplateVendorImpactDetails(vendor, allVendors);
+    }
   }
-  if (id && VENDOR_IMPACT_DETAILS[id]) {
-    return VENDOR_IMPACT_DETAILS[id];
-  }
-  if (id === "aircraft-performance-aerodata") {
-    return VENDOR_IMPACT_DETAILS.aerodata;
-  }
-  if (id === "acars") {
-    return VENDOR_IMPACT_DETAILS.sita;
-  }
-  const company = String(vendor.company || vendor.vendor || vendor.displayName || vendor.systemName || "")
-    .trim()
-    .toLowerCase();
-  const sysName = String(vendor.systemName || vendor.displayName || "")
-    .trim()
-    .toLowerCase();
-  if (company.includes("accelya")) {
-    return VENDOR_IMPACT_DETAILS.accelya;
-  }
-  if (company.includes("aerodata")) {
-    return VENDOR_IMPACT_DETAILS.aerodata;
-  }
-  if (company.includes("sita") || sysName.includes("acars")) {
-    return VENDOR_IMPACT_DETAILS.sita;
-  }
-  if (company.includes("aims") || sysName.includes("aims")) {
-    return VENDOR_IMPACT_DETAILS["aims-vendor"];
-  }
-  if (company.includes("alvaria") || sysName.includes("alvaria")) {
-    return VENDOR_IMPACT_DETAILS.alvaria;
-  }
-  if (company.includes("avtec") || sysName.includes("avtec")) {
-    return VENDOR_IMPACT_DETAILS.avtec;
-  }
-  return buildTemplateVendorImpactDetails(vendor, allVendors);
+  return applyAdminImpactOverrides(base, vendor, false);
 }
 
 const GROUND_STOP_LOGOS = {
@@ -8158,29 +8367,26 @@ export function getGroundStopImpactDetails(appItem) {
     appItem.key || appItem.id || appItem.record?.key || appItem.record?.id || ""
   ).trim();
   const lowerKey = key.toLowerCase();
+  let base = null;
 
   if (lowerKey === "acars" || lowerKey === "sita") {
-    return VENDOR_IMPACT_DETAILS.sita;
+    base = VENDOR_IMPACT_DETAILS.sita;
+  } else if (lowerKey === "smart4aviation (s4a)" || lowerKey === "s4a") {
+    base = VENDOR_IMPACT_DETAILS["Smart4Aviation (S4A)"];
+  } else if (lowerKey === "airtrack" || lowerKey === "airtrak") {
+    base = VENDOR_IMPACT_DETAILS.airtrack;
+  } else if (lowerKey === "aims") {
+    base = VENDOR_IMPACT_DETAILS.aims;
+  } else if (lowerKey === "aims-vendor") {
+    base = VENDOR_IMPACT_DETAILS["aims-vendor"];
+  } else if (key && VENDOR_IMPACT_DETAILS[key]) {
+    base = VENDOR_IMPACT_DETAILS[key];
+  } else if (lowerKey && VENDOR_IMPACT_DETAILS[lowerKey]) {
+    base = VENDOR_IMPACT_DETAILS[lowerKey];
+  } else {
+    base = buildGroundStopImpactDetails(appItem);
   }
-  if (lowerKey === "smart4aviation (s4a)" || lowerKey === "s4a") {
-    return VENDOR_IMPACT_DETAILS["Smart4Aviation (S4A)"];
-  }
-  if (lowerKey === "airtrack" || lowerKey === "airtrak") {
-    return VENDOR_IMPACT_DETAILS.airtrack;
-  }
-  if (lowerKey === "aims") {
-    return VENDOR_IMPACT_DETAILS.aims;
-  }
-  if (lowerKey === "aims-vendor") {
-    return VENDOR_IMPACT_DETAILS["aims-vendor"];
-  }
-  if (key && VENDOR_IMPACT_DETAILS[key]) {
-    return VENDOR_IMPACT_DETAILS[key];
-  }
-  if (lowerKey && VENDOR_IMPACT_DETAILS[lowerKey]) {
-    return VENDOR_IMPACT_DETAILS[lowerKey];
-  }
-  return buildGroundStopImpactDetails(appItem);
+  return applyAdminImpactOverrides(base, appItem, true);
 }
 
 export default VENDOR_IMPACT_DETAILS;

@@ -56,7 +56,16 @@ const VENDOR_FIELD_MAP = {
   portalNotes: "portalNotes",
   lastVerifiedDate: "lastVerifiedDate",
   lastVerifiedBy: "lastVerifiedBy",
-  associatedApplications: "associatedApplications"
+  associatedApplications: "associatedApplications",
+  status: "status",
+  supportAvailability: "supportAvailability",
+  sla: "sla",
+  website: "website",
+  lastUpdated: "lastUpdated",
+  pageTitle: "pageTitle",
+  pageSubtitle: "pageSubtitle",
+  adminEdited: "adminEdited",
+  impactOverrides: "impactOverrides"
 };
 
 function cloneDeep(value) {
@@ -245,6 +254,12 @@ function mergeVendorOverridesIntoCatalog(baseVendors = [], vendorOverrides = nul
     vendor.id = canonicalId;
     vendor.company = vendor.vendor || vendor.company || "";
     vendor.poc = vendor.vendorPoc || vendor.poc || "";
+    if (override.adminEdited) {
+      vendor.adminEdited = true;
+    }
+    if (override.impactOverrides && typeof override.impactOverrides === "object") {
+      vendor.impactOverrides = cloneDeep(override.impactOverrides);
+    }
     if (editedFields && editedFields.includes("systemName")) {
       vendor.displayName = vendor.systemName;
     }

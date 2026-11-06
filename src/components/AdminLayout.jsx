@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMasterData } from "../context/MasterDataContext.jsx";
 import { getAdminSession } from "../services/vendorCaseStatusService.js";
 import LoginScreen from "./admin/Login.jsx";
-import VendorEditor from "./admin/VendorEditor.jsx";
+import VendorEditor, { ApplicationEditor } from "./admin/VendorEditor.jsx";
 import Sidebar from "./Sidebar.jsx";
 
 const STORAGE = {
@@ -19,6 +19,13 @@ const fields = [
   "systemName",
   "category",
   "vendorCompanyName",
+  "status",
+  "supportAvailability",
+  "sla",
+  "website",
+  "lastUpdated",
+  "pageTitle",
+  "pageSubtitle",
   "prodOpsEscalationProcess",
   "contactNumbers",
   "emailAddress",
@@ -453,6 +460,9 @@ function vendorLogo(company, vendor) {
   if (id === "icargo" || identity.includes("ibs software") || sys.includes("icargo")) {
     return { src: "public/vendors/ibs-software.jpg", alt: `${company} logo`, isCustom: true };
   }
+  if (id === "real-time-gates" || id === "inform" || identity === "inform" || identity.includes("inform") || sys.includes("real time gates")) {
+    return { src: "public/vendors/inform.jpg", alt: `${company} logo`, isCustom: true };
+  }
   if (id === "jeppesen-flight-planning" || id === "jcte" || id === "jcte-crew" || identity === "jeppesen" || identity.includes("jeppesen")) {
     return { src: "public/vendors/jeppesen.png", alt: `${company} logo`, isCustom: true };
   }
@@ -563,11 +573,19 @@ const workbookVendors = (useBase = false) => {
   if (!Array.isArray(rawVendors)) return [];
   return rawVendors.map(vendor => ({
     id: `its-application-vendors-${vendor.sourceRow}`,
+    vendorId: vendor.id || `its-application-vendors-${vendor.sourceRow}`,
     sourceRow: vendor.sourceRow,
     vendorDataVersion: 3,
     systemName: vendor.systemName || vendor.displayName || vendor.category || "",
     category: vendor.category || vendor.displaySubtitle || "",
     vendorCompanyName: vendor.vendor || vendor.company || vendor.displayName || "",
+    status: vendor.status || "Active",
+    supportAvailability: vendor.supportAvailability || "24x7",
+    sla: vendor.sla || vendor.responseSla || vendor.response || "",
+    website: vendor.website || vendor.portalUrl || "",
+    lastUpdated: vendor.lastUpdated || vendor.updatedDate || "",
+    pageTitle: vendor.pageTitle || "",
+    pageSubtitle: vendor.pageSubtitle || "",
     prodOpsEscalationProcess: vendor.escalation || "",
     contactNumbers: vendor.phone || "",
     emailAddress: vendor.email || "",
@@ -581,7 +599,9 @@ const workbookVendors = (useBase = false) => {
     portalUrl: vendor.portalUrl || "",
     portalStatus: vendor.portalStatus || "",
     lastVerifiedDate: vendor.lastVerifiedDate || "",
-    portalNotes: vendor.portalNotes || ""
+    portalNotes: vendor.portalNotes || "",
+    ...(vendor.adminEdited ? { adminEdited: true } : {}),
+    ...(vendor.impactOverrides ? { impactOverrides: vendor.impactOverrides } : {})
   }));
 };
 
@@ -604,7 +624,8 @@ function buildDefaultApplications() {
       name: isEdited ? (prior.name || prior.shortName || raw.name || profile.shortName || key) : (profile.shortName || raw.name || key),
       category: isEdited ? (prior.category || raw.category || profile.category || "Operations") : (raw.category || profile.category || "Operations"),
       status: isEdited ? (prior.status || profile.status || "Active") : (profile.status || "Active"),
-      response: isEdited ? (prior.response || profile.sla || "15 min") : (profile.sla || "15 min"),
+      response: isEdited ? (prior.response || prior.sla || profile.sla || "15 min") : (profile.sla || "15 min"),
+      sla: isEdited ? (prior.sla || prior.response || profile.sla || "15 min") : (profile.sla || "15 min"),
       slaIcon: profile.slaIcon || "spark",
       logoVariant: profile.logoVariant || "logo-acars",
       severity: isEdited ? (prior.severity || raw.severity || profile.severity || "Critical") : (raw.severity || profile.severity || "Critical"),
@@ -619,79 +640,10 @@ function buildDefaultApplications() {
       email: isEdited ? (prior.email || profile.email || "NA") : (profile.email || usableCardValue(raw.email) || "NA"),
       aagTeam: isEdited
         ? prior.aagTeam || profile.team || "ITS Flight Operations"
-        : profile.team || usableCardValue(raw.aagTeam) || "ITS Flight Operations"
+        : profile.team || usableCardValue(raw.aagTeam) || "ITS Flight Operations",
+      ...(prior.impactOverrides || raw.impactOverrides ? { impactOverrides: prior.impactOverrides || raw.impactOverrides } : {})
     };
   });
-}
-
-function ApplicationEditor({ application, onClose, onSave }) {
-  const [draft, setDraft] = useState(() => ({
-    ...application,
-    name: application.shortName || application.name || "",
-    description: Array.isArray(application.description) ? application.description.join(" ") : (application.description || "")
-  }));
-  const appFields = [
-    ["name", "Application Name"],
-    ["category", "Operational Category"],
-    ["status", "Status (e.g. Active)"],
-    ["response", "Response SLA (e.g. 15 min)"],
-    ["severity", "Severity"],
-    ["vendor", "Vendor / Provider"],
-    ["aagPOC", "ITS POC"],
-    ["phone", "Support Phone"],
-    ["email", "Support Email"],
-    ["aagTeam", "Responsible ITS Team"]
-  ];
-  return (
-    <div className="modal">
-      <form
-        className="editor"
-        onSubmit={e => {
-          e.preventDefault();
-          onSave({
-            ...draft,
-            shortName: draft.name,
-            adminEdited: true
-          });
-        }}
-      >
-        <header>
-          <div>
-            <small>EDIT OPERATIONAL SYSTEM</small>
-            <h2>Edit Application Information</h2>
-          </div>
-          <button type="button" onClick={onClose}>
-            ×
-          </button>
-        </header>
-        <div className="form-grid">
-          {appFields.map(([field, label]) => (
-            <label key={field}>
-              {label}
-              <input
-                value={draft[field] || ""}
-                onChange={e => setDraft({ ...draft, [field]: e.target.value })}
-              />
-            </label>
-          ))}
-          <label className="full-width">
-            Description
-            <textarea
-              rows={3}
-              value={draft.description || ""}
-              onChange={e => setDraft({ ...draft, description: e.target.value })}
-            />
-          </label>
-        </div>
-        <footer>
-          <button type="button" className="secondary" onClick={onClose}>
-            Cancel
-          </button>
-          <button>Save Changes</button>
-        </footer>
-      </form>
-    </div>
-  );
 }
 
 function PasswordEditor({ onClose }) {
@@ -910,6 +862,7 @@ function OperationModule({ icon, title, description, href, tone = "blue" }) {
 }
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
   const {
     favoriteAppKeys,
     favoriteVendorIds: favoriteIds,
@@ -934,7 +887,7 @@ export default function AdminLayout() {
         return record;
       }
       if (prior.vendorDataVersion === 3 && !Array.isArray(prior.editedFields)) {
-        return { ...record, ...prior, id: record.id, sourceRow: record.sourceRow, vendorDataVersion: 3 };
+        return { ...record, ...prior, id: record.id, vendorId: record.vendorId, sourceRow: record.sourceRow, vendorDataVersion: 3 };
       }
       if (Array.isArray(prior.editedFields)) {
         const mergedEdited = prior.editedFields.reduce(
@@ -952,10 +905,12 @@ export default function AdminLayout() {
           ...(prior.portalVerifiedAt ? { portalVerifiedAt: prior.portalVerifiedAt } : {}),
           ...(prior.portalNotes ? { portalNotes: prior.portalNotes } : {}),
           ...(Array.isArray(prior.associatedApplications) ? { associatedApplications: prior.associatedApplications } : {}),
+          ...(prior.adminEdited ? { adminEdited: true } : {}),
+          ...(prior.impactOverrides ? { impactOverrides: prior.impactOverrides } : {}),
           editedFields: prior.editedFields
         };
       }
-      return { ...record, ...prior, id: record.id, sourceRow: record.sourceRow, vendorDataVersion: 3 };
+      return { ...record, ...prior, id: record.id, vendorId: record.vendorId, sourceRow: record.sourceRow, vendorDataVersion: 3 };
     });
   });
   const [applications, setApplications] = useState(buildDefaultApplications);
@@ -1034,7 +989,7 @@ export default function AdminLayout() {
       key => (draft[key] || "") !== (currentVendor[key] || "") || (draft[key] || "") !== (base[key] || "")
     );
     const editedFields = Array.from(new Set([...(draft.editedFields || []), ...newlyChanged]));
-    const updatedDraft = { ...draft, editedFields };
+    const updatedDraft = { ...draft, adminEdited: true, editedFields };
     const nextVendors = vendors.map(v => (v.id === draft.id ? updatedDraft : v));
     setVendors(nextVendors);
     const item = {
@@ -1049,11 +1004,12 @@ export default function AdminLayout() {
   }
 
   function saveApplication(draft) {
-    const nextApplications = applications.map(app => (app.id === draft.id ? draft : app));
+    const updatedDraft = { ...draft, adminEdited: true };
+    const nextApplications = applications.map(app => (app.id === draft.id ? updatedDraft : app));
     setApplications(nextApplications);
     const item = {
       action: "Application updated",
-      details: `${draft.name || "Application"} information was updated`,
+      details: `${draft.name || draft.shortName || "Application"} information was updated`,
       timestamp: new Date().toLocaleString()
     };
     const next = [item, ...history].slice(0, 50);
@@ -1257,15 +1213,20 @@ export default function AdminLayout() {
               const profile = CARD_PROFILES[appKey] || {};
               const title = app.shortName || app.name || profile.shortName || appKey;
               const category = app.category || profile.category || "Operations";
-              const slaLabel = app.response || profile.sla || "15 min";
+              const shortCategory = String(category).split(":")[0].trim() || category;
+              const rawSla = String(app.response || app.sla || profile.sla || "15 min").trim();
+              const slaLabel =
+                (rawSla && !/not\s*verified|tbd|n\/?a|none/i.test(rawSla)
+                  ? rawSla.replace(/\bminutes\b/gi, "min")
+                  : profile.sla) || "15 min";
               const description = Array.isArray(app.description)
                 ? app.description.join(" ")
                 : app.description || profile.description || app.function || "";
-              const vendor = app.vendor || profile.vendor || "NA";
-              const poc = app.aagPOC || profile.poc || "NA";
-              const phone = app.phone || profile.phone || "NA";
-              const emailAddr = app.email || profile.email || "NA";
-              const team = app.aagTeam || profile.team || "ITS Flight Operations";
+              const vendor = usableCardValue(app.vendor) || usableCardValue(profile.vendor) || "Not available";
+              const poc = usableCardValue(app.aagPOC) || usableCardValue(profile.poc) || "Not available";
+              const phone = usableCardValue(app.phone) || usableCardValue(profile.phone) || "Not available";
+              const emailAddr = usableCardValue(app.email) || usableCardValue(profile.email) || "Not available";
+              const team = usableCardValue(app.aagTeam) || usableCardValue(profile.team) || "ITS Flight Operations";
               const logoVariant = app.logoVariant || profile.logoVariant || "logo-acars";
               const slaIcon = app.slaIcon || profile.slaIcon || "spark";
               const phoneMatch = String(phone).match(/\+?\d[\d\s().-]{5,}\d/);
@@ -1274,6 +1235,13 @@ export default function AdminLayout() {
               const emailMatches = String(emailAddr).match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) || [];
               const emailHref = emailMatches.length ? `mailto:${[...new Set(emailMatches)].join(",")}` : "";
               const isFav = favoriteAppKeys.includes(appKey);
+              const rawCardSeverity = String(
+                app.severity || profile.severity || app.criticality || "Critical"
+              ).trim();
+              const isHighCardSeverity =
+                /high|sev\s*2/i.test(rawCardSeverity) && !/crit|sev\s*1/i.test(rawCardSeverity);
+              const cardSeverityLabel = isHighCardSeverity ? "High" : "Critical";
+              const cardSeverityClass = isHighCardSeverity ? "severity-high" : "severity-critical";
 
               return (
                 <article
@@ -1284,20 +1252,32 @@ export default function AdminLayout() {
                   onClick={() => setEditingApplication(app)}
                 >
                   <header className="gs-card-header">
-                    <div className={`gs-card-logo ${logoVariant}`} aria-hidden="true">
-                      {renderAppLogoSvg(appKey)}
-                    </div>
-                    <div className="gs-card-titles">
-                      <h2 title={title}>{title}</h2>
-                      <span className="gs-category-pill" title={category}>
-                        {category}
-                      </span>
+                    <div className="gs-card-identity">
+                      <div className={`gs-card-logo ${logoVariant}`} aria-hidden="true">
+                        {renderAppLogoSvg(appKey)}
+                      </div>
+                      <span className="gs-header-divider" aria-hidden="true"></span>
+                      <div className="gs-card-titles">
+                        <h2 title={app.name || title}>{title}</h2>
+                        <span className="gs-category-pill" title={category}>
+                          {shortCategory}
+                        </span>
+                      </div>
                     </div>
                     <div className="gs-card-badges">
-                      <span className="gs-sla-pill">
-                        {renderSlaIcon(slaIcon)}
-                        <span>SLA: {slaLabel}</span>
-                      </span>
+                      <div className="gs-card-status-stack">
+                        <span
+                          className={`gs-criticality-pill ${cardSeverityClass}`}
+                          title={`Criticality: ${cardSeverityLabel}`}
+                        >
+                          <i aria-hidden="true"></i>
+                          <span>{cardSeverityLabel}</span>
+                        </span>
+                        <span className="gs-sla-pill" title={`SLA: ${slaLabel}`}>
+                          {renderSlaIcon(slaIcon)}
+                          <span>SLA: {slaLabel}</span>
+                        </span>
+                      </div>
                       <button
                         type="button"
                         className={`gs-card-favorite${isFav ? " active" : ""}`}
@@ -1413,20 +1393,36 @@ export default function AdminLayout() {
                       </span>
                       <span>{team}</span>
                     </div>
-                    <button
-                      type="button"
-                      className="ground-stop-details-button"
-                      onClick={e => {
-                        e.stopPropagation();
-                        setEditingApplication(app);
-                      }}
-                    >
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                      </svg>
-                      <span>Edit</span>
-                    </button>
+                    <div className="gs-card-actions">
+                      <button
+                        type="button"
+                        className="ground-stop-details-button gs-admin-view-btn"
+                        onClick={e => {
+                          e.stopPropagation();
+                          navigate(`/ground-stops?application=${encodeURIComponent(appKey)}`);
+                        }}
+                      >
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        <span>View Details</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="ground-stop-details-button gs-admin-edit-btn"
+                        onClick={e => {
+                          e.stopPropagation();
+                          setEditingApplication(app);
+                        }}
+                      >
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M12 20h9" />
+                          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                        </svg>
+                        <span>Edit</span>
+                      </button>
+                    </div>
                   </footer>
                 </article>
               );
@@ -1474,21 +1470,33 @@ export default function AdminLayout() {
           <div className="vendor-grid">
             {results.map(v => {
               const company = usableCardValue(v.vendorCompanyName) || usableCardValue(v.systemName) || "Vendor";
+              const systemLabel = usableCardValue(v.systemName) || "";
               const logo = vendorLogo(company, v);
               const categoryLabel = usableCardValue(v.category)
                 ? String(v.category).split("•")[0].replace(/\s+/g, " ").trim()
                 : "Operations Partner";
+              const rawContact = usableCardValue(v.aagItsPOC) || usableCardValue(v.vendorPOC);
+              const primaryContact = rawContact
+                ? rawContact
+                    .split(/\r?\n/)[0]
+                    .replace(/^(?:vendor\s*reps?\s*:?|primary\s*contact\s*:?)\s*/i, "")
+                    .trim()
+                : "";
               const phone = primaryCardPhone(v.contactNumbers);
               const emailAddr = primaryCardEmail(v.emailAddress);
               const cardPhoneTarget = contactTarget(phone, "phone");
               const cardEmailTarget = contactTarget(emailAddr, "email");
-              const phoneTarget = contactTarget(v.contactNumbers, "phone");
-              const emailTarget = contactTarget(v.emailAddress, "email");
               const team = usableCardValue(v.aagItsTeam) || usableCardValue(v.category) || "Department not listed";
               const vendorKey = v.id || String(v.sourceRow);
               const isFav = favoriteIds.includes(vendorKey);
               const is24x7 = isVendor24x7(v);
               const statusInfo = vendorStatusInfo(v);
+              const rawSla = usableCardValue(v.sla) || usableCardValue(v.responseSla) || usableCardValue(v.response);
+              const slaLabel = rawSla
+                ? /^sla:/i.test(rawSla)
+                  ? rawSla.replace(/minutes/i, "min")
+                  : `SLA: ${rawSla.replace(/minutes/i, "min")}`
+                : "";
 
               return (
                 <article
@@ -1501,6 +1509,11 @@ export default function AdminLayout() {
                       <img className={`vendor-logo ${logo.isCustom ? "custom-logo" : ""}`} src={logo.src} alt={logo.alt} loading="lazy" />
                     </div>
                     <div className="vendor-card-heading">
+                      {systemLabel && (
+                        <span className="vendor-system-eyebrow" title={systemLabel}>
+                          {systemLabel}
+                        </span>
+                      )}
                       <h3 className="vendor-company-name" title={company}>
                         {company}
                       </h3>
@@ -1516,6 +1529,12 @@ export default function AdminLayout() {
                           <i aria-hidden="true"></i>
                           {statusInfo.label}
                         </span>
+                        {slaLabel && (
+                          <span className="vendor-status-badge vendor-status-badge-availability" title={slaLabel}>
+                            {renderSlaIcon()}
+                            <span>{slaLabel}</span>
+                          </span>
+                        )}
                         {is24x7 && (
                           <span className="vendor-status-badge vendor-status-badge-availability" title="24×7 Support Available">
                             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1542,6 +1561,20 @@ export default function AdminLayout() {
                   </header>
 
                   <div className="vendor-card-contacts" aria-label="Vendor contact details">
+                    {primaryContact && (
+                      <div className="vendor-contact-line">
+                        <span className="vendor-contact-icon icon-poc" aria-hidden="true">
+                          <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="7.5" r="3.5" />
+                            <path d="M5 19.5c.5-3.2 3.1-5 7-5s6.5 1.8 7 5" />
+                          </svg>
+                        </span>
+                        <span className="vendor-contact-key">Contact</span>
+                        <span className="vendor-contact-val vendor-contact-poc" title={rawContact}>
+                          {primaryContact}
+                        </span>
+                      </div>
+                    )}
                     <div className="vendor-contact-line">
                       <span className="vendor-contact-icon icon-phone" aria-hidden="true">
                         <svg viewBox="0 0 24 24">
@@ -1609,7 +1642,7 @@ export default function AdminLayout() {
                       type="button"
                       onClick={e => {
                         e.stopPropagation();
-                        setEditing(v);
+                        navigate(`/vendors?vendor=${encodeURIComponent(v.vendorId || v.id || company)}`);
                       }}
                     >
                       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1623,23 +1656,18 @@ export default function AdminLayout() {
                       </svg>
                     </button>
                     <button
-                      className="vendor-contact-btn vendor-btn-contact"
+                      className="vendor-contact-btn vendor-btn-contact admin-vendor-edit-btn"
                       type="button"
                       onClick={e => {
                         e.stopPropagation();
-                        const target = emailTarget || phoneTarget;
-                        if (target) {
-                          window.location.href = target;
-                        } else {
-                          setEditing(v);
-                        }
+                        setEditing(v);
                       }}
                     >
                       <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="2.5" y="4.5" width="19" height="15" rx="2" />
-                        <path d="m3.5 6 8.5 7 8.5-7" />
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                       </svg>
-                      <span>Contact</span>
+                      <span>Edit</span>
                       <svg className="vendor-btn-arrow" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M5 12h14" />
                         <path d="m13 6 6 6-6 6" />

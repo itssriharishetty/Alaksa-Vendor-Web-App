@@ -1528,6 +1528,92 @@ await runTest("21. Unified DetailPageHeader, 4 pastel DetailInfoCards, table wid
   );
 });
 
+// ============================================================================
+// 22. Admin renders identical Ground Stop & Vendor cards and full-information editors
+// ============================================================================
+await runTest("22. Admin renders identical Ground Stop & Vendor cards and allows editing entire information", async () => {
+  const adminSource = await readFile(resolve(rootDir, "src/components/AdminLayout.jsx"), "utf8");
+  const editorSource = await readFile(resolve(rootDir, "src/components/admin/VendorEditor.jsx"), "utf8");
+
+  assert.ok(
+    adminSource.includes('className="gs-card-identity"') &&
+      adminSource.includes('className="gs-header-divider"') &&
+      adminSource.includes('className="gs-card-status-stack"') &&
+      adminSource.includes("gs-criticality-pill") &&
+      adminSource.includes("gs-sla-pill"),
+    "AdminLayout.jsx must render the exact Ground Stop Application card header structure"
+  );
+
+  assert.ok(
+    adminSource.includes('className="vendor-system-eyebrow"') &&
+      adminSource.includes("icon-poc") &&
+      adminSource.includes("public/vendors/inform.jpg"),
+    "AdminLayout.jsx must render the exact Vendor card structure including system eyebrow, POC row, and all 22 logos"
+  );
+
+  assert.ok(
+    editorSource.includes("export function ApplicationEditor") &&
+      editorSource.includes("export default function VendorEditor") &&
+      editorSource.includes("Impacted Systems") &&
+      editorSource.includes("Dependencies") &&
+      editorSource.includes("Contacts & Escalation") &&
+      editorSource.includes("Portal & Case Status") &&
+      editorSource.includes("Documents"),
+    "VendorEditor.jsx must provide full-information editors for both Applications and Vendors across all runbook tabs"
+  );
+
+  // Verify admin impactOverrides dynamically update both Ground Stop and Vendor Impact Details
+  const editedGsDetails = getGroundStopImpactDetails({
+    key: "acars",
+    record: {
+      adminEdited: true,
+      name: "ACARS Custom Title",
+      impactOverrides: {
+        pageSubtitle: "Admin-updated subtitle",
+        impactedSystems: [
+          {
+            name: "Admin Custom Subsystem",
+            subName: "Critical",
+            description: "Admin-updated description",
+            businessFunction: "Flight Ops",
+            impact: "Custom impact",
+            dependencies: "Downstream: Custom",
+            owner: "Custom Team"
+          }
+        ]
+      }
+    }
+  });
+  assert.equal(editedGsDetails.pageSubtitle, "Admin-updated subtitle");
+  assert.equal(editedGsDetails.impactedSystems.length, 1);
+  assert.equal(editedGsDetails.impactedSystems[0].name, "Admin Custom Subsystem");
+
+  const masterVendors = globalThis.window.masterData.vendors;
+  const baseAccelya = masterVendors.find((v) => v.id === "accelya");
+  const editedVendorDetails = getVendorImpactDetails(
+    {
+      ...baseAccelya,
+      adminEdited: true,
+      impactOverrides: {
+        pageSubtitle: "Admin-updated vendor subtitle",
+        relatedDocuments: [
+          {
+            title: "Admin Runbook",
+            type: "Operational Runbook",
+            owner: "ITS Ops",
+            updated: "2026-11-06",
+            url: "https://example.com/runbook"
+          }
+        ]
+      }
+    },
+    masterVendors
+  );
+  assert.equal(editedVendorDetails.pageSubtitle, "Admin-updated vendor subtitle");
+  assert.equal(editedVendorDetails.relatedDocuments.length, 1);
+  assert.equal(editedVendorDetails.relatedDocuments[0].title, "Admin Runbook");
+});
+
 const passedCount = results.filter((r) => r.passed).length;
 console.log(`\n========================================`);
 console.log(`VENDOR CASE STATUS TEST SUMMARY: ${passedCount}/${results.length} PASSED`);
