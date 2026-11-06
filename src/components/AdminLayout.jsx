@@ -871,7 +871,13 @@ export default function AdminLayout() {
     saveMasterData
   } = useMasterData();
 
-  const [email, setEmail] = useState(() => getAdminSession().email);
+  const [email, setEmail] = useState(() => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem(STORAGE.authenticated);
+      localStorage.removeItem(STORAGE.email);
+    }
+    return null;
+  });
   const [vendors, setVendors] = useState(() => {
     const saved = read(STORAGE.vendors, []);
     const source = workbookVendors();
@@ -921,6 +927,10 @@ export default function AdminLayout() {
   const [editingApplication, setEditingApplication] = useState(null);
   const [changingPassword, setChangingPassword] = useState(false);
 
+  if (typeof document !== "undefined" && document.body.className !== "admin-page") {
+    document.body.className = "admin-page";
+  }
+
   useEffect(() => {
     document.body.className = "admin-page";
     document.title = "AS | Control Panel";
@@ -943,7 +953,12 @@ export default function AdminLayout() {
       localStorage.removeItem(STORAGE.email);
     };
     window.addEventListener("pagehide", logout);
-    return () => window.removeEventListener("pagehide", logout);
+    window.addEventListener("beforeunload", logout);
+    return () => {
+      window.removeEventListener("pagehide", logout);
+      window.removeEventListener("beforeunload", logout);
+      logout();
+    };
   }, []);
 
   useEffect(() => {

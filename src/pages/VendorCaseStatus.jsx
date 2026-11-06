@@ -167,6 +167,22 @@ export default function VendorCaseStatus() {
     };
   }, [loadRecords]);
 
+  useEffect(() => {
+    const clearAdminAuth = () => {
+      if (typeof localStorage !== "undefined") {
+        localStorage.removeItem("productionOperationsAdminAuthenticated");
+        localStorage.removeItem("productionOperationsAdminEmail");
+      }
+    };
+    window.addEventListener("pagehide", clearAdminAuth);
+    window.addEventListener("beforeunload", clearAdminAuth);
+    return () => {
+      window.removeEventListener("pagehide", clearAdminAuth);
+      window.removeEventListener("beforeunload", clearAdminAuth);
+      clearAdminAuth();
+    };
+  }, []);
+
   const showToast = useCallback((text, type = "success") => {
     setToastMessage({ text, type });
     setTimeout(() => {
