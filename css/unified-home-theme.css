@@ -299,6 +299,17 @@ body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-critical
   background: #E11D48 !important;
 }
 
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high {
+  background: #FFF1E6 !important;
+  color: #EA580C !important;
+  border: 1px solid #FED7AA !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high .gs-criticality-dot,
+body.ground-stops-page .ground-stops-main .gs-criticality-pill.severity-high i {
+  background: #F97316 !important;
+}
+
 body.ground-stops-page .ground-stops-main .gs-category-pill {
   display: inline-block !important;
   min-width: 0 !important;

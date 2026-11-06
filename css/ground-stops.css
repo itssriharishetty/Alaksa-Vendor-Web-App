@@ -520,6 +520,12 @@ html body.ground-stops-page .gs-criticality-pill.severity-critical {
     border: 1px solid #FCD4D4 !important;
 }
 
+html body.ground-stops-page .gs-criticality-pill.severity-high {
+    background: #FFF1E6 !important;
+    color: #EA580C !important;
+    border: 1px solid #FED7AA !important;
+}
+
 html body.ground-stops-page .gs-criticality-pill i {
     display: inline-block !important;
     width: 7px !important;
@@ -527,6 +533,10 @@ html body.ground-stops-page .gs-criticality-pill i {
     border-radius: 50% !important;
     background: #E11D48 !important;
     flex: 0 0 7px !important;
+}
+
+html body.ground-stops-page .gs-criticality-pill.severity-high i {
+    background: #F97316 !important;
 }
 
 html body.ground-stops-page .gs-sla-pill {

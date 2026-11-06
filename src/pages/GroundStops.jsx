@@ -50,7 +50,7 @@ const CARD_PROFILES = {
         shortName: "JetPlan",
         category: "Flight Ops / Dispatch: flight plan calculation",
         status: "Active",
-        sla: "",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -67,7 +67,7 @@ const CARD_PROFILES = {
         shortName: "S4A SmartSuite",
         category: "Airport Ops / Flight Ops: weight and balance and load planning",
         status: "Active",
-        sla: "",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -84,7 +84,7 @@ const CARD_PROFILES = {
         shortName: "JCTE",
         category: "Crew: crew scheduling and tracking for about 10,100 crew members",
         status: "Active",
-        sla: "",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -118,7 +118,7 @@ const CARD_PROFILES = {
         shortName: "Pilot Briefing",
         category: "Flight Ops: briefing packets (flight paperwork). Printing them before takeoff is an FAA requirement",
         status: "Active",
-        sla: "",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -135,7 +135,7 @@ const CARD_PROFILES = {
         shortName: "Aircraft Maintenance Status (AMS)",
         category: "Maintenance & Engineering: tracks aircraft from removal from service to return to service",
         status: "Active",
-        sla: "",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "High",
         description:
@@ -152,7 +152,7 @@ const CARD_PROFILES = {
         shortName: "AIMS (Horizon Crew Scheduling)",
         category: "Crew: scheduling pilots and flight attendants (FAs) for Horizon, including bids and trip trades. QX only",
         status: "Active",
-        sla: "",
+        sla: "15 min",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -1235,11 +1235,11 @@ export default function GroundStops() {
                                 String(category).split(":")[0].trim() || category;
                             const rawSla = isEdited
                                 ? valueText(record.sla || record.response)
-                                : valueText(profile.sla);
+                                : valueText(profile.sla || record.response);
                             const slaLabel =
-                                rawSla && !/not\s*verified|tbd|n\/?a|none/i.test(rawSla)
+                                (rawSla && !/not\s*verified|tbd|n\/?a|none/i.test(rawSla)
                                     ? rawSla.replace(/\bminutes\b/gi, "min")
-                                    : "";
+                                    : valueText(profile.sla)) || "15 min";
                             const description =
                                 (isEdited && valueText(record.description)) ||
                                 profile.description ||
@@ -1291,11 +1291,15 @@ export default function GroundStops() {
                                     profile.severity ||
                                     record.severity ||
                                     record.criticality ||
-                                    ""
+                                    "Critical"
                             ).trim();
-                            const isCritical =
-                                /crit|sev\s*1/i.test(rawCardSeverity) &&
-                                !/^(?:high|sev\s*2|medium|low)$/i.test(rawCardSeverity);
+                            const isHighCardSeverity =
+                                /high|sev\s*2/i.test(rawCardSeverity) &&
+                                !/crit|sev\s*1/i.test(rawCardSeverity);
+                            const cardSeverityLabel = isHighCardSeverity ? "High" : "Critical";
+                            const cardSeverityClass = isHighCardSeverity
+                                ? "severity-high"
+                                : "severity-critical";
 
                             return (
                                 <article
@@ -1322,25 +1326,19 @@ export default function GroundStops() {
                                             </div>
                                         </div>
                                         <div className="gs-card-badges">
-                                            {(isCritical || slaLabel) && (
-                                                <div className="gs-card-status-stack">
-                                                    {isCritical && (
-                                                        <span
-                                                            className="gs-criticality-pill severity-critical"
-                                                            title="Criticality: Critical"
-                                                        >
-                                                            <i aria-hidden="true"></i>
-                                                            <span>Critical</span>
-                                                        </span>
-                                                    )}
-                                                    {slaLabel && (
-                                                        <span className="gs-sla-pill" title={`SLA: ${slaLabel}`}>
-                                                            {renderSlaIcon()}
-                                                            <span>SLA: {slaLabel}</span>
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            )}
+                                            <div className="gs-card-status-stack">
+                                                <span
+                                                    className={`gs-criticality-pill ${cardSeverityClass}`}
+                                                    title={`Criticality: ${cardSeverityLabel}`}
+                                                >
+                                                    <i aria-hidden="true"></i>
+                                                    <span>{cardSeverityLabel}</span>
+                                                </span>
+                                                <span className="gs-sla-pill" title={`SLA: ${slaLabel}`}>
+                                                    {renderSlaIcon()}
+                                                    <span>SLA: {slaLabel}</span>
+                                                </span>
+                                            </div>
                                             <button
                                                 type="button"
                                                 className={`gs-card-favorite ${isFav ? "active" : ""}`}
