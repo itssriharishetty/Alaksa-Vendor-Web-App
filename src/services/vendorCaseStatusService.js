@@ -144,9 +144,9 @@ export function getAdminSession() {
     AUTHORIZED_ADMINS.some(admin => admin.toLowerCase() === email.toLowerCase());
 
   return {
-    isAuthenticated,
-    email: isAuthorizedAdmin ? email : email || null,
-    isAuthorizedAdmin: isAuthenticated
+    isAuthenticated: isAuthorizedAdmin,
+    email: isAuthorizedAdmin ? email : null,
+    isAuthorizedAdmin
   };
 }
 
@@ -162,7 +162,7 @@ export function authenticateAdminSession(email, password) {
     (typeof localStorage !== "undefined" &&
       localStorage.getItem("productionOperationsAdminPassword")) ||
     "123456789";
-  if (password !== activePassword && password !== "admin123") {
+  if (password !== activePassword) {
     return { ok: false, error: "Incorrect administrator password." };
   }
   if (typeof localStorage !== "undefined") {
@@ -688,6 +688,9 @@ export function filterVendorCaseStatusRecords(records = [], filters = {}) {
  * Never creates duplicate vendor records.
  */
 export async function saveVendorPortalConfiguration(vendorIdOrRow, updates = {}, adminEmail = "") {
+  if (!getAdminSession().isAuthorizedAdmin) {
+    throw new Error("Sign in as an authorized administrator to update vendor portals.");
+  }
   const { vendors } = getMasterCatalog();
   const targetVendor = vendors.find(
     v =>

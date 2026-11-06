@@ -1,109 +1,53 @@
 # Production Operations Connect
 
-**Production Operations Connect** is a Flight Operations Control Hub designed to empower 24/7 flight reliability. It connects critical application ecosystems, vendor support networks, and rapid escalation pathways into one intelligent, unified workspace.
+Production Operations Connect is an Alaska Airlines vendor and application directory for operations teams. It brings together ground stop application details, vendor contacts, support portals, escalation information, favorites, and reports.
 
-## 🚀 Key Features
+## Run locally
 
-* **Real-Time Operational Dashboard:** Monitor active operational systems, vendor networks, and escalation SLAs in real-time.
-* **Vendor & Partner Management:** Direct 24/7 vendor hotlines and tier-3 engineering escalation paths during critical operational events.
-* **Unified System Ecosystem:** Centralized application owners, target SLAs, and domain dependencies across all operational categories (Flight, Ground, & Logistics).
-* **Proactive SLA Monitoring:** Live vendor performance tracking and software health visibility to prevent operational ground delays.
-* **Admin Control Center:** A secure, React-based administrative interface for managing application statuses, vendor information, and operational workflows.
-
-## 📁 Project Structure
-
-```text
-production-operations-connect/
-├── public/                       # Static assets served as-is (bypasses Vite bundler)
-│   ├── images/
-│   └── favicon.ico
-│
-├── scripts/                      # PowerShell backend for the zero-server architecture
-│   ├── Start-Dashboard.ps1       # Hosts localhost:47832 to listen for React saves
-│   └── read-vendor-workbook.ps1  # Excel workbook import utilities
-│
-├── js/                           # Persistent Data Layer (Written to disk by PowerShell)
-│   ├── data/
-│   │   └── master-data.js        # The single source of truth (seeded into React on load)
-│   └── ground-stop-app-keys.js   # Definition list of the 9 mission-critical apps
-│
-├── css/                          # Legacy Stylesheets (Imported sequentially in main.jsx)
-│   ├── design-tokens.css
-│   ├── airline-theme.css
-│   ├── dashboard.css
-│   ├── vendors.css
-│   ├── ground-stops.css
-│   └── categories.css
-│
-├── tests/                        # QA & Verification
-│   └── vendor-case-status.test.mjs # The 12-point testing suite
-│
-├── src/                          # Modern React 19 Source Code
-│   ├── components/               # Reusable, stateless UI components
-│   │   ├── Layout.jsx            # Shell wrapper (manages dynamic body CSS classes)
-│   │   ├── Sidebar.jsx           # Global navigation and active states
-│   │   ├── VendorCard.jsx        # Vendor display cards (used across multiple pages)
-│   │   └── FavoriteToggle.jsx    # Micro-component to prevent heavy re-renders
-│   │
-│   ├── context/                  # React Context Providers
-│   │   └── MasterDataContext.jsx # Handles state, local sync, and the HTTP POST to PowerShell
-│   │
-│   ├── data/                     # Static React seed files
-│   │   └── vendorCasePortals.js  # The recovered portal URLs module
-│   │
-│   ├── hooks/                    # Custom React Hooks
-│   │   └── useFavorites.js       # External store hook for optimized favorites rendering
-│   │
-│   ├── services/                 # Non-React business logic and LocalStorage wrappers
-│   │   └── favoritesService.js   # Manages `poc_favorites_v2` and cross-tab storage events
-│   │
-│   ├── pages/                    # Route-level Page Components
-│   │   ├── Home.jsx              # (/) Main operations dashboard
-│   │   ├── Vendors.jsx           # (/vendors) Directory of all 37 vendors
-│   │   ├── Categories.jsx        # (/categories) System domains and owners
-│   │   ├── GroundStops.jsx       # (/ground-stops) Escalation matrix for critical apps
-│   │   ├── VendorCaseStatus.jsx  # (/vendor-case-status) Support portal tracking
-│   │   ├── Favorites.jsx         # (/favorites) Bookmarked items
-│   │   │
-│   │   └── admin/                # (/admin/*) Admin Control Center
-│   │       ├── AdminLayout.jsx   # Shell for admin tools
-│   │       ├── Login.jsx         # Authentication gate
-│   │       └── VendorEditor.jsx  # CRUD editor for vendors and applications
-│   │
-│   ├── styles/                   # React-specific CSS modules and overrides
-│   │   ├── admin.css
-│   │   └── react-spa-overrides.css
-│   │
-│   ├── App.jsx                   # Global HashRouter setup and Route table
-│   └── main.jsx                  # React DOM mounting and sequential CSS imports
-│
-├── index.html                    # Vite entry point for the SPA
-├── package.json                  # Dependencies (React 19, React Router 7, Vite 6)
-└── vite.config.js                # Vite build config (Sets base: './' for file:// support)
-```
-
-## 🛠️ Getting Started
-
-### Running the Main Portal
-The main portal is built with static web technologies (HTML, CSS, Vanilla JS) for maximum reliability and speed. 
-To view the application, simply open `home.html` in any modern web browser, or serve the directory using a local web server of your choice:
+Requires Node.js and npm. The deployment workflow uses Node.js 20.
 
 ```bash
-# Example using Python's built-in HTTP server
-python -m http.server 8000
+npm ci
+npm run dev
 ```
-Then navigate to `http://localhost:8000/home.html`.
 
-### Admin Control Center
-The Admin Control Center is a React application embedded within the portal. The compiled version is already available in the `admin-react-dist` folder and is linked via `admin-react-dist/index.html`.
+Open the local URL printed by Vite. The app uses hash routes, so a page URL looks like `http://localhost:5173/#/vendors`.
 
-If you need to make changes to the admin interface:
-1. Navigate to the `admin-react` directory.
-2. Install dependencies (requires Node.js): `npm install`
-3. Run the build script to compile the assets: `npm run build`
+```bash
+npm test       # Run the vendor case status and data tests
+npm run build  # Generate the static site in dist/
+npm run preview
+```
 
-## 🔒 Security
-Administrative access is restricted to authorized Production Operations members via the Admin Control Center login portal.
+The Vite build writes the compiled site to `dist/`. Its custom plugins also rewrite the root `index.html` and `404.html` for branch-root or file-based use. Starting Vite restores the development entry HTML. Check the Git diff after running either command if you plan to commit generated files.
 
----
-*PEOPLE. PLANES. A BRIGHTER TOMORROW.*
+## Pages
+
+| Route | Purpose |
+| --- | --- |
+| `#/` | Operations dashboard and quick links |
+| `#/ground-stops` | Critical application support and impact details |
+| `#/vendors` | Vendor directory, contacts, and application associations |
+| `#/vendor-case-status` | Vendor support portals and portal configuration |
+| `#/categories` | Applications grouped by operational domain |
+| `#/favorites` | Saved applications and vendors |
+| `#/reports` | Application and vendor summaries with exports |
+| `#/admin` | Browser-side editor for vendor and application records |
+
+## Project layout
+
+- [src/App.jsx](src/App.jsx) defines the routes.
+- [src/pages/](src/pages/) contains page components.
+- [src/components/](src/components/) contains shared UI and admin components.
+- [src/context/MasterDataContext.jsx](src/context/MasterDataContext.jsx) loads and updates application and vendor data.
+- [src/services/](src/services/) contains favorites, reports, and vendor portal logic.
+- [js/data/master-data.js](js/data/master-data.js) provides the bundled master catalog.
+- [public/](public/) and [css/](css/) contain images and styles.
+- [vite.config.js](vite.config.js) configures the static build and local file compatibility.
+- [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml) builds, tests, and deploys `dist/` to GitHub Pages.
+
+## Data and admin access
+
+The app loads the bundled catalog, then applies browser `localStorage` overrides. Favorites and admin edits are stored in the same browser. If the optional Windows [PowerShell sync server](scripts/master-data-sync-server.ps1) is running at `localhost:47832`, edits can also be written to `js/data/master-data.js`; otherwise they remain local to that browser.
+
+Admin sign-in is implemented in browser code and browser storage. It is a UI access gate, not server-enforced authentication. Do not rely on it to protect sensitive data or a writable service exposed to untrusted users. The dashboard values come from the catalog and browser overrides; the app does not connect to a live operations monitoring feed.

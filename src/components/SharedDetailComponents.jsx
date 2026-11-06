@@ -756,17 +756,17 @@ export function ImpactTable({ systemName, systems, defaultOwner }) {
           <tbody>
             {systems.map(sys => (
               <tr key={sys.id}>
-                <td className="vi-td-app">
+                <td className="vi-td-app" data-label="Application / System">
                   <strong>{sys.name}</strong>
                   {sys.subName ? (
                     <div className="vi-td-subname">{sys.subName}</div>
                   ) : null}
                 </td>
-                <td className="vi-td-desc">{sys.description}</td>
-                <td className="vi-td-func">{sys.businessFunction}</td>
-                <td className="vi-td-impact">{sys.impact}</td>
-                <td className="vi-td-desc">{sys.dependencies || "-"}</td>
-                <td className="vi-td-owner">{sys.owner || defaultOwner}</td>
+                <td className="vi-td-desc" data-label="Short Description">{sys.description}</td>
+                <td className="vi-td-func" data-label="Business Function">{sys.businessFunction}</td>
+                <td className="vi-td-impact" data-label={`Impact if Down (${systemName})`}>{sys.impact}</td>
+                <td className="vi-td-desc" data-label="Direct Dependencies">{sys.dependencies || "-"}</td>
+                <td className="vi-td-owner" data-label="ITS Owner">{sys.owner || defaultOwner}</td>
               </tr>
             ))}
           </tbody>

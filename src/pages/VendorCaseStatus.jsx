@@ -273,6 +273,18 @@ export default function VendorCaseStatus() {
     setFormError("");
   }, []);
 
+  const handleEditRecord = record => {
+    const session = getAdminSession();
+    setAdminSession(session);
+    if (session.isAuthorizedAdmin) {
+      openEditorForRecord(record);
+      return;
+    }
+    setPendingVendorAfterLogin(record);
+    setLoginError("");
+    setLoginModalOpen(true);
+  };
+
   const handleAdminSignIn = e => {
     e.preventDefault();
     const result = authenticateAdminSession(loginEmail, loginPassword);
@@ -334,6 +346,10 @@ export default function VendorCaseStatus() {
   const handleSavePortalConfig = async e => {
     e.preventDefault();
     if (!editingRecord) return;
+    if (!getAdminSession().isAuthorizedAdmin) {
+      setFormError("Sign in as an authorized administrator to save portal changes.");
+      return;
+    }
     setFormError("");
 
     const trimmedUrl = String(formPortalUrl || "").trim();
@@ -702,7 +718,7 @@ export default function VendorCaseStatus() {
                   sortedRecords.map(record => (
                     <tr key={record.id} data-vendor-id={record.id}>
                       {/* Column 1: Vendor Name */}
-                      <td className="vcs-cell-vendor">
+                      <td className="vcs-cell-vendor" data-label="Vendor">
                         <div className="vcs-vendor-identity">
                           <VendorLogoBadge
                             logoUrl={record.logoUrl}
@@ -718,7 +734,7 @@ export default function VendorCaseStatus() {
                       </td>
 
                       {/* Column 2: System / Application */}
-                      <td className="vcs-cell-system">
+                      <td className="vcs-cell-system" data-label="System / Application">
                         <div
                           className="vcs-primary-system"
                           title={record.primarySystem}
@@ -728,7 +744,7 @@ export default function VendorCaseStatus() {
                       </td>
 
                       {/* Column 3: Category */}
-                      <td className="vcs-cell-category">
+                      <td className="vcs-cell-category" data-label="Category">
                         <span
                           className={`vcs-category-pill vcs-category-pill--${getCategoryTone(
                             record.category
@@ -740,57 +756,67 @@ export default function VendorCaseStatus() {
                       </td>
 
                       {/* Column 4: Open Portal */}
-                      <td className="vcs-cell-portal-action">
-                        {record.isConfigured ? (
-                          <a
-                            href={record.portalUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="vcs-open-portal-btn vcs-open-portal-active"
-                            title={`Open ${record.portalUrl} in a new tab`}
-                          >
-                            <span>Open Portal</span>
-                            <svg
-                              width="13"
-                              height="13"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
+                      <td className="vcs-cell-portal-action" data-label="Portal Actions">
+                        <div className="vcs-portal-actions">
+                          {record.isConfigured ? (
+                            <a
+                              href={record.portalUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="vcs-open-portal-btn vcs-open-portal-active"
+                              title={`Open ${record.portalUrl} in a new tab`}
                             >
-                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                              <polyline points="15 3 21 3 21 9" />
-                              <line x1="10" y1="14" x2="21" y2="3" />
-                            </svg>
-                          </a>
-                        ) : (
+                              <span>Open Portal</span>
+                              <svg
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                              </svg>
+                            </a>
+                          ) : (
+                            <button
+                              type="button"
+                              className="vcs-open-portal-btn vcs-open-portal-disabled"
+                              disabled
+                              title="Portal Not Configured"
+                            >
+                              <span>Open Portal</span>
+                              <svg
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <polyline points="15 3 21 3 21 9" />
+                                <line x1="10" y1="14" x2="21" y2="3" />
+                              </svg>
+                            </button>
+                          )}
                           <button
                             type="button"
-                            className="vcs-open-portal-btn vcs-open-portal-disabled"
-                            disabled
-                            title="Portal Not Configured"
+                            className="vcs-btn vcs-btn-outline vcs-edit-portal-btn"
+                            onClick={() => handleEditRecord(record)}
+                            aria-label={`Edit portal for ${record.vendorName} (${record.primarySystem})`}
                           >
-                            <span>Open Portal</span>
-                            <svg
-                              width="13"
-                              height="13"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden="true"
-                            >
-                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                              <polyline points="15 3 21 3 21 9" />
-                              <line x1="10" y1="14" x2="21" y2="3" />
-                            </svg>
+                            Edit
                           </button>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   ))

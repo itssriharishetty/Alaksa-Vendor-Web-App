@@ -492,25 +492,25 @@ main#vendor-case-status-root.vendors-main {
   vertical-align: middle;
 }
 
-/* Balanced 4-Column Widths (28% / 27% / 28% / 17%) */
+/* Four columns with room for both portal actions. */
 .vcs-col-vendor,
 .vcs-cell-vendor {
-  width: 28%;
+  width: 26%;
 }
 
 .vcs-col-system,
 .vcs-cell-system {
-  width: 27%;
+  width: 25%;
 }
 
 .vcs-col-category,
 .vcs-cell-category {
-  width: 28%;
+  width: 25%;
 }
 
 .vcs-col-portal-action,
 .vcs-cell-portal-action {
-  width: 17%;
+  width: 24%;
   text-align: right !important;
 }
 
@@ -658,6 +658,18 @@ main#vendor-case-status-root.vendors-main {
 /* Column 4: Open Portal Button */
 .vcs-cell-portal-action {
   white-space: nowrap;
+}
+
+.vcs-portal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.vcs-edit-portal-btn {
+  height: 35px;
+  flex-shrink: 0;
 }
 
 .vcs-open-portal-btn {

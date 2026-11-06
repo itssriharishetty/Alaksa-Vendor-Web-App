@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMasterData } from "../context/MasterDataContext.jsx";
+import { getAdminSession } from "../services/vendorCaseStatusService.js";
 import LoginScreen from "./admin/Login.jsx";
 import VendorEditor from "./admin/VendorEditor.jsx";
+import Sidebar from "./Sidebar.jsx";
 
 const STORAGE = {
   authenticated: "productionOperationsAdminAuthenticated",
@@ -916,7 +918,7 @@ export default function AdminLayout() {
     saveMasterData
   } = useMasterData();
 
-  const [email, setEmail] = useState(() => localStorage.getItem(STORAGE.email));
+  const [email, setEmail] = useState(() => getAdminSession().email);
   const [vendors, setVendors] = useState(() => {
     const saved = read(STORAGE.vendors, []);
     const source = workbookVendors();
@@ -1060,12 +1062,13 @@ export default function AdminLayout() {
     setEditingApplication(null);
   }
 
-  if (!email || localStorage.getItem(STORAGE.authenticated) !== "true") {
+  if (!email || !getAdminSession().isAuthorizedAdmin) {
     return <LoginScreen onLogin={setEmail} />;
   }
 
   return (
     <main className="app">
+      <div className="admin-mobile-nav"><Sidebar /></div>
       <AdminSidebar />
       <section className="dashboard">
         <header className="command-header">

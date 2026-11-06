@@ -301,10 +301,22 @@ await runTest("9. Missing portal links cannot be opened and display 'Portal Not 
 // 10. Administrators can update portal information without duplicating vendors
 // ============================================================================
 await runTest("10. Administrators can update portal information & verify portals without duplicates", async () => {
+  // A stale or forged browser flag with an unknown email must not unlock editing.
+  localStorage.setItem("productionOperationsAdminAuthenticated", "true");
+  localStorage.setItem("productionOperationsAdminEmail", "unknown@example.com");
+  assert.equal(getAdminSession().isAuthenticated, false);
+  assert.equal(getAdminSession().isAuthorizedAdmin, false);
+  await assert.rejects(
+    saveVendorPortalConfiguration("smart4aviation", { portalUrl: "https://example.com" }),
+    /authorized administrator/
+  );
+  assert.equal(authenticateAdminSession(AUTHORIZED_ADMINS[0], "admin123").ok, false);
+
   // Authenticate admin
   const auth = authenticateAdminSession(AUTHORIZED_ADMINS[0], "123456789");
   assert.equal(auth.ok, true, "Admin authentication must succeed for authorized admin");
   assert.equal(getAdminSession().isAuthenticated, true);
+  assert.equal(getAdminSession().isAuthorizedAdmin, true);
 
   // Update Smart4Aviation (id: "smart4aviation") with a configured & verified portal URL + additional application
   await saveVendorPortalConfiguration("smart4aviation", {
