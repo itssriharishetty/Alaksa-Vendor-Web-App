@@ -37,8 +37,19 @@ function rootEntryNormalizePlugin() {
   return {
     name: "root-entry-normalize",
     enforce: "pre",
-    config() {
-      fs.writeFileSync(path.resolve(__dirname, "index.html"), DEV_INDEX_HTML, "utf8");
+    config(_, { command }) {
+      if (command === "build") {
+        fs.writeFileSync(path.resolve(__dirname, "index.html"), DEV_INDEX_HTML, "utf8");
+      }
+    },
+    transformIndexHtml: {
+      order: "pre",
+      handler(html, ctx) {
+        if (ctx && ctx.server) {
+          return DEV_INDEX_HTML;
+        }
+        return html;
+      }
     }
   };
 }
