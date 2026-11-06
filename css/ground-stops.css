@@ -359,7 +359,7 @@ html body.ground-stops-page .gs-header-divider {
     background: #E2E8F0;
 }
 
-/* Rounded iOS Blue Icon Container */
+/* Custom Branded Logo Badges (matching Home Ground Stop Application tiles) */
 .gs-card-logo {
     display: flex;
     width: 52px;
@@ -370,9 +370,8 @@ html body.ground-stops-page .gs-header-divider {
     border-radius: 14px;
     overflow: hidden;
     user-select: none;
-    background: linear-gradient(180deg, #0A74FF 0%, #0058E6 100%);
     color: #FFFFFF;
-    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.22);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.14);
 }
 
 .gs-card-logo svg {
@@ -381,17 +380,58 @@ html body.ground-stops-page .gs-header-divider {
     flex-shrink: 0;
 }
 
-.gs-card-logo.logo-acars,
-.gs-card-logo.logo-wam,
-.gs-card-logo.logo-jp,
-.gs-card-logo.logo-s4a,
-.gs-card-logo.logo-jcte,
-.gs-card-logo.logo-airtrack,
-.gs-card-logo.logo-pb,
-.gs-card-logo.logo-am,
-.gs-card-logo.logo-aims {
-    background: linear-gradient(180deg, #0A74FF 0%, #0058E6 100%) !important;
+.gs-card-logo.logo-acars {
+    background: linear-gradient(145deg, #2589FF 0%, #0066EE 100%) !important;
     color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(0, 102, 238, 0.28) !important;
+}
+
+.gs-card-logo.logo-wam {
+    background: linear-gradient(145deg, #F83B3B 0%, #DC2626 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(220, 38, 38, 0.28) !important;
+}
+
+.gs-card-logo.logo-jp {
+    background: linear-gradient(145deg, #FF9838 0%, #F97316 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(249, 115, 22, 0.28) !important;
+}
+
+.gs-card-logo.logo-s4a {
+    background: linear-gradient(145deg, #F472B6 0%, #EC4899 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(236, 72, 153, 0.28) !important;
+}
+
+.gs-card-logo.logo-jcte {
+    background: linear-gradient(145deg, #A855F7 0%, #7C3AED 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(124, 58, 237, 0.28) !important;
+}
+
+.gs-card-logo.logo-airtrack {
+    background: linear-gradient(145deg, #14B8A6 0%, #0D9488 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(13, 148, 136, 0.28) !important;
+}
+
+.gs-card-logo.logo-pb {
+    background: linear-gradient(145deg, #FDE047 0%, #FACC15 100%) !important;
+    color: #0F172A !important;
+    box-shadow: 0 6px 14px rgba(234, 179, 8, 0.30) !important;
+}
+
+.gs-card-logo.logo-am {
+    background: linear-gradient(145deg, #38BDF8 0%, #0284C7 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(2, 132, 199, 0.28) !important;
+}
+
+.gs-card-logo.logo-aims {
+    background: linear-gradient(145deg, #1E3A5F 0%, #0B1E36 100%) !important;
+    color: #FFFFFF !important;
+    box-shadow: 0 6px 14px rgba(11, 30, 54, 0.28) !important;
 }
 
 /* Card Title & Category Pill */

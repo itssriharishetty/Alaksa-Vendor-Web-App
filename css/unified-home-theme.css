@@ -147,7 +147,7 @@ body.ground-stops-page .ground-stops-main .gs-header-divider {
   background: #E2E8F0 !important;
 }
 
-/* Rounded iOS Blue application icons */
+/* Colored application icons matching Home dashboard */
 body.ground-stops-page .ground-stops-main .gs-card-logo {
   width: 52px !important;
   height: 52px !important;
@@ -157,14 +157,68 @@ body.ground-stops-page .ground-stops-main .gs-card-logo {
   align-items: center !important;
   justify-content: center !important;
   flex-shrink: 0 !important;
-  background: linear-gradient(180deg, #0A74FF 0%, #0058E6 100%) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.22) !important;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.14) !important;
 }
 
 body.ground-stops-page .ground-stops-main .gs-card-logo svg {
   width: 26px !important;
   height: 26px !important;
+}
+
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-acars,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-blue {
+  background: linear-gradient(145deg, #2589FF 0%, #0066EE 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(0, 102, 238, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-wam,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-red {
+  background: linear-gradient(145deg, #F83B3B 0%, #DC2626 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(220, 38, 38, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-jp,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-orange {
+  background: linear-gradient(145deg, #FF9838 0%, #F97316 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(249, 115, 22, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-s4a,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-pink {
+  background: linear-gradient(145deg, #F472B6 0%, #EC4899 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(236, 72, 153, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-jcte,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-purple {
+  background: linear-gradient(145deg, #A855F7 0%, #7C3AED 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(124, 58, 237, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-airtrack,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-teal {
+  background: linear-gradient(145deg, #14B8A6 0%, #0D9488 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(13, 148, 136, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-pb,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-amber {
+  background: linear-gradient(145deg, #FDE047 0%, #FACC15 100%) !important;
+  color: #0F172A !important;
+  box-shadow: 0 6px 14px rgba(234, 179, 8, 0.30) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-am,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-sky {
+  background: linear-gradient(145deg, #38BDF8 0%, #0284C7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(2, 132, 199, 0.28) !important;
+}
+body.ground-stops-page .ground-stops-main .gs-card-logo.logo-aims,
+body.ground-stops-page .ground-stops-main .gs-card-logo.tile-navy {
+  background: linear-gradient(145deg, #1E3A5F 0%, #0B1E36 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 14px rgba(11, 30, 54, 0.28) !important;
 }
 
 body.ground-stops-page .ground-stops-main .gs-card-title-group,
