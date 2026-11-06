@@ -1,12 +1,16 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMasterData } from "../context/MasterDataContext";
+import { getVendorCaseStatusRecords } from "../services/vendorCaseStatusService";
+import { getFavoritesSnapshot } from "../services/favoritesService";
 
 const HOME_GROUND_STOP_APPS = [
   {
     key: "acars",
     name: "ACARS",
-    searchName: "ACARS",
+    searchName: "ACARS SITA Aircom Datalink",
+    defaultVendor: "SITA",
+    defaultSla: "15m SLA",
     tileClass: "tile-blue",
     defaultSeverity: "Critical",
     icon: (
@@ -22,7 +26,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "wam",
     name: "WAM",
-    searchName: "WAM",
+    searchName: "WAM Dispatch Flight Planning Jeppesen",
+    defaultVendor: "Jeppesen",
+    defaultSla: "15m SLA",
     tileClass: "tile-red",
     defaultSeverity: "Critical",
     icon: (
@@ -34,7 +40,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "jetplan",
     name: "JetPlan",
-    searchName: "JetPlan",
+    searchName: "JetPlan Flight Plan Calculation Jeppesen",
+    defaultVendor: "Jeppesen",
+    defaultSla: "15m SLA",
     tileClass: "tile-orange",
     defaultSeverity: "Critical",
     icon: (
@@ -46,7 +54,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "Smart4Aviation (S4A)",
     name: "S4A",
-    searchName: "S4A Smart4Aviation",
+    searchName: "S4A Smart4Aviation SmartSuite Weight Balance",
+    defaultVendor: "S4A",
+    defaultSla: "15m SLA",
     tileClass: "tile-pink",
     defaultSeverity: "High",
     icon: (
@@ -59,7 +69,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "jcte",
     name: "JCTE",
-    searchName: "JCTE",
+    searchName: "JCTE Crew Scheduling Tracking Jeppesen",
+    defaultVendor: "Jeppesen",
+    defaultSla: "15m SLA",
     tileClass: "tile-purple",
     defaultSeverity: "Critical",
     icon: (
@@ -73,7 +85,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "airtrack",
     name: "Airtrak",
-    searchName: "Airtrak AirTrack",
+    searchName: "Airtrak AirTrack AOC Real-time Control",
+    defaultVendor: "In-house",
+    defaultSla: "15m SLA",
     tileClass: "tile-teal",
     defaultSeverity: "High",
     icon: (
@@ -87,7 +101,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "pilot-briefing",
     name: "Pilot Briefing",
-    searchName: "Pilot Briefing",
+    searchName: "Pilot Briefing Packets Jeppesen",
+    defaultVendor: "Jeppesen",
+    defaultSla: "15m SLA",
     tileClass: "tile-amber",
     defaultSeverity: "High",
     icon: (
@@ -100,7 +116,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "aircraft-maintenance",
     name: "Aircraft Maintenance",
-    searchName: "Aircraft Maintenance",
+    searchName: "Aircraft Maintenance Trax Boeing",
+    defaultVendor: "Trax / Boeing",
+    defaultSla: "15m SLA",
     tileClass: "tile-sky",
     defaultSeverity: "High",
     icon: (
@@ -112,7 +130,9 @@ const HOME_GROUND_STOP_APPS = [
   {
     key: "aims",
     name: "AIMS",
-    searchName: "AIMS",
+    searchName: "AIMS Horizon QX Crew Scheduling",
+    defaultVendor: "AIMS Intl",
+    defaultSla: "15m SLA",
     tileClass: "tile-navy",
     defaultSeverity: "Critical",
     icon: (
@@ -126,6 +146,7 @@ const HOME_GROUND_STOP_APPS = [
 const HOME_TOP_CATEGORIES = [
   {
     key: "flight-ops",
+    categoryId: "flight-operations",
     name: "Flight Operations",
     count: "8",
     width: "72%",
@@ -138,6 +159,7 @@ const HOME_TOP_CATEGORIES = [
   },
   {
     key: "maintenance",
+    categoryId: "maintenance",
     name: "Maintenance & Engineering",
     count: "6",
     width: "58%",
@@ -150,6 +172,7 @@ const HOME_TOP_CATEGORIES = [
   },
   {
     key: "airports",
+    categoryId: "airport-operations",
     name: "Airports & Ground Ops",
     count: "7",
     width: "65%",
@@ -162,6 +185,7 @@ const HOME_TOP_CATEGORIES = [
   },
   {
     key: "it-infra",
+    categoryId: "infrastructure",
     name: "IT & Infrastructure",
     count: "5",
     width: "50%",
@@ -176,6 +200,7 @@ const HOME_TOP_CATEGORIES = [
   },
   {
     key: "crew",
+    categoryId: "crew",
     name: "Crew & Scheduling",
     count: "4",
     width: "42%",
@@ -191,11 +216,55 @@ const HOME_TOP_CATEGORIES = [
   }
 ];
 
+const ALL_SEARCHABLE_CATEGORIES = [
+  { id: "flight-operations", name: "Flight Operations", desc: "Flight planning, dispatch, aircraft communications, and tracking" },
+  { id: "maintenance", name: "Maintenance & Engineering", desc: "Aircraft maintenance, MRO records, and engineering documentation" },
+  { id: "airport-operations", name: "Airports & Ground Ops", desc: "Weight & balance, departure control, baggage, and ground handling" },
+  { id: "infrastructure", name: "IT & Infrastructure", desc: "Cloud infrastructure, network monitoring, and enterprise IT services" },
+  { id: "crew", name: "Crew & Scheduling", desc: "Pilot and flight attendant scheduling, tracking, and hotel logistics" },
+  { id: "business-analytics", name: "Business & Analytics", desc: "Corporate enterprise applications and operational data analytics" },
+  { id: "cargo", name: "Cargo", desc: "Air freight reservations, manifest tracking, and cargo warehouse systems" },
+  { id: "ecommerce", name: "E-Commerce", desc: "Sabre PSS reservations, fare shopping, loyalty, and revenue accounting" },
+  { id: "weather", name: "Weather", desc: "WSI Fusion, turbulence alerting, and meteorological data feeds" },
+  { id: "communications", name: "Communications", desc: "ACARS, ARINC air/ground radio, and AvTec dispatch consoles" },
+  { id: "contact-centers", name: "Contact Centers", desc: "Five9 cloud telephony and Alvaria workforce management" }
+];
+
 export default function Home() {
-  const { applications, vendors, categories, groundStopKeys } = useMasterData();
+  const {
+    masterData,
+    applications,
+    vendors,
+    categories,
+    groundStopKeys,
+    favoriteAppKeys,
+    favoriteVendorIds
+  } = useMasterData();
   const navigate = useNavigate();
   const searchInputRef = useRef(null);
+  const searchWrapRef = useRef(null);
+
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [activeResultIndex, setActiveResultIndex] = useState(-1);
+  const [favoritesSnapshot, setFavoritesSnapshot] = useState(() => getFavoritesSnapshot());
+
+  const refreshFavorites = useCallback(() => {
+    setFavoritesSnapshot(getFavoritesSnapshot());
+  }, []);
+
+  useEffect(() => {
+    refreshFavorites();
+  }, [masterData, favoriteAppKeys, favoriteVendorIds, refreshFavorites]);
+
+  useEffect(() => {
+    window.addEventListener("storage", refreshFavorites);
+    window.addEventListener("poc:favorites-updated", refreshFavorites);
+    return () => {
+      window.removeEventListener("storage", refreshFavorites);
+      window.removeEventListener("poc:favorites-updated", refreshFavorites);
+    };
+  }, [refreshFavorites]);
 
   const appTarget = Array.isArray(groundStopKeys) && groundStopKeys.length ? groundStopKeys.length : 9;
   const vendorTarget = Array.isArray(vendors) && vendors.length > 0 ? Math.max(vendors.length, 37) : 37;
@@ -205,6 +274,13 @@ export default function Home() {
   const connectedVendorsCount = vendorTarget;
   const operationalDomainsCount = categoryTarget;
 
+  const portalRecords = useMemo(() => getVendorCaseStatusRecords(masterData), [masterData]);
+  const activePortalCount = useMemo(
+    () => portalRecords.filter(r => r.portalStatus === "Active" || Boolean(r.portalUrl)).length,
+    [portalRecords]
+  );
+
+  // Cmd+K / Ctrl+K shortcut to focus global search
   useEffect(() => {
     const handleKeyDown = event => {
       if ((event.metaKey || event.ctrlKey) && String(event.key).toLowerCase() === "k") {
@@ -212,11 +288,23 @@ export default function Home() {
         if (searchInputRef.current) {
           searchInputRef.current.focus();
           searchInputRef.current.select();
+          setIsSearchOpen(true);
         }
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Close search dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (searchWrapRef.current && !searchWrapRef.current.contains(event.target)) {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -226,6 +314,23 @@ export default function Home() {
       const record =
         applications[app.key] ||
         Object.values(applications).find(item => item && item.id === app.key);
+
+      const displayName =
+        record && record.adminEdited && (record.shortName || record.name)
+          ? String(record.shortName || record.name).trim()
+          : app.name;
+
+      const rawVendor = record && record.vendor ? String(record.vendor).trim() : "";
+      const vendorName =
+        rawVendor && !/^(?:n\/?a|none|tbd)$/i.test(rawVendor)
+          ? rawVendor.split("/")[0].trim()
+          : app.defaultVendor;
+
+      const rawSla = record && (record.sla || record.responseTime) ? String(record.sla || record.responseTime).trim() : "";
+      const slaText =
+        rawSla && !/^(?:n\/?a|none|tbd)$/i.test(rawSla) && rawSla.length <= 14
+          ? rawSla
+          : app.defaultSla;
 
       const severityText = String(
         (record && (record.severity || record.criticality)) || app.defaultSeverity || "High"
@@ -239,13 +344,31 @@ export default function Home() {
         severityClass = "severity-standard";
       }
 
-      const fullSearchText = `${app.name} ${app.searchName}`.toLowerCase();
+      const fullSearchText = [
+        displayName,
+        app.name,
+        app.searchName,
+        vendorName,
+        slaText,
+        record && record.category,
+        record && record.aagPOC,
+        record && record.vendorPOC,
+        record && record.phone
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
       const visible = !normalizedQuery || fullSearchText.includes(normalizedQuery);
 
       return {
         ...app,
+        displayName,
+        vendorName,
+        slaText,
         severityText,
         severityClass,
+        fullSearchText,
         visible
       };
     });
@@ -261,12 +384,193 @@ export default function Home() {
     });
   }, [normalizedQuery]);
 
+  // Global Search Dropdown Results across Ground Stops, Vendors, Portals, and Categories
+  const globalSearchResults = useMemo(() => {
+    if (!normalizedQuery) {
+      return { apps: [], vendors: [], portals: [], categories: [], flatItems: [] };
+    }
+
+    const matchedApps = resolvedApps
+      .filter(app => app.fullSearchText.includes(normalizedQuery))
+      .slice(0, 4)
+      .map(app => ({
+        type: "app",
+        id: `app-${app.key}`,
+        title: app.displayName,
+        subtitle: app.vendorName,
+        badge: app.severityText,
+        badgeClass: app.severityClass,
+        tileClass: app.tileClass,
+        icon: app.icon,
+        to: `/ground-stops?app=${encodeURIComponent(app.key)}`
+      }));
+
+    const matchedVendors = (Array.isArray(vendors) ? vendors : [])
+      .filter(v => {
+        const text = [
+          v.company,
+          v.vendor,
+          v.systemName,
+          v.displayName,
+          v.category,
+          v.vendorPoc,
+          v.aagItsPoc,
+          v.aagItsTeam,
+          v.phone,
+          v.email
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return text.includes(normalizedQuery);
+      })
+      .slice(0, 5)
+      .map((v, idx) => {
+        const company = v.company || v.vendor || v.displayName || "Vendor";
+        const system = v.systemName || v.displayName || "Operational System";
+        const contact = v.phone && v.phone !== "No" ? v.phone.split("\n")[0] : v.vendorPoc || v.category || "";
+        const targetParam = v.systemName || v.id || company;
+        return {
+          type: "vendor",
+          id: `vendor-${v.id || idx}`,
+          title: `${company} — ${system}`,
+          subtitle: contact ? `${v.category || "Vendor"} • ${contact}` : v.category || "Connected Vendor",
+          badge: "Vendor",
+          to: `/vendors?vendor=${encodeURIComponent(targetParam)}`
+        };
+      });
+
+    const matchedPortals = portalRecords
+      .filter(p => {
+        const text = [
+          p.vendorName,
+          ...(Array.isArray(p.associatedApplications) ? p.associatedApplications : []),
+          p.category,
+          p.portalUrl,
+          p.portalStatus
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return text.includes(normalizedQuery);
+      })
+      .slice(0, 3)
+      .map(p => ({
+        type: "portal",
+        id: `portal-${p.id || p.vendorName}`,
+        title: `${p.vendorName} Support Portal`,
+        subtitle: p.portalUrl || "Portal configuration & verification",
+        badge: p.portalStatus || "Portal",
+        to: `/vendor-case-status?search=${encodeURIComponent(p.vendorName)}`
+      }));
+
+    const matchedCategories = ALL_SEARCHABLE_CATEGORIES.filter(cat =>
+      `${cat.name} ${cat.desc}`.toLowerCase().includes(normalizedQuery)
+    )
+      .slice(0, 3)
+      .map(cat => ({
+        type: "category",
+        id: `cat-${cat.id}`,
+        title: cat.name,
+        subtitle: cat.desc,
+        badge: "Category",
+        to: `/categories?category=${encodeURIComponent(cat.id)}`
+      }));
+
+    const flatItems = [
+      ...matchedApps,
+      ...matchedVendors,
+      ...matchedPortals,
+      ...matchedCategories
+    ];
+
+    return {
+      apps: matchedApps,
+      vendors: matchedVendors,
+      portals: matchedPortals,
+      categories: matchedCategories,
+      flatItems
+    };
+  }, [normalizedQuery, resolvedApps, vendors, portalRecords]);
+
+  useEffect(() => {
+    setActiveResultIndex(-1);
+  }, [normalizedQuery]);
+
   const handleSearchSubmit = event => {
     event.preventDefault();
     const query = searchQuery.trim();
     if (!query) return;
+
+    if (
+      activeResultIndex >= 0 &&
+      activeResultIndex < globalSearchResults.flatItems.length
+    ) {
+      const chosen = globalSearchResults.flatItems[activeResultIndex];
+      setIsSearchOpen(false);
+      navigate(chosen.to);
+      return;
+    }
+
+    if (globalSearchResults.apps.length > 0) {
+      setIsSearchOpen(false);
+      navigate(`/ground-stops?search=${encodeURIComponent(query)}`);
+      return;
+    }
+
+    if (globalSearchResults.vendors.length > 0) {
+      setIsSearchOpen(false);
+      navigate(`/vendors?search=${encodeURIComponent(query)}`);
+      return;
+    }
+
+    if (globalSearchResults.portals.length > 0) {
+      setIsSearchOpen(false);
+      navigate(`/vendor-case-status?search=${encodeURIComponent(query)}`);
+      return;
+    }
+
+    if (globalSearchResults.categories.length > 0) {
+      setIsSearchOpen(false);
+      navigate(globalSearchResults.categories[0].to);
+      return;
+    }
+
+    setIsSearchOpen(false);
     navigate(`/ground-stops?search=${encodeURIComponent(query)}`);
   };
+
+  const handleSearchKeyDown = event => {
+    const total = globalSearchResults.flatItems.length;
+    if (event.key === "Escape") {
+      setIsSearchOpen(false);
+      return;
+    }
+    if (!total) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setIsSearchOpen(true);
+      setActiveResultIndex(prev => (prev + 1) % total);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setIsSearchOpen(true);
+      setActiveResultIndex(prev => (prev - 1 + total) % total);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setIsSearchOpen(false);
+    setActiveResultIndex(-1);
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  };
+
+  const visibleAppsCount = resolvedApps.filter(a => a.visible).length;
+  const visibleCatsCount = resolvedCategories.filter(c => c.visible).length;
+  const savedFavorites = Array.isArray(favoritesSnapshot?.items) ? favoritesSnapshot.items : [];
 
   return (
     <main className="main-content ias-main-content home-dashboard-main">
@@ -280,36 +584,240 @@ export default function Home() {
         </div>
 
         <div className="home-topbar-right">
-          <form
-            className="home-search-wrap"
-            id="homeSearchForm"
-            role="search"
-            onSubmit={handleSearchSubmit}
-          >
-            <svg
-              className="home-search-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+          <div className="home-search-container" ref={searchWrapRef}>
+            <form
+              className="home-search-wrap"
+              id="homeSearchForm"
+              role="search"
+              onSubmit={handleSearchSubmit}
             >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <input
-              ref={searchInputRef}
-              id="homeGlobalSearch"
-              type="search"
-              placeholder="Search systems, vendors, contacts, categories..."
-              aria-label="Search systems, vendors, contacts, categories"
-              autoComplete="off"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
-          </form>
+              <svg
+                className="home-search-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <input
+                ref={searchInputRef}
+                id="homeGlobalSearch"
+                type="text"
+                placeholder="Search systems, vendors, contacts, categories..."
+                aria-label="Search systems, vendors, contacts, categories"
+                autoComplete="off"
+                value={searchQuery}
+                onFocus={() => setIsSearchOpen(true)}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchOpen(true);
+                }}
+                onKeyDown={handleSearchKeyDown}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="home-search-clear-btn"
+                  onClick={handleClearSearch}
+                  aria-label="Clear search"
+                  title="Clear search"
+                >
+                  ×
+                </button>
+              )}
+            </form>
+
+            {/* Instant Global Search Results Dropdown */}
+            {isSearchOpen && normalizedQuery && (
+              <div
+                className="home-search-dropdown"
+                id="homeSearchDropdown"
+                role="listbox"
+                aria-label="Global search results"
+              >
+                {globalSearchResults.flatItems.length === 0 ? (
+                  <div className="home-search-empty">
+                    <p>No systems, vendors, portals, or categories match &ldquo;{searchQuery}&rdquo;.</p>
+                    <div className="home-search-empty-links">
+                      <Link to="/vendors" onClick={() => setIsSearchOpen(false)}>
+                        Browse All 37 Vendors →
+                      </Link>
+                      <Link to="/vendor-case-status" onClick={() => setIsSearchOpen(false)}>
+                        View Support Portals →
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="home-search-results-scroll">
+                    {globalSearchResults.apps.length > 0 && (
+                      <div className="home-search-group">
+                        <div className="home-search-group-header">
+                          <span>Ground Stop Systems</span>
+                          <Link
+                            to={`/ground-stops?search=${encodeURIComponent(searchQuery.trim())}`}
+                            onClick={() => setIsSearchOpen(false)}
+                          >
+                            View in Ground Stops →
+                          </Link>
+                        </div>
+                        {globalSearchResults.apps.map(item => {
+                          const flatIdx = globalSearchResults.flatItems.findIndex(f => f.id === item.id);
+                          const isActive = flatIdx === activeResultIndex;
+                          return (
+                            <Link
+                              key={item.id}
+                              to={item.to}
+                              className={`home-search-result-item${isActive ? " active" : ""}`}
+                              onClick={() => setIsSearchOpen(false)}
+                            >
+                              <span className={`home-search-item-icon ${item.tileClass}`} aria-hidden="true">
+                                {item.icon}
+                              </span>
+                              <div className="home-search-item-body">
+                                <strong>{item.title}</strong>
+                                <span>{item.subtitle}</span>
+                              </div>
+                              <span className={`home-search-item-badge ${item.badgeClass}`}>
+                                {item.badge}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {globalSearchResults.vendors.length > 0 && (
+                      <div className="home-search-group">
+                        <div className="home-search-group-header">
+                          <span>Connected Vendors</span>
+                          <Link
+                            to={`/vendors?search=${encodeURIComponent(searchQuery.trim())}`}
+                            onClick={() => setIsSearchOpen(false)}
+                          >
+                            Search All Vendors →
+                          </Link>
+                        </div>
+                        {globalSearchResults.vendors.map(item => {
+                          const flatIdx = globalSearchResults.flatItems.findIndex(f => f.id === item.id);
+                          const isActive = flatIdx === activeResultIndex;
+                          return (
+                            <Link
+                              key={item.id}
+                              to={item.to}
+                              className={`home-search-result-item${isActive ? " active" : ""}`}
+                              onClick={() => setIsSearchOpen(false)}
+                            >
+                              <span className="home-search-item-icon icon-vendor" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                  <circle cx="9" cy="7" r="4" />
+                                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                </svg>
+                              </span>
+                              <div className="home-search-item-body">
+                                <strong>{item.title}</strong>
+                                <span>{item.subtitle}</span>
+                              </div>
+                              <span className="home-search-item-badge badge-blue">
+                                {item.badge}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {globalSearchResults.portals.length > 0 && (
+                      <div className="home-search-group">
+                        <div className="home-search-group-header">
+                          <span>Vendor Support Portals</span>
+                          <Link
+                            to={`/vendor-case-status?search=${encodeURIComponent(searchQuery.trim())}`}
+                            onClick={() => setIsSearchOpen(false)}
+                          >
+                            All Portals →
+                          </Link>
+                        </div>
+                        {globalSearchResults.portals.map(item => {
+                          const flatIdx = globalSearchResults.flatItems.findIndex(f => f.id === item.id);
+                          const isActive = flatIdx === activeResultIndex;
+                          return (
+                            <Link
+                              key={item.id}
+                              to={item.to}
+                              className={`home-search-result-item${isActive ? " active" : ""}`}
+                              onClick={() => setIsSearchOpen(false)}
+                            >
+                              <span className="home-search-item-icon icon-portal" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                  <polyline points="15 3 21 3 21 9" />
+                                  <line x1="10" y1="14" x2="21" y2="3" />
+                                </svg>
+                              </span>
+                              <div className="home-search-item-body">
+                                <strong>{item.title}</strong>
+                                <span>{item.subtitle}</span>
+                              </div>
+                              <span className="home-search-item-badge badge-green">
+                                {item.badge}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {globalSearchResults.categories.length > 0 && (
+                      <div className="home-search-group">
+                        <div className="home-search-group-header">
+                          <span>Operational Categories</span>
+                          <Link to="/categories" onClick={() => setIsSearchOpen(false)}>
+                            All Categories →
+                          </Link>
+                        </div>
+                        {globalSearchResults.categories.map(item => {
+                          const flatIdx = globalSearchResults.flatItems.findIndex(f => f.id === item.id);
+                          const isActive = flatIdx === activeResultIndex;
+                          return (
+                            <Link
+                              key={item.id}
+                              to={item.to}
+                              className={`home-search-result-item${isActive ? " active" : ""}`}
+                              onClick={() => setIsSearchOpen(false)}
+                            >
+                              <span className="home-search-item-icon icon-category" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                  <polyline points="2 12 12 17 22 12" />
+                                  <polyline points="2 17 12 22 22 17" />
+                                </svg>
+                              </span>
+                              <div className="home-search-item-body">
+                                <strong>{item.title}</strong>
+                                <span>{item.subtitle}</span>
+                              </div>
+                              <span className="home-search-item-badge badge-purple">
+                                {item.badge}
+                              </span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+                <div className="home-search-dropdown-footer">
+                  <span>Use ↑↓ arrows to navigate, Enter to open, Esc to close</span>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="home-topbar-welcome">
             <span className="home-welcome-icon" aria-hidden="true">
@@ -332,7 +840,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* 3. KPI STAT CARDS ROW (3 Cards) */}
+      {/* 2. KPI STAT CARDS ROW (3 Cards) */}
       <section className="home-kpi-grid" aria-label="Real-time operational metrics">
         {/* KPI 1: 9 Ground Stop Applications */}
         <Link to="/ground-stops" className="home-kpi-card kpi-green">
@@ -632,6 +1140,41 @@ export default function Home() {
         </Link>
       </section>
 
+      {/* 3. PINNED FAVORITES QUICK-BAR (If User Has Starred Items) */}
+      {savedFavorites.length > 0 && (
+        <section className="home-favorites-strip" aria-label="Pinned Favorites Quick Access">
+          <div className="home-favorites-strip-label">
+            <span className="home-fav-star" aria-hidden="true">★</span>
+            <strong>Pinned Favorites</strong>
+            <span className="home-fav-count">{savedFavorites.length}</span>
+          </div>
+          <div className="home-favorites-chips">
+            {savedFavorites.slice(0, 8).map(item => {
+              const targetUrl =
+                item.resourceType === "application"
+                  ? `/ground-stops?app=${encodeURIComponent(item.key)}`
+                  : `/vendors?vendor=${encodeURIComponent(item.systemName || item.name)}`;
+              return (
+                <Link
+                  key={`${item.resourceType}-${item.id}`}
+                  to={targetUrl}
+                  className={`home-fav-chip fav-type-${item.resourceType}`}
+                >
+                  <span className="home-fav-chip-dot" aria-hidden="true"></span>
+                  <span className="home-fav-chip-name">{item.shortName || item.name}</span>
+                  <span className="home-fav-chip-badge">
+                    {item.resourceType === "application" ? "Ground Stop" : "Vendor"}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+          <Link to="/favorites" className="home-favorites-manage-link">
+            Manage Favorites →
+          </Link>
+        </section>
+      )}
+
       {/* 4. FULL-WIDTH GROUND STOP APPLICATIONS SECTION (All 9 in One Row) */}
       <section className="home-middle-grid" aria-label="Ground Stop Applications">
         <div className="home-panel home-apps-panel">
@@ -657,15 +1200,14 @@ export default function Home() {
               <Link
                 key={app.key}
                 to={`/ground-stops?app=${encodeURIComponent(app.key)}`}
-                className="home-app-card"
+                className={`home-app-card${normalizedQuery && app.visible ? " is-search-match" : ""}`}
                 data-app-key={app.key}
                 data-app-name={app.searchName}
-                style={{ display: app.visible ? "" : "none" }}
               >
                 <span className={`home-app-tile ${app.tileClass}`} aria-hidden="true">
                   {app.icon}
                 </span>
-                <strong className="home-app-name">{app.name}</strong>
+                <strong className="home-app-name">{app.displayName}</strong>
                 <span className={`home-app-status ${app.severityClass}`}>
                   <i aria-hidden="true"></i>
                   <span className="home-app-severity-text">{app.severityText}</span>
@@ -702,9 +1244,9 @@ export default function Home() {
             {resolvedCategories.map(cat => (
               <Link
                 key={cat.key}
-                to="/categories"
-                className={`home-cat-mini ${cat.colorClass}`}
-                style={{ display: cat.visible ? "" : "none" }}
+                to={`/categories?category=${encodeURIComponent(cat.categoryId)}`}
+                className={`home-cat-mini ${cat.colorClass}${normalizedQuery && cat.visible ? " is-search-match" : ""}`}
+                data-category-id={cat.categoryId}
               >
                 <span className="cat-mini-icon" aria-hidden="true">
                   {cat.icon}
@@ -741,6 +1283,9 @@ export default function Home() {
                 <p className="home-panel-subtitle">Essential resources for quick access</p>
               </div>
             </div>
+            <Link to="/reports" className="home-panel-link">
+              Operational Reports →
+            </Link>
           </div>
 
           <div className="home-ql-grid">
@@ -788,6 +1333,30 @@ export default function Home() {
               <p className="ql-desc">Step-by-step escalation guidelines</p>
               <span className="ql-link">
                 View Steps <span aria-hidden="true">→</span>
+              </span>
+            </Link>
+
+            <Link to="/vendor-case-status" className="home-ql-item ql-card-green">
+              <div className="ql-top">
+                <span className="ql-icon ql-green" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </span>
+                <strong className="ql-title">Vendor Case Portals</strong>
+              </div>
+              <p className="ql-desc">{activePortalCount} active support &amp; ticket portals</p>
+              <span className="ql-link">
+                Open Portals <span aria-hidden="true">→</span>
               </span>
             </Link>
 

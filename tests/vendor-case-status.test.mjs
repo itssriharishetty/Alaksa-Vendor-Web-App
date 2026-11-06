@@ -1614,6 +1614,40 @@ await runTest("22. Admin renders identical Ground Stop & Vendor cards and allows
   assert.equal(editedVendorDetails.relatedDocuments[0].title, "Admin Runbook");
 });
 
+await runTest("23. Home dashboard includes live global search dropdown, deep-linked categories, vendor/SLA tile meta, Vendor Case Portals quick link, and pinned favorites strip", async () => {
+  const homeSource = await readFile(resolve(rootDir, "src/pages/Home.jsx"), "utf8");
+  const homeCss = await readFile(resolve(rootDir, "css/home-welcome.css"), "utf8");
+
+  assert.ok(
+    homeSource.includes("homeSearchDropdown") &&
+      homeSource.includes("globalSearchResults"),
+    "Home.jsx must include the live global search dropdown"
+  );
+
+  assert.ok(
+    homeSource.includes("/categories?category=") &&
+      homeSource.includes('categoryId: "flight-operations"') &&
+      homeSource.includes('categoryId: "airport-operations"') &&
+      homeSource.includes('categoryId: "infrastructure"'),
+    "Home.jsx Top Vendor Categories must deep-link to specific categories"
+  );
+
+  assert.ok(
+    homeSource.includes("Vendor Case Portals") &&
+      homeSource.includes('to="/vendor-case-status"') &&
+      homeSource.includes('to="/reports"'),
+    "Home.jsx Quick Links must include Vendor Case Portals and Operational Reports"
+  );
+
+  assert.ok(
+    homeSource.includes("home-favorites-strip") &&
+      homeCss.includes(".home-search-dropdown") &&
+      homeCss.includes(".home-favorites-strip") &&
+      homeCss.includes(".ql-card-green"),
+    "Home.jsx and home-welcome.css must render and style pinned favorites strip, quick links, and search dropdown"
+  );
+});
+
 const passedCount = results.filter((r) => r.passed).length;
 console.log(`\n========================================`);
 console.log(`VENDOR CASE STATUS TEST SUMMARY: ${passedCount}/${results.length} PASSED`);

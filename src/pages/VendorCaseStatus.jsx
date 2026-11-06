@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { useSearchParams } from "react-router-dom";
 import { useMasterData } from "../context/MasterDataContext";
 import {
   AUTHORIZED_ADMINS,
@@ -124,8 +125,12 @@ function VendorLogoBadge({ logoUrl, vendorName }) {
 
 export default function VendorCaseStatus() {
   const { masterData } = useMasterData();
+  const [searchParams] = useSearchParams();
   const [records, setRecords] = useState([]);
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [filters, setFilters] = useState(() => ({
+    ...INITIAL_FILTERS,
+    search: searchParams.get("search") || ""
+  }));
   const [sortConfig, setSortConfig] = useState({ key: "vendorName", direction: "asc" });
   const [adminSession, setAdminSession] = useState(() => getAdminSession());
   const [toastMessage, setToastMessage] = useState(null);
