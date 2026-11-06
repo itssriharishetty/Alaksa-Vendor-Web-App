@@ -293,14 +293,14 @@ html body.ground-stops-page .gs-clear-btn:hover {
 }
 
 /* =========================================================
-   3x3 GROUND STOP APPLICATION CARDS GRID
+   3x3 GROUND STOP APPLICATION CARDS GRID (APPLE iOS DESIGN)
    ========================================================= */
 
 html body.ground-stops-page .ground-stop-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: stretch;
-    gap: 18px;
+    gap: 20px;
 }
 
 html body.ground-stops-page .ground-stop-card {
@@ -311,11 +311,11 @@ html body.ground-stops-page .ground-stop-card {
     min-width: 0;
     height: 100%;
     box-sizing: border-box;
-    padding: 20px !important;
-    border: 1px solid #E2ECF8 !important;
-    border-radius: 18px !important;
+    padding: 22px !important;
+    border: 1px solid #E5EAF2 !important;
+    border-radius: 22px !important;
     background: #FFFFFF !important;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.045) !important;
+    box-shadow: 0 8px 26px rgba(15, 23, 42, 0.05), 0 2px 6px rgba(15, 23, 42, 0.025) !important;
     cursor: pointer;
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
@@ -328,33 +328,51 @@ html body.ground-stops-page .ground-stop-card::after {
 
 html body.ground-stops-page .ground-stop-card:hover {
     transform: translateY(-2px);
-    border-color: #BFDBFE !important;
-    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08) !important;
+    border-color: #CBD5E1 !important;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(15, 23, 42, 0.035) !important;
 }
 
 /* Card Header */
 html body.ground-stops-page .gs-card-header {
-    display: grid;
-    grid-template-columns: 54px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    width: 100% !important;
     min-height: 54px;
+    margin: 0 !important;
 }
 
-/* Custom Branded Logo Badges (matching Home Ground Stop Application tiles) */
+html body.ground-stops-page .gs-card-identity {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+}
+
+html body.ground-stops-page .gs-header-divider {
+    display: inline-block;
+    width: 1px;
+    height: 44px;
+    flex: 0 0 1px;
+    background: #E2E8F0;
+}
+
+/* Rounded iOS Blue Icon Container */
 .gs-card-logo {
     display: flex;
-    width: 54px;
-    height: 54px;
-    flex: 0 0 54px;
+    width: 52px;
+    height: 52px;
+    flex: 0 0 52px;
     align-items: center;
     justify-content: center;
     border-radius: 14px;
     overflow: hidden;
     user-select: none;
+    background: linear-gradient(180deg, #0A74FF 0%, #0058E6 100%);
     color: #FFFFFF;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.22);
 }
 
 .gs-card-logo svg {
@@ -363,152 +381,158 @@ html body.ground-stops-page .gs-card-header {
     flex-shrink: 0;
 }
 
-.gs-card-logo.logo-acars {
-    background: #0066FF;
-    color: #FFFFFF;
-}
-
-.gs-card-logo.logo-wam {
-    background: #D91B24;
-    color: #FFFFFF;
-}
-
-.gs-card-logo.logo-jp {
-    background: #F58400;
-    color: #FFFFFF;
-}
-
-.gs-card-logo.logo-s4a {
-    background: #EC4899;
-    color: #FFFFFF;
-}
-
-.gs-card-logo.logo-jcte {
-    background: #7C3AED;
-    color: #FFFFFF;
-}
-
-.gs-card-logo.logo-airtrack {
-    background: #0D9488;
-    color: #FFFFFF;
-}
-
-.gs-card-logo.logo-pb {
-    background: #FACC15;
-    color: #0F172A;
-}
-
-.gs-card-logo.logo-am {
-    background: #0284C7;
-    color: #FFFFFF;
-}
-
+.gs-card-logo.logo-acars,
+.gs-card-logo.logo-wam,
+.gs-card-logo.logo-jp,
+.gs-card-logo.logo-s4a,
+.gs-card-logo.logo-jcte,
+.gs-card-logo.logo-airtrack,
+.gs-card-logo.logo-pb,
+.gs-card-logo.logo-am,
 .gs-card-logo.logo-aims {
-    background: #0F2942;
-    color: #FFFFFF;
+    background: linear-gradient(180deg, #0A74FF 0%, #0058E6 100%) !important;
+    color: #FFFFFF !important;
 }
 
 /* Card Title & Category Pill */
 html body.ground-stops-page .gs-card-titles {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 6px;
+    display: flex !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 6px !important;
 }
 
 html body.ground-stops-page .gs-card-titles h2 {
-    margin: 0;
-    max-width: 100%;
-    overflow: hidden;
-    color: #0F172A;
-    font-size: 19.5px;
-    font-weight: 700 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    color: #0B1528 !important;
+    font-size: 19px !important;
+    font-weight: 800 !important;
     letter-spacing: -0.02em;
-    line-height: 1.2;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.18 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
 }
 
 html body.ground-stops-page .gs-category-pill {
-    display: inline-block;
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding: 3px 11px;
-    border-radius: 999px;
-    background: #E8F1FF;
-    color: #1D4ED8;
-    font-size: 12px;
-    font-weight: 400 !important;
-    line-height: 1.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: inline-block !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 3px 11px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    background: #E8F1FF !important;
+    color: #0058E6 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 /* Unified Blue Category Pill Accent Across All Cards */
 html body.ground-stops-page .ground-stop-card[data-card-accent] .gs-category-pill {
     background: #E8F1FF !important;
-    color: #1D4ED8 !important;
+    color: #0058E6 !important;
 }
 
-/* Top-Right SLA Pill & Favorite Star */
+/* Right-Side Criticality + SLA Stack & Favorite Star */
 html body.ground-stops-page .gs-card-badges {
-    display: inline-flex;
-    flex: 0 0 auto;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    align-self: flex-start;
-    margin-top: 2px;
-    gap: 6px;
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+}
+
+html body.ground-stops-page .gs-card-status-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 5px !important;
+}
+
+html body.ground-stops-page .gs-criticality-pill {
+    display: inline-flex !important;
+    height: 24px !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 0 11px !important;
+    border-radius: 999px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+}
+
+html body.ground-stops-page .gs-criticality-pill.severity-critical {
+    background: #FDE8E8 !important;
+    color: #D92D20 !important;
+    border: 1px solid #FCD4D4 !important;
+}
+
+html body.ground-stops-page .gs-criticality-pill i {
+    display: inline-block !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 50% !important;
+    background: #E11D48 !important;
+    flex: 0 0 7px !important;
 }
 
 html body.ground-stops-page .gs-sla-pill {
-    display: inline-flex;
-    height: 26px;
-    box-sizing: border-box;
-    align-items: center;
-    gap: 5px;
-    padding: 0 10px;
-    border-radius: 999px;
-    background: #EBF3FF;
-    color: #1E40AF;
-    font-size: 12px;
-    font-weight: 400 !important;
-    line-height: 1;
-    white-space: nowrap;
+    display: inline-flex !important;
+    height: 24px !important;
+    box-sizing: border-box !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 0 11px !important;
+    border-radius: 999px !important;
+    background: #E8F1FF !important;
+    border: 1px solid #D8E8FF !important;
+    color: #0058E6 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
 }
 
 html body.ground-stops-page .gs-sla-pill svg {
-    color: #2563EB;
-    flex: 0 0 auto;
+    color: #0058E6 !important;
+    flex: 0 0 auto !important;
 }
 
 html body.ground-stops-page .gs-card-favorite {
     display: inline-flex;
-    width: 26px;
-    height: 26px;
-    flex: 0 0 26px;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
     align-items: center;
     justify-content: center;
     padding: 0;
-    border: 1px solid #E2ECF8;
-    border-radius: 7px;
-    background: #F8FAFC;
-    color: #475569;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #334155;
     cursor: pointer;
     transition: all 0.16s ease;
 }
 
 html body.ground-stops-page .gs-card-favorite svg {
-    width: 13.5px;
-    height: 13.5px;
+    width: 16px;
+    height: 16px;
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.9;
+    stroke-width: 1.85;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
@@ -532,7 +556,7 @@ html body.ground-stops-page .gs-card-favorite.active svg {
     stroke: #D97706;
 }
 
-/* Description Paragraph - Strictly 2 Lines (44px), Normal Weight */
+/* Description Paragraph - Clean 2-Line Clamp with Balanced Spacing */
 .application-description,
 html body.ground-stops-page .application-description,
 html body.ground-stops-page .gs-card-description {
@@ -546,11 +570,11 @@ html body.ground-stops-page .gs-card-description {
     word-break: break-word !important;
     min-width: 0;
     max-width: 100%;
-    line-height: 22px !important;
-    min-height: 44px !important;
-    max-height: 44px !important;
-    height: 44px !important;
-    margin: 14px 0 12px 0 !important;
+    line-height: 21px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    height: 42px !important;
+    margin: 16px 0 !important;
     padding: 0 !important;
     border: 0 !important;
     box-sizing: border-box !important;
@@ -559,46 +583,54 @@ html body.ground-stops-page .gs-card-description {
     font-weight: 400 !important;
 }
 
-/* 4-Row Contact List with Soft iOS Tinted Backgrounds */
+/* Soft Light-Blue-Gray Rounded Contact Panel with 4 Divided Rows */
 html body.ground-stops-page .gs-card-contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    width: 100%;
-    padding-top: 8px;
-    border-top: 1px solid #EDF2F9;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 0 16px 0 !important;
+    padding: 2px 14px !important;
+    border-radius: 14px !important;
+    background: #F4F7FB !important;
+    border: 1px solid #E8EEF6 !important;
 }
 
 html body.ground-stops-page .gs-contact-row {
-    display: grid;
-    grid-template-columns: 142px minmax(0, 1fr);
-    align-items: center;
-    gap: 10px;
-    height: 35px;
-    min-height: 35px;
-    max-height: 35px;
-    padding: 0 10px;
-    box-sizing: border-box;
-    border-radius: 7px;
-    background: #F5F9FF;
-    border-bottom: 1px solid #EDF2F9;
+    display: grid !important;
+    grid-template-columns: 148px minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 12px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 0 2px !important;
+    box-sizing: border-box !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border-bottom: 1px solid #E4ECF5 !important;
+}
+
+html body.ground-stops-page .gs-contact-row:last-child {
+    border-bottom: none !important;
 }
 
 html body.ground-stops-page .gs-contact-row-vendor,
 html body.ground-stops-page .gs-contact-row-poc,
 html body.ground-stops-page .gs-contact-row-phone,
 html body.ground-stops-page .gs-contact-row-email {
-    background: #F4F8FF;
+    background: transparent !important;
 }
 
 html body.ground-stops-page .gs-contact-row-label {
     display: inline-flex;
     min-width: 0;
     align-items: center;
-    gap: 8px;
-    color: #475569;
-    font-size: 12.75px;
-    font-weight: 400 !important;
+    gap: 9px;
+    color: #52657C;
+    font-size: 13px;
+    font-weight: 500 !important;
     line-height: 1.25;
     white-space: nowrap;
 }
@@ -609,14 +641,14 @@ html body.ground-stops-page .gs-contact-icon-poc,
 html body.ground-stops-page .gs-contact-icon-phone,
 html body.ground-stops-page .gs-contact-icon-email {
     display: inline-flex;
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
+    border-radius: 8px;
     background: #E6F0FF;
-    color: #2563EB;
-    flex: 0 0 22px;
+    color: #0066FF;
+    flex: 0 0 26px;
 }
 
 html body.ground-stops-page .gs-contact-row-value {
@@ -626,7 +658,7 @@ html body.ground-stops-page .gs-contact-row-value {
     overflow: hidden;
     color: #0F172A;
     font-size: 13.5px;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
     line-height: 1.3;
     text-decoration: none;
     text-overflow: ellipsis;
@@ -635,7 +667,7 @@ html body.ground-stops-page .gs-contact-row-value {
 
 html body.ground-stops-page .gs-contact-phone {
     color: #0F172A;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
     text-decoration: none;
 }
 
@@ -646,7 +678,7 @@ html body.ground-stops-page a.gs-contact-phone:hover {
 
 html body.ground-stops-page .gs-contact-email {
     color: #0062EB;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
     text-decoration: none;
 }
 
@@ -657,18 +689,18 @@ html body.ground-stops-page a.gs-contact-email:hover {
 
 html body.ground-stops-page .gs-contact-email-plain {
     color: #0F172A;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
 }
 
 /* Card Footer */
 html body.ground-stops-page .gs-card-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: auto;
-    padding-top: 12px;
-    border-top: 1px solid #EDF2F9;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin-top: auto !important;
+    padding-top: 14px !important;
+    border-top: 1px solid #E6EEF7 !important;
 }
 
 html body.ground-stops-page .gs-card-team {
@@ -678,44 +710,44 @@ html body.ground-stops-page .gs-card-team {
     gap: 8px;
     color: #0F172A;
     font-size: 13.5px;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
 }
 
 html body.ground-stops-page .gs-card-team > span:last-child {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
 }
 
 html body.ground-stops-page .gs-team-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #1D68E3;
+    color: #0066FF;
     flex: 0 0 auto;
 }
 
 html body.ground-stops-page .ground-stop-details-button {
-    display: inline-flex;
-    height: 36px;
-    min-width: 124px;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    flex: 0 0 auto;
-    padding: 0 16px !important;
+    display: inline-flex !important;
+    height: 38px !important;
+    min-width: 132px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+    flex: 0 0 auto !important;
+    padding: 0 18px !important;
     border: 0 !important;
-    border-radius: 10px !important;
-    background: #0066FF !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #0A74FF 0%, #0058E6 100%) !important;
     color: #FFFFFF !important;
     font-family: var(--aag-font);
     font-size: 13.5px !important;
     font-weight: 600 !important;
-    line-height: 1;
-    white-space: nowrap;
+    line-height: 1 !important;
+    white-space: nowrap !important;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0, 102, 255, 0.22) !important;
+    box-shadow: 0 4px 12px rgba(0, 102, 255, 0.24) !important;
     transition: background 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
 }
 
@@ -1590,7 +1622,7 @@ html body.ground-stops-page .ground-stop-details-button:hover svg {
 }
 
 .ground-stop-card {
-  border-radius: 18px !important;
-  border: 1px solid rgba(226, 232, 240, 0.92) !important;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.035), 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+  border-radius: 22px !important;
+  border: 1px solid #E5EAF2 !important;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.05), 0 2px 6px rgba(15, 23, 42, 0.025) !important;
 }

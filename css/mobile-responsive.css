@@ -497,26 +497,32 @@
 
   .ground-stop-grid {
     grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    gap: 16px !important;
   }
 
-  .gs-card-header,
-  .gs-card-footer {
-    flex-direction: column !important;
-    align-items: flex-start !important;
+  .gs-card-header {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     gap: 10px !important;
   }
 
   .gs-card-badges {
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    width: auto !important;
+    justify-content: flex-end !important;
   }
 
   .gs-contact-row {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 8px !important;
+    grid-template-columns: 132px minmax(0, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .gs-card-footer {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
   }
 
   /* Favorites Page Grids & Controls */

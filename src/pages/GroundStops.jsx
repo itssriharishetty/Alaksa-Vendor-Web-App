@@ -50,7 +50,7 @@ const CARD_PROFILES = {
         shortName: "JetPlan",
         category: "Flight Ops / Dispatch: flight plan calculation",
         status: "Active",
-        sla: "15 min",
+        sla: "",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -67,7 +67,7 @@ const CARD_PROFILES = {
         shortName: "S4A SmartSuite",
         category: "Airport Ops / Flight Ops: weight and balance and load planning",
         status: "Active",
-        sla: "15 min",
+        sla: "",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -84,7 +84,7 @@ const CARD_PROFILES = {
         shortName: "JCTE",
         category: "Crew: crew scheduling and tracking for about 10,100 crew members",
         status: "Active",
-        sla: "15 min",
+        sla: "",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -118,7 +118,7 @@ const CARD_PROFILES = {
         shortName: "Pilot Briefing",
         category: "Flight Ops: briefing packets (flight paperwork). Printing them before takeoff is an FAA requirement",
         status: "Active",
-        sla: "15 min",
+        sla: "",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -135,7 +135,7 @@ const CARD_PROFILES = {
         shortName: "Aircraft Maintenance Status (AMS)",
         category: "Maintenance & Engineering: tracks aircraft from removal from service to return to service",
         status: "Active",
-        sla: "15 min",
+        sla: "",
         slaIcon: "phone",
         severity: "High",
         description:
@@ -152,7 +152,7 @@ const CARD_PROFILES = {
         shortName: "AIMS (Horizon Crew Scheduling)",
         category: "Crew: scheduling pilots and flight attendants (FAs) for Horizon, including bids and trip trades. QX only",
         status: "Active",
-        sla: "15 min",
+        sla: "",
         slaIcon: "phone",
         severity: "Critical",
         description:
@@ -1218,6 +1218,10 @@ export default function GroundStops() {
                     <section className="ground-stop-grid" id="groundStopGrid" aria-label="Ground Stop applications">
                         {filteredApplications.map(({ key, profile, record }) => {
                             const isEdited = Boolean(record.adminEdited);
+                            const cleanCardField = (val) => {
+                                const text = valueText(val);
+                                return text && !/^(?:n\/?a|none|tbd)$/i.test(text) ? text : "";
+                            };
                             const title =
                                 (isEdited && (record.shortName || record.name)) ||
                                 profile.shortName ||
@@ -1227,36 +1231,43 @@ export default function GroundStops() {
                                 record.category ||
                                 profile.category ||
                                 "Operations";
+                            const shortCategory =
+                                String(category).split(":")[0].trim() || category;
+                            const rawSla = isEdited
+                                ? valueText(record.sla || record.response)
+                                : valueText(profile.sla);
                             const slaLabel =
-                                (isEdited && record.response) || profile.sla || "15 min";
+                                rawSla && !/not\s*verified|tbd|n\/?a|none/i.test(rawSla)
+                                    ? rawSla.replace(/\bminutes\b/gi, "min")
+                                    : "";
                             const description =
                                 (isEdited && valueText(record.description)) ||
                                 profile.description ||
                                 valueText(record.description || record.function);
                             const vendor =
-                                (isEdited && valueText(record.vendor)) ||
-                                profile.vendor ||
-                                valueText(record.vendor) ||
-                                "NA";
+                                (isEdited && cleanCardField(record.vendor)) ||
+                                cleanCardField(profile.vendor) ||
+                                cleanCardField(record.vendor) ||
+                                "Not available";
                             const poc =
-                                (isEdited && valueText(record.aagPOC)) ||
-                                profile.poc ||
-                                valueText(record.aagPOC) ||
-                                "NA";
+                                (isEdited && cleanCardField(record.aagPOC)) ||
+                                cleanCardField(profile.poc) ||
+                                cleanCardField(record.aagPOC) ||
+                                "Not available";
                             const phone =
-                                (isEdited && valueText(record.phone)) ||
-                                profile.phone ||
-                                valueText(record.phone) ||
-                                "NA";
+                                (isEdited && cleanCardField(record.phone)) ||
+                                cleanCardField(profile.phone) ||
+                                cleanCardField(record.phone) ||
+                                "Not available";
                             const email =
-                                (isEdited && valueText(record.email)) ||
-                                profile.email ||
-                                valueText(record.email) ||
-                                "NA";
+                                (isEdited && cleanCardField(record.email)) ||
+                                cleanCardField(profile.email) ||
+                                cleanCardField(record.email) ||
+                                "Not available";
                             const team =
-                                (isEdited && valueText(record.aagTeam)) ||
-                                profile.team ||
-                                valueText(record.aagTeam) ||
+                                (isEdited && cleanCardField(record.aagTeam)) ||
+                                cleanCardField(profile.team) ||
+                                cleanCardField(record.aagTeam) ||
                                 "ITS Flight Operations";
 
                             const phoneMatch = String(phone).match(/\+?\d[\d\s().-]{5,}\d/);
@@ -1280,15 +1291,11 @@ export default function GroundStops() {
                                     profile.severity ||
                                     record.severity ||
                                     record.criticality ||
-                                    "Critical"
+                                    ""
                             ).trim();
-                            const isHighCardSeverity =
-                                /high|sev\s*2/i.test(rawCardSeverity) &&
-                                !/crit|sev\s*1/i.test(rawCardSeverity);
-                            const cardSeverityLabel = isHighCardSeverity ? "High" : "Critical";
-                            const cardSeverityClass = isHighCardSeverity
-                                ? "severity-high"
-                                : "severity-critical";
+                            const isCritical =
+                                /crit|sev\s*1/i.test(rawCardSeverity) &&
+                                !/^(?:high|sev\s*2|medium|low)$/i.test(rawCardSeverity);
 
                             return (
                                 <article
@@ -1304,27 +1311,36 @@ export default function GroundStops() {
                                     }}
                                 >
                                     <header className="gs-card-header">
-                                        {renderLogoBadge(key)}
-                                        <div className="gs-card-titles">
-                                            <h2 title={record.name || title}>{title}</h2>
-                                            <div className="gs-card-subrow">
-                                                <span
-                                                    className={`gs-criticality-pill ${cardSeverityClass}`}
-                                                    title={`Criticality: ${cardSeverityLabel}`}
-                                                >
-                                                    <i aria-hidden="true"></i>
-                                                    <span>{cardSeverityLabel}</span>
-                                                </span>
+                                        <div className="gs-card-identity">
+                                            {renderLogoBadge(key)}
+                                            <span className="gs-header-divider" aria-hidden="true"></span>
+                                            <div className="gs-card-titles">
+                                                <h2 title={record.name || title}>{title}</h2>
                                                 <span className="gs-category-pill" title={category}>
-                                                    {category}
+                                                    {shortCategory}
                                                 </span>
                                             </div>
                                         </div>
                                         <div className="gs-card-badges">
-                                            <span className="gs-sla-pill">
-                                                {renderSlaIcon()}
-                                                <span>SLA: {slaLabel}</span>
-                                            </span>
+                                            {(isCritical || slaLabel) && (
+                                                <div className="gs-card-status-stack">
+                                                    {isCritical && (
+                                                        <span
+                                                            className="gs-criticality-pill severity-critical"
+                                                            title="Criticality: Critical"
+                                                        >
+                                                            <i aria-hidden="true"></i>
+                                                            <span>Critical</span>
+                                                        </span>
+                                                    )}
+                                                    {slaLabel && (
+                                                        <span className="gs-sla-pill" title={`SLA: ${slaLabel}`}>
+                                                            {renderSlaIcon()}
+                                                            <span>SLA: {slaLabel}</span>
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
                                             <button
                                                 type="button"
                                                 className={`gs-card-favorite ${isFav ? "active" : ""}`}
