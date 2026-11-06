@@ -449,11 +449,11 @@ html body.ground-stops-page .gs-card-titles h2 {
     margin: 0 !important;
     max-width: 100% !important;
     overflow: hidden !important;
-    color: #0B1528 !important;
-    font-size: 19px !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.02em;
-    line-height: 1.18 !important;
+    color: #1E293B !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em;
+    line-height: 1.22 !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
 }
@@ -467,9 +467,9 @@ html body.ground-stops-page .gs-category-pill {
     border-radius: 999px !important;
     border: none !important;
     background: #E8F1FF !important;
-    color: #0058E6 !important;
+    color: #1D4ED8 !important;
     font-size: 12px !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     line-height: 1.3 !important;
     white-space: nowrap !important;
     overflow: hidden !important;
@@ -479,7 +479,7 @@ html body.ground-stops-page .gs-category-pill {
 /* Unified Blue Category Pill Accent Across All Cards */
 html body.ground-stops-page .ground-stop-card[data-card-accent] .gs-category-pill {
     background: #E8F1FF !important;
-    color: #0058E6 !important;
+    color: #1D4ED8 !important;
 }
 
 /* Right-Side Criticality + SLA Stack & Favorite Star */
@@ -509,7 +509,7 @@ html body.ground-stops-page .gs-criticality-pill {
     padding: 0 11px !important;
     border-radius: 999px !important;
     font-size: 12px !important;
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     line-height: 1 !important;
     white-space: nowrap !important;
 }
@@ -549,9 +549,9 @@ html body.ground-stops-page .gs-sla-pill {
     border-radius: 999px !important;
     background: #E8F1FF !important;
     border: 1px solid #D8E8FF !important;
-    color: #0058E6 !important;
+    color: #1D4ED8 !important;
     font-size: 12px !important;
-    font-weight: 600 !important;
+    font-weight: 500 !important;
     line-height: 1 !important;
     white-space: nowrap !important;
 }
@@ -678,9 +678,9 @@ html body.ground-stops-page .gs-contact-row-label {
     min-width: 0;
     align-items: center;
     gap: 9px;
-    color: #52657C;
+    color: #64748B;
     font-size: 13px;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
     line-height: 1.25;
     white-space: nowrap;
 }
@@ -706,9 +706,9 @@ html body.ground-stops-page .gs-contact-row-value {
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
-    color: #0F172A;
+    color: #1E293B;
     font-size: 13.5px;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
     line-height: 1.3;
     text-decoration: none;
     text-overflow: ellipsis;
@@ -716,8 +716,8 @@ html body.ground-stops-page .gs-contact-row-value {
 }
 
 html body.ground-stops-page .gs-contact-phone {
-    color: #0F172A;
-    font-weight: 500 !important;
+    color: #1E293B;
+    font-weight: 400 !important;
     text-decoration: none;
 }
 
@@ -728,7 +728,7 @@ html body.ground-stops-page a.gs-contact-phone:hover {
 
 html body.ground-stops-page .gs-contact-email {
     color: #0062EB;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
     text-decoration: none;
 }
 
@@ -738,8 +738,8 @@ html body.ground-stops-page a.gs-contact-email:hover {
 }
 
 html body.ground-stops-page .gs-contact-email-plain {
-    color: #0F172A;
-    font-weight: 500 !important;
+    color: #1E293B;
+    font-weight: 400 !important;
 }
 
 /* Card Footer */
@@ -758,16 +758,16 @@ html body.ground-stops-page .gs-card-team {
     min-width: 0;
     align-items: center;
     gap: 8px;
-    color: #0F172A;
+    color: #1E293B;
     font-size: 13.5px;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
 }
 
 html body.ground-stops-page .gs-card-team > span:last-child {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-weight: 500 !important;
+    font-weight: 400 !important;
 }
 
 html body.ground-stops-page .gs-team-icon {

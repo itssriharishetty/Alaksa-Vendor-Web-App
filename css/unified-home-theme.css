@@ -236,11 +236,11 @@ body.ground-stops-page .ground-stops-main .gs-card-titles {
 
 body.ground-stops-page .ground-stops-main .ground-stop-name,
 body.ground-stops-page .ground-stops-main .gs-card-titles h2 {
-  font-size: 19px !important;
-  font-weight: 800 !important;
-  color: #0B1528 !important;
-  letter-spacing: -0.02em !important;
-  line-height: 1.18 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  color: #1E293B !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.22 !important;
   margin: 0 !important;
   max-width: 100% !important;
   overflow: hidden !important;
@@ -271,7 +271,7 @@ body.ground-stops-page .ground-stops-main .gs-criticality-pill {
   gap: 6px !important;
   height: 24px !important;
   font-size: 12px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   padding: 0 11px !important;
   border-radius: 999px !important;
   line-height: 1 !important;
@@ -316,8 +316,8 @@ body.ground-stops-page .ground-stops-main .gs-category-pill {
   max-width: 100% !important;
   box-sizing: border-box !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
-  color: #0058E6 !important;
+  font-weight: 500 !important;
+  color: #1D4ED8 !important;
   background: #E8F1FF !important;
   border: none !important;
   padding: 3px 11px !important;
@@ -335,8 +335,8 @@ body.ground-stops-page .ground-stops-main .gs-sla-pill {
   gap: 5px !important;
   height: 24px !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
-  color: #0058E6 !important;
+  font-weight: 500 !important;
+  color: #1D4ED8 !important;
   background: #E8F1FF !important;
   border: 1px solid #D8E8FF !important;
   border-radius: 999px !important;
