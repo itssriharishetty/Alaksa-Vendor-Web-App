@@ -8,7 +8,8 @@ import {
     CriticalityAlert,
     ImpactTable,
     ContactRow,
-    renderTextWithLinks
+    renderTextWithLinks,
+    formatTechnicalWrap
 } from "../components/SharedDetailComponents";
 
 const CARD_PROFILES = {
@@ -1679,22 +1680,22 @@ export default function GroundStops() {
                                                 {filteredAppsTabSystems.map((sys) => (
                                                     <tr key={sys.id}>
                                                         <td className="vi-td-app">
-                                                            <strong>{sys.name}</strong>
+                                                            <strong>{formatTechnicalWrap(sys.name)}</strong>
                                                             {sys.appTabSubName || sys.subName ? (
                                                                 <div className="vi-td-app-subbold">
-                                                                    {sys.appTabSubName || sys.subName}
+                                                                    {formatTechnicalWrap(sys.appTabSubName || sys.subName)}
                                                                 </div>
                                                             ) : null}
                                                         </td>
                                                         <td className="vi-td-desc">
-                                                            {sys.appTabDescription || sys.description}
+                                                            {formatTechnicalWrap(sys.appTabDescription || sys.description)}
                                                         </td>
                                                         <td className="vi-td-func">
                                                             {sys.businessFunction}
                                                         </td>
                                                         <td className="vi-td-impact">{sys.impact}</td>
-                                                        <td className="vi-td-deps">{sys.dependencies}</td>
-                                                        <td className="vi-td-owner">{sys.owner}</td>
+                                                        <td className="vi-td-deps">{formatTechnicalWrap(sys.dependencies)}</td>
+                                                        <td className="vi-td-owner">{formatTechnicalWrap(sys.owner)}</td>
                                                         <td className="vi-td-actions">
                                                             <button
                                                                 type="button"

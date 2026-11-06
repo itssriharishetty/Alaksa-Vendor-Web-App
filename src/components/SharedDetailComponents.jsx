@@ -705,6 +705,11 @@ export function ContactRow({
   );
 }
 
+export function formatTechnicalWrap(value) {
+  if (typeof value !== "string" || !value) return value;
+  return value.replace(/([./_])(?=[A-Za-z0-9])/g, "$1\u200B");
+}
+
 /**
  * Shared Impacted Applications & Systems 6-Column Table Card
  */
@@ -736,11 +741,11 @@ export function ImpactTable({ systemName, systems, defaultOwner }) {
       <div className="vi-table-wrap">
         <table className="vi-table vi-table-6col">
           <colgroup>
-            <col style={{ width: "19%" }} />
-            <col style={{ width: "21%" }} />
-            <col style={{ width: "14%" }} />
             <col style={{ width: "20%" }} />
-            <col style={{ width: "14%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "13%" }} />
+            <col style={{ width: "17%" }} />
+            <col style={{ width: "18%" }} />
             <col style={{ width: "12%" }} />
           </colgroup>
           <thead>
@@ -757,16 +762,16 @@ export function ImpactTable({ systemName, systems, defaultOwner }) {
             {systems.map(sys => (
               <tr key={sys.id}>
                 <td className="vi-td-app" data-label="Application / System">
-                  <strong>{sys.name}</strong>
+                  <strong>{formatTechnicalWrap(sys.name)}</strong>
                   {sys.subName ? (
-                    <div className="vi-td-subname">{sys.subName}</div>
+                    <div className="vi-td-subname">{formatTechnicalWrap(sys.subName)}</div>
                   ) : null}
                 </td>
-                <td className="vi-td-desc" data-label="Short Description">{sys.description}</td>
+                <td className="vi-td-desc" data-label="Short Description">{formatTechnicalWrap(sys.description)}</td>
                 <td className="vi-td-func" data-label="Business Function">{sys.businessFunction}</td>
                 <td className="vi-td-impact" data-label={`Impact if Down (${systemName})`}>{sys.impact}</td>
-                <td className="vi-td-desc" data-label="Direct Dependencies">{sys.dependencies || "-"}</td>
-                <td className="vi-td-owner" data-label="ITS Owner">{sys.owner || defaultOwner}</td>
+                <td className="vi-td-desc vi-td-deps" data-label="Direct Dependencies">{formatTechnicalWrap(sys.dependencies || "-")}</td>
+                <td className="vi-td-owner" data-label="ITS Owner">{formatTechnicalWrap(sys.owner || defaultOwner)}</td>
               </tr>
             ))}
           </tbody>

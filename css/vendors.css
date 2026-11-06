@@ -2452,32 +2452,32 @@ body.ground-stops-page .ias-main-content.ground-stops-main.vi-inpage-main {
 
 .vi-table.vi-table-6col th:nth-child(1),
 .vi-table.vi-table-6col td:nth-child(1) {
-    width: 17%;
+    width: 20%;
 }
 
 .vi-table.vi-table-6col th:nth-child(2),
 .vi-table.vi-table-6col td:nth-child(2) {
-    width: 21%;
+    width: 20%;
 }
 
 .vi-table.vi-table-6col th:nth-child(3),
 .vi-table.vi-table-6col td:nth-child(3) {
-    width: 15%;
+    width: 13%;
 }
 
 .vi-table.vi-table-6col th:nth-child(4),
 .vi-table.vi-table-6col td:nth-child(4) {
-    width: 20%;
+    width: 17%;
 }
 
 .vi-table.vi-table-6col th:nth-child(5),
 .vi-table.vi-table-6col td:nth-child(5) {
-    width: 16%;
+    width: 18%;
 }
 
 .vi-table.vi-table-6col th:nth-child(6),
 .vi-table.vi-table-6col td:nth-child(6) {
-    width: 11%;
+    width: 12%;
 }
 
 .vi-td-app {
