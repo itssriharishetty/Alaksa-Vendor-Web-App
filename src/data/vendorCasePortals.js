@@ -16,7 +16,7 @@ export const VENDOR_CASE_PORTALS = Object.freeze({
     sourceRow: 6,
     vendor: "ARINC",
     systemName: "ARINC",
-    portalUrl: "https://auth.direct.arinc.net/"
+    portalUrl: "https://portal.arinc.net"
   },
   boeing: {
     id: "boeing",

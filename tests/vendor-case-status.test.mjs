@@ -517,8 +517,17 @@ await runTest("13. All 37 vendor records generate complete Accelya-style Vendor 
   const boeingDetails = getVendorImpactDetails(boeing, masterVendors);
   assert.equal(
     boeingDetails.vendorContacts.accountManager,
+    "(Add Account Manager)",
+    "Boeing accountManager must match documented Boeing profile"
+  );
+  const trailingPeriodTemplate = buildTemplateVendorImpactDetails(
+    { id: "trailing-period-test", company: "Boeing", systemName: "Boeing Toolbox", vendorPoc: "Rob Lowy." },
+    masterVendors
+  );
+  assert.equal(
+    trailingPeriodTemplate.vendorContacts.accountManager,
     "Rob Lowy",
-    "Boeing accountManager must strip trailing period"
+    "Template accountManager must strip trailing period"
   );
 
   // Verify inline email addresses are stripped from contact names (Dynamic Source / aircraft-performance)
@@ -983,11 +992,16 @@ await runTest("19. Avtec Vendor Impact Details contain complete operational & in
   assert.equal(avtecRecord.vendor, "Avtec");
   assert.equal(
     avtecRecord.category,
-    "Flight Operations / Dispatch Communications / Radio & Telephony"
+    "UC team: dispatch radio and phone communications"
   );
-  assert.equal(avtecRecord.aagItsTeam, "UC Team (Unified Communications)");
+  assert.equal(
+    avtecRecord.aagItsTeam,
+    "ITS Network Unified Communications (UC Team)"
+  );
   assert.equal(avtecRecord.phone, "800-545-3034");
   assert.equal(avtecRecord.email, "customersupport@avtecinc.com");
+  assert.equal(avtecRecord.supportHours, "24/7");
+  assert.ok(!avtecRecord.escalation.includes("Don't confuse Avtec with AvTech"));
 
   const details = getVendorImpactDetails(avtecRecord, masterVendors);
   assert.ok(details, "Avtec must return Vendor Impact Details");
@@ -996,96 +1010,140 @@ await runTest("19. Avtec Vendor Impact Details contain complete operational & in
   assert.equal(details.website, "(Add Website/Support Portal URL)");
   assert.equal(
     details.category,
-    "Flight Operations / Dispatch Communications / Radio & Telephony"
+    "UC team: dispatch radio and phone communications"
   );
-  assert.equal(details.itsTeam, "UC Team (Unified Communications)");
+  assert.equal(details.itsTeam, "ITS Network Unified Communications (UC Team)");
   assert.equal(details.vendorContacts.supportPhone, "800-545-3034");
   assert.equal(details.vendorContacts.supportEmail, "customersupport@avtecinc.com");
-  assert.equal(details.vendorContacts.supportHours, "24x7");
+  assert.equal(details.vendorContacts.supportHours, "24/7");
   assert.equal(details.vendorContacts.accountManager, "Avtec On-Call");
   assert.ok(details.vendorContacts.technicalSupport.includes("(Add Account Manager)"));
-  assert.ok(details.vendorContacts.namedEscalationContact.includes("(Add Vendor Escalation Contact)"));
+  assert.ok(details.vendorContacts.namedEscalationContact.includes("(Add Escalation Contacts)"));
+  assert.ok(
+    !details.impactCallout.message.includes("Don't confuse Avtec with AvTech")
+  );
+  assert.equal(details.dependenciesTab.keyTakeaways.length, 1);
+  assert.equal(details.vendorContacts.contactDirectory.length, 3);
 
-  // 2. Applications & Systems
-  assert.equal(details.impactedSystems.length, 1);
-  const sys = details.impactedSystems[0];
-  assert.equal(sys.name, "Avtec Dispatch Radio System / Avtec Scout");
-  assert.equal(sys.owner, "UC Team");
-  assert.ok(sys.description.includes("Avtec Scout as purpose-built dispatch hardware supporting up to four radio or LTE endpoints"));
-  assert.ok(sys.description.includes("AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control, QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control"));
-  assert.ok(sys.businessFunction.includes("radio-to-phone or radio-to-radio patching"));
+  // 2. Applications & Systems (5 rows)
+  assert.equal(details.impactedSystems.length, 5);
+  const sysNames = details.impactedSystems.map((s) => s.name);
+  assert.deepEqual(sysNames, [
+    "Avtec Dispatch Radio System (consoles/VPGates)",
+    "Air-to-Ground / Ground-to-Ground radios",
+    "SATCOM voice via Avtec",
+    "HigherGround (call recording)",
+    "Intercoms / Radio Dialup Remotes"
+  ]);
+  const sys0 = details.impactedSystems[0];
   assert.equal(
-    sys.impact,
-    "It is classified internally as a critical system, with possible flight delays."
+    sys0.description,
+    "Telephone and radio console; the Avtec Scout handles up to four radio or LTE endpoints"
   );
   assert.equal(
-    sys.dependencies,
-    "Avtec consoles/endpoints, VPGates, phone lines, G/G radios, A/G radios, intercoms, radio remotes, network connectivity, and UC/voice infrastructure."
+    sys0.businessFunction,
+    "Dispatch, NOC, CLP, and MX Control communications"
   );
+  assert.equal(sys0.impact, "Critical system; flight delays possible");
+  assert.equal(
+    sys0.dependencies,
+    "CUCM (Cisco call manager), VPGates (A/B sides), network/power"
+  );
+  assert.equal(sys0.owner, "UC Team");
+
+  const sys1 = details.impactedSystems[1];
+  assert.equal(sys1.owner, "UC Team / Field Services");
+  assert.equal(sys1.impact, "No radio contact with aircraft from the consoles");
+
+  const sys2 = details.impactedSystems[2];
+  assert.equal(sys2.dependencies, "Iridium / Collins");
+  assert.equal(sys2.impact, "SATCOM calls to aircraft fail");
 
   // 3. Dependencies Architecture
-  assert.equal(details.upstreamDependencies.length, 6);
-  assert.equal(details.dependenciesTab.upstreamTable.length, 6);
-  assert.equal(details.downstreamConsumers.length, 4);
-  assert.equal(details.dependenciesTab.downstreamTable.length, 4);
-  assert.equal(details.dependenciesTab.infrastructureTable.length, 7);
+  assert.equal(details.upstreamDependencies.length, 1);
+  assert.ok(details.upstreamDependencies[0].includes("DMS 1"));
+  assert.ok(details.upstreamDependencies[0].includes("DMS 2"));
+  assert.ok(details.upstreamDependencies[0].includes("DMS 3"));
+  assert.equal(details.downstreamConsumers.length, 1);
+  assert.equal(
+    details.downstreamConsumers[0],
+    "AS and QX Dispatch, the NOC Bridge, CLP, MX Control, Station Ops, and QX SOC"
+  );
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 8);
   assert.ok(
     details.dependenciesTab.infrastructureTable.some((row) =>
-      row.details.includes("SEACRAVTECOO01A") && row.details.includes("SEACRAVTECOO03B")
+      row.details.includes("seacravtecoo01a/02a/03a") &&
+      row.details.includes("IGQ VPGates")
     )
   );
   assert.ok(
     details.dependenciesTab.infrastructureTable.some((row) =>
-      row.details.includes("IGQPRAVTEC01A") && row.details.includes("IGQPRAVTEC03B")
+      row.details.includes("Connectivity between IGQ and HUB/PUY")
     )
   );
   assert.ok(
     details.dependenciesTab.infrastructureTable.some((row) =>
-      row.details.includes("connectivity between IGQ and HUB/PUY")
+      row.details.includes("laxpravtec01a/01b (Tier 1, monitored by Zenoss)")
     )
   );
   assert.ok(
     details.dependenciesTab.infrastructureTable.some((row) =>
-      row.details.includes("Zenoss Real Time Services")
+      row.details.includes("seapravtec01a–03b, seapravtecdms2, seaprhiground2")
     )
   );
   assert.ok(
     details.dependenciesTab.infrastructureTable.some((row) =>
-      row.details === "(Add Database Dependencies)"
-    )
-  );
-  assert.ok(
-    details.dependenciesTab.infrastructureTable.some((row) =>
-      row.details === "(Add Firewall Dependencies)"
+      row.details.includes("CR 131815 (SIP ALG)")
     )
   );
 
   // 4. Business Impact, Workarounds & Incident Validation Checklist
-  assert.equal(details.typicalBusinessImpact.length, 7);
-  assert.equal(details.knownWorkarounds.length, 6);
-  assert.equal(details.validationChecklist.length, 10);
-  assert.ok(details.validationChecklist[0].includes("206-688-3800"));
-  assert.ok(details.validationChecklist[9].includes("206-688-3800, option 1"));
+  assert.ok(details.impactCallout.message.includes("Tier 0"));
+  assert.equal(details.typicalBusinessImpact.length, 5);
+  assert.ok(details.typicalBusinessImpact[0].includes("PDX, 8/14/2026"));
+  assert.ok(details.typicalBusinessImpact[2].includes("MI6587"));
+  assert.ok(details.typicalBusinessImpact[3].includes("SIT, JNU, BRW"));
+  assert.equal(details.knownWorkarounds.length, 4);
+  assert.equal(details.validationChecklist.length, 7);
+  assert.ok(details.validationChecklist[1].includes("206-688-3800 Opt 1"));
+  assert.ok(details.validationChecklist[6].includes("12–25 remotes"));
 
   // 5. Contacts & SLAs
-  assert.equal(details.vendorContacts.communicationGuidelines.length, 10);
-  assert.equal(details.vendorContacts.responseSlas.length, 8);
-  assert.equal(details.internalContacts.itsTeam, "UC Team (Unified Communications)");
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 2);
+  assert.ok(
+    details.vendorContacts.communicationGuidelines[1].includes(
+      "AVTEC Request Page on the NOC Bridge SharePoint"
+    )
+  );
+  assert.equal(details.vendorContacts.responseSlas.length, 3);
+  assert.equal(
+    details.internalContacts.itsTeam,
+    "ITS Network Unified Communications (UC Team)"
+  );
   assert.equal(
     details.internalContacts.businessOwner,
-    "Flight Operations / ERBC Team, ERBC.Team@alaskaair.com (24x7)"
+    "Network Unified Comms team (TeamUC@AlaskaAir.com)"
   );
-  assert.equal(details.internalContacts.passwordSupport, "ITS Service Desk, 877-238-1077");
-  assert.ok(details.internalContacts.systemAdministration.includes("Scott Heilman"));
+  assert.equal(
+    details.internalContacts.passwordSupport,
+    "ITS Service Desk, 877-238-1077"
+  );
+  assert.equal(details.internalContacts.internalDirectory.length, 7);
   assert.ok(details.internalContacts.systemAdministration.includes("Dan Olson"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Scott Heilman"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Owen Talbert"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Rohan Debnath"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Karthik Yadavalli"));
+  assert.ok(details.internalContacts.systemAdministration.includes("Dennis VanTrease"));
 
   // 6. Related Documents & Incident References
-  assert.equal(details.relatedDocuments.length, 8);
+  assert.equal(details.relatedDocuments.length, 31);
   const avtecDocTitles = details.relatedDocuments.map((d) => d.title);
-  assert.ok(avtecDocTitles.includes("Avtec System Summary.docx"));
-  assert.ok(avtecDocTitles.includes("Avtec User Guide.docx"));
+  assert.ok(avtecDocTitles.includes("Avtec_System_Summary.docx"));
+  assert.ok(avtecDocTitles.includes("Technology Recovery Document - AVTEC.docx"));
   assert.ok(avtecDocTitles.includes("2026_Avtec_DR_Plan.xlsx"));
   assert.ok(avtecDocTitles.includes("Avtec Common Troubleshooting Steps.docx"));
+  assert.ok(avtecDocTitles.includes("3274437 - AvTech SSR feed issue (Teams)"));
 });
 
 // TEST 20: Ground Stop Applications View Details opens full-page Impact Details (ACARS & all 9 Ground Stop apps)
@@ -1614,6 +1672,7 @@ await runTest("22. Admin renders identical Ground Stop & Vendor cards and allows
   assert.equal(editedVendorDetails.relatedDocuments[0].title, "Admin Runbook");
 });
 
+<<<<<<< HEAD
 await runTest("23. Home dashboard includes live global search dropdown, deep-linked categories, vendor/SLA tile meta, Vendor Case Portals quick link, and pinned favorites strip", async () => {
   const homeSource = await readFile(resolve(rootDir, "src/pages/Home.jsx"), "utf8");
   const homeCss = await readFile(resolve(rootDir, "css/home-welcome.css"), "utf8");
@@ -1646,6 +1705,413 @@ await runTest("23. Home dashboard includes live global search dropdown, deep-lin
       homeCss.includes(".ql-card-green"),
     "Home.jsx and home-welcome.css must render and style pinned favorites strip, quick links, and search dropdown"
   );
+=======
+// ============================================================================
+// 23. ARINC Vendor Card & Vendor Impact Details contain complete operational & incident data
+// ============================================================================
+await runTest("23. ARINC Vendor Card & Vendor Impact Details contain complete operational & incident data", async () => {
+  const masterVendors = globalThis.window.masterData.vendors;
+  const arincRecord = masterVendors.find((v) => v.id === "arinc");
+  assert.ok(arincRecord, "arinc vendor record must exist in master-data.js");
+  assert.equal(arincRecord.sourceRow, 6);
+  assert.equal(arincRecord.vendor, "ARINC");
+  assert.equal(
+    arincRecord.fullCompanyName,
+    "ARINC (Aeronautical Radio, Incorporated), now part of Collins Aerospace"
+  );
+  assert.equal(
+    arincRecord.category,
+    "Flight Ops: communication to aircraft (ACARS)"
+  );
+  assert.equal(arincRecord.aagItsTeam, "ITS Flight Operations");
+  assert.equal(arincRecord.aagItsPoc, "Ryan Wilkins, 206-972-0228");
+  assert.equal(arincRecord.phone, "800-633-6882");
+  assert.equal(arincRecord.email, "AOChelpdesk@collins.com");
+  assert.equal(arincRecord.portalUrl, "https://portal.arinc.net");
+
+  const details = getVendorImpactDetails(arincRecord, masterVendors);
+  assert.ok(details, "ARINC must return Vendor Impact Details");
+  assert.equal(details.id, "arinc");
+
+  // 1. Basic Information
+  assert.equal(
+    details.company,
+    "ARINC (Aeronautical Radio, Incorporated), now part of Collins Aerospace"
+  );
+  assert.equal(
+    details.website,
+    "https://portal.arinc.net (you need an ARINC Portal login; otherwise use email or phone)"
+  );
+  assert.equal(
+    details.category,
+    "Flight Ops: communication to aircraft (ACARS)"
+  );
+  assert.equal(
+    details.itsTeam,
+    "ITS Flight Operations (ITS System Owner: Ryan Wilkins)"
+  );
+  assert.equal(details.vendorContacts.supportPhone, "800-633-6882");
+  assert.ok(
+    details.vendorContacts.supportPhoneNote.includes("800-482-0004") &&
+      details.vendorContacts.supportPhoneNote.includes("800-482-0006")
+  );
+  assert.equal(details.vendorContacts.supportEmail, "AOChelpdesk@collins.com");
+  assert.ok(
+    details.vendorContacts.supportEmailNote.includes("4/20/2026") &&
+      details.vendorContacts.supportEmailNote.includes("helpdesk@arinc.com") &&
+      details.vendorContacts.supportEmailNote.includes("ops_hd@arinc.com")
+  );
+  assert.equal(
+    details.vendorContacts.supportHours,
+    "24x7 (rotating Senior On-Duty Operations Manager)"
+  );
+
+  // 2. Applications & Systems (9 applications/systems)
+  assert.equal(details.impactedSystems.length, 9);
+  const appNames = details.impactedSystems.map((s) => s.name);
+  assert.deepEqual(appNames, [
+    "ACARS Ground System (SITA Aircom Server)",
+    "WAM / Jetplan ATC flight plans",
+    "Sabre (dispatch)",
+    "Boeing Wind Uplinks",
+    "Aircraft Performance (AeroData) via ACARS",
+    "Flight Planning System (FlightKeys/FPS)",
+    "Flyways Messenger",
+    "HA ACARS / Type B",
+    "Common Use 3.0 (Collins/ARINC platform)"
+  ]);
+  assert.equal(
+    details.impactedSystems[0].impact,
+    "Loss of message flow between ARINC and Alaska systems"
+  );
+  assert.equal(
+    details.impactedSystems[0].dependencies,
+    "IBM MQ QMAS (ALASKA.FROM.ARINC / ALASKA.TO.ARINC), SQL Server"
+  );
+  assert.equal(
+    details.impactedSystems[0].owner,
+    "ITS Flight Operations, Ryan Wilkins"
+  );
+  assert.equal(
+    details.impactedSystems[4].impact,
+    "No performance numbers reach crews"
+  );
+  assert.equal(
+    details.impactedSystems[8].impact,
+    "Agents switch to CSAM"
+  );
+  assert.equal(
+    details.impactedSystems[8].dependencies,
+    "Squid proxy servers seavvproxy/tukvvproxy"
+  );
+
+  // 3. Dependencies Architecture (3 upstream, 3 downstream, 3 infrastructure)
+  assert.equal(details.upstreamDependencies.length, 3);
+  assert.equal(details.dependenciesTab.upstreamTable.length, 3);
+  assert.equal(details.downstreamConsumers.length, 3);
+  assert.equal(details.dependenciesTab.downstreamTable.length, 3);
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 3);
+  assert.ok(
+    details.dependenciesTab.infrastructureTable[0].description.includes("QMAS.AMX1") &&
+      details.dependenciesTab.infrastructureTable[0].description.includes("AMX1QM1.QMAS") &&
+      details.dependenciesTab.infrastructureTable[0].description.includes("159.49.240.60")
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable[1].description.includes("BGP routing over AT&T circuits (SE4/IGQ)") &&
+      details.dependenciesTab.infrastructureTable[1].description.includes("ASAR")
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable[2].description.includes("SEAVVACARSAPP03") &&
+      details.dependenciesTab.infrastructureTable[2].description.includes("SEAPRACARSSQL02")
+  );
+
+  // 4. Business Impact, Workarounds & Incident Validation Checklist
+  assert.ok(
+    details.impactCallout.message.includes("Annapolis") &&
+      details.impactCallout.message.includes("Islip, NY") &&
+      details.impactCallout.message.includes("under 2 minutes")
+  );
+  assert.equal(details.typicalBusinessImpact.length, 3);
+  assert.ok(details.typicalBusinessImpact[0].includes("Sev1 MI6516 (1/9/2026)"));
+  assert.ok(details.typicalBusinessImpact[2].includes("JNU"));
+  assert.equal(details.knownWorkarounds.length, 3);
+  assert.equal(details.validationChecklist.length, 6);
+  assert.ok(
+    details.validationChecklist[0].includes("acars.app.insideaag.com/StatusReport.htm")
+  );
+  assert.ok(details.validationChecklist[2].includes("AMX1QM1.QMAS"));
+  assert.ok(
+    details.validationChecklist[4].includes("AircomWebSvcInvokerSvc on SEAVVAPP22/TUKVVAPP22")
+  );
+
+  // 5. Contacts & SLAs
+  assert.equal(details.vendorContacts.contactDirectory.length, 9);
+  assert.ok(
+    details.vendorContacts.contactWarningNote.includes("Brian Anderson and Luke Wilson")
+  );
+  assert.equal(details.internalContacts.internalDirectory.length, 6);
+  assert.equal(details.internalContacts.applicationOwner, "Ryan Wilkins, 206-972-0228");
+  assert.equal(
+    details.internalContacts.businessOwner,
+    "James Falen (Flight Ops), 425-679-2135 (cell) / 206-392-6083 (desk)"
+  );
+  assert.equal(
+    details.internalContacts.systemAdministration,
+    "Andy Nunez, Arun Sharma, 206-392-8613"
+  );
+  assert.equal(
+    details.internalContacts.everbridgeContacts,
+    "Everbridge Backup: Charles Ostick, 877-238-1077"
+  );
+  assert.equal(
+    details.internalContacts.onCallSupport,
+    "COG FltOps / ITS FltOps on-call; Middleware (IBM MQ)"
+  );
+  assert.equal(
+    details.internalContacts.acarsSmes,
+    "John Thivierge, Sylvain Laviolette"
+  );
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 2);
+  assert.equal(details.vendorContacts.responseSlas.length, 3);
+
+  // 6. Related Documents (17 cited sources)
+  assert.equal(details.relatedDocuments.length, 17);
+});
+
+// ============================================================================
+// 24. Boeing Vendor Card & Vendor Impact Details contain complete operational data
+// ============================================================================
+await runTest("24. Boeing Vendor Card & Vendor Impact Details contain complete operational data", async () => {
+  const masterVendors = globalThis.window.masterData.vendors;
+  const boeingRecord = masterVendors.find((v) => v.id === "boeing");
+  assert.ok(boeingRecord, "boeing vendor record must exist in master-data.js");
+  assert.equal(boeingRecord.sourceRow, 14);
+  assert.equal(boeingRecord.vendor, "Boeing");
+  assert.equal(
+    boeingRecord.category,
+    "Maintenance (M&E): maintenance reference library"
+  );
+  assert.equal(boeingRecord.aagItsTeam, "ITS COG M&E App Support");
+  assert.ok(boeingRecord.phone.includes("206-544-9990, Option 1"));
+  assert.ok(boeingRecord.phone.includes("206-544-7500, Option 2"));
+  assert.equal(boeingRecord.email, "(Add Vendor Support Email)");
+  assert.equal(boeingRecord.supportHours, "24x7");
+  assert.equal(boeingRecord.portalUrl, "http://myboeingfleet.com");
+
+  const details = getVendorImpactDetails(boeingRecord, masterVendors);
+  assert.ok(details, "Boeing must return Vendor Impact Details");
+  assert.equal(details.id, "boeing");
+  assert.equal(details.company, "Boeing");
+  assert.ok(details.website.includes("http://myboeingfleet.com"));
+  assert.ok(details.website.includes("https://myboeingfleet.boeing.com/toolbox/"));
+  assert.equal(
+    details.category,
+    "Maintenance (M&E): maintenance reference library"
+  );
+  assert.ok(details.itsTeam.includes("ITS COG M&E App Support"));
+  assert.ok(details.itsTeam.includes("Jerred Slavata"));
+  assert.ok(details.itsTeam.includes("Rituraj"));
+  assert.ok(details.itsTeam.includes("M&E and Safety ITS – On Call 24x7"));
+  assert.ok(details.vendorContacts.supportPhone.includes("206-544-9990, Option 1"));
+  assert.ok(details.vendorContacts.supportPhone.includes("206-544-7500, Option 2"));
+  assert.equal(details.vendorContacts.supportEmail, "(Add Vendor Support Email)");
+  assert.equal(details.vendorContacts.supportHours, "24x7");
+  assert.equal(details.vendorContacts.accountManager, "(Add Account Manager)");
+  assert.equal(details.vendorContacts.contactDirectory.length, 3);
+
+  // 2. Applications & Systems (4 rows)
+  assert.equal(details.impactedSystems.length, 4);
+  const sysNames = details.impactedSystems.map((s) => s.name);
+  assert.deepEqual(sysNames, [
+    "Maintenance Performance Toolbox (MPT)",
+    "My Boeing Fleet (MBF)",
+    "Toolbox Mobile Library (TML)",
+    "Toolbox Remote (TBR)"
+  ]);
+  const mpt = details.impactedSystems[0];
+  assert.ok(mpt.impact.includes("6p–6a is the most critical window"));
+  assert.ok(mpt.dependencies.includes("Express Connect SAML SSO"));
+  assert.ok(mpt.dependencies.includes("IG View/ISO View plug-in"));
+  assert.equal(mpt.owner, "ITS COG M&E App Support");
+
+  const mbf = details.impactedSystems[1];
+  assert.equal(mbf.impact, "No way into MPT");
+
+  const tml = details.impactedSystems[2];
+  assert.equal(tml.owner, "Business Focal for Mobile: Sam Russell");
+
+  const tbr = details.impactedSystems[3];
+  assert.equal(tbr.impact, "N/A (this is the fallback)");
+  assert.equal(tbr.owner, "M&E Technical Publications");
+
+  // 3. Dependencies Architecture
+  assert.deepEqual(details.upstreamDependencies, ["(Add Upstream Dependencies)"]);
+  assert.deepEqual(details.downstreamConsumers, [
+    "M&E Technical Publications",
+    "Line Maintenance",
+    "Maintenance Control",
+    "AOG Engineering",
+    "Maintenance Programs authors, for the MTLSM"
+  ]);
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 5);
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("Express Connect (SAML)")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("IG View/ISO View plug-in (deployed through Altiris)")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("Use the Comcast PC")
+    )
+  );
+
+  // 4. Business Impact, Workarounds & Incident Validation Checklist
+  assert.ok(details.impactCallout.message.includes("overnight 6p–6a window matters most"));
+  assert.equal(details.typicalBusinessImpact.length, 3);
+  assert.equal(details.knownWorkarounds.length, 2);
+  assert.ok(details.knownWorkarounds[0].includes("six Mobile Hard Drives"));
+  assert.equal(details.validationChecklist.length, 7);
+  assert.ok(details.validationChecklist[1].includes("Comcast PC"));
+  assert.ok(details.validationChecklist[5].includes("Boeing.Access.Requests@alaskaair.com"));
+  assert.equal(details.validationChecklist[6], "CC Rob Lowy on every Toolbox issue.");
+
+  // 5. Contacts & SLAs
+  assert.equal(details.internalContacts.internalDirectory.length, 7);
+  assert.ok(details.internalContacts.businessOwner.includes("Rob Lowy, cell 253-455-1716"));
+  assert.ok(details.internalContacts.businessOwner.includes("Sam Russell, 206-948-1136"));
+  assert.ok(details.internalContacts.everbridgeContacts.includes("Andrew Fitts (M&E), 206-369-0377"));
+  assert.equal(details.internalContacts.passwordSupport, "ITS Service Center, 877-238-1077, 24x7");
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(details.vendorContacts.responseSlas.length, 3);
+  assert.ok(details.vendorContacts.responseSlas[0].target.includes("15 minutes to 1 hour"));
+
+  // 6. Related Documents (13 cited sources)
+  assert.equal(details.relatedDocuments.length, 13);
+});
+
+await runTest("25. CHAMP, AirClic, SmartKargo vendor card (sourceRow 30) and Vendor Impact Details match enterprise profile", async () => {
+  const masterVendors = globalThis.window.masterData.vendors;
+  const cargoRecord = masterVendors.find(
+    (item) => item.id === "cargo-spot" || item.sourceRow === 30
+  );
+  assert.ok(cargoRecord, "CHAMP / AirClic / SmartKargo master-data record (sourceRow 30) must exist");
+  assert.equal(cargoRecord.company, "CHAMP , Airclic  , SmartKargo");
+  assert.equal(
+    cargoRecord.category,
+    "Cargo: air waybill reservation, tracking & accounting (CHAMP) • ULD scanning & Planeside Tool (AirClic/Descartes) • Online booking (SmartKargo)"
+  );
+  assert.ok(cargoRecord.aagItsTeam.includes("ITS COG Airport Ops Support"));
+  assert.ok(cargoRecord.aagItsTeam.includes("ITS Airport Operations"));
+  assert.ok(cargoRecord.aagItsPoc.includes("John Antony Dubreuil"));
+  assert.ok(cargoRecord.aagItsPoc.includes("Will Marken, 206-245-4584 (6:30–18:30)"));
+  assert.ok(cargoRecord.aagItsPoc.includes("Gary Johnson, 573-854-1582"));
+  assert.ok(cargoRecord.phone.includes("+44 20 8587 8080"));
+  assert.ok(cargoRecord.phone.includes("011 41 77 425 2866"));
+  assert.ok(cargoRecord.phone.includes("877-786-9339"));
+  assert.ok(cargoRecord.phone.includes("877-901-7557"));
+  assert.ok(cargoRecord.phone.includes("617-607-4066"));
+  assert.ok(cargoRecord.phone.includes("888-733-0568"));
+  assert.ok(cargoRecord.email.includes("support@champ.aero"));
+  assert.ok(cargoRecord.email.includes("servicedesk@descartes.com"));
+  assert.ok(cargoRecord.email.includes("ha@skglobal.zohodesk.com"));
+  assert.ok(cargoRecord.escalation.includes("wking@descartes.com"));
+  assert.ok(cargoRecord.escalation.includes("skglobal@smartkargo.com"));
+
+  const details = getVendorImpactDetails(cargoRecord, masterVendors);
+  assert.ok(details, "getVendorImpactDetails must return cargo-spot profile");
+  assert.equal(details.id, "cargo-spot");
+
+  // 1. Basic Information & Contacts
+  assert.ok(details.company.includes("CHAMP (support@champ.aero domain)"));
+  assert.ok(details.company.includes("Descartes (formerly AirClic)"));
+  assert.ok(details.company.includes("SmartKargo"));
+  assert.ok(details.website.includes("https://servicedesk.descartes.com/ (registration required)"));
+  assert.equal(details.vendorContacts.contactDirectory.length, 6);
+  assert.ok(details.vendorContacts.contactWarningNote.includes("CHAMP / CargoSPOT may be outdated"));
+  assert.ok(details.vendorContacts.contactWarningNote.includes("AirClic has two support numbers"));
+  assert.ok(details.vendorContacts.contactWarningNote.includes("SmartKargo has two support numbers"));
+
+  // 2. Applications & Systems (6 total across CHAMP, AirClic, SmartKargo)
+  assert.equal(details.impactedSystems.length, 6);
+  const sysNames = details.impactedSystems.map((s) => s.name);
+  assert.deepEqual(sysNames, [
+    "CargoSPOT (cSpot)",
+    "Cargo Payment",
+    "ULD Scanning / Verification",
+    "Planeside Tool (PST)",
+    "Igloo Verification Report / ULD AVR",
+    "SmartKargo"
+  ]);
+  assert.equal(
+    details.impactedSystems[0].dependencies,
+    "Windows Server 2008 R2, JRE 1.7u45, LDAP auth"
+  );
+  assert.equal(
+    details.impactedSystems[0].owner,
+    "ITS System Owner: Will Marken, 206-245-4584 (6:30–18:30)"
+  );
+  assert.equal(details.impactedSystems[2].impact, "Handsets can't download load data");
+  assert.equal(
+    details.impactedSystems[4].impact,
+    "Descartes data missing from the report"
+  );
+  assert.equal(
+    details.impactedSystems[5].businessFunction,
+    "Cargo booking. For HA, also payments and settlement via VeriFone"
+  );
+
+  // 3. Dependencies Architecture
+  assert.equal(details.upstreamDependencies.length, 3);
+  assert.ok(
+    details.upstreamDependencies[0].includes("QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT")
+  );
+  assert.ok(details.upstreamDependencies[1].includes("InsertULDScanInfo()"));
+  assert.equal(details.downstreamConsumers.length, 3);
+  assert.equal(details.dependenciesTab.infrastructureTable.length, 6);
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("TUKVVAAGSSDB01")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("JBoss/Harvester on TUKVVAPP17")
+    )
+  );
+  assert.ok(
+    details.dependenciesTab.infrastructureTable.some((row) =>
+      row.details.includes("TC75x scanners managed through WS1")
+    )
+  );
+
+  // 4. Business Impact, Workarounds & Incident Validation Checklist
+  assert.equal(details.dependenciesTab.keyTakeaways.length, 3);
+  assert.ok(details.dependenciesTab.keyTakeaways[0].includes("internal SLA of 20 minutes"));
+  assert.ok(details.dependenciesTab.keyTakeaways[1].includes("AirClic scanning issues are classed as Sev 2"));
+  assert.ok(details.dependenciesTab.keyTakeaways[2].includes("customer-facing tool for booking cargo online"));
+  assert.equal(details.typicalBusinessImpact.length, 5);
+  assert.equal(details.knownWorkarounds.length, 3);
+  assert.equal(details.validationChecklist.length, 10);
+
+  // 5. Contacts & SLAs
+  assert.equal(details.internalContacts.internalDirectory.length, 7);
+  assert.equal(details.vendorContacts.communicationGuidelines.length, 3);
+  assert.equal(details.vendorContacts.responseSlas.length, 3);
+  assert.ok(details.vendorContacts.responseSlas[0].target.includes("Internal 20 minutes"));
+
+  // 6. Related Documents (22 cited sources)
+  assert.equal(details.relatedDocuments.length, 22);
+
+  // 7. Standalone sub-vendor profiles also exist
+  assert.ok(VENDOR_IMPACT_DETAILS.champ, "Standalone CHAMP profile must exist");
+  assert.ok(VENDOR_IMPACT_DETAILS.airclic, "Standalone AirClic profile must exist");
+  assert.ok(VENDOR_IMPACT_DETAILS.smartkargo, "Standalone SmartKargo profile must exist");
+>>>>>>> 3419aaa (WIP on Vendor contacts)
 });
 
 const passedCount = results.filter((r) => r.passed).length;

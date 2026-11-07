@@ -2217,93 +2217,147 @@ export default function Vendors() {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td className="vi-td-app">
-                                <strong>Vendor Support Desk</strong>
-                              </td>
-                              <td className="vi-td-func">
-                                {impactData.vendorContacts.accountManager ||
-                                  impactData.name}
-                              </td>
-                              <td className="vi-td-desc">
-                                <div>
-                                  <strong>Phone:</strong>{" "}
-                                  {impactData.vendorContacts.supportPhone}
-                                </div>
-                                <div>
-                                  <strong>Email:</strong>{" "}
-                                  {impactData.vendorContacts.supportEmail}
-                                </div>
-                              </td>
-                              <td className="vi-td-impact">
-                                {impactData.vendorContacts.supportHours ||
-                                  impactData.vendorContacts.technicalSupport ||
-                                  "Follow vendor support schedule"}
-                              </td>
-                            </tr>
+                            {Array.isArray(
+                              impactData.vendorContacts.contactDirectory
+                            ) &&
+                            impactData.vendorContacts.contactDirectory.length >
+                              0 ? (
+                              impactData.vendorContacts.contactDirectory.map(
+                                (entry, idx) => (
+                                  <tr key={`vdir-${idx}`}>
+                                    <td className="vi-td-app">
+                                      <strong>{entry.role}</strong>
+                                    </td>
+                                    <td className="vi-td-func">{entry.name}</td>
+                                    <td className="vi-td-desc">
+                                      {entry.phone}
+                                    </td>
+                                    <td className="vi-td-impact">
+                                      {entry.email}
+                                    </td>
+                                  </tr>
+                                )
+                              )
+                            ) : (
+                              <>
+                                <tr>
+                                  <td className="vi-td-app">
+                                    <strong>Vendor Support Desk</strong>
+                                  </td>
+                                  <td className="vi-td-func">
+                                    {impactData.vendorContacts.accountManager ||
+                                      impactData.name}
+                                  </td>
+                                  <td className="vi-td-desc">
+                                    <div>
+                                      <strong>Phone:</strong>{" "}
+                                      {impactData.vendorContacts.supportPhone}
+                                    </div>
+                                    <div>
+                                      <strong>Email:</strong>{" "}
+                                      {impactData.vendorContacts.supportEmail}
+                                    </div>
+                                  </td>
+                                  <td className="vi-td-impact">
+                                    {impactData.vendorContacts.supportHours ||
+                                      impactData.vendorContacts
+                                        .technicalSupport ||
+                                      "Follow vendor support schedule"}
+                                  </td>
+                                </tr>
 
-                            {(impactData.vendorContacts.secondaryEmail ||
-                              impactData.vendorContacts
-                                .namedEscalationContact) && (
-                              <tr>
-                                <td className="vi-td-app">
-                                  <strong>
-                                    Secondary / Escalation Contact
-                                  </strong>
-                                </td>
-                                <td className="vi-td-func">
-                                  {impactData.vendorContacts
-                                    .namedEscalationContact || impactData.name}
-                                </td>
-                                <td className="vi-td-desc">
-                                  {impactData.vendorContacts.secondaryEmail ||
-                                    impactData.vendorContacts.supportPhone}
-                                </td>
-                                <td className="vi-td-impact">
-                                  {impactData.vendorContacts
-                                    .secondaryEmailNote ||
-                                    "Vendor Escalation Contact"}
-                                </td>
-                              </tr>
+                                {(impactData.vendorContacts.secondaryEmail ||
+                                  impactData.vendorContacts
+                                    .namedEscalationContact) && (
+                                  <tr>
+                                    <td className="vi-td-app">
+                                      <strong>
+                                        Secondary / Escalation Contact
+                                      </strong>
+                                    </td>
+                                    <td className="vi-td-func">
+                                      {impactData.vendorContacts
+                                        .namedEscalationContact ||
+                                        impactData.name}
+                                    </td>
+                                    <td className="vi-td-desc">
+                                      {impactData.vendorContacts
+                                        .secondaryEmail ||
+                                        impactData.vendorContacts.supportPhone}
+                                    </td>
+                                    <td className="vi-td-impact">
+                                      {impactData.vendorContacts
+                                        .secondaryEmailNote ||
+                                        "Vendor Escalation Contact"}
+                                    </td>
+                                  </tr>
+                                )}
+                              </>
                             )}
 
-                            <tr>
-                              <td className="vi-td-app">
-                                <strong>Primary Alaska ITS Team</strong>
-                              </td>
-                              <td className="vi-td-func">
-                                {impactData.internalContacts.itsTeam}
-                              </td>
-                              <td className="vi-td-desc">
-                                {impactData.internalContacts.onCallSupport ||
-                                  impactData.internalContacts
-                                    .systemAdministration ||
-                                  "Engage via ITS On-Call"}
-                              </td>
-                              <td className="vi-td-impact">
-                                {impactData.internalContacts.itsTeamNote ||
-                                  impactData.internalContacts.businessOwner}
-                              </td>
-                            </tr>
+                            {Array.isArray(
+                              impactData.internalContacts.internalDirectory
+                            ) &&
+                            impactData.internalContacts.internalDirectory
+                              .length > 0 ? (
+                              impactData.internalContacts.internalDirectory.map(
+                                (item, idx) => (
+                                  <tr key={`idir-${idx}`}>
+                                    <td className="vi-td-app">
+                                      <strong>Alaska: {item.role}</strong>
+                                    </td>
+                                    <td className="vi-td-func">
+                                      {impactData.internalContacts.itsTeam}
+                                    </td>
+                                    <td className="vi-td-desc" colSpan={2}>
+                                      {item.contact}
+                                    </td>
+                                  </tr>
+                                )
+                              )
+                            ) : (
+                              <>
+                                <tr>
+                                  <td className="vi-td-app">
+                                    <strong>Primary Alaska ITS Team</strong>
+                                  </td>
+                                  <td className="vi-td-func">
+                                    {impactData.internalContacts.itsTeam}
+                                  </td>
+                                  <td className="vi-td-desc">
+                                    {impactData.internalContacts
+                                      .onCallSupport ||
+                                      impactData.internalContacts
+                                        .systemAdministration ||
+                                      "Engage via ITS On-Call"}
+                                  </td>
+                                  <td className="vi-td-impact">
+                                    {impactData.internalContacts.itsTeamNote ||
+                                      impactData.internalContacts.businessOwner}
+                                  </td>
+                                </tr>
 
-                            <tr>
-                              <td className="vi-td-app">
-                                <strong>AAG ITS POC / App Owner</strong>
-                              </td>
-                              <td className="vi-td-func">
-                                {impactData.internalContacts.applicationOwner}
-                              </td>
-                              <td className="vi-td-desc">
-                                {impactData.internalContacts
-                                  .systemAdministration ||
-                                  impactData.internalContacts.itsTeam}
-                              </td>
-                              <td className="vi-td-impact">
-                                {impactData.internalContacts.passwordSupport
-                                  ? `Password Support: ${impactData.internalContacts.passwordSupport}`
-                                  : `Business Owner: ${impactData.internalContacts.businessOwner}`}
-                              </td>
-                            </tr>
+                                <tr>
+                                  <td className="vi-td-app">
+                                    <strong>AAG ITS POC / App Owner</strong>
+                                  </td>
+                                  <td className="vi-td-func">
+                                    {impactData.internalContacts
+                                      .applicationOwner}
+                                  </td>
+                                  <td className="vi-td-desc">
+                                    {impactData.internalContacts
+                                      .systemAdministration ||
+                                      impactData.internalContacts.itsTeam}
+                                  </td>
+                                  <td className="vi-td-impact">
+                                    {impactData.internalContacts.passwordSupport
+                                      ? `Password Support: ${impactData.internalContacts.passwordSupport}`
+                                      : `Business Owner: ${impactData.internalContacts.businessOwner}`}
+                                  </td>
+                                </tr>
+                              </>
+                            )}
 
                             {Array.isArray(
                               impactData.vendorContacts.responseSlas
@@ -2337,6 +2391,23 @@ export default function Vendors() {
                           </tbody>
                         </table>
                       </div>
+
+                      {impactData.vendorContacts.contactWarningNote && (
+                        <div
+                          className="vi-contact-warning-note"
+                          style={{
+                            marginTop: "12px",
+                            padding: "10px 14px",
+                            background: "#FFFBEB",
+                            border: "1px solid #FDE68A",
+                            borderRadius: "8px",
+                            fontSize: "13px",
+                            color: "#92400E"
+                          }}
+                        >
+                          {impactData.vendorContacts.contactWarningNote}
+                        </div>
+                      )}
 
                       {Array.isArray(
                         impactData.vendorContacts.communicationGuidelines
@@ -2498,6 +2569,7 @@ export default function Vendors() {
                       <ContactRow
                         label="Support Phone"
                         value={impactData.vendorContacts.supportPhone}
+                        note={impactData.vendorContacts.supportPhoneNote}
                         iconType="phone"
                         copyField="phone"
                         copiedField={copiedField}
@@ -2596,6 +2668,24 @@ export default function Vendors() {
                           value={impactData.internalContacts.everbridgeContacts}
                           isMultiline={true}
                           iconType="everbridge"
+                        />
+                      )}
+
+                      {impactData.internalContacts.onCallSupport && (
+                        <ContactRow
+                          label="On-Call"
+                          value={impactData.internalContacts.onCallSupport}
+                          isMultiline={true}
+                          iconType="team"
+                        />
+                      )}
+
+                      {impactData.internalContacts.acarsSmes && (
+                        <ContactRow
+                          label="ACARS SMEs"
+                          value={impactData.internalContacts.acarsSmes}
+                          isMultiline={true}
+                          iconType="owner"
                         />
                       )}
                     </div>

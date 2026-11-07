@@ -216,6 +216,21 @@ function mergeVendorOverridesIntoCatalog(baseVendors = [], vendorOverrides = nul
     if (override.vendorDataVersion !== 3 && (override.sourceRow === 3 || override.sourceRow === 9)) {
       return;
     }
+    if (
+      (override.id === "arinc" ||
+        Number(override.sourceRow) === 6 ||
+        override.id === "avtec" ||
+        Number(override.sourceRow) === 23 ||
+        override.id === "boeing" ||
+        Number(override.sourceRow) === 14 ||
+        override.id === "cargo-spot" ||
+        Number(override.sourceRow) === 30) &&
+      override.vendorDataVersion !== 4 &&
+      !override.adminEdited &&
+      (!Array.isArray(override.editedFields) || override.editedFields.length === 0)
+    ) {
+      return;
+    }
 
     const vendor = result.find(
       item =>

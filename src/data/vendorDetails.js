@@ -6377,445 +6377,525 @@ export const VENDOR_IMPACT_DETAILS = {
     breadcrumbTrail: ["Vendors", "Avtec", "Vendor Impact"],
     pageTitle: "Avtec - Vendor Impact Details",
     pageSubtitle:
-      "Avtec Scout provides dispatch radio, air-to-ground, and telephony console communications for Alaska and Horizon operations.",
+      "Avtec is the main console for phone and radio communications in Dispatch, the NOC, and operations centers (Critical System · Tier 0).",
     applicationsTabTitle: "Avtec",
     applicationsTabSubheading: "Applications & Systems",
     applicationsTabSubtitle:
-      "View all Alaska applications, dispatch hardware, and operational consumer groups that depend on Avtec.",
-    dependenciesTabTitle: "Avtec - Dependencies",
+      "View all Alaska and Horizon applications, dispatch consoles, radio/SATCOM systems, and call recording tools that depend on Avtec.",
+    applicationsCardSubtitle:
+      "Applications, radio/SATCOM consoles, call recording, and remote endpoints supported by Avtec",
+    dependenciesTabTitle: "Avtec - Dependencies Architecture",
     dependenciesTabSubtitle:
-      "View upstream and downstream dependencies, integrations, and infrastructure components for Avtec.",
+      "Upstream CUCM inbound call paths, downstream operational consumers, and VPGate, DMS, firewall, circuit, and authentication infrastructure for Avtec.",
     company: "Avtec",
     website: "(Add Website/Support Portal URL)",
-    category: "Flight Operations / Dispatch Communications / Radio & Telephony",
-    itsTeam: "UC Team (Unified Communications)",
+    category: "UC team: dispatch radio and phone communications",
+    itsTeam: "ITS Network Unified Communications (UC Team)",
     logo: "public/vendors/avtec.jpg",
     status: "Active",
-    lastUpdated: "Source-Verified Runbook",
+    lastUpdated: "2026 (Avtec_System_Summary, 2026_Avtec_DR_Plan & Incident Records)",
     subtitle:
-      "Flight Operations / Dispatch Communications / Radio & Telephony (Avtec Dispatch Radio System / Avtec Scout · Critical System · 24x7)",
+      "UC team: dispatch radio and phone communications (Critical System · Tier 0 · 24/7)",
     impactCallout: {
       level: "Critical",
+      title: "Key Takeaways: Critical System – Impact: Flight Delays Possible (Tier 0)",
       message:
-        "Critical System - Avtec is a critical Flight Operations communications system supporting Dispatch and operational groups (AS & QX Dispatch, Bridge, CLP, Maintenance Control) through phone lines, G/G and A/G radios, intercoms, radio remotes, transfers, and broadcasts; unavailability can impede communication with stations/agents (e.g., gate changes and aircraft coordination) and cause potential flight delays. IMPORTANT OPERATIONAL TAKEAWAY: Do not immediately call Avtec for every Avtec issue - contact the UC Team first at 206-688-3800, option 1 (24x7), who determines whether vendor escalation is needed, and isolate CUCM/VPGate configuration and Hub/Lumen voice paths before classifying a broad failure as a vendor outage."
+        "Avtec is the main console for phone and radio communications in Dispatch, the NOC, and operations centers. Its documented criticality is \"Critical System – Impact: Flight Delays possible\". The Technology Recovery Document lists it as Tier 0. Most past outages started outside Avtec itself, in CUCM, firewall, circuit, or power changes."
     },
-    applicationsCardSubtitle:
-      "Applications, dispatch hardware, and operational consumer groups supported by Avtec",
     impactSummary: {
-      confirmed: 1,
-      potential: 8,
+      confirmed: 0,
+      potential: 5,
       notImpacted: 0,
       underReview: 0
     },
     impactedSystems: [
       {
         id: "avtec-dispatch-radio-system",
-        name: "Avtec Dispatch Radio System / Avtec Scout",
-        subName: "(Critical System · AS & QX Dispatch, Bridge, CLP, Maintenance Control)",
-        appTabSubName: "(Critical System · AS & QX Dispatch, Bridge, CLP, Maintenance Control)",
+        name: "Avtec Dispatch Radio System (consoles/VPGates)",
+        subName: "(Consoles / VPGates · Avtec Scout)",
+        appTabSubName: "(Consoles / VPGates · Avtec Scout)",
         description:
-          "Avtec provides a dispatch communications solution supporting radio/LTE endpoints. The internal user guide describes Avtec Scout as purpose-built dispatch hardware supporting up to four radio or LTE endpoints. Operational Consumers validated in the DR plan: AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control, QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control (explicitly testing inbound/outbound calling for AS and QX operational groups).",
+          "Telephone and radio console; the Avtec Scout handles up to four radio or LTE endpoints",
         appTabDescription:
-          "Avtec provides a dispatch communications solution supporting radio/LTE endpoints. The internal user guide describes Avtec Scout as purpose-built dispatch hardware supporting up to four radio or LTE endpoints. Operational Consumers validated in the DR plan: AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control, QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control (explicitly testing inbound/outbound calling for AS and QX operational groups).",
-        businessFunction:
-          "Provides operational voice communications, including radio and telephone communications used by Flight Operations. It supports phone/radio endpoint selection, outbound calls, call transfer, forwarding, and radio-to-phone or radio-to-radio patching.",
-        impact:
-          "It is classified internally as a critical system, with possible flight delays.",
-        dependencies:
-          "Avtec consoles/endpoints, VPGates, phone lines, G/G radios, A/G radios, intercoms, radio remotes, network connectivity, and UC/voice infrastructure.",
+          "Telephone and radio console; the Avtec Scout handles up to four radio or LTE endpoints",
+        businessFunction: "Dispatch, NOC, CLP, and MX Control communications",
+        impact: "Critical system; flight delays possible",
+        dependencies: "CUCM (Cisco call manager), VPGates (A/B sides), network/power",
+        status: "Potential",
+        owner: "UC Team"
+      },
+      {
+        id: "avtec-air-ground-radios",
+        name: "Air-to-Ground / Ground-to-Ground radios",
+        subName: "(A/G & G/G Radio Endpoints)",
+        appTabSubName: "(A/G & G/G Radio Endpoints)",
+        description:
+          "Radios connected to Avtec consoles. UC owns the radio-to-Avtec connection; Field Services owns the radios themselves",
+        appTabDescription:
+          "Radios connected to Avtec consoles. UC owns the radio-to-Avtec connection; Field Services owns the radios themselves",
+        businessFunction: "Communication with aircraft and ground crews",
+        impact: "No radio contact with aircraft from the consoles",
+        dependencies: "Avtec endpoints, radio remotes",
+        status: "Potential",
+        owner: "UC Team / Field Services"
+      },
+      {
+        id: "avtec-satcom-voice",
+        name: "SATCOM voice via Avtec",
+        subName: "(Aircraft SATCOM Voice Dialing)",
+        appTabSubName: "(Aircraft SATCOM Voice Dialing)",
+        description:
+          "SATCOM calls to aircraft dialed from Avtec (programmed user ID and PIN codes)",
+        appTabDescription:
+          "SATCOM calls to aircraft dialed from Avtec (programmed user ID and PIN codes)",
+        businessFunction: "Dispatch-to-aircraft voice",
+        impact: "SATCOM calls to aircraft fail",
+        dependencies: "Iridium / Collins",
+        status: "Potential",
+        owner: "UC Team"
+      },
+      {
+        id: "avtec-higherground-recording",
+        name: "HigherGround (call recording)",
+        subName: "(seaprhiground2 · Compliance & Audit Dashboard)",
+        appTabSubName: "(seaprhiground2 · Compliance & Audit Dashboard)",
+        description:
+          "Records Avtec dispatch calls; dashboard is used for audits",
+        appTabDescription:
+          "Records Avtec dispatch calls; dashboard is used for audits",
+        businessFunction: "Call recording and compliance",
+        impact: "(Add Impact)",
+        dependencies: "Avtec",
+        status: "Potential",
+        owner: "UC Team"
+      },
+      {
+        id: "avtec-intercoms-radio-remotes",
+        name: "Intercoms / Radio Dialup Remotes",
+        subName: "(Avtec DR Plan Validated Endpoints)",
+        appTabSubName: "(Avtec DR Plan Validated Endpoints)",
+        description: "Tested as part of the Avtec DR plan",
+        appTabDescription: "Tested as part of the Avtec DR plan",
+        businessFunction: "Internal communications",
+        impact: "(Add Impact)",
+        dependencies: "Avtec VPGates",
+        status: "Potential",
         owner: "UC Team"
       }
     ],
     upstreamDependencies: [
-      "Avtec VPGates: Provide endpoint handling/failover capability across primary SEA-side (SEACRAVTECOO01A-03B) and IGQ DR (IGQPRAVTEC01A-03B) servers.",
-      "Voice / Call-Processing Infrastructure (Hub/Lumen & Data Center Path): Voice/call-processing infrastructure is a dependency. A recent incident (INC 3399523) was restored by manually moving voice traffic away from affected Hub/Lumen voice circuits to the Data Center call-processing path.",
-      "CUCM (Cisco Unified Communications Manager): Involved in the Avtec telephony path. One PDX incident (INC 3340834) was associated with a PDX CUCM Subscriber re-IP, and another ticket's closure notes state that the PDX CUCM subscriber was removed from Avtec endpoints.",
-      "VPGate Audio Service: Operationally significant service. After IP changes, restarting this service restored Avtec functionality during INC 3340834 before intermittent symptoms briefly recurred.",
-      "Authentication - Standard RDP: Standard RDP is used for server access.",
-      "Authentication - LDAP: LDAP authentication is used for programming from inside the Alaska network."
+      "(Add Upstream Dependencies). Inbound calls arrive through CUCM for AS Dispatch/Bridge/CLP (DMS 1), AS MTX CTL (DMS 2), and QX Dispatch/Bridge/CLP/MTX CTL (DMS 3)."
     ],
     downstreamConsumers: [
-      "Endpoint Categories (5 DR Plan Categories): G/G radios, A/G radios, Phone lines, Intercoms, and Radio remotes.",
-      "AS Operational Consumers (DR Validated): AS Dispatch, AS Bridge, AS CLP, and AS Maintenance Control (explicitly tested for console functionality and inbound/outbound calling).",
-      "QX Operational Consumers (DR Validated): QX Dispatch, QX Bridge, QX CLP, and QX Maintenance Control (explicitly tested for console functionality and inbound/outbound calling).",
-      "Operational Voice & Radio Functions Supported: Inbound calls, Outbound calls, Two-way radio transmission, AS/QX intercoms, Radio dial-up remotes, Calls transferred between consoles, AS Dispatch All Call, and AS Dispatch Broadcast."
+      "AS and QX Dispatch, the NOC Bridge, CLP, MX Control, Station Ops, and QX SOC"
     ],
     dependenciesTab: {
       overviewSubtitle:
-        "Architecture view of Avtec VPGates, CUCM/voice call-processing paths, RDP/LDAP authentication, and downstream AS/QX Flight Operations radio/telephony consumers",
+        "Inbound calls arrive through CUCM for AS Dispatch/Bridge/CLP (DMS 1), AS MTX CTL (DMS 2), and QX Dispatch/Bridge/CLP/MTX CTL (DMS 3), serving downstream AS and QX Dispatch, the NOC Bridge, CLP, MX Control, Station Ops, and QX SOC.",
       diagramUpstream: [
-        { id: "avtec-up-vpgate", label: "Avtec VPGates (SEA & IGQ Failover)", iconType: "server" },
-        { id: "avtec-up-voice", label: "Voice / Call-Processing (Hub/Lumen & DC)", iconType: "cloud" },
-        { id: "avtec-up-cucm", label: "CUCM Telephony Path", iconType: "server" },
-        { id: "avtec-up-audio", label: "VPGate Audio Service", iconType: "shield" },
-        { id: "avtec-up-auth", label: "Standard RDP & LDAP Auth", iconType: "shield" }
+        {
+          id: "avtec-up-1",
+          name: "(Add Upstream Dependencies)",
+          label: "(Add Upstream Dependencies)",
+          subtitle: "External / additional upstream dependencies placeholder",
+          iconType: "doc"
+        },
+        {
+          id: "avtec-up-2",
+          name: "CUCM Inbound Call Paths (DMS 1 / 2 / 3)",
+          label: "CUCM Inbound Call Paths (DMS 1 / 2 / 3)",
+          subtitle: "AS Dispatch/Bridge/CLP (DMS 1), AS MTX CTL (DMS 2), QX (DMS 3)",
+          iconType: "network"
+        }
       ],
       diagramServices: [
-        "Avtec Dispatch Radio System / Avtec Scout",
-        "Phone/Radio Selection, Patching, Transfers & Broadcasts",
-        "SEA VPGates (SEACRAVTECOO01A-03B) & IGQ VPGates (IGQPRAVTEC01A-03B)"
+        "Avtec Dispatch Radio System (consoles/VPGates)",
+        "Air-to-Ground / Ground-to-Ground radios",
+        "SATCOM voice via Avtec",
+        "HigherGround (call recording)",
+        "Intercoms / Radio Dialup Remotes"
       ],
       diagramDownstream: [
         {
-          id: "avtec-down-endpoints",
-          label: "5 Endpoint Categories (G/G, A/G, Phone, Intercom, Remotes)",
-          iconType: "layers"
+          id: "avtec-down-1",
+          name: "AS & QX Dispatch, NOC Bridge & CLP",
+          label: "AS & QX Dispatch, NOC Bridge & CLP",
+          subtitle: "Flight Ops dispatch & bridge consoles",
+          iconType: "team"
         },
         {
-          id: "avtec-down-as",
-          label: "AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control",
-          iconType: "users"
-        },
-        {
-          id: "avtec-down-qx",
-          label: "QX Dispatch, QX Bridge, QX CLP, QX Maintenance Control",
-          iconType: "users"
-        },
-        {
-          id: "avtec-down-funcs",
-          label: "Inbound/Outbound Calls, 2-Way Radio, All Call & Broadcast",
-          iconType: "chart"
+          id: "avtec-down-2",
+          name: "MX Control, Station Ops & QX SOC",
+          label: "MX Control, Station Ops & QX SOC",
+          subtitle: "Maintenance Control, Station Ops lines (SIT, JNU, BRW) & QX SOC",
+          iconType: "nodes"
         }
       ],
       summaryStats: [
-        { label: "Upstream Dependencies", count: 6, tone: "red" },
-        { label: "Downstream Consumer Groups", count: 4, tone: "blue" },
-        { label: "VPGate Servers (SEA + IGQ)", count: 12, tone: "purple" }
+        { label: "Upstream Dependencies", count: 1, tone: "red" },
+        { label: "Downstream Consumer Groups", count: 6, tone: "green" },
+        { label: "Applications & Systems", count: 5, tone: "blue" },
+        { label: "Infrastructure Components", count: 8, tone: "purple" }
       ],
       keyTakeaways: [
-        "Avtec is a critical Flight Operations communications system, not simply a desktop telephone application. It supports Dispatch and other operational groups through phone lines, ground/ground and air/ground radios, intercoms, radio remotes, transfers, broadcasts, and other operational voice functions.",
-        "Loss or degradation can impede communication between operational personnel and stations/agents and has documented potential for flight delays.",
-        "A PDX incident specifically documented potential flight delays because operators use Avtec to communicate gate changes and organize aircraft with agents.",
-        "Important Operational Takeaway: For Production Operations, do not immediately call Avtec for every Avtec issue. The documented escalation path is to contact UC Team first at 206-688-3800 option 1, and UC determines whether Avtec vendor involvement is necessary.",
-        "Broad Failure Isolation: A broad Avtec failure does not necessarily mean the Avtec vendor itself is down. Recent incidents show dependencies on CUCM/VPGate configuration and Hub/Lumen voice paths, so those internal/infrastructure layers should be isolated before classifying the problem as a vendor outage."
+        "Avtec is the main console for phone and radio communications in Dispatch, the NOC, and operations centers. Its documented criticality is \"Critical System – Impact: Flight Delays possible\". The Technology Recovery Document lists it as Tier 0. Most past outages started outside Avtec itself, in CUCM, firewall, circuit, or power changes."
       ],
       upstreamTable: [
         {
           id: "avtec-uptbl-1",
-          name: "Avtec VPGates",
-          subName: "(SEA Primary SEACRAVTECOO01A-03B / IGQ DR IGQPRAVTEC01A-03B)",
+          name: "CUCM Inbound Call Routing (DMS 1, DMS 2, DMS 3)",
+          subName: "(Add Upstream Dependencies)",
           description:
-            "Avtec VPGates provide endpoint handling/failover capability across the 5 endpoint categories (G/G radios, A/G radios, Phone lines, Intercoms, Radio remotes).",
-          type: "Endpoint Handling & Failover",
-          typeBadge: "purple",
-          impact: "Loss of endpoint registration or audio routing; requires failover of Avtec endpoints to IGQ VPGates."
-        },
-        {
-          id: "avtec-uptbl-2",
-          name: "Voice / Call-Processing Infrastructure",
-          subName: "(Hub/Lumen Voice Circuits & Data Center Call-Processing Path)",
-          description:
-            "Voice/call-processing infrastructure is a dependency. A recent incident (INC 3399523) was restored by manually moving voice traffic away from affected Hub/Lumen voice circuits to the Data Center call-processing path.",
-          type: "Voice & Circuit Infrastructure",
-          typeBadge: "orange",
-          impact: "Degraded or failed inbound/outbound voice calls across HUB/NOC until traffic is failed over to the Data Center call-processing path."
-        },
-        {
-          id: "avtec-uptbl-3",
-          name: "CUCM (Cisco Unified Communications Manager)",
-          subName: "(Avtec Telephony Path)",
-          description:
-            "CUCM is involved in the Avtec telephony path. One PDX incident (INC 3340834) was associated with a PDX CUCM Subscriber re-IP, and another ticket's closure notes state that the PDX CUCM subscriber was removed from Avtec endpoints.",
-          type: "Telephony Call Control",
+            "(Add Upstream Dependencies). Inbound calls arrive through CUCM for AS Dispatch/Bridge/CLP (DMS 1), AS MTX CTL (DMS 2), and QX Dispatch/Bridge/CLP/MTX CTL (DMS 3).",
+          type: "Internal / Telephony",
           typeBadge: "blue",
-          impact: "CUCM subscriber IP or configuration changes can disrupt Avtec phone line registration and call handling."
-        },
-        {
-          id: "avtec-uptbl-4",
-          name: "VPGate Audio Service",
-          subName: "(Windows / VPGate Server Audio Service)",
-          description:
-            "VPGate Audio Service is operationally significant. After IP changes, restarting this service restored Avtec functionality during INC 3340834 before intermittent symptoms briefly recurred.",
-          type: "Core Application Service",
-          typeBadge: "purple",
-          impact: "No audio or failed call completion on Avtec consoles until the VPGate Audio Service is restarted."
-        },
-        {
-          id: "avtec-uptbl-5",
-          name: "Standard RDP",
-          subName: "(Server Access Authentication)",
-          description: "Standard RDP is used for server access to Avtec / VPGate infrastructure.",
-          type: "Authentication",
-          typeBadge: "blue",
-          impact: "Administrative and DR server access requires Standard RDP."
-        },
-        {
-          id: "avtec-uptbl-6",
-          name: "LDAP Authentication",
-          subName: "(Internal Alaska Network Programming)",
-          description: "LDAP authentication is used for programming from inside the Alaska network.",
-          type: "Authentication",
-          typeBadge: "blue",
-          impact: "Unable to authenticate for Avtec system programming from inside the Alaska network."
+          impact:
+            "Inbound calls to AS Dispatch/Bridge/CLP (DMS 1), AS MTX CTL (DMS 2), and QX Dispatch/Bridge/CLP/MTX CTL (DMS 3) fail if CUCM routing is disrupted."
         }
       ],
       downstreamTable: [
         {
           id: "avtec-dwntbl-1",
-          name: "Five Endpoint Categories (DR Plan)",
-          subName: "(G/G Radios, A/G Radios, Phone Lines, Intercoms, Radio Remotes)",
+          name: "AS and QX Dispatch, the NOC Bridge, CLP, MX Control, Station Ops, and QX SOC",
+          subName: "(Downstream Operational Consumers)",
           description:
-            "The DR plan identifies five endpoint categories managed by Avtec: G/G radios, A/G radios, Phone lines, Intercoms, and Radio remotes.",
-          dataFlow: "Real-Time Voice & Radio Audio / Signaling",
-          impact: "Radio/phone lines may appear greyed out, offline, or unavailable; loss of handset/headset or speaker audio."
-        },
-        {
-          id: "avtec-dwntbl-2",
-          name: "AS Operational Consumers",
-          subName: "(AS Dispatch, AS Bridge, AS CLP, AS Maintenance Control)",
-          description:
-            "Operational consumers explicitly validated in DR testing for Alaska Airlines (AS), including console functionality and inbound/outbound calling.",
-          dataFlow: "Dispatch Voice, Radio & Telephone Patching",
-          impact: "Impedes dispatch, bridge, CLP, and maintenance control communications; potential flight delays."
-        },
-        {
-          id: "avtec-dwntbl-3",
-          name: "QX Operational Consumers",
-          subName: "(QX Dispatch, QX Bridge, QX CLP, QX Maintenance Control)",
-          description:
-            "Operational consumers explicitly validated in DR testing for Horizon Air (QX), including console functionality and inbound/outbound calling.",
-          dataFlow: "Dispatch Voice, Radio & Telephone Patching",
-          impact: "Impedes QX dispatch, bridge, CLP, and maintenance control communications; potential flight delays."
-        },
-        {
-          id: "avtec-dwntbl-4",
-          name: "Supported Operational Voice & Dispatch Functions",
-          subName: "(Calls, Two-Way Radio, Intercoms, Remotes, Transfers, All Call, Broadcast)",
-          description:
-            "Avtec functionality supports Inbound calls, Outbound calls, Two-way radio transmission, AS/QX intercoms, Radio dial-up remotes, Calls transferred between consoles, AS Dispatch All Call, and AS Dispatch Broadcast.",
-          dataFlow: "End-to-End Operational Voice & Broadcasts",
-          impact: "Operators may have difficulty communicating gate changes, coordinating aircraft with agents, or issuing dispatch broadcasts."
+            "AS and QX Dispatch, the NOC Bridge, CLP, MX Control, Station Ops, and QX SOC",
+          type: "Internal Operations",
+          dataFlow: "Dispatch Voice, Radio, SATCOM & Station Ops Lines",
+          impact:
+            "Outbound/inbound calls and radio communications fail across Dispatch, NOC Bridge, CLP, MX Control, Station Ops (e.g., SIT, JNU, BRW), and QX SOC; potential flight delays."
         }
       ],
       infrastructureTable: [
         {
           id: "avtec-infra-1",
-          category: "VPGate Servers (Primary / SEA-Side Documented Systems)",
+          component: "VPGates (A/B Sides & IGQ Failover)",
+          category: "VPGates (A/B Sides & IGQ Failover)",
           iconType: "server",
+          description:
+            "VPGates: seacravtecoo01a/02a/03a (\"A\" side) and seacravtecoo01b/02b/03b (\"B\" side). They fail over to the IGQ VPGates.",
           details:
-            "SEACRAVTECOO01A, SEACRAVTECOO01B, SEACRAVTECOO02A, SEACRAVTECOO02B, SEACRAVTECOO03A, SEACRAVTECOO03B."
+            "VPGates: seacravtecoo01a/02a/03a (\"A\" side) and seacravtecoo01b/02b/03b (\"B\" side). They fail over to the IGQ VPGates.",
+          owner: "UC Team",
+          impact: "Primary A/B VPGate failure requires failover to IGQ VPGates."
         },
         {
           id: "avtec-infra-2",
-          category: "VPGate Servers (IGQ Systems / DR Failover)",
-          iconType: "server",
+          component: "IGQ to HUB/PUY Connectivity",
+          category: "IGQ to HUB/PUY Connectivity",
+          iconType: "globe",
+          description:
+            "Connectivity between IGQ and HUB/PUY is a critical dependency.",
           details:
-            "IGQPRAVTEC01A, IGQPRAVTEC01B, IGQPRAVTEC02A, IGQPRAVTEC02B, IGQPRAVTEC03A, IGQPRAVTEC03B."
+            "Connectivity between IGQ and HUB/PUY is a critical dependency.",
+          owner: "ITS Network / UC Team",
+          impact: "Critical dependency for Avtec DR and cross-site communication."
         },
         {
           id: "avtec-infra-3",
-          category: "Critical Network Dependency",
-          iconType: "globe",
+          component: "Station DMS Nodes (Tier 1)",
+          category: "Station DMS Nodes (Tier 1)",
+          iconType: "server",
+          description:
+            "Station DMS nodes, for example laxpravtec01a/01b (Tier 1, monitored by Zenoss)",
           details:
-            "The DR document explicitly identifies connectivity between IGQ and HUB/PUY as a critical operational dependency."
+            "Station DMS nodes, for example laxpravtec01a/01b (Tier 1, monitored by Zenoss)",
+          owner: "UC Team / NRE-Stations",
+          impact: "Tier 1 station DMS node-down alert requires confirming site power and engaging NetOps/NRE-Stations."
         },
         {
           id: "avtec-infra-4",
-          category: "Authentication (Server Access & Programming)",
-          iconType: "shield",
+          component: "SEA Nodes",
+          category: "SEA Nodes",
+          iconType: "server",
+          description:
+            "SEA nodes: seapravtec01a–03b, seapravtecdms2, seaprhiground2",
           details:
-            "Standard RDP is used for server access. LDAP authentication is used for programming from inside the Alaska network."
+            "SEA nodes: seapravtec01a–03b, seapravtecdms2, seaprhiground2",
+          owner: "UC Team",
+          impact: "Hosts SEA Avtec endpoints, DMS 2, and HigherGround call recording."
         },
         {
           id: "avtec-infra-5",
-          category: "Monitoring (Zenoss Real Time Services)",
-          iconType: "layers",
+          component: "CUCM (Cisco Unified Communications Manager)",
+          category: "CUCM (Cisco Unified Communications Manager)",
+          iconType: "server",
+          description:
+            "CUCM. Cluster reboots and re-IPs have taken Avtec down before.",
           details:
-            "Zenoss Real Time Services monitoring is part of the DR procedure. It is disabled for the primary during failover preparation and re-enabled following recovery."
+            "CUCM. Cluster reboots and re-IPs have taken Avtec down before.",
+          owner: "UC Team",
+          impact: "Cluster reboots and subscriber re-IPs can take Avtec phone lines and consoles down."
         },
         {
           id: "avtec-infra-6",
-          category: "Database Dependency",
-          iconType: "database",
-          details: "(Add Database Dependencies)"
+          component: "Corporate Firewalls",
+          category: "Corporate Firewalls",
+          iconType: "shield",
+          description:
+            "Corporate firewalls. CR 131815 (SIP ALG) broke Avtec until it was rolled back.",
+          details:
+            "Corporate firewalls. CR 131815 (SIP ALG) broke Avtec until it was rolled back.",
+          owner: "ITS Network / Firewall Team",
+          impact: "Firewall changes (such as SIP ALG in CR 131815) can break Avtec voice/SIP traffic."
         },
         {
           id: "avtec-infra-7",
-          category: "Firewall Dependencies",
+          component: "Hub/Lumen Voice Circuits",
+          category: "Hub/Lumen Voice Circuits",
+          iconType: "globe",
+          description: "Hub/Lumen voice circuits",
+          details: "Hub/Lumen voice circuits",
+          owner: "UC Team / Telecom",
+          impact: "Circuit degradation prevents outbound/inbound calling (e.g., MX Control unable to call out)."
+        },
+        {
+          id: "avtec-infra-8",
+          component: "Authentication (RDP & LDAP)",
+          category: "Authentication (RDP & LDAP)",
           iconType: "shield",
-          details: "(Add Firewall Dependencies)"
+          description:
+            "Authentication: RDP to the server, LDAP for programming",
+          details:
+            "Authentication: RDP to the server, LDAP for programming",
+          owner: "UC Team / ITS Service Desk",
+          impact: "Required for server administration (RDP) and internal console programming (LDAP)."
         }
       ]
     },
     typicalBusinessImpact: [
-      "Unable to make outbound calls.",
-      "Unable to answer calls reliably or requiring multiple attempts.",
-      "Radio/phone lines may appear greyed out, offline, or unavailable.",
-      "No audio transmitted or received through handset/headset.",
-      "No audio from Avtec speakers.",
-      "Operational teams may have difficulty communicating gate changes and coordinating aircraft with agents.",
-      "Potential flight delays."
+      "Outbound calls fail. Gate-change coordination slows down, with potential flight delays (PDX, 8/14/2026).",
+      "MX Control can't call out to assign techs.",
+      "A SEA UPS failure (MI6587) took down Avtec along with A/G and G/G radios.",
+      "Dispatch can't reach Alaska station ops lines (SIT, JNU, BRW).",
+      "A dispatcher can't work the desk if that desk's Avtec fails."
     ],
     knownWorkarounds: [
-      "Personal phones have been used when Avtec outbound calls were unavailable.",
-      "Radios can provide limited backup communication.",
-      "Microsoft Teams has also been used operationally as a workaround for outbound communication.",
-      "For a single Avtec endpoint/line stuck IN USE or OFFLINE, calls to the impacted line automatically route to the Rollover/Backup line.",
-      "The DR architecture supports moving Avtec endpoints to IGQ VPGates.",
-      "After recovery, if one of the five endpoint groups fails, the DR plan says that specific group can be moved back."
+      "Personal phones, MS Teams, or radios",
+      "Dispatch can fall back on ACARS, SATCOM, and aircraft voice call-back",
+      "If a single line fails, calls route to the rollover/backup line",
+      "Move to an unoccupied desk, if one is free"
     ],
     validationChecklist: [
-      "1. Determine scope: Ask whether the problem affects one workstation/endpoint, one line, multiple endpoints, entire station/location, or AS, QX, or both. For multiple endpoint failures, document all impacted endpoint names and contact UC On-Call at 206-688-3800.",
-      "2. Determine failing functionality: Check separately inbound phone calls, outbound phone calls, radio transmission/receive, intercom, transfers, audio output/input, and whether endpoints show offline/grey/in-use (mirrors the validation categories in the DR plan).",
-      "3. For handset/headset audio problems: Disconnect/reconnect handset or headset, test using known-good hardware, reset the Avtec Jackbox by disconnecting USB, waiting 5 seconds, then reconnecting, and reboot the workstation if necessary.",
-      "4. For speaker problems: Check speaker volume, check Windows audio/mute, reset USB speaker, verify there are no unauthorized/additional USB audio devices, confirm output is Realtek Audio, and confirm Intel Display Audio is disabled.",
-      "5. Check whether another phone path works: During the PDX incident, the team compared Avtec behavior with a supervisor desk phone to help isolate the issue.",
-      "6. Check UC/voice infrastructure: If multiple endpoints are affected, engage the UC Team. Check VPGate/voice infrastructure and relevant CUCM changes. A documented outage followed a PDX CUCM Subscriber re-IP.",
-      "7. Check VPGate Audio Service: A documented PDX resolution required restarting the VPGate Audio Service after IP changes.",
-      "8. Check voice circuit/path health: If symptoms span HUB/NOC or suggest a wider voice-path problem, validate Hub/Lumen circuits and Data Center call processing. A September incident was recovered by manually failing voice traffic to the Data Center call-processing path.",
-      "9. Validate recovery: Test AS/QX inbound calls, AS/QX outbound calls, two-way radio audio, intercoms, radio remotes, console-to-console transfer, and Dispatch All Call/Broadcast, where applicable.",
-      "10. Escalate if necessary: Contact UC Team first at 206-688-3800, option 1. UC determines whether vendor escalation to Avtec is needed."
+      "Ask whether it's one line/console or several, and which station or desk (get the PC and endpoint names).",
+      "If it's one line, ticket ITS FS Avtec. If it's several, call UC On-Call at 206-688-3800 Opt 1.",
+      "For audio problems: reseat the handset/headset, reset the jackbox or speaker USB (wait 5 seconds before plugging back in), then reboot the PC.",
+      "Check for active changes on CUCM, firewall, or network. Several past outages followed a CR.",
+      "For a Tier 1 station DMS node-down alert: confirm site power, engage the NetOps escalation chat, and page NRE-Stations on-call if there's no response within 5 minutes.",
+      "Assess the business impact (flight delays, work stoppage). Raise an RRT0 if it's widespread.",
+      "Avoid false alarms: during the routine monthly radio test on the 1st/2nd, \"ring no answer\" from 12–25 remotes is expected."
     ],
     vendorContacts: {
       supportPhone: "800-545-3034",
       supportEmail: "customersupport@avtecinc.com",
-      supportHours: "24x7",
+      supportHours: "24/7",
       accountManager: "Avtec On-Call",
       technicalSupport:
-        "Avtec Support / Avtec On-Call: 800-545-3034 • customersupport@avtecinc.com (24x7) • Account Manager: (Add Account Manager)",
+        "Avtec On-Call: 800-545-3034 • customersupport@avtecinc.com (24/7) • Account Manager: (Add Account Manager) • Escalation Contacts: (Add Escalation Contacts)",
       namedEscalationContact:
-        "(Add Vendor Escalation Contact) • Account Manager: (Add Account Manager)",
+        "(Add Escalation Contacts) • Account Manager: (Add Account Manager)",
       companyNote:
-        "Avtec. The internal documentation names the vendor as Avtec but does not provide a longer legal company name.",
+        "Avtec — dispatch radio and phone console vendor.",
       categoryNote:
-        "Flight Operations / Dispatch Communications / Radio & Telephony. Avtec is documented as the Avtec Dispatch Radio System and as a critical system.",
+        "UC team: dispatch radio and phone communications • Primary ITS Team Owner: ITS Network Unified Communications (UC Team)",
+      contactDirectory: [
+        {
+          role: "Support Desk / On-Call",
+          name: "Avtec On-Call",
+          phone: "800-545-3034",
+          email: "customersupport@avtecinc.com"
+        },
+        {
+          role: "Account Manager",
+          name: "(Add Account Manager)",
+          phone: "—",
+          email: "—"
+        },
+        {
+          role: "Escalation Contacts",
+          name: "(Add Escalation Contacts)",
+          phone: "—",
+          email: "—"
+        }
+      ],
       escalation:
-        "IMPORTANT OPERATIONAL TAKEAWAY: Do not immediately call Avtec for every Avtec issue. Contact the UC Team first at 206-688-3800, option 1 (24x7); UC determines whether Avtec vendor involvement is necessary. Isolate internal/infrastructure layers (CUCM/VPGate configuration, VPGate Audio Service, and Hub/Lumen voice paths) before classifying a broad failure as a vendor outage. If vendor escalation is required, contact Avtec Support / Avtec On-Call at 800-545-3034 or customersupport@avtecinc.com (24x7). Account Manager: (Add Account Manager). Named Vendor Escalation Contact: (Add Vendor Escalation Contact).",
+        "Call the UC Team first (206-688-3800 Opt 1, 24/7). They decide whether it needs to go to Avtec Support (Avtec On-Call: 800-545-3034 / customersupport@avtecinc.com). Contacts in the console directory need \"81\" in front of the area code. Directory changes are requested through the AVTEC Request Page on the NOC Bridge SharePoint. Account Manager: (Add Account Manager). Escalation Contacts: (Add Escalation Contacts).",
       communicationGuidelines: [
-        "Determine whether the impact is one or multiple endpoints.",
-        "Capture the PC/endpoint name(s) before escalation to ITS support.",
-        "Document whether phone, radio, audio, intercom, or multiple communication methods are affected.",
-        "Document whether inbound calls, outbound calls, or both are impacted.",
-        "Confirm whether Flight Operations has a viable workaround such as radio, personal phone, Teams, or rollover line. Existing incidents demonstrate these fallback methods.",
-        "For multiple endpoints, engage UC On-Call at 206-688-3800.",
-        "Before engaging Avtec directly, contact the UC Team at 206-688-3800 option 1. UC determines whether vendor escalation is required.",
-        "If escalation is required, contact Avtec On-Call: 800-545-3034 / customersupport@avtecinc.com.",
-        "For planned DR activities, communications include Production Operations, DR Program, NOC/SOC System Operations, AS Flight Operations and QX Flight Operations.",
-        "Important Operational Takeaway: Do not immediately call Avtec for every Avtec issue. Contact UC Team first at 206-688-3800 option 1. Also, a broad Avtec failure does not necessarily mean the Avtec vendor itself is down - recent incidents show dependencies on CUCM/VPGate configuration and Hub/Lumen voice paths, so isolate those internal/infrastructure layers before classifying the problem as a vendor outage."
+        "Call the UC Team first. They decide whether it needs to go to Avtec Support.",
+        "Contacts in the console directory need \"81\" in front of the area code. Directory changes are requested through the AVTEC Request Page on the NOC Bridge SharePoint."
       ],
       responseSlas: [
         {
-          priority: "System Criticality",
-          level: "System Criticality",
-          description: "Internal system criticality classification in Avtec System Summary",
-          target: "Critical System.",
-          condition: "Critical System."
+          priority: "Internal",
+          label: "Internal",
+          level: "Internal Criticality & Support",
+          description: "Critical system, 24/7 support",
+          target: "Critical system, 24/7 support",
+          condition: "Critical system, 24/7 support",
+          value: "Critical system, 24/7 support"
         },
         {
-          priority: "Potential Impact",
-          level: "Potential Impact",
-          description: "Operational impact if Avtec is unavailable or degraded",
-          target: "Flight delays possible.",
-          condition: "Flight delays possible."
+          priority: "Vendor initial response time",
+          label: "Vendor initial response time",
+          level: "Vendor Initial Response SLA",
+          description: "Vendor initial response time",
+          target: "(Add Response Targets)",
+          condition: "(Add Response Targets)",
+          value: "(Add Response Targets)"
         },
         {
-          priority: "Internal UC Support Coverage",
-          level: "Internal UC Support Coverage",
-          description: "UC Team (Unified Communications) on-call support coverage (206-688-3800, option 1)",
-          target: "24x7.",
-          condition: "24x7."
-        },
-        {
-          priority: "Vendor Avtec Coverage",
-          level: "Vendor Avtec Coverage",
-          description: "Avtec Support / Avtec On-Call coverage (800-545-3034 / customersupport@avtecinc.com)",
-          target: "24x7.",
-          condition: "24x7."
-        },
-        {
-          priority: "Sev 1 Initial Response Target",
-          level: "Sev 1 Initial Response Target",
-          description: "Vendor initial response target for Severity 1 incidents",
-          target: "(Add Sev 1 Initial Response Target)",
-          condition: "(Add Sev 1 Initial Response Target)"
-        },
-        {
-          priority: "Sev 1 Update Cadence",
-          level: "Sev 1 Update Cadence",
-          description: "Vendor update cadence for Severity 1 incidents",
-          target: "(Add Sev 1 Update Cadence)",
-          condition: "(Add Sev 1 Update Cadence)"
-        },
-        {
-          priority: "Sev 2 Initial Response Target",
-          level: "Sev 2 Initial Response Target",
-          description: "Vendor initial response target for Severity 2 incidents",
-          target: "(Add Sev 2 Initial Response Target)",
-          condition: "(Add Sev 2 Initial Response Target)"
-        },
-        {
-          priority: "Sev 2 Update Cadence",
-          level: "Sev 2 Update Cadence",
-          description: "Vendor update cadence for Severity 2 incidents",
-          target: "(Add Sev 2 Update Cadence)",
-          condition: "(Add Sev 2 Update Cadence)"
+          priority: "Sev 1/Sev 2 update cadence",
+          label: "Sev 1/Sev 2 update cadence",
+          level: "Incident Update Cadence",
+          description: "Sev 1/Sev 2 update cadence",
+          target: "(Add Update Cadence)",
+          condition: "(Add Update Cadence)",
+          value: "(Add Update Cadence)"
         }
       ]
     },
     internalContacts: {
-      itsTeam: "UC Team (Unified Communications)",
+      itsTeam: "ITS Network Unified Communications (UC Team)",
       itsTeamNote:
-        "Primary ITS Team Owner: UC Team (Unified Communications), 206-688-3800, option 1 (24x7). DR / Production Monitoring: ITS Production Operations (Production Monitoring and Service restarts); Scott Heilman (application/UC validation activities); Dan Olson (DR plan owner).",
+        "System Admin / ITS System Owner: UC Team, 206-688-3800 Opt 1, 24/7 • UC Manager: Dan Olson, +1 206-999-7184 • UC On-Call Engineers: Scott Heilman (+1 206-397-2819), Owen Talbert, Rohan Debnath, Karthik Yadavalli • Recovery Document Owner: Dennis VanTrease • Ticket routing: Cherwell, Service \"Radio\", Category \"Avtec\", sent to ITS Network Unified Comms",
       applicationOwner:
-        "UC Team (Dan Olson - DR plan owner; Scott Heilman - application/UC validation activities)",
-      onCallSupport: "UC Team, 206-688-3800, option 1 (24x7)",
+        "UC Team, 206-688-3800 Opt 1, 24/7 (UC Manager: Dan Olson, +1 206-999-7184; Recovery Document Owner: Dennis VanTrease)",
+      onCallSupport:
+        "UC Team, 206-688-3800 Opt 1, 24/7 • UC On-Call Engineers: Scott Heilman (+1 206-397-2819), Owen Talbert, Rohan Debnath, Karthik Yadavalli",
       systemAdministration:
-        "UC Team, 206-688-3800, option 1 (24x7) • DR / Production Monitoring: ITS Production Operations (Production Monitoring and Service restarts); Scott Heilman (application/UC validation activities); Dan Olson (DR plan owner)",
-      businessOwner: "Flight Operations / ERBC Team, ERBC.Team@alaskaair.com (24x7)",
-      passwordSupport: "ITS Service Desk, 877-238-1077"
+        "UC Team, 206-688-3800 Opt 1, 24/7 • UC Manager: Dan Olson, +1 206-999-7184 • UC On-Call Engineers: Scott Heilman (+1 206-397-2819), Owen Talbert, Rohan Debnath, Karthik Yadavalli • Recovery Document Owner: Dennis VanTrease • Ticket routing: Cherwell, Service \"Radio\", Category \"Avtec\", sent to ITS Network Unified Comms",
+      businessOwner: "Network Unified Comms team (TeamUC@AlaskaAir.com)",
+      passwordSupport: "ITS Service Desk, 877-238-1077",
+      internalDirectory: [
+        {
+          role: "System Admin / ITS System Owner",
+          contact: "UC Team, 206-688-3800 Opt 1, 24/7"
+        },
+        {
+          role: "Business Owner",
+          contact: "Network Unified Comms team (TeamUC@AlaskaAir.com)"
+        },
+        {
+          role: "UC Manager",
+          contact: "Dan Olson, +1 206-999-7184"
+        },
+        {
+          role: "UC On-Call Engineers",
+          contact:
+            "Scott Heilman (+1 206-397-2819), Owen Talbert, Rohan Debnath, Karthik Yadavalli"
+        },
+        {
+          role: "Recovery Document Owner",
+          contact: "Dennis VanTrease"
+        },
+        {
+          role: "Ticket routing",
+          contact:
+            "Cherwell, Service \"Radio\", Category \"Avtec\", sent to ITS Network Unified Comms"
+        },
+        {
+          role: "Password support",
+          contact: "ITS Service Desk, 877-238-1077"
+        }
+      ]
     },
     incidentHistory: [
+      {
+        id: "INC 3358692",
+        date: "8/14/2026",
+        severity: "Medium",
+        duration: "PDX Outbound Calling",
+        summary:
+          "Outbound calls fail. Gate-change coordination slows down, with potential flight delays (PDX, 8/14/2026).",
+        rootCause: "Avtec outbound call path unavailable at PDX.",
+        resolution:
+          "Operators used fallback communication workarounds (personal phones, MS Teams, radios, or rollover/backup line) while UC restored outbound calling."
+      },
       {
         id: "INC 3399523",
         date: "Documented Incident",
         severity: "High",
         duration: "Voice Path Failover",
-        summary:
-          "Voice/call-processing infrastructure impact across Hub/Lumen voice circuits affecting Avtec communications.",
-        rootCause:
-          "Degraded/affected Hub/Lumen voice circuits along the primary voice path.",
+        summary: "MX Control can't call out to assign techs.",
+        rootCause: "Degraded Hub/Lumen voice circuits along the primary voice path.",
         resolution:
           "Restored by manually moving voice traffic away from affected Hub/Lumen voice circuits to the Data Center call-processing path."
+      },
+      {
+        id: "MI6587",
+        date: "Documented Incident",
+        severity: "Sev 1",
+        duration: "SEA UPS Failure",
+        summary:
+          "A SEA UPS failure (MI6587) took down Avtec along with A/G and G/G radios.",
+        rootCause: "SEA UPS power failure impacting Avtec and radio infrastructure.",
+        resolution:
+          "Dispatch fell back on ACARS, SATCOM, and aircraft voice call-back until power and Avtec/radio consoles were restored."
+      },
+      {
+        id: "CR 131815",
+        date: "September 2026",
+        severity: "Sev 1 / Sev 2",
+        duration: "Firewall Change Rollback",
+        summary:
+          "Corporate firewall change CR 131815 (SIP ALG) broke Avtec until it was rolled back.",
+        rootCause: "Corporate firewall SIP ALG change (CR 131815).",
+        resolution: "Rolled back CR 131815 on corporate firewalls."
       },
       {
         id: "INC 3340834",
         date: "Documented Incident",
         severity: "High",
-        duration: "PDX Avtec Outage",
+        duration: "PDX CUCM Re-IP",
         summary:
-          "PDX Avtec endpoints not working following a PDX CUCM Subscriber re-IP; team compared Avtec behavior with a supervisor desk phone to help isolate the issue.",
-        rootCause:
-          "Associated with a PDX CUCM Subscriber re-IP impacting the Avtec telephony path and VPGate Audio Service state.",
+          "PDX Avtec not working following a CUCM Subscriber re-IP; cluster reboots and re-IPs have taken Avtec down before.",
+        rootCause: "PDX CUCM Subscriber re-IP impacting Avtec endpoints.",
         resolution:
-          "Restarting the VPGate Audio Service restored Avtec functionality after IP changes before intermittent symptoms briefly recurred; closure notes also state that the PDX CUCM subscriber was removed from Avtec endpoints."
-      },
-      {
-        id: "INC 3358692",
-        date: "Documented Incident",
-        severity: "Medium",
-        duration: "PDX Outbound Calling",
-        summary:
-          "Outbound calling issue on Avtec at PDX with documented potential for flight delays because operators use Avtec to communicate gate changes and organize aircraft with agents.",
-        rootCause:
-          "Avtec outbound call path unavailable at PDX.",
-        resolution:
-          "Operators utilized fallback communication workarounds (personal phones, radios, Microsoft Teams, or rollover/backup lines) while UC restored outbound calling."
+          "Restarted VPGate Audio Service and updated CUCM subscriber assignment."
       }
     ],
     relatedDocuments: [
       {
-        title: "Avtec System Summary.docx",
+        title: "Avtec_System_Summary.docx",
         type: "System Summary (Word)",
-        owner: "UC Team (Unified Communications)",
+        owner: "ITS Network Unified Communications (UC Team)",
         updated: "Primary Internal Source",
-        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B022159B6-DF16-494D-8673-4C66F7D83A12%7D&file=Avtec%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BD133257A-7A3C-48D7-ADD7-1AB4B276F57B%7D&file=Avtec_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "No Audio being played on Avtec Speaker.docx",
+        type: "Troubleshooting Guide (Word)",
+        owner: "ITS Network Unified Communications (UC Team)",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B5733E8E7-831C-4E10-A0A2-43BEA98221D0%7D&file=No%20Audio%20being%20played%20on%20Avtec%20Speaker.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Air-to-Ground and Ground-to-Ground Troubleshooting.docx",
+        type: "Troubleshooting Guide (Word)",
+        owner: "UC Team / Field Services",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B4F8A7052-7142-4107-8795-B89911196FB8%7D&file=Air-to-Ground%20and%20Ground-to-Ground%20Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Technology Recovery Document - AVTEC.docx",
+        type: "Technology Recovery Document (Word - Tier 0)",
+        owner: "Dennis VanTrease / UC Team",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BB34249B0-7177-4364-9DD2-A9221D8B5AE5%7D&file=Technology%20Recovery%20Document%20-%20AVTEC.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
         title: "Avtec User Guide.docx",
         type: "User Guide (Word)",
         owner: "UC Team / Flight Operations",
         updated: "Primary Internal Source",
-        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B4D9A6045-1784-449E-9C6C-649731C53AE5%7D&file=Avtec%20User%20Guide.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BC5F0E464-DCB6-4750-BA07-2458164EE50F%7D&file=Avtec%20User%20Guide.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Avtec_DR_Plan.xlsx",
+        type: "Disaster Recovery Plan (Excel)",
+        owner: "Dan Olson / Scott Heilman / UC Team",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/sc/DR/_layouts/15/Doc.aspx?sourcedoc=%7BF9F9A3E8-4BFF-41D1-A3ED-F2C7E4A761C3%7D&file=Avtec_DR_Plan.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
         title: "2026_Avtec_DR_Plan.xlsx",
@@ -6825,6 +6905,27 @@ export const VENDOR_IMPACT_DETAILS = {
         url: "https://alaskaair.sharepoint.com/sites/sc/DR/_layouts/15/Doc.aspx?sourcedoc=%7BB4A9DD5B-16D0-4A62-9A31-339721511A8F%7D&file=2026_Avtec_DR_Plan.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
+        title: "Bridge Standard Operating Procedures V8 FINAL.docx",
+        type: "NOC Standards & Training SOP (Word)",
+        owner: "NOC Bridge",
+        updated: "V8 Final",
+        url: "https://alaskaair.sharepoint.com/sites/NOCStandardsTraining/_layouts/15/Doc.aspx?sourcedoc=%7BC694622B-A1A0-4D05-AE52-0C43EEE06995%7D&file=Bridge%20Standard%20Operating%20Procedures%20V8%20FINAL.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "NOC Bridge Guide_V13 FINAL.pdf",
+        type: "NOC Bridge Manual (PDF)",
+        owner: "NOC Bridge",
+        updated: "V13 Final",
+        url: "https://alaskaair.sharepoint.com/sites/NOCStandardsTraining/Shared%20Documents/Manuals/NOC%20Bridge%20Guide_V13%20FINAL.pdf?web=1"
+      },
+      {
+        title: "User states EndpointLine displays IN USE or they are not able to SelectGrab the line (it shows OFFLINE) but no one is actually using it.docx",
+        type: "Troubleshooting Runbook (Word)",
+        owner: "UC Team / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B8573A29C-1C9C-44A1-B042-CB815CB8CF2E%7D&file=User%20states%20EndpointLine%20displays%20IN%20USE%20or%20they%20are%20not%20able%20to%20SelectGrab%20the%20line%20(it%20shows%20OFFLINE)%20but%20no%20one%20is%20actually%20using%20it.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
         title: "Avtec Common Troubleshooting Steps.docx",
         type: "Troubleshooting Guide (Word)",
         owner: "UC Team / Production Operations",
@@ -6832,32 +6933,2841 @@ export const VENDOR_IMPACT_DETAILS = {
         url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B0B10D599-8648-4557-8B73-CB5D67CF8676%7D&file=Avtec%20Common%20Troubleshooting%20Steps.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
-        title: "INC 3399523 - MEL Update (Teams)",
-        type: "Incident Thread (Teams)",
-        owner: "Production Operations / UC Team",
-        updated: "Incident Reference",
-        url: "https://teams.microsoft.com/l/message/19:c160606227ea4a639e17b4bdb4b42b8c@thread.v2/1790288933262?context=%7B%22contextType%22:%22chat%22%7D"
+        title: "Executive Summary of Incidents 2025-12 to Current Date.xlsx",
+        type: "Executive Incident Summary (Excel)",
+        owner: "ITS Production Operations",
+        updated: "2026",
+        url: "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7BE5D240DC-3123-4D8D-8A59-CF1533D32C5B%7D&file=Executive%20Summary%20of%20Incidents%202025-12%20to%20Current%20Date.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
       },
       {
-        title: "INC 3340834 - PDX Avtec Not Working (Teams)",
+        title: "RRT0-2026-02-01-01-Remotes radios OTS (OneNote)",
+        type: "Rapid Response Tier 0 Log (OneNote)",
+        owner: "ITS Production Operations",
+        updated: "2026-02-01",
+        url: "https://alaskaair.sharepoint.com/sites/RapidResponseTier0-2026/_layouts/15/Doc.aspx?action=edit&mobileredirect=true&wdorigin=Sharepoint&DefaultItemOpen=1&sourcedoc=%7Baa538122-0d0b-4713-aa06-83613809aaf0%7D&wd=target(/RRT0-2026-02-01-01-%20Remotes%20radios%20OTS.one/)&wdpartid=%7B1c1e841b-c862-429f-a5fb-7b15fed24ac7%7D%7B65%7D&wdsectionfileid=%7B600c0e82-5fc9-4eef-9280-ed6fa902d539%7D"
+      },
+      {
+        title: "3274437 - AvTech SSR feed issue (Teams)",
+        type: "Disambiguation Reference (Teams)",
+        owner: "ITS Production Operations",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:c5314747d0a747e1afdff20bcb58c422@thread.v2/1780423716322?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "S2-S3 June - AvTech vs Avtec (Teams)",
+        type: "Disambiguation Reference (Teams)",
+        owner: "ITS Production Operations",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:eb4d0ceff99a4ae9937c64946039dc84@thread.v2/1782229896485?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "3267239 - Air-to-Ground radio outage (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "UC Team / Field Services",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:aee0e16e263e4807a98de1fb64faf544@thread.v2/1779830678658?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "AAG Sev 1 Performance Bridge - MI6587 SEA UPS / Avtec (Teams)",
+        type: "Sev 1 Incident Bridge (Teams)",
+        owner: "ITS Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:meeting_ZjZhNDIxMmMtZDU3OS00MGFiLTgzZTctZWM0MjI3NzY5OGJl@thread.v2/1791423461102?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "3189754 - SATCOM voice via Avtec / MAX fleet (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "UC Team / Flight Operations",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:a0b6abb5cf0f4eaf9d227677b7accba5@thread.v2/1789744338652?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "3257828 - HigherGround recording calls (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:c72739197a064902935490b612fb5297@thread.v2/1779077511356?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "INC0002050 - laxpravtec01b alert (Outlook)",
+        type: "Monitoring Alert Email (Outlook)",
+        owner: "ITS Production Operations / NetOps",
+        updated: "Incident Reference",
+        url: "https://outlook.office365.com/owa/?ItemID=AAMkADQ3NmM0N2MxLThlMDktNDcwMC1iNGUzLWUwNjcwOGE2YmVjMQBGAAAAAAAHZJq3IE%2fqR7PNFWEcMesaBwCHiomNgAhoTr%2bjmuA%2fjTbyAAAAAAEMAACHiomNgAhoTr%2bjmuA%2fjTbyAAG2mI3SAAA%3d&exvsurl=1&viewmodel=ReadMessageItem"
+      },
+      {
+        title: "INC0002049 - laxpravtec01a alert (Outlook)",
+        type: "Monitoring Alert Email (Outlook)",
+        owner: "ITS Production Operations / NetOps",
+        updated: "Incident Reference",
+        url: "https://outlook.office365.com/owa/?ItemID=AAMkADQ3NmM0N2MxLThlMDktNDcwMC1iNGUzLWUwNjcwOGE2YmVjMQBGAAAAAAAHZJq3IE%2fqR7PNFWEcMesaBwCHiomNgAhoTr%2bjmuA%2fjTbyAAAAAAEMAACHiomNgAhoTr%2bjmuA%2fjTbyAAG2mI3RAAA%3d&exvsurl=1&viewmodel=ReadMessageItem"
+      },
+      {
+        title: "S2 - S3 September - CUCM / Station Ops lines (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "ITS Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:142ca8e2ddff401d99f23682350fce72@thread.v2/1790180859926?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "3340834 - PDX Avtec not working (Teams)",
         type: "Incident Thread (Teams)",
         owner: "Production Operations / UC Team",
         updated: "Incident Reference",
         url: "https://teams.microsoft.com/l/message/19:e25edb72a12542d381b9da31051749bc@thread.v2/1785396628764?context=%7B%22contextType%22:%22chat%22%7D"
       },
       {
-        title: "INC 3340834 - Ticket Closure Notes (Outlook)",
-        type: "Incident Closure Email (Outlook)",
-        owner: "Production Operations / UC Team",
+        title: "S1 - S2 September - CR 131815 SIP ALG (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "Production Operations / Network / UC Team",
         updated: "Incident Reference",
-        url: "https://outlook.office365.com/owa/?ItemID=AAMkADQ3NmM0N2MxLThlMDktNDcwMC1iNGUzLWUwNjcwOGE2YmVjMQBGAAAAAAAHZJq3IE%2fqR7PNFWEcMesaBwCHiomNgAhoTr%2bjmuA%2fjTbyAAAAAAEMAACHiomNgAhoTr%2bjmuA%2fjTbyAADPVNV5AAA%3d&exvsurl=1&viewmodel=ReadMessageItem"
+        url: "https://teams.microsoft.com/l/message/19:cada735373044188b9e279c85c4c30b7@thread.v2/1789031874285?context=%7B%22contextType%22:%22chat%22%7D"
       },
       {
-        title: "INC 3358692 - PDX Outbound Calling & Gate Changes (Teams)",
+        title: "3399523 - MEL Update / MX Control (Teams)",
         type: "Incident Thread (Teams)",
         owner: "Production Operations / UC Team",
         updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:c160606227ea4a639e17b4bdb4b42b8c@thread.v2/1790288045047?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "3358692 - Outbound calls out at PDX 8/14/2026 (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "Production Operations / UC Team",
+        updated: "2026-08-14",
         url: "https://teams.microsoft.com/l/message/19:bf724af558204d20b3d815b4f12783c2@thread.v2/1786759783078?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "Airgroup P1 & CFS Chat - MI6587 SEA UPS (Teams)",
+        type: "Sev 1 Incident Chat (Teams)",
+        owner: "ITS Production Operations",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:f54fc4e53f884bafa0404c683b973beb@thread.v2/1791420439134?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "S2 - S3 September - SIT, JNU, BRW station ops lines (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "ITS Production Operations / UC Team",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:142ca8e2ddff401d99f23682350fce72@thread.v2/1790095879816?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "3299886 - Desk Avtec won't turn on (Teams)",
+        type: "Incident Thread (Teams)",
+        owner: "ITS Production Operations / Field Services",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:9bc6b752d9ba4d628adb85e90b14d56c@thread.v2/1782332866134?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "S2-June - UC Manager & On-Call Engineers (Teams)",
+        type: "Contact Reference (Teams)",
+        owner: "UC Team",
+        updated: "Contact Reference",
+        url: "https://teams.microsoft.com/l/message/19:4933d693e4794b17b2816690aa31682f@thread.v2/1782217057697?context=%7B%22contextType%22:%22chat%22%7D"
+      },
+      {
+        title: "Ankita Swamy in chat - UC On-Call Engineers (Teams)",
+        type: "Contact Reference (Teams)",
+        owner: "UC Team",
+        updated: "Contact Reference",
+        url: "https://teams.microsoft.com/l/message/19:318e497879104dd6bd30a7b413327588@thread.v2/1782229955878?context=%7B%22contextType%22:%22chat%22%7D"
+      }
+    ]
+  },
+
+  arinc: {
+    id: "arinc",
+    name: "ARINC",
+    breadcrumbTrail: ["Vendors", "ARINC", "Vendor Impact"],
+    pageTitle: "ARINC - Vendor Impact Details",
+    pageSubtitle:
+      "ARINC (Aeronautical Radio, Incorporated), now part of Collins Aerospace, carries air/ground ACARS communication, ATC flight plan filings, Type B messaging, and airport Common Use 3.0 services.",
+    applicationsTabTitle: "ARINC",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View all Alaska and Hawaiian applications and systems that depend on ARINC (Collins Aerospace), including business function, dependencies, and expected impact if ARINC is unavailable.",
+    applicationsCardSubtitle:
+      "Applications and systems that use ARINC (Aeronautical Radio, Incorporated / Collins Aerospace) network and platform services.",
+    dependenciesTabTitle: "ARINC - Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream data sent to ARINC, downstream consumers relying on data from ARINC, and bidirectional IBM MQ, VPN/NAT, AT&T BGP NID, and Aircom server infrastructure.",
+    status: "Active",
+    lastUpdated: "Apr 20, 2026 (ACARS_System_Summary & RCA MI6516)",
+    subtitle:
+      "Flight Ops: communication to aircraft (ACARS) · 24x7 Critical to operation · Collins Aerospace",
+    company:
+      "ARINC (Aeronautical Radio, Incorporated), now part of Collins Aerospace",
+    website:
+      "https://portal.arinc.net (you need an ARINC Portal login; otherwise use email or phone)",
+    category: "Flight Ops: communication to aircraft (ACARS)",
+    itsTeam: "ITS Flight Operations (ITS System Owner: Ryan Wilkins)",
+    logo: "public/vendors/arinc.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 9,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      title: "Key Takeaways: 24x7 Critical to Operation",
+      message:
+        "ARINC is the network that carries air/ground communication between Alaska systems and aircraft. ACARS is rated \"24x7 Critical to operation\". On the vendor side, ARINC runs ACARS out of Annapolis and moves it to a backup center in Islip, NY each quarter, with switchover taking under 2 minutes."
+    },
+    impactedSystems: [
+      {
+        id: "arinc-acars-ground-system",
+        name: "ACARS Ground System (SITA Aircom Server)",
+        subName: "(IBM MQ QMAS ALASKA.FROM.ARINC / ALASKA.TO.ARINC)",
+        appTabSubName: "(IBM MQ QMAS ALASKA.FROM.ARINC / ALASKA.TO.ARINC)",
+        description:
+          "Processes air-to-ground and ground-to-air ACARS messages: FLIFO, weather, telemetry, free text",
+        appTabDescription:
+          "Processes air-to-ground and ground-to-air ACARS messages: FLIFO, weather, telemetry, free text",
+        businessFunction:
+          "Aircraft communications, OOOI times, initialization data",
+        impact: "Loss of message flow between ARINC and Alaska systems",
+        dependencies:
+          "IBM MQ QMAS (ALASKA.FROM.ARINC / ALASKA.TO.ARINC), SQL Server",
+        status: "Potential",
+        owner: "ITS Flight Operations, Ryan Wilkins"
+      },
+      {
+        id: "arinc-wam-jetplan-atc",
+        name: "WAM / Jetplan ATC flight plans",
+        subName: "(QMAS ALASKA.TO.ARINC.ATC)",
+        appTabSubName: "(QMAS ALASKA.TO.ARINC.ATC)",
+        description:
+          "Flight plans are sent through QMAS ALASKA.TO.ARINC.ATC to ARINC",
+        appTabDescription:
+          "Flight plans are sent through QMAS ALASKA.TO.ARINC.ATC to ARINC",
+        businessFunction: "Flight planning / ATC filing",
+        impact: "(Add Impact)",
+        dependencies: "FOATCFlightPlans, FOATCMessenger, Fltops DB",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-sabre-dispatch",
+        name: "Sabre (dispatch)",
+        subName: "(Direct ARINC Dispatch Connection)",
+        appTabSubName: "(Direct ARINC Dispatch Connection)",
+        description:
+          "Has its own connection to ARINC; Dispatch can send flight release updates, re-routes, and fuel estimates to aircraft",
+        appTabDescription:
+          "Has its own connection to ARINC; Dispatch can send flight release updates, re-routes, and fuel estimates to aircraft",
+        businessFunction: "Dispatch / flight release",
+        impact: "(Add Impact)",
+        dependencies: "(Add Direct Dependencies)",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-boeing-wind-uplinks",
+        name: "Boeing Wind Uplinks",
+        subName: "(Direct Aircraft-to-Boeing Winds via ARINC)",
+        appTabSubName: "(Direct Aircraft-to-Boeing Winds via ARINC)",
+        description:
+          "Aircraft talk to Boeing winds directly through ARINC; Alaska gets courtesy copies",
+        appTabDescription:
+          "Aircraft talk to Boeing winds directly through ARINC; Alaska gets courtesy copies",
+        businessFunction: "Wind data",
+        impact: "(Add Impact)",
+        dependencies: "(Add Direct Dependencies)",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-aerodata-via-acars",
+        name: "Aircraft Performance (AeroData) via ACARS",
+        subName: "(ACARS → ARINC/SITA → Aircom → AeroData)",
+        appTabSubName: "(ACARS → ARINC/SITA → Aircom → AeroData)",
+        description:
+          "Performance requests and responses travel ACARS → ARINC/SITA → Aircom → AeroData",
+        appTabDescription:
+          "Performance requests and responses travel ACARS → ARINC/SITA → Aircom → AeroData",
+        businessFunction: "Takeoff/landing performance",
+        impact: "No performance numbers reach crews",
+        dependencies: "Aircom, AAG.TO.AD / AD.TO.AAG queues",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-flightkeys-fps",
+        name: "Flight Planning System (FlightKeys/FPS)",
+        subName: "(Position Reports & Flight Briefings via ARINC/SITA)",
+        appTabSubName: "(Position Reports & Flight Briefings via ARINC/SITA)",
+        description:
+          "Position reports come in and flight briefings go out over ARINC/SITA",
+        appTabDescription:
+          "Position reports come in and flight briefings go out over ARINC/SITA",
+        businessFunction: "Flight planning",
+        impact: "(Add Impact)",
+        dependencies: "Aircom, OpsCom CyberJet",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-flyways-messenger",
+        name: "Flyways Messenger",
+        subName: "(.SFOXGXA, .SFOWSXA, .HDQHDXA)",
+        appTabSubName: "(.SFOXGXA, .SFOWSXA, .HDQHDXA)",
+        description:
+          "Routes Type B messages from ARINC source addresses (.SFOXGXA, .SFOWSXA, .HDQHDXA)",
+        appTabDescription:
+          "Routes Type B messages from ARINC source addresses (.SFOXGXA, .SFOWSXA, .HDQHDXA)",
+        businessFunction: "Dispatch messaging",
+        impact: "(Add Impact)",
+        dependencies: "Message Address API",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-ha-acars-type-b",
+        name: "HA ACARS / Type B",
+        subName: "(VHF, HF, Satellite, SwiftBroadband IP, Type B)",
+        appTabSubName: "(VHF, HF, Satellite, SwiftBroadband IP, Type B)",
+        description:
+          "ACARS (VHF, HF, Satellite), SwiftBroadband IP, Type B messaging",
+        appTabDescription:
+          "ACARS (VHF, HF, Satellite), SwiftBroadband IP, Type B messaging",
+        businessFunction: "HA aircraft communications",
+        impact: "(Add Impact)",
+        dependencies: "(Add Direct Dependencies)",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      },
+      {
+        id: "arinc-common-use-3",
+        name: "Common Use 3.0 (Collins/ARINC platform)",
+        subName: "(Airport Gate & Ticket Counter)",
+        appTabSubName: "(Airport Gate & Ticket Counter)",
+        description: "Common-use airport application",
+        appTabDescription: "Common-use airport application",
+        businessFunction: "Gate and ticket counter processing",
+        impact: "Agents switch to CSAM",
+        dependencies: "Squid proxy servers seavvproxy/tukvvproxy",
+        status: "Potential",
+        owner: "(Add Internal ITS Owner)"
+      }
+    ],
+    upstreamDependencies: [
+      "ALASKA.TO.ARINC queue on QMAS: written by Aircom, consumed by ARINC, forwarded to aircraft",
+      "ALASKA.TO.ARINC.ATC: ATC flight plans from WAM/Jetplan",
+      "Sabre dispatch uplinks"
+    ],
+    downstreamConsumers: [
+      "ALASKA.FROM.ARINC, consumed by Aircom",
+      "From Aircom, the data feeds S4A (COMM.V1.JMS.EXT_ACARS_INBOUND), TIBCO (FO.ENGINE.EVENTS), aircraft position events, and ACARS times",
+      "Dispatch, CLP, FOGS ACARS History, AirtrAK/OOOI consumers"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream data sent to ARINC (ALASKA.TO.ARINC queue on QMAS, ALASKA.TO.ARINC.ATC from WAM/Jetplan, Sabre dispatch uplinks), ARINC network services, and downstream consumers relying on data from ARINC.",
+      diagramUpstream: [
+        {
+          id: "arinc-up-1",
+          name: "ALASKA.TO.ARINC (QMAS)",
+          subtitle: "Written by Aircom, consumed by ARINC, forwarded to aircraft",
+          iconType: "transfer"
+        },
+        {
+          id: "arinc-up-2",
+          name: "ALASKA.TO.ARINC.ATC",
+          subtitle: "ATC flight plans from WAM/Jetplan",
+          iconType: "doc"
+        },
+        {
+          id: "arinc-up-3",
+          name: "Sabre Dispatch Uplinks",
+          subtitle: "Flight release updates, re-routes & fuel estimates",
+          iconType: "network"
+        }
+      ],
+      diagramServices: [
+        "ACARS Ground System (SITA Aircom Server)",
+        "WAM / Jetplan ATC Flight Plans",
+        "Aircraft Performance (AeroData) via ACARS",
+        "Flyways Messenger & HA ACARS / Type B",
+        "Common Use 3.0 (Collins/ARINC platform)"
+      ],
+      diagramDownstream: [
+        {
+          id: "arinc-down-1",
+          name: "ALASKA.FROM.ARINC",
+          subtitle: "Consumed by Aircom",
+          iconType: "nodes"
+        },
+        {
+          id: "arinc-down-2",
+          name: "S4A, TIBCO & ACARS Events",
+          subtitle: "COMM.V1.JMS.EXT_ACARS_INBOUND & FO.ENGINE.EVENTS",
+          iconType: "database"
+        },
+        {
+          id: "arinc-down-3",
+          name: "Dispatch, CLP, FOGS & AirtrAK",
+          subtitle: "FOGS ACARS History & AirtrAK/OOOI consumers",
+          iconType: "team"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 3, tone: "red" },
+        { label: "Downstream Consumers", count: 3, tone: "green" },
+        { label: "Applications & Systems", count: 9, tone: "blue" },
+        { label: "Infrastructure Components", count: 3, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "ARINC is the network that carries air/ground communication between Alaska systems and aircraft. ACARS is rated \"24x7 Critical to operation\". On the vendor side, ARINC runs ACARS out of Annapolis and moves it to a backup center in Islip, NY each quarter, with switchover taking under 2 minutes."
+      ],
+      upstreamTable: [
+        {
+          id: "arinc-upt-1",
+          name: "ALASKA.TO.ARINC queue on QMAS",
+          subName: "(Written by Aircom, consumed by ARINC)",
+          description:
+            "ALASKA.TO.ARINC queue on QMAS: written by Aircom, consumed by ARINC, forwarded to aircraft",
+          type: "Internal / MQ",
+          impact:
+            "Loss of ground-to-air ACARS message flow from Alaska systems to aircraft"
+        },
+        {
+          id: "arinc-upt-2",
+          name: "ALASKA.TO.ARINC.ATC",
+          subName: "(WAM / Jetplan ATC Filing)",
+          description: "ALASKA.TO.ARINC.ATC: ATC flight plans from WAM/Jetplan",
+          type: "Internal / MQ",
+          impact: "ATC flight plans from WAM/Jetplan do not reach ARINC"
+        },
+        {
+          id: "arinc-upt-3",
+          name: "Sabre dispatch uplinks",
+          subName: "(Sabre Direct Connection to ARINC)",
+          description:
+            "Sabre has its own connection to ARINC; Dispatch sends flight release updates, re-routes, and fuel estimates to aircraft",
+          type: "External / Dispatch",
+          impact:
+            "Dispatch flight release updates, re-routes, and fuel estimates cannot be sent over Sabre's connection to ARINC"
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "arinc-dwt-1",
+          name: "ALASKA.FROM.ARINC, consumed by Aircom",
+          description: "ALASKA.FROM.ARINC, consumed by Aircom",
+          type: "Internal / MQ",
+          impact:
+            "Loss of inbound air-to-ground message flow from ARINC into Aircom"
+        },
+        {
+          id: "arinc-dwt-2",
+          name: "S4A, TIBCO, aircraft position events, and ACARS times",
+          description:
+            "From Aircom, the data feeds S4A (COMM.V1.JMS.EXT_ACARS_INBOUND), TIBCO (FO.ENGINE.EVENTS), aircraft position events, and ACARS times",
+          type: "Internal Systems",
+          impact:
+            "S4A (COMM.V1.JMS.EXT_ACARS_INBOUND), TIBCO (FO.ENGINE.EVENTS), aircraft position events, and ACARS times stop receiving updates"
+        },
+        {
+          id: "arinc-dwt-3",
+          name: "Dispatch, CLP, FOGS ACARS History, AirtrAK/OOOI consumers",
+          description:
+            "Dispatch, CLP, FOGS ACARS History, AirtrAK/OOOI consumers",
+          type: "Internal Operations",
+          impact:
+            "OOOI times stop updating, airborne aircraft can't be pinged, and messages are missing from ACARS History"
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "arinc-inf-1",
+          component: "IBM MQ Channels & VPN / NAT'd IPs",
+          description:
+            "MQ traffic runs both ways. ARINC's requester connects to Alaska's QMAS.AMX1 server channel, and ARINC's sender channels connect to Alaska's AMX1QM1.QMAS and AMX1QM2.QMAS receiver channels. The connection goes over VPN using NAT'd IPs 159.49.240.60, 10.80.96.123, and 159.49.42.170.",
+          owner: "Middleware (IBM MQ) / ITS Network",
+          impact:
+            "Channel or VPN failures stop MQ message flow (alert or email from AOC@arinc.com about AMX1QM1.QMAS is Sev 1)"
+        },
+        {
+          id: "arinc-inf-2",
+          component: "ARINC Network Interface Devices (NIDs) & BGP Routing",
+          description:
+            "ARINC network interface devices (NIDs) sit in each datacenter, with BGP routing over AT&T circuits (SE4/IGQ). An improvement plan replaces the single old \"ASAR\" NID in each datacenter with two new ones.",
+          owner: "ARINC (Collins Aerospace) / ITS Network",
+          impact:
+            "AT&T circuit failure on ARINC router or BGP route issue stops MQ message flow (e.g., Sev1 MI6516)"
+        },
+        {
+          id: "arinc-inf-3",
+          component: "Aircom App & Database Servers",
+          description:
+            "Aircom app servers are SEAVVACARSAPP03 and TUKVVACARSAPP03. The database servers are SEAPRACARSSQL02 and TUKPRACARSSQL02.",
+          owner: "ITS Flight Operations",
+          impact:
+            "Hosts Aircom application services and SQL databases processing ACARS messages"
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Sev1 MI6516 (1/9/2026): an AT&T circuit failure on the ARINC SE4 router plus a BGP route issue stopped MQ message flow. Impact lasted 5h 51m and caused 68 AAG delays totaling 1,075 minutes.",
+      "OOOI times stopped updating, airborne aircraft couldn't be pinged, and messages were missing from ACARS History.",
+      "A single-station outage (JNU) cut off automated aircraft communications."
+    ],
+    knownWorkarounds: [
+      "Enter OOOI times and flight plans manually",
+      "Get flight and fuel info from pilots by radio, enter Web Send Times manually, and relay final numbers to crews",
+      "For Common Use: use CSAM, print bag tags at kiosks, and send boarding passes to customers' phones"
+    ],
+    vendorContacts: {
+      companyNote:
+        "ARINC (Aeronautical Radio, Incorporated), now part of Collins Aerospace",
+      categoryNote:
+        "Operational Category: Flight Ops: communication to aircraft (ACARS) • Support Portal URL: https://portal.arinc.net (you need an ARINC Portal login; otherwise use email or phone)",
+      supportPhone: "800-633-6882",
+      supportPhoneNote:
+        "Older documents also list 800-482-0004 and 800-482-0006.",
+      supportEmail: "AOChelpdesk@collins.com",
+      supportEmailNote:
+        "ARINC email contact info last updated 4/20/2026. Older documents list helpdesk@arinc.com, and the HA vendor list shows ops_hd@arinc.com.",
+      secondaryEmail: "AOC@collins.com",
+      secondaryEmailNote:
+        "Escalation (24x7): Senior On-Duty Ops Manager (rotating), 410-266-4029 • Older docs: helpdesk@arinc.com / ops_hd@arinc.com",
+      supportHours: "24x7 (rotating Senior On-Duty Operations Manager)",
+      accountManager:
+        "Brian Anderson (+1-786-527-1079 / brian.anderson1@collins.com)",
+      namedEscalationContact:
+        "Senior On-Duty Ops Manager (rotating): 410-266-4029 / AOC@collins.com • 2nd Level (Director, ARINC Operations Center): James Schuler (O 410-266-2084 / C 319-830-1204 / James.Schuler@Collins.com) • 3rd Level (Head of Global Network Solutions): Paul Hickox (O +44 1293 64 1293 / C +44 7736 05 5114 / Paul.Hickox@Collins.com)",
+      technicalSupport:
+        "Collins Aerospace Help Desk: 800-633-6882 / AOChelpdesk@collins.com (older phones: 800-482-0004, 800-482-0006; older emails: helpdesk@arinc.com, ops_hd@arinc.com) • Escalation (24x7): Senior On-Duty Ops Manager (rotating), 410-266-4029 / AOC@collins.com • CSM (ACARS): Joseph Pagan (+1-410-588-9191 / joseph.pagan@collins.com)",
+      contactDirectory: [
+        {
+          role: "Help Desk",
+          name: "Collins Aerospace Help Desk",
+          phone: "800-633-6882",
+          email: "AOChelpdesk@collins.com"
+        },
+        {
+          role: "Escalation (24x7)",
+          name: "Senior On-Duty Ops Manager (rotating)",
+          phone: "410-266-4029",
+          email: "AOC@collins.com"
+        },
+        {
+          role: "2nd Level: Director, ARINC Operations Center",
+          name: "James Schuler",
+          phone: "O 410-266-2084 / C 319-830-1204",
+          email: "James.Schuler@Collins.com"
+        },
+        {
+          role: "3rd Level: Head of Global Network Solutions",
+          name: "Paul Hickox",
+          phone: "O +44 1293 64 1293 / C +44 7736 05 5114",
+          email: "Paul.Hickox@Collins.com"
+        },
+        {
+          role: "Account Manager",
+          name: "Brian Anderson",
+          phone: "+1-786-527-1079",
+          email: "brian.anderson1@collins.com"
+        },
+        {
+          role: "Customer Success Manager (ACARS)",
+          name: "Joseph Pagan",
+          phone: "+1-410-588-9191",
+          email: "joseph.pagan@collins.com"
+        },
+        {
+          role: "Network Services Sales/Marketing Director",
+          name: "Terry Hughes",
+          phone: "O 410-266-4939 / C 443-243-5957",
+          email: "terrance.hughes@collins.com"
+        },
+        {
+          role: "Program Manager, Avionics",
+          name: "Luke Wilson",
+          phone: "+1-704-737-3612",
+          email: "(Add email)"
+        },
+        {
+          role: "Senior Manager, Network Services",
+          name: "Steve Andrews",
+          phone: "O 410-266-4305 / C 410-693-2427",
+          email: "Stephen.Andrews@Collins.com"
+        }
+      ],
+      contactWarningNote:
+        "⚠️ In the ACARS System Summary escalation image, the email addresses for Brian Anderson and Luke Wilson look shifted by one row. Please check them before you publish.",
+      escalation:
+        "Vendor Contacts:\n• Help Desk: Collins Aerospace Help Desk | 800-633-6882 | AOChelpdesk@collins.com (older phones: 800-482-0004, 800-482-0006; older emails: helpdesk@arinc.com, ops_hd@arinc.com)\n• Escalation (24x7): Senior On-Duty Ops Manager (rotating) | 410-266-4029 | AOC@collins.com\n• 2nd Level: Director, ARINC Operations Center: James Schuler | O 410-266-2084 / C 319-830-1204 | James.Schuler@Collins.com\n• 3rd Level: Head of Global Network Solutions: Paul Hickox | O +44 1293 64 1293 / C +44 7736 05 5114 | Paul.Hickox@Collins.com\n• Account Manager: Brian Anderson | +1-786-527-1079 | brian.anderson1@collins.com\n• Customer Success Manager (ACARS): Joseph Pagan | +1-410-588-9191 | joseph.pagan@collins.com\n• Network Services Sales/Marketing Director: Terry Hughes | O 410-266-4939 / C 443-243-5957 | terrance.hughes@collins.com\n• Program Manager, Avionics: Luke Wilson | +1-704-737-3612 | (Add email)\n• Senior Manager, Network Services: Steve Andrews | O 410-266-4305 / C 410-693-2427 | Stephen.Andrews@Collins.com\n⚠️ In the ACARS System Summary escalation image, the email addresses for Brian Anderson and Luke Wilson look shifted by one row. Please check them before you publish.",
+      communicationGuidelines: [
+        "Before escalating, collect the scope: tail and flight number, date and city pair, fleet-wide or not, and which ops group is affected (SOC/Dispatch/CLP).",
+        "For a station outage: check ARINC's outage emails, report the station, ask for a resolution time, and update the customer."
+      ],
+      responseSlas: [
+        {
+          priority: "Internal",
+          label: "Internal",
+          level: "Internal Criticality & Triage Limit",
+          description:
+            "24x7 critical to operation. ProdOps triage time limit is 15 minutes.",
+          target:
+            "24x7 critical to operation. ProdOps triage time limit is 15 minutes.",
+          value:
+            "24x7 critical to operation. ProdOps triage time limit is 15 minutes."
+        },
+        {
+          priority: "Vendor initial response time",
+          label: "Vendor initial response time",
+          level: "Vendor Initial Response SLA",
+          description: "Vendor initial response time",
+          target: "(Add Response Targets)",
+          value: "(Add Response Targets)"
+        },
+        {
+          priority: "Sev 1/Sev 2 update cadence",
+          label: "Sev 1/Sev 2 update cadence",
+          level: "Incident Update Cadence",
+          description: "Sev 1/Sev 2 update cadence",
+          target: "(Add Update Cadence)",
+          value: "(Add Update Cadence)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS Flight Operations (ITS System Owner: Ryan Wilkins)",
+      itsTeamNote:
+        "On-Call: COG FltOps / ITS FltOps on-call; Middleware (IBM MQ) • ACARS SMEs: John Thivierge, Sylvain Laviolette",
+      applicationOwner: "Ryan Wilkins, 206-972-0228",
+      businessOwner:
+        "James Falen (Flight Ops), 425-679-2135 (cell) / 206-392-6083 (desk)",
+      systemAdministration: "Andy Nunez, Arun Sharma, 206-392-8613",
+      everbridgeContacts: "Everbridge Backup: Charles Ostick, 877-238-1077",
+      onCallSupport: "COG FltOps / ITS FltOps on-call; Middleware (IBM MQ)",
+      acarsSmes: "John Thivierge, Sylvain Laviolette",
+      internalDirectory: [
+        { role: "ITS System Owner", contact: "Ryan Wilkins, 206-972-0228" },
+        {
+          role: "Business Owner",
+          contact:
+            "James Falen (Flight Ops), 425-679-2135 (cell) / 206-392-6083 (desk)"
+        },
+        {
+          role: "System Administration",
+          contact: "Andy Nunez, Arun Sharma, 206-392-8613"
+        },
+        { role: "Everbridge Backup", contact: "Charles Ostick, 877-238-1077" },
+        {
+          role: "On-Call",
+          contact: "COG FltOps / ITS FltOps on-call; Middleware (IBM MQ)"
+        },
+        { role: "ACARS SMEs", contact: "John Thivierge, Sylvain Laviolette" }
+      ]
+    },
+    validationChecklist: [
+      "Open the Aircom status page (acars.app.insideaag.com/StatusReport.htm) and confirm all required services are green.",
+      "If only IBM MQ Links show red, restart the AS IBM MQ Connector. If it's still disconnected, restart all Aircom services.",
+      "If you get an alert or email from AOC@arinc.com about MQ channel AMX1QM1.QMAS, treat it as Sev 1 and engage Middleware (IBM MQ).",
+      "For an ALASKA.TO.ARINC alert, open a Sev 2, contact ARINC, and contact FltOps on-call.",
+      "For an ALASKA.FROM.ARINC alert, restart AircomWebSvcInvokerSvc on SEAVVAPP22/TUKVVAPP22. If the queue doesn't clear, restart the Aircom services. If it still doesn't clear, open a Sev 2 and contact FltOps on-call.",
+      "If only one station is affected, search the Aircom log by station code. If there are no current messages, contact ARINC with the station and ask for an ETA."
+    ],
+    incidentHistory: [
+      {
+        id: "MI6516",
+        date: "1/9/2026",
+        severity: "Sev 1",
+        summary:
+          "Sev1 MI6516 (1/9/2026): an AT&T circuit failure on the ARINC SE4 router plus a BGP route issue stopped MQ message flow. Impact lasted 5h 51m and caused 68 AAG delays totaling 1,075 minutes. OOOI times stopped updating, airborne aircraft couldn't be pinged, and messages were missing from ACARS History.",
+        resolution:
+          "Restored AT&T circuit and BGP routing on the ARINC SE4 router to resume MQ message flow."
+      },
+      {
+        id: "JNU Station Outage",
+        date: "Documented Incident",
+        severity: "Station Outage",
+        summary:
+          "A single-station outage (JNU) cut off automated aircraft communications.",
+        resolution:
+          "Searched Aircom log by station code, contacted ARINC with station code for ETA, and used manual OOOI and radio workarounds."
+      }
+    ],
+    relatedDocuments: [
+      {
+        title: "ACARS_System_Summary.docx",
+        type: "System Summary (Word)",
+        owner: "ITS Flight Operations",
+        updated: "2026-04-20",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BE5D614AD-8759-464D-ABD0-0B87929F4568%7D&file=ACARS_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ACARS_Triage_Troubleshooting.docx",
+        type: "Triage & Troubleshooting (Word)",
+        owner: "ITS Flight Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B781CA6D6-1F42-4C55-BEF2-C5D8C9704290%7D&file=ACARS_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ACARS_Physical_View.pdf",
+        type: "Physical Architecture Diagram (PDF)",
+        owner: "ITS Flight Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/ACARS%20(AS)/ACARS_Physical_View.pdf?web=1"
+      },
+      {
+        title: "Arinc-improvement.docx",
+        type: "Network Improvement Plan (Word)",
+        owner: "ITS Network / ASICS",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ASICS/IO/NC/_layouts/15/Doc.aspx?sourcedoc=%7B5962904C-6830-48BD-A139-B4131C9C8B7B%7D&file=Arinc-improvement.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "HA Vendor Contacts (Cutover.one)",
+        type: "HA Vendor Contacts (OneNote)",
+        owner: "AS/HA Cutover",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/_layouts/15/Doc.aspx?action=edit&mobileredirect=true&wdorigin=Sharepoint&DefaultItemOpen=1&sourcedoc=%7B8501a0a1-545b-4119-bfbf-e0d9e5a13d8c%7D&wd=target(/Cutover.one/)&wdpartid=%7B4cda5f21-693c-43c7-96cc-e478f4a39e2a%7D%7B1%7D&wdsectionfileid=%7Bed20e517-229c-4798-ae2f-700c014416aa%7D"
+      },
+      {
+        title: "Vendor Contacts - Ground Stop Applications.docx",
+        type: "Vendor Contacts Directory (Word)",
+        owner: "ITS Production Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B6A63CAD1-1305-4213-A63E-0A904BCFFD7D%7D&file=Vendor%20Contacts%20-%20Ground%20Stop%20Applications.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Vendor Escalation for Critical Systems.docx",
+        type: "Escalation Reference (Word)",
+        owner: "ITS Production Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BB85271C7-A549-4429-8EC8-01EBAFF93C00%7D&file=Vendor%20Escalation%20for%20Critical%20Systems.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "MQ Business Partners.docx",
+        type: "Middleware Business Partners (Word)",
+        owner: "Middleware (IBM MQ)",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BAF79CA3F-C0EE-4DD5-B67B-41BF8BCB0799%7D&file=MQ%20Business%20Partners.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ACARS System Summary.docx",
+        type: "System Summary - Knowledge Management (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B2BB39DDA-09AB-4472-B50C-30C9FBA44CF5%7D&file=ACARS%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "RCA - Sev1 - MI6516 - ACARS is degraded impacting flight operations and planning.docx",
+        type: "Sev 1 Root Cause Analysis (Word - ITSSev1Response)",
+        owner: "ITS Sev 1 Response",
+        updated: "2026-01-09",
+        url: "https://alaskaair.sharepoint.com/sites/ITSSev1Response/_layouts/15/Doc.aspx?sourcedoc=%7B594EDDF3-1DF8-4F61-8BF9-E2C992B1CBDD%7D&file=RCA%20-%20Sev1%20-%20MI6516%20-%20ACARS%20is%20degraded%20impacting%20flight%20operations%20and%20planning.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "RCA - Sev1 - MI6516 - ACARS is degraded impacting flight operations and planning (ProdOps Copy).docx",
+        type: "Sev 1 Root Cause Analysis (Word - ProdOps)",
+        owner: "ITS Production Operations",
+        updated: "2026-01-09",
+        url: "https://alaskaair.sharepoint.com/sites/ITSProductionOperations169-ProdOpsTeamChannel/_layouts/15/Doc.aspx?sourcedoc=%7B0C81CDB7-694E-48F2-B40A-ECDEE71FF9B0%7D&file=RCA%20-%20Sev1%20-%20MI6516%20-%20ACARS%20is%20degraded%20impacting%20flight%20operations%20and%20planning.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "E2E Test Strategy - Flight Planning System Replacement_V0.1.pptx",
+        type: "E2E Test Strategy Presentation (PowerPoint)",
+        owner: "Alaska E2E Testing",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/AlaskaE2ETesting/_layouts/15/Doc.aspx?sourcedoc=%7B45417EC3-08B2-46C7-A5DF-AE77AB217C2D%7D&file=E2E%20Test%20Strategy%20-%20Flight%20Planning%20System%20Replacement_V0.1.pptx&action=edit&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Flyways Messenger Routing Logic (ADO Wiki)",
+        type: "ADO Wiki Documentation",
+        owner: "ITS Flight Operations",
+        updated: "Additional Source",
+        url: "https://itsals.visualstudio.com/FlightOperationsGIT/_wiki/wikis/FlightOperationsGIT.wiki/44212"
+      },
+      {
+        title: "Common Use 3.0_Runbook.docx",
+        type: "Operational Runbook (Word)",
+        owner: "Common Use",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/CommonUse/_layouts/15/Doc.aspx?sourcedoc=%7B84E1FF6D-FDA4-490A-92BA-0413EE45C14D%7D&file=Common%20Use%203.0_Runbook.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Business Partner Inventory.xlsx",
+        type: "Middleware Partner Inventory (Excel)",
+        owner: "Middleware (IBM MQ)",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/Middleware/_layouts/15/Doc.aspx?sourcedoc=%7B4B46202C-325C-4E41-B949-256A8B1D0625%7D&file=Business%20Partner%20Inventory.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "2025_ARINCvendor_DR.pdf",
+        type: "Vendor Disaster Recovery Plan (PDF)",
+        owner: "DR Program / ITS Flight Operations",
+        updated: "2025",
+        url: "https://alaskaair.sharepoint.com/sites/sc/DR/DR%20Plans%20Editable%20Tier%200%201%20%202/Vendor%20Owned%20DR%20Plans/2025_ARINCvendor_DR.pdf?web=1"
+      },
+      {
+        title: "AAG Sev 1 Performance Bridge (Teams)",
+        type: "Incident Bridge Thread (Teams)",
+        owner: "Production Operations / Flight Operations",
+        updated: "Incident Reference",
+        url: "https://teams.microsoft.com/l/message/19:meeting_ZjZhNDIxMmMtZDU3OS00MGFiLTgzZTctZWM0MjI3NzY5OGJl@thread.v2/1788891520346?context=%7B%22contextType%22:%22chat%22%7D"
+      }
+    ]
+  },
+
+  boeing: {
+    id: "boeing",
+    name: "Boeing Toolbox",
+    breadcrumbTrail: ["Vendors", "Boeing", "Vendor Impact"],
+    pageTitle: "Boeing Toolbox - Vendor Impact Details",
+    pageSubtitle:
+      "Boeing Toolbox is the online library maintenance uses to look up Boeing fleet manuals, hosted externally by Boeing via My Boeing Fleet (MBF).",
+    applicationsTabTitle: "Boeing",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View all Alaska Maintenance & Engineering applications and continuity tools associated with Boeing Toolbox (MPT, MBF, TML, TBR).",
+    applicationsCardSubtitle:
+      "Applications and systems supported by Boeing for maintenance manuals, task cards, mobile access, and standalone continuity.",
+    dependenciesTabTitle: "Boeing Toolbox - Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream dependencies, downstream M&E operational consumers, and Express Connect SAML SSO, browser/plug-in, network, and monitoring infrastructure.",
+    status: "Active",
+    lastUpdated: "2026 (Boeing_Toolbox_System_Summary & Triage Runbooks)",
+    subtitle:
+      "Maintenance (M&E): maintenance reference library (24/7 During Maintenance · Most Critical 6p–6a)",
+    company: "Boeing",
+    website:
+      "http://myboeingfleet.com (Boeing Service Requests, account required). The Toolbox itself is at https://myboeingfleet.boeing.com/toolbox/.",
+    category: "Maintenance (M&E): maintenance reference library",
+    itsTeam:
+      "ITS COG M&E App Support (Jerred Slavata / Rituraj; Application Support: M&E and Safety ITS – On Call 24x7)",
+    logo: "public/vendors/boeing.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 4,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      level: "Critical",
+      title: "Key Takeaways: 24/7 Maintenance Reference Library (Most Critical 6p–6a)",
+      message:
+        "Boeing Toolbox is the online library maintenance uses to look up Boeing fleet manuals. Boeing hosts it externally, so it depends on internet access and Boeing SSO. MPT has to be available 24/7 whenever maintenance work is underway, and the overnight 6p–6a window matters most."
+    },
+    impactedSystems: [
+      {
+        id: "boeing-mpt",
+        name: "Maintenance Performance Toolbox (MPT)",
+        subName: "(https://myboeingfleet.boeing.com/toolbox/ · Critical 6p–6a)",
+        appTabSubName: "(https://myboeingfleet.boeing.com/toolbox/ · Critical 6p–6a)",
+        description:
+          "Boeing's maintenance reference library, opened in a browser through My Boeing Fleet",
+        appTabDescription:
+          "Boeing's maintenance reference library, opened in a browser through My Boeing Fleet",
+        businessFunction: "Maintenance manuals, task cards, requirements",
+        impact:
+          "Techs lose online access to manuals. MPT must be up 24/7 whenever maintenance is being done, and 6p–6a is the most critical window.",
+        dependencies:
+          "My Boeing Fleet (MBF), Express Connect SAML SSO, IE / Edge IE mode, IG View/ISO View plug-in",
+        status: "Potential",
+        owner: "ITS COG M&E App Support"
+      },
+      {
+        id: "boeing-mbf",
+        name: "My Boeing Fleet (MBF)",
+        subName: "(http://myboeingfleet.com · Portal & First-Level Access)",
+        appTabSubName: "(http://myboeingfleet.com · Portal & First-Level Access)",
+        description:
+          "Boeing portal that grants the first level of access to Toolbox",
+        appTabDescription:
+          "Boeing portal that grants the first level of access to Toolbox",
+        businessFunction: "Access and authentication",
+        impact: "No way into MPT",
+        dependencies: "Boeing, SAML SSO",
+        status: "Potential",
+        owner: "ITS COG M&E App Support"
+      },
+      {
+        id: "boeing-tml",
+        name: "Toolbox Mobile Library (TML)",
+        subName: "(iPad App for Boeing Toolbox)",
+        appTabSubName: "(iPad App for Boeing Toolbox)",
+        description: "iPad app for Toolbox",
+        appTabDescription: "iPad app for Toolbox",
+        businessFunction: "Mobile access to manuals",
+        impact: "(Add Impact)",
+        dependencies: "App must be on the latest version",
+        status: "Potential",
+        owner: "Business Focal for Mobile: Sam Russell"
+      },
+      {
+        id: "boeing-tbr",
+        name: "Toolbox Remote (TBR)",
+        subName: "(Standalone Backup on 6 Mobile Hard Drives & MX Control PC)",
+        appTabSubName: "(Standalone Backup on 6 Mobile Hard Drives & MX Control PC)",
+        description:
+          "Standalone backup to MPT, in portable and workstation versions",
+        appTabDescription:
+          "Standalone backup to MPT, in portable and workstation versions",
+        businessFunction: "Business continuity",
+        impact: "N/A (this is the fallback)",
+        dependencies: "Mobile Hard Drives maintained by Tech Pubs",
+        status: "Potential",
+        owner: "M&E Technical Publications"
+      }
+    ],
+    upstreamDependencies: [
+      "(Add Upstream Dependencies)"
+    ],
+    downstreamConsumers: [
+      "M&E Technical Publications",
+      "Line Maintenance",
+      "Maintenance Control",
+      "AOG Engineering",
+      "Maintenance Programs authors, for the MTLSM"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Boeing-hosted My Boeing Fleet (MBF) and Maintenance Performance Toolbox (MPT) accessed over internet and Express Connect SAML SSO by M&E Technical Publications, Line Maintenance, Maintenance Control, AOG Engineering, and Maintenance Programs authors.",
+      diagramUpstream: [
+        {
+          id: "boeing-up-1",
+          name: "(Add Upstream Dependencies)",
+          label: "(Add Upstream Dependencies)",
+          subtitle: "External Boeing host & Express Connect SAML SSO",
+          iconType: "doc"
+        }
+      ],
+      diagramServices: [
+        "Maintenance Performance Toolbox (MPT)",
+        "My Boeing Fleet (MBF)",
+        "Toolbox Mobile Library (TML)",
+        "Toolbox Remote (TBR)"
+      ],
+      diagramDownstream: [
+        {
+          id: "boeing-down-1",
+          name: "M&E Technical Publications",
+          label: "M&E Technical Publications",
+          subtitle: "Manual management & TBR Mobile Hard Drives",
+          iconType: "team"
+        },
+        {
+          id: "boeing-down-2",
+          name: "Line Maintenance & Maintenance Control",
+          label: "Line Maintenance & Maintenance Control",
+          subtitle: "24/7 fleet maintenance manuals & task cards (6p–6a critical)",
+          iconType: "nodes"
+        },
+        {
+          id: "boeing-down-3",
+          name: "AOG Engineering & Maintenance Programs",
+          label: "AOG Engineering & Maintenance Programs",
+          subtitle: "AOG Engineering & MTLSM authors",
+          iconType: "chart"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 1, tone: "red" },
+        { label: "Downstream Consumers (Business Owners)", count: 5, tone: "green" },
+        { label: "Applications & Systems", count: 4, tone: "blue" },
+        { label: "Infrastructure Dependencies", count: 5, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "Boeing Toolbox is the online library maintenance uses to look up Boeing fleet manuals. Boeing hosts it externally, so it depends on internet access and Boeing SSO. MPT has to be available 24/7 whenever maintenance work is underway, and the overnight 6p–6a window matters most."
+      ],
+      upstreamTable: [
+        {
+          id: "boeing-uptbl-1",
+          name: "(Add Upstream Dependencies)",
+          subName: "(Boeing External Host & Express Connect SAML SSO)",
+          description: "(Add Upstream Dependencies)",
+          type: "External / Vendor Host",
+          typeBadge: "orange",
+          impact:
+            "Loss of access to My Boeing Fleet (MBF) and Maintenance Performance Toolbox (MPT) online manuals."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "boeing-dwntbl-1",
+          name: "M&E Technical Publications",
+          subName: "(Business Owner)",
+          description: "M&E Technical Publications",
+          type: "Internal Operations",
+          dataFlow: "Maintenance Reference Manuals & TBR Mobile Hard Drives",
+          impact: "Unable to access or manage online Boeing maintenance publications."
+        },
+        {
+          id: "boeing-dwntbl-2",
+          name: "Line Maintenance",
+          subName: "(Business Owner)",
+          description: "Line Maintenance",
+          type: "Internal Operations",
+          dataFlow: "Online Fleet Manuals, Task Cards & Requirements",
+          impact: "Line Maintenance can't open Boeing manuals online; must fall back to Toolbox Remote (TBR)."
+        },
+        {
+          id: "boeing-dwntbl-3",
+          name: "Maintenance Control",
+          subName: "(Business Owner)",
+          description: "Maintenance Control",
+          type: "Internal Operations",
+          dataFlow: "Online Fleet Manuals & Troubleshooting Reference",
+          impact: "MX Control can't open Boeing manuals online; must use backup computer with MHD at MX Control."
+        },
+        {
+          id: "boeing-dwntbl-4",
+          name: "AOG Engineering",
+          subName: "(Business Owner)",
+          description: "AOG Engineering",
+          type: "Internal Operations",
+          dataFlow: "Engineering Reference & Aircraft-on-Ground Support",
+          impact: "Loss of online access to Boeing engineering and maintenance documentation."
+        },
+        {
+          id: "boeing-dwntbl-5",
+          name: "Maintenance Programs authors, for the MTLSM",
+          subName: "(Business Owner · Non-SGML Manual Revisions)",
+          description: "Maintenance Programs authors, for the MTLSM",
+          type: "Internal Operations",
+          dataFlow: "MTLSM Manual Revisions & Requirements",
+          impact: "Authors cannot reference or revise MTLSM manual materials online."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "boeing-infra-1",
+          component: "Simplified Sign-On (Express Connect SAML)",
+          category: "Simplified Sign-On (Express Connect SAML)",
+          iconType: "shield",
+          description:
+            "Simplified Sign-On for MBF and MPT, using Express Connect (SAML)",
+          details:
+            "Simplified Sign-On for MBF and MPT, using Express Connect (SAML)",
+          owner: "ITS Identity / ITS COG M&E App Support",
+          impact: "Users cannot authenticate into My Boeing Fleet (MBF) or Maintenance Performance Toolbox (MPT)."
+        },
+        {
+          id: "boeing-infra-2",
+          component: "Browser & IG View / ISO View Plug-In (Altiris)",
+          category: "Browser & IG View / ISO View Plug-In (Altiris)",
+          iconType: "layers",
+          description:
+            "Internet Explorer, or Edge in IE mode, plus the IG View/ISO View plug-in (deployed through Altiris)",
+          details:
+            "Internet Explorer, or Edge in IE mode, plus the IG View/ISO View plug-in (deployed through Altiris)",
+          owner: "ITS Endpoint Platforms / M&E App Support",
+          impact: "Diagrams, manuals, or Toolbox pages fail to render or print without IE mode and IG View/ISO View."
+        },
+        {
+          id: "boeing-infra-3",
+          component: "Internet Access to Boeing Host (Comcast PC Isolation)",
+          category: "Internet Access to Boeing Host (Comcast PC Isolation)",
+          iconType: "globe",
+          description:
+            "Internet access to the Boeing host. Use the Comcast PC to tell whether a problem is on the Alaska network or on Boeing's side.",
+          details:
+            "Internet access to the Boeing host. Use the Comcast PC to tell whether a problem is on the Alaska network or on Boeing's side.",
+          owner: "ITS Network / Boeing",
+          impact: "If Comcast PC works, issue is on the Alaska network; if Comcast PC fails too, issue is on Boeing's side."
+        },
+        {
+          id: "boeing-infra-4",
+          component: "Monitoring (Critical Apps Dashboard)",
+          category: "Monitoring (Critical Apps Dashboard)",
+          iconType: "server",
+          description: "Monitoring: the Critical apps dashboard",
+          details: "Monitoring: the Critical apps dashboard",
+          owner: "ITS Production Operations",
+          impact: "Tracks operational availability of Boeing Toolbox on the Critical apps dashboard."
+        },
+        {
+          id: "boeing-infra-5",
+          component: "Change Validation (M&E Network & Firewall CR Validation Set)",
+          category: "Change Validation (M&E Network & Firewall CR Validation Set)",
+          iconType: "shield",
+          description:
+            "Change validation: Toolbox is part of the M&E validation set for network and firewall CRs",
+          details:
+            "Change validation: Toolbox is part of the M&E validation set for network and firewall CRs",
+          owner: "ITS COG M&E App Support / Network",
+          impact: "Must be validated during network and firewall change requests affecting M&E."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Line Maintenance and MX Control can't open Boeing manuals online.",
+      "Data or content errors can affect accuracy.",
+      "Printing failures slow down the work. These start as Sev 2 and may drop to Sev 3 if another workstation can print."
+    ],
+    knownWorkarounds: [
+      "Toolbox Remote (TBR) on six Mobile Hard Drives, checked out from Tech Pubs",
+      "A separate backup computer with an MHD at MX Control"
+    ],
+    validationChecklist: [
+      "Check whether ProdOps can reach the Toolbox site.",
+      "Try it from the Comcast PC. If that works, contact Network. If it fails too, contact Boeing.",
+      "Collect the machine name, users, location, browser version, device type, and the error message.",
+      "For browser problems: use the direct MBF link or IE mode, or add the Toolbox URL to the IE-mode sites list.",
+      "For blank pages or pop-ups: clear the browser cache, log out of MBF, and log back in.",
+      "For access or missing-icon problems: check that the user has the app under MBF Applications → \"M\". If not, send a request to Boeing.Access.Requests@alaskaair.com.",
+      "CC Rob Lowy on every Toolbox issue."
+    ],
+    vendorContacts: {
+      supportPhone:
+        "Primary: 206-544-9990, Option 1 (Boeing e-Enabled Digital Data Customer Support). Secondary: 206-544-7500, Option 2 (Boeing Operations)",
+      supportPhoneNote:
+        "Primary requires MBF account / BEMS ID. Secondary: say it's a \"Toolbox\" issue, not aircraft-related.",
+      supportEmail: "(Add Vendor Support Email)",
+      supportHours: "24x7",
+      accountManager: "(Add Account Manager)",
+      technicalSupport:
+        "Primary: Boeing e-Enabled Digital Data Customer Support — 206-544-9990, Opt 1 (requires MBF account / BEMS ID) • Secondary: Boeing Operations — 206-544-7500, Opt 2 (say it's a \"Toolbox\" issue, not aircraft-related) • Account Manager: (Add Account Manager)",
+      namedEscalationContact:
+        "Boeing Operations: 206-544-7500, Opt 2 (say it's a \"Toolbox\" issue, not aircraft-related) • Account Manager: (Add Account Manager)",
+      companyNote: "Boeing",
+      categoryNote:
+        "Maintenance (M&E): maintenance reference library • Portal: http://myboeingfleet.com (Boeing Service Requests, account required) • Toolbox: https://myboeingfleet.boeing.com/toolbox/",
+      contactDirectory: [
+        {
+          role: "Support Desk (primary)",
+          name: "Boeing e-Enabled Digital Data Customer Support",
+          phone: "206-544-9990, Opt 1 (requires MBF account / BEMS ID)",
+          email: "(Add Vendor Support Email)"
+        },
+        {
+          role: "Secondary",
+          name: "Boeing Operations",
+          phone: "206-544-7500, Opt 2. Say it's a \"Toolbox\" issue, not aircraft-related",
+          email: "—"
+        },
+        {
+          role: "Account Manager",
+          name: "(Add Account Manager)",
+          phone: "—",
+          email: "—"
+        }
+      ],
+      contactWarningNote:
+        "⚠️ The document's change log says Rob Lowy was replaced as focal on 6/23/2020, but his name is still in the contact table. Check who the current focal is.",
+      escalation:
+        "Support Desk (primary): Boeing e-Enabled Digital Data Customer Support — 206-544-9990, Opt 1 (requires MBF account / BEMS ID).\nSecondary: Boeing Operations — 206-544-7500, Opt 2 (say it's a \"Toolbox\" issue, not aircraft-related).\nAccount Manager: (Add Account Manager).\nSev 1/2: call Boeing directly. For anything else, submit a Boeing Service Request through myboeingfleet.com.\nVendor update cadence: Boeing sends email updates every 15 minutes to 1 hour. If the updates stop, escalate to Rob Lowy.",
+      communicationGuidelines: [
+        "Sev 1/2: call Boeing directly. For anything else, submit a Boeing Service Request through myboeingfleet.com.",
+        "For mobile issues, end users call the Service Desk (option 4). If the Service Desk can't fix it, they warm-transfer the caller to Boeing.",
+        "For content or data errors, collect screenshots and send them to the Toolbox Online business focal, who takes it to Boeing."
+      ],
+      responseSlas: [
+        {
+          priority: "Vendor update cadence",
+          label: "Vendor update cadence",
+          level: "Vendor Email Update Cadence",
+          description:
+            "Boeing sends email updates every 15 minutes to 1 hour. If the updates stop, escalate to Rob Lowy.",
+          target:
+            "Boeing sends email updates every 15 minutes to 1 hour. If the updates stop, escalate to Rob Lowy.",
+          condition:
+            "Boeing sends email updates every 15 minutes to 1 hour. If the updates stop, escalate to Rob Lowy.",
+          value:
+            "Boeing sends email updates every 15 minutes to 1 hour. If the updates stop, escalate to Rob Lowy."
+        },
+        {
+          priority: "Internal",
+          label: "Internal",
+          level: "Internal Operational Availability",
+          description:
+            "MPT available 24/7 during maintenance, most critical 6p–6a",
+          target: "MPT available 24/7 during maintenance, most critical 6p–6a",
+          condition: "MPT available 24/7 during maintenance, most critical 6p–6a",
+          value: "MPT available 24/7 during maintenance, most critical 6p–6a"
+        },
+        {
+          priority: "Initial response time",
+          label: "Initial response time",
+          level: "Vendor Initial Response SLA",
+          description:
+            "The System Summary includes a \"Boeing Issue Prioritization\" image, but its contents aren't readable.",
+          target:
+            "(Add Response Targets). The System Summary includes a \"Boeing Issue Prioritization\" image, but its contents aren't readable.",
+          condition:
+            "(Add Response Targets). The System Summary includes a \"Boeing Issue Prioritization\" image, but its contents aren't readable.",
+          value:
+            "(Add Response Targets). The System Summary includes a \"Boeing Issue Prioritization\" image, but its contents aren't readable."
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam:
+        "ITS COG M&E App Support (Jerred Slavata / Rituraj; Application Support: M&E and Safety ITS – On Call 24x7)",
+      itsTeamNote:
+        "ITS App Support: ITS COG M&E App Support (Jerred Slavata / Rituraj). Brad Dufour is also listed. The System Summary lists application support as \"M&E and Safety ITS – On Call 24x7\".",
+      applicationOwner:
+        "ITS COG M&E App Support (Jerred Slavata / Rituraj). Brad Dufour is also listed.",
+      onCallSupport:
+        "M&E and Safety ITS – On Call 24x7 (ITS COG M&E App Support: Jerred Slavata / Rituraj; Brad Dufour)",
+      systemAdministration:
+        "System Admin / Password: ITS Service Center, 877-238-1077, 24x7 • How-To: M&E Department, Maint.Engineering@firstclass.alaskaair.com (business hours) • TBR Support: Technical Publications Manager (business hours)",
+      businessOwner:
+        "Business Focal, Toolbox Online: Rob Lowy, cell 253-455-1716 (Call 24x7 for major incidents; otherwise use email) • Business Focal, Mobile / Everbridge Focal: Sam Russell, 206-948-1136",
+      everbridgeContacts:
+        "Business Focal, Mobile / Everbridge Focal: Sam Russell, 206-948-1136 • Everbridge Backup: Andrew Fitts (M&E), 206-369-0377",
+      passwordSupport: "ITS Service Center, 877-238-1077, 24x7",
+      internalDirectory: [
+        {
+          role: "Business Focal, Toolbox Online",
+          contact:
+            "Rob Lowy, cell 253-455-1716. Call 24x7 for major incidents; otherwise use email. ⚠️ The document's change log says Rob Lowy was replaced as focal on 6/23/2020, but his name is still in the contact table. Check who the current focal is."
+        },
+        {
+          role: "Business Focal, Mobile / Everbridge Focal",
+          contact: "Sam Russell, 206-948-1136"
+        },
+        {
+          role: "Everbridge Backup",
+          contact: "Andrew Fitts (M&E), 206-369-0377"
+        },
+        {
+          role: "ITS App Support",
+          contact:
+            "ITS COG M&E App Support (Jerred Slavata / Rituraj). Brad Dufour is also listed."
+        },
+        {
+          role: "System Admin / Password",
+          contact: "ITS Service Center, 877-238-1077, 24x7"
+        },
+        {
+          role: "How-To",
+          contact:
+            "M&E Department, Maint.Engineering@firstclass.alaskaair.com (business hours)"
+        },
+        {
+          role: "TBR Support",
+          contact: "Technical Publications Manager (business hours)"
+        }
+      ]
+    },
+    incidentHistory: [],
+    relatedDocuments: [
+      {
+        title: "Boeing_Toolbox_System_Summary.docx",
+        type: "System Summary (Word)",
+        owner: "M&E and Safety ITS / ITS COG M&E App Support",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BA07205BC-DEAF-420F-8D9A-E0F6E4ACD387%7D&file=Boeing_Toolbox_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Boeing Toolbox Browser Troubleshooting.docx",
+        type: "Browser Troubleshooting Guide (Word)",
+        owner: "ITS COG M&E App Support / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B8E4CDE4C-4352-4D79-BAAE-E79523917A40%7D&file=Boeing%20Toolbox%20Browser%20Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Boeing Toolbox_Triage_Troubleshooting.docx",
+        type: "Triage & Troubleshooting Guide (Word)",
+        owner: "ITS Production Operations / M&E App Support",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B74B4998E-E20F-4645-ACD5-4FA6CBC9E8CF%7D&file=Boeing%20Toolbox_Triage_Troubleshooting.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Boeing Toolbox is Down.docx",
+        type: "Outage Isolation Runbook (Word)",
+        owner: "ITS Production Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B428878D7-3791-4229-B02F-4FF8C8597838%7D&file=Boeing%20Toolbox%20is%20Down.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Boeing Toolbox icon is missing.docx",
+        type: "Access & Missing Icon Runbook (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BDB0BA177-D6C3-4A8A-915E-B59EABC2D6E4%7D&file=Boeing%20Toolbox%20icon%20is%20missing.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "User is unable to access Boeing Toolbox through Toolbox Library in his Ipad.docx",
+        type: "Mobile / iPad Troubleshooting (Word)",
+        owner: "ITS Service Desk / Mobile Support",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BE1DD135F-E2CE-4CA6-8D62-39B333F5FAF2%7D&file=User%20is%20unable%20to%20access%20Boeing%20Toolbox%20through%20Toolbox%20Library%20in%20his%20Ipad.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Errors in data or content accuracy.docx",
+        type: "Content Accuracy Escalation Guide (Word)",
+        owner: "M&E Technical Publications",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B588E4D9B-97F7-4195-A69D-9CF410CC9E24%7D&file=Errors%20in%20data%20or%20content%20accuracy.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Slow to display PDF print window (Boeing Toolbox).docx",
+        type: "Printing Troubleshooting Guide (Word)",
+        owner: "ITS COG M&E App Support / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B0E027190-BB9E-4ACE-A903-95A1C50F17B1%7D&file=Slow%20to%20display%20PDF%20print%20window%20(Boeing%20Toolbox).docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Vendor Escalation for Critical Systems.docx",
+        type: "Escalation Reference (Word)",
+        owner: "ITS Production Operations",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BB85271C7-A549-4429-8EC8-01EBAFF93C00%7D&file=Vendor%20Escalation%20for%20Critical%20Systems.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "MTLSM (Non-SGML Manual Revisions.one)",
+        type: "Tech Pubs Manual Revisions (OneNote)",
+        owner: "M&E Technical Publications / Maintenance Programs",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/maineng/TechPubsASnew/_layouts/15/Doc.aspx?action=edit&mobileredirect=true&wdorigin=Sharepoint&DefaultItemOpen=1&sourcedoc=%7Ba0e76449-a7a2-4ba0-af0a-f8954716bb3f%7D&wd=target(/Non-SGML%20Manual%20Revisions.one/)&wdpartid=%7Be25edf1f-5cc5-0800-0f8b-bafeee4acf43%7D%7B1%7D&wdsectionfileid=%7B07d0f667-e398-4975-8f8f-eb269a18211c%7D"
+      },
+      {
+        title: "sev1.xlsx",
+        type: "Sev 1 Contacts Matrix (Excel)",
+        owner: "ITSCOG M&E App Support",
+        updated: "Additional Source",
+        url: "https://alaskaair-my.sharepoint.com/personal/khalki_surya_rajan_alaskaair_com/_layouts/15/Doc.aspx?sourcedoc=%7B3D6FFB6E-17EA-4368-9BB7-2482749C063F%7D&file=sev1.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ITS Vendor Information - 2026.xlsx",
+        type: "ITS Vendor Directory (Excel)",
+        owner: "ITS Sev 1 Response",
+        updated: "2026",
+        url: "https://alaskaair.sharepoint.com/sites/ITSSev1Response/_layouts/15/Doc.aspx?sourcedoc=%7B0C805079-8D03-4D14-BE73-0012791BDD6A%7D&file=ITS%20Vendor%20Information%20-%202026.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Validation - firewall upgrade (Teams)",
+        type: "M&E Network/Firewall Validation Thread (Teams)",
+        owner: "ITS COG M&E App Support / Network",
+        updated: "Validation Reference",
+        url: "https://teams.microsoft.com/l/message/19:meeting_NDc2M2Q1MzgtYzE5NC00ODBjLTkzMDYtNWM2YWJlMWNkMDMz@thread.v2/1789624828399?context=%7B%22contextType%22:%22chat%22%7D"
+      }
+    ]
+  },
+
+  "cargo-spot": {
+    id: "cargo-spot",
+    name: "CHAMP, AirClic (Descartes) & SmartKargo",
+    breadcrumbTrail: ["Vendors", "CHAMP, AirClic, SmartKargo", "Vendor Impact"],
+    pageTitle: "CHAMP, AirClic (Descartes) & SmartKargo - Vendor Impact Details",
+    pageSubtitle:
+      "Combined Cargo & Ramp vendor group covering CHAMP (CargoSPOT air waybill reservation, tracking and accounting), Descartes / formerly AirClic (ULD scanning and Planeside Tool), and SmartKargo (online cargo booking and HA cargo system).",
+    applicationsTabTitle: "CHAMP, AirClic (Descartes) & SmartKargo",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View all Alaska & Hawaiian Cargo and Ramp applications across CHAMP (CargoSPOT, Cargo Payment), Descartes / formerly AirClic (ULD Scanning / Verification, Planeside Tool, Igloo Verification Report / ULD AVR), and SmartKargo.",
+    applicationsCardSubtitle:
+      "Applications and systems supported by CHAMP, Descartes (formerly AirClic), and SmartKargo for cargo booking, air waybill tracking, ULD scanning, and planeside load verification.",
+    dependenciesTabTitle: "CHAMP, AirClic (Descartes) & SmartKargo - Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream dependencies, downstream consumers, and infrastructure components for CHAMP (CargoSPOT), Descartes (formerly AirClic), and SmartKargo.",
+    status: "Active",
+    lastUpdated: "2026 (CargoSpot, AirClic & SmartKargo System Summaries & KBs)",
+    subtitle:
+      "Cargo: air waybill reservation, tracking and accounting (CHAMP) • Cargo / Ramp: ULD scanning and the Planeside Tool (Descartes / formerly AirClic) • Cargo: online booking; HA uses it as its cargo system (SmartKargo)",
+    company:
+      "CHAMP (support@champ.aero domain) / Descartes (formerly AirClic) / SmartKargo",
+    website:
+      "CHAMP: (Add Website/Support Portal URL) • AirClic (Descartes): https://servicedesk.descartes.com/ (registration required) • SmartKargo: (Add Website/Support Portal URL)",
+    category:
+      "Cargo: air waybill reservation, tracking and accounting (CHAMP) • Cargo / Ramp: ULD scanning and the Planeside Tool (AirClic / Descartes) • Cargo: online booking. HA uses it as its cargo system (SmartKargo)",
+    itsTeam:
+      "ITS COG Airport Ops Support (John Antony Dubreuil; Will Marken) / ITS Airport Operations (formerly Cargo IT; AirportOps queue)",
+    logo: "public/vendors/cargo-spot.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 6,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      level: "Critical",
+      title: "Key Takeaways: CHAMP (CargoSPOT), AirClic (Descartes) & SmartKargo",
+      message:
+        "CHAMP (CargoSPOT): CargoSPOT is the core cargo booking and tracking system for AS and QX. It has an internal SLA of 20 minutes. • AirClic (now Descartes): AirClic scanning issues are classed as Sev 2. The platform links S4A load planning to ramp loading verification. • SmartKargo: SmartKargo is the customer-facing tool for booking cargo online and it feeds CargoSPOT."
+    },
+    impactedSystems: [
+      {
+        id: "cargo-spot-cspot",
+        name: "CargoSPOT (cSpot)",
+        subName: "(CHAMP · Internal SLA: 20 minutes)",
+        appTabSubName: "(CHAMP · Internal SLA: 20 minutes)",
+        description:
+          "Java app running as a Windows service. Used by 900+ AS/QX CSAs and RSAs at 83 cargo stations",
+        appTabDescription:
+          "Java app running as a Windows service. Used by 900+ AS/QX CSAs and RSAs at 83 cargo stations",
+        businessFunction:
+          "Cargo air waybill reservation, tracking and accounting",
+        impact: "(Add Impact)",
+        dependencies: "Windows Server 2008 R2, JRE 1.7u45, LDAP auth",
+        status: "Potential",
+        owner: "ITS System Owner: Will Marken, 206-245-4584 (6:30–18:30)"
+      },
+      {
+        id: "cargo-spot-payment",
+        name: "Cargo Payment",
+        subName: "(CHAMP / AirClic / SmartKargo Vendor Group)",
+        appTabSubName: "(CHAMP / AirClic / SmartKargo Vendor Group)",
+        description:
+          "Listed under the same vendor group (CHAMP / AirClic / SmartKargo)",
+        appTabDescription:
+          "Listed under the same vendor group (CHAMP / AirClic / SmartKargo)",
+        businessFunction: "Cargo payment",
+        impact: "(Add Impact)",
+        dependencies: "(Add Direct Dependencies)",
+        status: "Potential",
+        owner: "ITS COG Airport Ops Support"
+      },
+      {
+        id: "airclic-uld-scanning",
+        name: "ULD Scanning / Verification",
+        subName: "(Descartes / formerly AirClic · Sev 2)",
+        appTabSubName: "(Descartes / formerly AirClic · Sev 2)",
+        description:
+          "Descartes app on handheld scanners. Pulls load data from ULD_Scanning and writes scan results to ULD_History",
+        appTabDescription:
+          "Descartes app on handheld scanners. Pulls load data from ULD_Scanning and writes scan results to ULD_History",
+        businessFunction:
+          "Assigns ULD positions on freighters and verifies them",
+        impact: "Handsets can't download load data",
+        dependencies: "ULDVerificationWS, AirClic DB, JBoss on TUKVVAPP17",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      },
+      {
+        id: "airclic-pst",
+        name: "Planeside Tool (PST)",
+        subName: "(Descartes / formerly AirClic · Scanner App)",
+        appTabSubName: "(Descartes / formerly AirClic · Scanner App)",
+        description: "Scanner app for final flight load data",
+        appTabDescription: "Scanner app for final flight load data",
+        businessFunction:
+          "Sends final load data from planeside to CLP and the Departure Coordinator",
+        impact: "(Add Impact)",
+        dependencies: "S4A, AirClic",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      },
+      {
+        id: "airclic-uld-avr",
+        name: "Igloo Verification Report / ULD AVR",
+        subName: "(Descartes / formerly AirClic · Hourly Azure Refresh)",
+        appTabSubName: "(Descartes / formerly AirClic · Hourly Azure Refresh)",
+        description: "Match/No Match report, refreshed hourly into Azure",
+        appTabDescription: "Match/No Match report, refreshed hourly into Azure",
+        businessFunction: "Load verification for DC/CLP",
+        impact: "Descartes data missing from the report",
+        dependencies: "ULD_HISTORY table, Informix FltRange DB",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      },
+      {
+        id: "smartkargo-app",
+        name: "SmartKargo",
+        subName: "(SmartKargo · Online Booking & HA Cargo System)",
+        appTabSubName: "(SmartKargo · Online Booking & HA Cargo System)",
+        description: "Web app for external customers to book cargo online",
+        appTabDescription: "Web app for external customers to book cargo online",
+        businessFunction:
+          "Cargo booking. For HA, also payments and settlement via VeriFone",
+        impact: "(Add Impact)",
+        dependencies: "MQ feeds to CargoSPOT and Salesforce",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      }
+    ],
+    upstreamDependencies: [
+      "CHAMP (CargoSPOT): MQ queues QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT, CG.RNT2CS.DATAFEED, CG.SELFSERVICE.DELIVERY and CG.SITA.DATAFEED, all owned by ITS Airport Operations",
+      "AirClic (Descartes): When CLP submits a load plan in S4A, it calls InsertULDScanInfo() on ULDVerificationWS, which writes to the ULD_Scanning table.",
+      "SmartKargo: (Add Upstream Dependencies)"
+    ],
+    downstreamConsumers: [
+      "CHAMP (CargoSPOT): Salesforce (QMMFP.CG.CUSTOMER.SALESFORCE), Azure (CG.CUSTOMER.AZURE)",
+      "AirClic (Descartes): Load data and final load summaries go to S4A and the Planeside Tool. Igloo Verification Report.",
+      "SmartKargo: CargoSPOT (QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT) and Salesforce (QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE)"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Upstream MQ queues and S4A ULDVerificationWS feeds, core CHAMP (CargoSPOT), Descartes (AirClic), and SmartKargo services, and downstream Salesforce, Azure, S4A, Planeside Tool, and Igloo Verification Report consumers.",
+      diagramUpstream: [
+        {
+          id: "cargospot-up-1",
+          name: "Airport Ops MQ Queues (QMMFP)",
+          label: "Airport Ops MQ Queues (QMMFP)",
+          subtitle: "SMARTKARGO.CARGOSPOT, RNT2CS, SELFSERVICE, SITA",
+          iconType: "transfer"
+        },
+        {
+          id: "cargospot-up-2",
+          name: "S4A / CLP Load Plan",
+          label: "S4A / CLP Load Plan",
+          subtitle: "InsertULDScanInfo() on ULDVerificationWS → ULD_Scanning",
+          iconType: "network"
+        },
+        {
+          id: "cargospot-up-3",
+          name: "SmartKargo Upstream",
+          label: "SmartKargo Upstream",
+          subtitle: "(Add Upstream Dependencies)",
+          iconType: "doc"
+        }
+      ],
+      diagramServices: [
+        "CargoSPOT (cSpot)",
+        "Cargo Payment",
+        "ULD Scanning / Verification",
+        "Planeside Tool (PST)",
+        "Igloo Verification Report / ULD AVR",
+        "SmartKargo"
+      ],
+      diagramDownstream: [
+        {
+          id: "cargospot-down-1",
+          name: "Salesforce & Azure (QMMFP)",
+          label: "Salesforce & Azure (QMMFP)",
+          subtitle: "CG.CUSTOMER.SALESFORCE, CG.CUSTOMER.AZURE",
+          iconType: "database"
+        },
+        {
+          id: "cargospot-down-2",
+          name: "S4A & Planeside Tool (PST)",
+          label: "S4A & Planeside Tool (PST)",
+          subtitle: "Load data, final load summaries & DC/CLP",
+          iconType: "nodes"
+        },
+        {
+          id: "cargospot-down-3",
+          name: "Igloo Verification Report / ULD AVR",
+          label: "Igloo Verification Report / ULD AVR",
+          subtitle: "Match/No Match report refreshed hourly into Azure",
+          iconType: "chart"
+        },
+        {
+          id: "cargospot-down-4",
+          name: "CargoSPOT (SmartKargo Feed)",
+          label: "CargoSPOT (SmartKargo Feed)",
+          subtitle: "QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT",
+          iconType: "team"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 3, tone: "red" },
+        { label: "Downstream Consumers", count: 3, tone: "green" },
+        { label: "Applications & Systems", count: 6, tone: "blue" },
+        { label: "Infrastructure Dependencies", count: 6, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "CHAMP (CargoSPOT): CargoSPOT is the core cargo booking and tracking system for AS and QX. It has an internal SLA of 20 minutes.",
+        "AirClic (now Descartes): AirClic scanning issues are classed as Sev 2. The platform links S4A load planning to ramp loading verification.",
+        "SmartKargo: SmartKargo is the customer-facing tool for booking cargo online and it feeds CargoSPOT."
+      ],
+      upstreamTable: [
+        {
+          id: "cargospot-uptbl-1",
+          name: "CHAMP (CargoSPOT) Upstream MQ Queues",
+          subName: "(Owned by ITS Airport Operations)",
+          description:
+            "MQ queues QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT, CG.RNT2CS.DATAFEED, CG.SELFSERVICE.DELIVERY and CG.SITA.DATAFEED, all owned by ITS Airport Operations",
+          type: "Internal / IBM MQ (QMMFP)",
+          typeBadge: "blue",
+          impact:
+            "Inbound bookings and data feeds from SmartKargo, RNT2CS, SelfService, and SITA do not reach CargoSPOT."
+        },
+        {
+          id: "cargospot-uptbl-2",
+          name: "AirClic (Descartes) Upstream (S4A / CLP)",
+          subName: "(InsertULDScanInfo() on ULDVerificationWS)",
+          description:
+            "When CLP submits a load plan in S4A, it calls InsertULDScanInfo() on ULDVerificationWS, which writes to the ULD_Scanning table.",
+          type: "Internal / Web Service",
+          typeBadge: "orange",
+          impact:
+            "Handsets can't download load data if ULDVerificationWS or ULD_Scanning updates fail."
+        },
+        {
+          id: "cargospot-uptbl-3",
+          name: "SmartKargo Upstream",
+          subName: "(Add Upstream Dependencies)",
+          description: "(Add Upstream Dependencies)",
+          type: "External / Vendor",
+          typeBadge: "purple",
+          impact: "(Add Impact)"
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "cargospot-dwntbl-1",
+          name: "CHAMP (CargoSPOT) Downstream: Salesforce & Azure",
+          subName: "(QMMFP.CG.CUSTOMER.SALESFORCE, CG.CUSTOMER.AZURE)",
+          description:
+            "Salesforce (QMMFP.CG.CUSTOMER.SALESFORCE), Azure (CG.CUSTOMER.AZURE)",
+          type: "Downstream Consumers",
+          dataFlow: "QMMFP.CG.CUSTOMER.SALESFORCE & CG.CUSTOMER.AZURE",
+          impact:
+            "CargoSPOT customer and operational data feeds to Salesforce and Azure are delayed."
+        },
+        {
+          id: "cargospot-dwntbl-2",
+          name: "AirClic (Descartes) Downstream: S4A, Planeside Tool & Igloo Verification Report",
+          subName: "(S4A, PST & ULD AVR)",
+          description:
+            "Load data and final load summaries go to S4A and the Planeside Tool. Igloo Verification Report.",
+          type: "Internal Operations",
+          dataFlow: "ULD_History scan results, final load summaries & hourly Azure ULD AVR",
+          impact:
+            "Scan data never reaches the verification report; final load summaries delayed to S4A and Departure Coordinator."
+        },
+        {
+          id: "cargospot-dwntbl-3",
+          name: "SmartKargo Downstream: CargoSPOT & Salesforce",
+          subName: "(QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT & SALESFORCE)",
+          description:
+            "CargoSPOT (QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT) and Salesforce (QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE)",
+          type: "Internal / CRM Consumers",
+          dataFlow: "Online cargo bookings via IBM MQ (QMMFP)",
+          impact:
+            "Online customer cargo bookings do not flow into CargoSPOT or Salesforce."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "cargospot-infra-1",
+          component: "CHAMP (CargoSPOT) Infrastructure",
+          category: "CHAMP (CargoSPOT) Infrastructure",
+          iconType: "server",
+          description:
+            "Windows Server 2008 R2, Java 7 (JRE 1.7u45), LDAP, IBM MQ (QMMFP)",
+          details:
+            "Windows Server 2008 R2, Java 7, LDAP, IBM MQ (QMMFP)",
+          owner: "ITS COG Airport Ops Support / ITS Airport Operations",
+          impact:
+            "CargoSPOT Windows service, authentication, or MQ message delivery unavailable."
+        },
+        {
+          id: "cargospot-infra-2",
+          component: "AirClic DB (TUKVVAAGSSDB01)",
+          category: "AirClic (Descartes) Database",
+          iconType: "database",
+          description:
+            "AirClic DB on airclic.sql.insideaag.com (TUKVVAAGSSDB01)",
+          details:
+            "AirClic DB on airclic.sql.insideaag.com (TUKVVAAGSSDB01)",
+          owner: "ITS Airport Operations / DBA",
+          impact:
+            "ULD_Scanning and ULD_History database errors; contact the DBA about TUKVVAAGSSDB01."
+        },
+        {
+          id: "cargospot-infra-3",
+          component: "JBoss / Harvester (TUKVVAPP17)",
+          category: "AirClic (Descartes) Application Server",
+          iconType: "server",
+          description: "JBoss/Harvester on TUKVVAPP17",
+          details: "JBoss/Harvester on TUKVVAPP17",
+          owner: "ITS Airport Operations / ProdOps / Network",
+          impact:
+            "AlaskaULDScan JBoss Connection Failed or Harvester Shutdown alerts affect scanner synchronization."
+        },
+        {
+          id: "cargospot-infra-4",
+          component: "ULDVerificationWS (DNA Servers)",
+          category: "AirClic (Descartes) Web Service",
+          iconType: "globe",
+          description:
+            "ULDVerificationWS on the DNA servers in McGee and Tukwila",
+          details:
+            "ULDVerificationWS on the DNA servers in McGee and Tukwila",
+          owner: "ITS Airport Operations",
+          impact:
+            "S4A InsertULDScanInfo() calls fail to populate ULD_Scanning for handheld scanners."
+        },
+        {
+          id: "cargospot-infra-5",
+          component: "TC75x Scanners (Managed through WS1)",
+          category: "AirClic (Descartes) Mobile Hardware",
+          iconType: "layers",
+          description: "TC75x scanners managed through WS1",
+          details: "TC75x scanners managed through WS1",
+          owner: "Enterprise Mobile / ITS Airport Operations",
+          impact:
+            "Handheld ULD scanning and Planeside Tool (PST) operations impacted on the ramp."
+        },
+        {
+          id: "cargospot-infra-6",
+          component: "SmartKargo Infrastructure",
+          category: "SmartKargo Messaging & Hosting",
+          iconType: "shield",
+          description:
+            "IBM MQ (QMMFP). Anything else: (Add Infrastructure Dependencies).",
+          details:
+            "IBM MQ (QMMFP). Anything else: (Add Infrastructure Dependencies).",
+          owner: "ITS Airport Operations",
+          impact:
+            "Disrupts MQ feeds from SmartKargo to CargoSPOT and Salesforce."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "CHAMP (CargoSPOT): (Add Typical Business Impact)",
+      "AirClic (Descartes): Handsets can't download load data",
+      "AirClic (Descartes): Scanners prompt for the wrong ULD position",
+      "AirClic (Descartes): Scan data never reaches the verification report",
+      "SmartKargo: (Add Typical Business Impact)"
+    ],
+    knownWorkarounds: [
+      "CHAMP (CargoSPOT): (Add Known Workarounds)",
+      "AirClic (Descartes): (Add Known Workarounds)",
+      "SmartKargo: (Add Known Workarounds)"
+    ],
+    validationChecklist: [
+      "CHAMP (CargoSPOT): Escalate to the Airport Operations team before contacting CHAMP. (Add the remaining checklist steps.)",
+      "AirClic (Descartes): Check that ULDVerificationWS is running.",
+      "AirClic (Descartes): For JBoss \"Connection Failed\" alerts, ask ProdOps/Network whether there's a network problem affecting TUKVVAPP17. If not, call Descartes; they may ask for server.log.",
+      "AirClic (Descartes): For Harvester shutdown alerts, check the end of the log for PINGs. If there are none, email server.log to Descartes.",
+      "AirClic (Descartes): For JBoss DB errors, contact the DBA about TUKVVAAGSSDB01.",
+      "AirClic (Descartes): For a wrong position prompt, have Enterprise Mobile check the scanner first, then send the ticket to Airport Ops on-call.",
+      "AirClic (Descartes): Have users log out of the Descartes app after scanning, which shows whether there was a network problem.",
+      "SmartKargo: Send all SmartKargo or online cargo booking tickets to the AirportOps queue.",
+      "SmartKargo: For HA users with password, access, browser, printer or network problems, route them to HA ITSC.",
+      "SmartKargo: For anything else, the QID Help Desk logs a ticket. Include the issue description, steps to reproduce, and the user's contact info."
+    ],
+    vendorContacts: {
+      supportPhone:
+        "CHAMP: +44 20 8587 8080 (24-hr emergency: Alexander Hunter, 011 41 77 425 2866) • AirClic (Descartes): 877-786-9339 (opt 0, ask for AirClic Support) / 877-901-7557 (2026 sheet) • SmartKargo: 617-607-4066 / QID Help Desk: 888-733-0568",
+      supportPhoneNote:
+        "AirClic has two support numbers (877-786-9339 in most docs; 877-901-7557 in 2026 sheet). SmartKargo has two support numbers (617-607-4066 in 2026 sheet; 888-733-0568 QID Help Desk in HA guide).",
+      supportEmail:
+        "support@champ.aero • servicedesk@descartes.com (Escalation: wking@descartes.com) • ha@skglobal.zohodesk.com (v8.10; earlier skglobal@smartkargo.com)",
+      supportHours:
+        "CHAMP: A 24-hour emergency contact is listed: Alexander Hunter • AirClic (Descartes): (Add Support Service Hours) • SmartKargo: (Add Support Service Hours)",
+      accountManager:
+        "CHAMP: Alexander Hunter (011 41 77 425 2866) • Descartes Escalation: Will King, Manager of Support Services (wking@descartes.com)",
+      technicalSupport:
+        "CHAMP Support: +44 20 8587 8080 (support@champ.aero) • Descartes Service Desk: 877-786-9339 (opt 0) / 877-901-7557 (servicedesk@descartes.com) • SmartKargo / QID Help Desk: 888-733-0568 / 617-607-4066 (ha@skglobal.zohodesk.com)",
+      namedEscalationContact:
+        "CHAMP Account Rep / 24-hr emergency: Alexander Hunter, 011 41 77 425 2866 • Descartes: Will King, Manager of Support Services, wking@descartes.com",
+      companyNote:
+        "CHAMP (support@champ.aero domain) / Descartes (formerly AirClic) / SmartKargo",
+      categoryNote:
+        "CHAMP: Cargo: air waybill reservation, tracking and accounting • AirClic (Descartes): Cargo / Ramp: ULD scanning and the Planeside Tool (https://servicedesk.descartes.com/, registration required) • SmartKargo: Cargo: online booking. HA uses it as its cargo system",
+      contactDirectory: [
+        {
+          role: "CHAMP Support",
+          name: "CHAMP Support Desk",
+          phone: "+44 20 8587 8080",
+          email: "support@champ.aero"
+        },
+        {
+          role: "CHAMP Account Rep / 24-hour Emergency Contact",
+          name: "Alexander Hunter",
+          phone: "011 41 77 425 2866",
+          email: "support@champ.aero"
+        },
+        {
+          role: "AirClic (Descartes) Service Desk",
+          name: "Descartes Service Desk",
+          phone:
+            "877-786-9339 (choose option 0, then ask for AirClic Support) / 877-901-7557 (2026 vendor sheet)",
+          email: "servicedesk@descartes.com"
+        },
+        {
+          role: "AirClic (Descartes) Possible Escalation Contact",
+          name: "Will King, Manager of Support Services",
+          phone: "—",
+          email: "wking@descartes.com"
+        },
+        {
+          role: "SmartKargo Support (2026 Vendor Sheet)",
+          name: "SmartKargo Support",
+          phone: "617-607-4066",
+          email:
+            "ha@skglobal.zohodesk.com (v8.10). Earlier versions listed skglobal@smartkargo.com."
+        },
+        {
+          role: "SmartKargo QID Help Desk (HA Support Guide)",
+          name: "QID Help Desk",
+          phone: "888-733-0568",
+          email:
+            "ha@skglobal.zohodesk.com (v8.10). Earlier versions listed skglobal@smartkargo.com."
+        }
+      ],
+      contactWarningNote:
+        "⚠️ Check before you publish: (1) CHAMP / CargoSPOT may be outdated. The 2026 vendor sheet lists iCargo (IBS Software) as the \"new CargoSPOT,\" with every IBS contact still \"TBD\". Confirm CargoSPOT is still live in production. (2) AirClic has two support numbers. Most documents list 877-786-9339; the 2026 vendor sheet lists 877-901-7557. (3) SmartKargo has two support numbers. The 2026 vendor sheet lists 617-607-4066. The HA support guide lists the QID Help Desk at 888-733-0568.",
+      escalation:
+        "CHAMP (CargoSPOT): Escalate through Airport Operations. Support: +44 20 8587 8080 (support@champ.aero). Account Rep / 24-hour emergency contact: Alexander Hunter, 011 41 77 425 2866.\nAirClic (now Descartes): Escalate to Airport Ops before contacting the vendor. Only Cargo Systems Support or CNS should contact Descartes. Phone: 877-786-9339 (choose option 0, then ask for AirClic Support) or 877-901-7557 (2026 vendor sheet). Email: servicedesk@descartes.com. Possible escalation contact: Will King, Manager of Support Services, wking@descartes.com.\nSmartKargo: Escalate through Airport Operations. Phone: 617-607-4066 (2026 vendor sheet) or QID Help Desk at 888-733-0568 (HA guide). Email: ha@skglobal.zohodesk.com (v8.10; earlier skglobal@smartkargo.com).",
+      communicationGuidelines: [
+        "CHAMP (CargoSPOT): Escalate through Airport Operations.",
+        "AirClic (now Descartes): Escalate to Airport Ops before contacting the vendor. Only Cargo Systems Support or CNS should contact Descartes.",
+        "SmartKargo: Escalate through Airport Operations."
+      ],
+      responseSlas: [
+        {
+          priority: "CHAMP (CargoSPOT)",
+          label: "CHAMP (CargoSPOT)",
+          level: "CHAMP (CargoSPOT) SLA",
+          description: "Internal 20 minutes. Vendor response: (Add Response Targets).",
+          target: "Internal 20 minutes. Vendor response: (Add Response Targets).",
+          condition: "Internal 20 minutes. Vendor response: (Add Response Targets).",
+          value: "Internal 20 minutes. Vendor response: (Add Response Targets)."
+        },
+        {
+          priority: "AirClic (now Descartes)",
+          label: "AirClic (now Descartes)",
+          level: "AirClic (Descartes) SLA (Sev 2 Classed)",
+          description: "(Add Response Targets)",
+          target: "(Add Response Targets)",
+          condition: "AirClic scanning issues are classed as Sev 2.",
+          value: "(Add Response Targets)"
+        },
+        {
+          priority: "SmartKargo",
+          label: "SmartKargo",
+          level: "SmartKargo SLA",
+          description: "(Add Response Targets)",
+          target: "(Add Response Targets)",
+          condition: "(Add Response Targets)",
+          value: "(Add Response Targets)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam:
+        "ITS COG Airport Ops Support (John Antony Dubreuil) / ITS Airport Operations (formerly Cargo IT; AirportOps queue)",
+      itsTeamNote:
+        "CHAMP: ITS COG Airport Ops Support (2026 vendor sheet lists John Antony Dubreuil; ITS System Owner: Will Marken, 206-245-4584, 6:30–18:30) • AirClic (Descartes): ITS Airport Operations (formerly Cargo IT) • SmartKargo: ITS Airport Operations (AirportOps queue)",
+      applicationOwner:
+        "John Antony Dubreuil (ITS COG Airport Ops Support) • Will Marken, 206-245-4584 (6:30–18:30, CargoSPOT ITS System Owner) • Gary Johnson, 573-854-1582 (Cargo Systems Support)",
+      onCallSupport:
+        "ITS Airport Operations On-Call (AirportOps queue) • Cargo Network Support: 206-392-7991 / 877-815-8254",
+      systemAdministration:
+        "CHAMP Password support: ITS Service Desk, 1-877-238-1077; How-to questions: Will Marken • AirClic Cargo Systems Support: Gary Johnson, 573-854-1582; Cargo Network Support: 206-392-7991 / 877-815-8254 • SmartKargo HA ITSC: 1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)",
+      businessOwner:
+        "Cargo / Airport Operations (AS, QX & HA Cargo)",
+      everbridgeContacts:
+        "ITS Airport Operations (AirportOps queue) / ITS COG Airport Ops Support",
+      passwordSupport:
+        "CHAMP: ITS Service Desk, 1-877-238-1077 • SmartKargo (HA users): HA ITSC, 1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)",
+      internalDirectory: [
+        {
+          role: "CHAMP Primary ITS Team Owner",
+          contact:
+            "ITS COG Airport Ops Support. The 2026 vendor sheet lists John Antony Dubreuil."
+        },
+        {
+          role: "CargoSPOT ITS System Owner / How-To Questions",
+          contact: "Will Marken, 206-245-4584 (6:30–18:30)"
+        },
+        {
+          role: "CHAMP Password Support",
+          contact: "ITS Service Desk, 1-877-238-1077"
+        },
+        {
+          role: "AirClic & SmartKargo Primary ITS Team Owner",
+          contact:
+            "ITS Airport Operations (formerly Cargo IT; AirportOps queue)"
+        },
+        {
+          role: "AirClic Cargo Systems Support",
+          contact: "Gary Johnson, 573-854-1582"
+        },
+        {
+          role: "AirClic Cargo Network Support (CNS)",
+          contact: "206-392-7991 / 877-815-8254"
+        },
+        {
+          role: "SmartKargo HA ITSC (Password, Access, Browser, Printer, Network)",
+          contact: "1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)"
+        }
+      ]
+    },
+    incidentHistory: [],
+    relatedDocuments: [
+      {
+        title: "CargoSpot_System_Summary.docx",
+        type: "System Summary (Word)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B9CE0485F-8382-4BED-B44C-EA7CC1A84536%7D&file=CargoSpot_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "MQ-Queue-Inventory-03072024.xlsx",
+        type: "MQ Queue Inventory (Excel)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Mar 2024",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B37B47C3F-FEBA-4287-B259-F514D938BF62%7D&file=MQ-Queue-Inventory-03072024.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Vendor Escalation for Critical Systems.docx",
+        type: "Escalation Reference (Word)",
+        owner: "ITS Production Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BB85271C7-A549-4429-8EC8-01EBAFF93C00%7D&file=Vendor%20Escalation%20for%20Critical%20Systems.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ITS Vendor Information - 2026.xlsx",
+        type: "ITS Vendor Directory (Excel)",
+        owner: "ITS Sev 1 Response",
+        updated: "2026",
+        url: "https://alaskaair.sharepoint.com/sites/ITSSev1Response/_layouts/15/Doc.aspx?sourcedoc=%7B0C805079-8D03-4D14-BE73-0012791BDD6A%7D&file=ITS%20Vendor%20Information%20-%202026.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Cargo Vendor Support Contact Info.docx",
+        type: "Cargo Vendor Contacts (Word)",
+        owner: "ITS Airport Operations / Cargo",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ASICS/AOS/AO/cargo/_layouts/15/Doc.aspx?sourcedoc=%7B1EF59013-FCBE-4F30-A795-9DD53E1B8C7D%7D&file=Cargo%20Vendor%20Support%20Contact%20Info.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SupportDoc_AirClic.docx",
+        type: "AirClic Support Document (Word)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BF7E2E38D-5CF2-445D-B9F9-2C2B6AEF2B84%7D&file=SupportDoc_AirClic.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ULD KT_Document V1.1.docx",
+        type: "ULD Knowledge Transfer Document (Word)",
+        owner: "ITS Airport Operations / WAB",
+        updated: "V1.1",
+        url: "https://alaskaair.sharepoint.com/sites/ASICS/AOS/AO/WAB/_layouts/15/Doc.aspx?sourcedoc=%7B544997FB-A7F1-4AA3-B960-BAB835922527%7D&file=ULD%20KT_Document%20V1.1.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Product Info.xlsx",
+        type: "Mobile Ops Product Info (Excel)",
+        owner: "Mobile Ops",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ops/mobileops/_layouts/15/Doc.aspx?sourcedoc=%7B6640C841-BCDE-468B-8937-EFE1EDD20907%7D&file=Product%20Info.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ULD Scanning data is not updated in mobile device.docx",
+        type: "Troubleshooting KB (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B77141EBF-384E-49A5-B271-6A73561D8E2E%7D&file=ULD%20Scanning%20data%20is%20not%20updated%20in%20mobile%20device.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "User reporting a problem with ULD scanning prompting the user with the wrong position.docx",
+        type: "Troubleshooting KB (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BDB0C08AA-51FE-4C86-904B-31FADF96EEB0%7D&file=User%20reporting%20a%20problem%20with%20ULD%20scanning%20prompting%20the%20user%20with%20the%20wrong%20position.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartLoad_S4A_Physical_View.pdf",
+        type: "Architecture Diagram (PDF)",
+        owner: "Aircraft Weight and Balance / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/SysDoc/Aircraft%20Weight%20and%20Balance/SmartLoad_S4A_Physical_View.pdf?web=1"
+      },
+      {
+        title: "ULD AVR Architecture.docx",
+        type: "Architecture Guide (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B61264A97-BDFA-44D8-AE37-9F80C874FF47%7D&file=ULD%20AVR%20Architecture.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "User can see load data and unable to see Descartes data in the Igloo Verification Report after scan completes.docx",
+        type: "Troubleshooting KB (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B76F143FD-2C3D-4815-ACEA-CC434879997C%7D&file=User%20can%20see%20load%20data%20and%20unable%20to%20see%20Descartes%20data%20in%20the%20Igloo%20Verification%20Report%20after%20scan%20completes.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Receive AlaskaULDScan Error Alerts with JBoss DB errors.docx",
+        type: "Alert Runbook (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BF5871B1B-C9CD-4740-A1AB-ED2736C19EFB%7D&file=Receive%20AlaskaULDScan%20Error%20Alerts%20with%20JBoss%20DB%20errors.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Receive AlaskaULDScan Error Alerts from JBoss with Connection Failed.docx",
+        type: "Alert Runbook (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BE1A39483-BE4A-4573-9DF1-00232F22E810%7D&file=Receive%20AlaskaULDScan%20Error%20Alerts%20from%20JBoss%20with%20Connection%20Failed.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Receive AlaskaULDScan Error Alerts from JBoss about Harvester Shutdown.docx",
+        type: "Alert Runbook (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7BA9478C5F-EAC1-421D-AED8-7D6137DE38D5%7D&file=Receive%20AlaskaULDScan%20Error%20Alerts%20from%20JBoss%20about%20Harvester%20Shutdown.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "AirClic BCU vs PST Scanners.docx",
+        type: "Scanner Reference Guide (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B977F91BA-76F3-4846-A3A8-00DAE1B54EB2%7D&file=AirClic%20BCU%20vs%20PST%20Scanners.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Editrade Support Info.docx",
+        type: "Support Reference (Word)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Additional Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BCEB61D97-43A5-43C7-88EA-69319AE1B29F%7D&file=Editrade%20Support%20Info.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo System Summary.docx",
+        type: "System Summary (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B3849EC97-55F4-4D13-9611-EA238C17D1F3%7D&file=SmartKargo%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo Product Support Guide v8.9.docx",
+        type: "Product Support Guide v8.9 (Word)",
+        owner: "Hawaiian Airlines / AS-HA TIMO",
+        updated: "v8.9",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/_layouts/15/Doc.aspx?sourcedoc=%7BF9CD4742-84A9-4171-845D-F6D1B5FF5089%7D&file=SmartKargo%20Product%20Support%20Guide%20v8.9.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo Product Support Guide v8.10.docx",
+        type: "Product Support Guide v8.10 (Word)",
+        owner: "Hawaiian Airlines / AS-HA TIMO",
+        updated: "v8.10",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/_layouts/15/Doc.aspx?sourcedoc=%7B59C4C917-07C6-4DCA-B850-D53DC1397A8B%7D&file=SmartKargo%20Product%20Support%20Guide%20v8.10.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo_User_Guide_(v2024.01).pdf",
+        type: "User Guide v2024.01 (PDF)",
+        owner: "Single Cargo Operation / AS-HA TIMO",
+        updated: "2024.01",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/Shared%20Documents/2.%20Operations/Cargo/Single%20Cargo%20Operation/Requirements/SmartKargo_User_Guide_(v2024.01).pdf?web=1"
+      }
+    ]
+  },
+
+  champ: {
+    id: "champ",
+    name: "CHAMP (CargoSPOT)",
+    breadcrumbTrail: ["Vendors", "CHAMP (CargoSPOT)", "Vendor Impact"],
+    pageTitle: "CHAMP (CargoSPOT) - Vendor Impact Details",
+    pageSubtitle:
+      "CargoSPOT is the core cargo booking and tracking system for AS and QX, with an internal SLA of 20 minutes.",
+    applicationsTabTitle: "CHAMP (CargoSPOT)",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View all Alaska Cargo applications supported by CHAMP (CargoSPOT / cSpot and Cargo Payment).",
+    applicationsCardSubtitle:
+      "Applications and systems supported by CHAMP for cargo air waybill reservation, tracking, accounting, and payment.",
+    dependenciesTabTitle: "CHAMP (CargoSPOT) - Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream IBM MQ queues, downstream Salesforce and Azure feeds, and Windows Server 2008 R2 / Java 7 / LDAP / IBM MQ (QMMFP) infrastructure.",
+    status: "Active",
+    lastUpdated: "2026 (CargoSpot_System_Summary)",
+    subtitle: "Cargo: air waybill reservation, tracking and accounting (Internal SLA: 20 minutes)",
+    company: "CHAMP (support@champ.aero domain)",
+    website: "(Add Website/Support Portal URL)",
+    category: "Cargo: air waybill reservation, tracking and accounting",
+    itsTeam: "ITS COG Airport Ops Support. The 2026 vendor sheet lists John Antony Dubreuil.",
+    logo: "public/vendors/cargo-spot.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 2,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      level: "Critical",
+      title: "Key Takeaways: Core AS/QX Cargo Booking & Tracking (20-Minute Internal SLA)",
+      message:
+        "CargoSPOT is the core cargo booking and tracking system for AS and QX. It has an internal SLA of 20 minutes."
+    },
+    impactedSystems: [
+      {
+        id: "champ-cspot",
+        name: "CargoSPOT (cSpot)",
+        subName: "(Internal SLA: 20 minutes)",
+        appTabSubName: "(Internal SLA: 20 minutes)",
+        description:
+          "Java app running as a Windows service. Used by 900+ AS/QX CSAs and RSAs at 83 cargo stations",
+        appTabDescription:
+          "Java app running as a Windows service. Used by 900+ AS/QX CSAs and RSAs at 83 cargo stations",
+        businessFunction: "Cargo air waybill reservation, tracking and accounting",
+        impact: "(Add Impact)",
+        dependencies: "Windows Server 2008 R2, JRE 1.7u45, LDAP auth",
+        status: "Potential",
+        owner: "ITS System Owner: Will Marken, 206-245-4584 (6:30–18:30)"
+      },
+      {
+        id: "champ-cargo-payment",
+        name: "Cargo Payment",
+        subName: "(CHAMP / AirClic / SmartKargo)",
+        appTabSubName: "(CHAMP / AirClic / SmartKargo)",
+        description:
+          "Listed under the same vendor group (CHAMP / AirClic / SmartKargo)",
+        appTabDescription:
+          "Listed under the same vendor group (CHAMP / AirClic / SmartKargo)",
+        businessFunction: "Cargo payment",
+        impact: "(Add Impact)",
+        dependencies: "(Add Direct Dependencies)",
+        status: "Potential",
+        owner: "ITS COG Airport Ops Support"
+      }
+    ],
+    upstreamDependencies: [
+      "MQ queues QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT, CG.RNT2CS.DATAFEED, CG.SELFSERVICE.DELIVERY and CG.SITA.DATAFEED, all owned by ITS Airport Operations"
+    ],
+    downstreamConsumers: [
+      "Salesforce (QMMFP.CG.CUSTOMER.SALESFORCE)",
+      "Azure (CG.CUSTOMER.AZURE)"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "Inbound IBM MQ queues (SMARTKARGO.CARGOSPOT, RNT2CS.DATAFEED, SELFSERVICE.DELIVERY, SITA.DATAFEED) feeding CargoSPOT, and outbound feeds to Salesforce and Azure.",
+      diagramUpstream: [
+        {
+          id: "champ-up-1",
+          name: "ITS Airport Ops MQ Queues",
+          label: "ITS Airport Ops MQ Queues",
+          subtitle: "SMARTKARGO.CARGOSPOT, RNT2CS, SELFSERVICE, SITA",
+          iconType: "transfer"
+        }
+      ],
+      diagramServices: ["CargoSPOT (cSpot)", "Cargo Payment"],
+      diagramDownstream: [
+        {
+          id: "champ-down-1",
+          name: "Salesforce",
+          label: "Salesforce",
+          subtitle: "QMMFP.CG.CUSTOMER.SALESFORCE",
+          iconType: "database"
+        },
+        {
+          id: "champ-down-2",
+          name: "Azure",
+          label: "Azure",
+          subtitle: "CG.CUSTOMER.AZURE",
+          iconType: "nodes"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 1, tone: "red" },
+        { label: "Downstream Consumers", count: 2, tone: "green" },
+        { label: "Applications & Systems", count: 2, tone: "blue" },
+        { label: "Infrastructure Dependencies", count: 1, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "CargoSPOT is the core cargo booking and tracking system for AS and QX. It has an internal SLA of 20 minutes."
+      ],
+      upstreamTable: [
+        {
+          id: "champ-uptbl-1",
+          name: "IBM MQ Queues (QMMFP)",
+          subName: "(Owned by ITS Airport Operations)",
+          description:
+            "MQ queues QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT, CG.RNT2CS.DATAFEED, CG.SELFSERVICE.DELIVERY and CG.SITA.DATAFEED, all owned by ITS Airport Operations",
+          type: "Internal / IBM MQ",
+          typeBadge: "blue",
+          impact: "Inbound cargo booking and data feeds delayed to CargoSPOT."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "champ-dwntbl-1",
+          name: "Salesforce",
+          subName: "(QMMFP.CG.CUSTOMER.SALESFORCE)",
+          description: "Salesforce (QMMFP.CG.CUSTOMER.SALESFORCE)",
+          type: "Downstream Consumer",
+          dataFlow: "QMMFP.CG.CUSTOMER.SALESFORCE",
+          impact: "Customer cargo updates to Salesforce delayed."
+        },
+        {
+          id: "champ-dwntbl-2",
+          name: "Azure",
+          subName: "(CG.CUSTOMER.AZURE)",
+          description: "Azure (CG.CUSTOMER.AZURE)",
+          type: "Downstream Consumer",
+          dataFlow: "CG.CUSTOMER.AZURE",
+          impact: "Cargo data feeds to Azure delayed."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "champ-infra-1",
+          component: "Windows Server 2008 R2, Java 7, LDAP, IBM MQ (QMMFP)",
+          category: "CargoSPOT Server, Runtime, Auth & Messaging",
+          iconType: "server",
+          description: "Windows Server 2008 R2, Java 7, LDAP, IBM MQ (QMMFP)",
+          details: "Windows Server 2008 R2, Java 7, LDAP, IBM MQ (QMMFP)",
+          owner: "ITS COG Airport Ops Support / ITS Airport Operations",
+          impact: "CargoSPOT service or MQ queues unavailable."
+        }
+      ]
+    },
+    typicalBusinessImpact: ["(Add Typical Business Impact)"],
+    knownWorkarounds: ["(Add Known Workarounds)"],
+    validationChecklist: [
+      "Escalate to the Airport Operations team before contacting CHAMP. (Add the remaining checklist steps.)"
+    ],
+    vendorContacts: {
+      supportPhone: "+44 20 8587 8080",
+      supportPhoneNote:
+        "Account Rep / 24-hour emergency contact: Alexander Hunter, 011 41 77 425 2866.",
+      supportEmail: "support@champ.aero",
+      supportHours: "A 24-hour emergency contact is listed: Alexander Hunter",
+      accountManager: "Alexander Hunter, 011 41 77 425 2866",
+      technicalSupport:
+        "Support, +44 20 8587 8080 • Account Rep / 24-hour emergency contact: Alexander Hunter, 011 41 77 425 2866",
+      namedEscalationContact:
+        "Alexander Hunter, 011 41 77 425 2866 (Account Rep / 24-hour emergency contact)",
+      companyNote: "CHAMP (support@champ.aero domain)",
+      categoryNote: "Cargo: air waybill reservation, tracking and accounting",
+      contactDirectory: [
+        {
+          role: "Support",
+          name: "CHAMP Support",
+          phone: "+44 20 8587 8080",
+          email: "support@champ.aero"
+        },
+        {
+          role: "Account Rep / 24-hour emergency contact",
+          name: "Alexander Hunter",
+          phone: "011 41 77 425 2866",
+          email: "support@champ.aero"
+        }
+      ],
+      contactWarningNote:
+        "⚠️ Check before you publish: CHAMP / CargoSPOT may be outdated. The 2026 vendor sheet lists iCargo (IBS Software) as the \"new CargoSPOT,\" with every IBS contact still \"TBD\". Confirm CargoSPOT is still live in production.",
+      escalation:
+        "Escalate through Airport Operations. Support, +44 20 8587 8080. Account Rep / 24-hour emergency contact: Alexander Hunter, 011 41 77 425 2866.",
+      communicationGuidelines: ["Escalate through Airport Operations."],
+      responseSlas: [
+        {
+          priority: "Internal & Vendor SLA",
+          label: "Internal & Vendor SLA",
+          level: "CargoSPOT SLA",
+          description: "Internal 20 minutes. Vendor response: (Add Response Targets).",
+          target: "Internal 20 minutes. Vendor response: (Add Response Targets).",
+          condition: "Internal 20 minutes. Vendor response: (Add Response Targets).",
+          value: "Internal 20 minutes. Vendor response: (Add Response Targets)."
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam:
+        "ITS COG Airport Ops Support. The 2026 vendor sheet lists John Antony Dubreuil.",
+      itsTeamNote:
+        "Primary ITS Team Owner: ITS COG Airport Ops Support. The 2026 vendor sheet lists John Antony Dubreuil. ITS System Owner: Will Marken, 206-245-4584 (6:30–18:30).",
+      applicationOwner: "Will Marken, 206-245-4584 (6:30–18:30) / John Antony Dubreuil",
+      onCallSupport: "ITS COG Airport Ops Support",
+      systemAdministration:
+        "Password support: ITS Service Desk, 1-877-238-1077. How-to questions: Will Marken.",
+      businessOwner: "Cargo Operations (AS & QX)",
+      everbridgeContacts: "ITS Airport Operations",
+      passwordSupport: "ITS Service Desk, 1-877-238-1077",
+      internalDirectory: [
+        {
+          role: "Primary ITS Team Owner",
+          contact:
+            "ITS COG Airport Ops Support. The 2026 vendor sheet lists John Antony Dubreuil."
+        },
+        {
+          role: "ITS System Owner / How-to questions",
+          contact: "Will Marken, 206-245-4584 (6:30–18:30)"
+        },
+        {
+          role: "Password support",
+          contact: "ITS Service Desk, 1-877-238-1077"
+        }
+      ]
+    },
+    incidentHistory: [],
+    relatedDocuments: [
+      {
+        title: "CargoSpot_System_Summary.docx",
+        type: "System Summary (Word)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B9CE0485F-8382-4BED-B44C-EA7CC1A84536%7D&file=CargoSpot_System_Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "MQ-Queue-Inventory-03072024.xlsx",
+        type: "MQ Queue Inventory (Excel)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Mar 2024",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7B37B47C3F-FEBA-4287-B259-F514D938BF62%7D&file=MQ-Queue-Inventory-03072024.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "Vendor Escalation for Critical Systems.docx",
+        type: "Escalation Reference (Word)",
+        owner: "ITS Production Operations",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BB85271C7-A549-4429-8EC8-01EBAFF93C00%7D&file=Vendor%20Escalation%20for%20Critical%20Systems.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ITS Vendor Information - 2026.xlsx",
+        type: "ITS Vendor Directory (Excel)",
+        owner: "ITS Sev 1 Response",
+        updated: "2026",
+        url: "https://alaskaair.sharepoint.com/sites/ITSSev1Response/_layouts/15/Doc.aspx?sourcedoc=%7B0C805079-8D03-4D14-BE73-0012791BDD6A%7D&file=ITS%20Vendor%20Information%20-%202026.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      }
+    ]
+  },
+
+  airclic: {
+    id: "airclic",
+    name: "AirClic (now Descartes)",
+    breadcrumbTrail: ["Vendors", "AirClic (now Descartes)", "Vendor Impact"],
+    pageTitle: "AirClic (now Descartes) - Vendor Impact Details",
+    pageSubtitle:
+      "AirClic scanning issues are classed as Sev 2. The platform links S4A load planning to ramp loading verification.",
+    applicationsTabTitle: "AirClic (now Descartes)",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View all Alaska Cargo / Ramp applications supported by Descartes (formerly AirClic): ULD Scanning / Verification, Planeside Tool (PST), and Igloo Verification Report / ULD AVR.",
+    applicationsCardSubtitle:
+      "Applications and systems supported by Descartes (formerly AirClic) for ULD position assignment/verification, final flight load data, and load verification reporting.",
+    dependenciesTabTitle: "AirClic (now Descartes) - Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream S4A CLP InsertULDScanInfo() calls, downstream S4A / Planeside Tool / Igloo Verification Report consumers, and AirClic DB, JBoss/Harvester, ULDVerificationWS, and TC75x scanner infrastructure.",
+    status: "Active",
+    lastUpdated: "2026 (SupportDoc_AirClic & ULD Scanning KBs)",
+    subtitle: "Cargo / Ramp: ULD scanning and the Planeside Tool (Sev 2 Classed)",
+    company: "Descartes (formerly AirClic)",
+    website: "https://servicedesk.descartes.com/ (registration required)",
+    category: "Cargo / Ramp: ULD scanning and the Planeside Tool",
+    itsTeam: "ITS Airport Operations (formerly Cargo IT)",
+    logo: "public/vendors/cargo-spot.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 3,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      level: "Critical",
+      title: "Key Takeaways: Sev 2 Ramp ULD Scanning & S4A Load Verification",
+      message:
+        "AirClic scanning issues are classed as Sev 2. The platform links S4A load planning to ramp loading verification."
+    },
+    impactedSystems: [
+      {
+        id: "airclic-only-uld-scanning",
+        name: "ULD Scanning / Verification",
+        subName: "(Handheld Scanners · ULD_Scanning → ULD_History)",
+        appTabSubName: "(Handheld Scanners · ULD_Scanning → ULD_History)",
+        description:
+          "Descartes app on handheld scanners. Pulls load data from ULD_Scanning and writes scan results to ULD_History",
+        appTabDescription:
+          "Descartes app on handheld scanners. Pulls load data from ULD_Scanning and writes scan results to ULD_History",
+        businessFunction: "Assigns ULD positions on freighters and verifies them",
+        impact: "Handsets can't download load data",
+        dependencies: "ULDVerificationWS, AirClic DB, JBoss on TUKVVAPP17",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      },
+      {
+        id: "airclic-only-pst",
+        name: "Planeside Tool (PST)",
+        subName: "(Scanner App for Final Flight Load Data)",
+        appTabSubName: "(Scanner App for Final Flight Load Data)",
+        description: "Scanner app for final flight load data",
+        appTabDescription: "Scanner app for final flight load data",
+        businessFunction:
+          "Sends final load data from planeside to CLP and the Departure Coordinator",
+        impact: "(Add Impact)",
+        dependencies: "S4A, AirClic",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      },
+      {
+        id: "airclic-only-uld-avr",
+        name: "Igloo Verification Report / ULD AVR",
+        subName: "(Match/No Match Report · Hourly into Azure)",
+        appTabSubName: "(Match/No Match Report · Hourly into Azure)",
+        description: "Match/No Match report, refreshed hourly into Azure",
+        appTabDescription: "Match/No Match report, refreshed hourly into Azure",
+        businessFunction: "Load verification for DC/CLP",
+        impact: "Descartes data missing from the report",
+        dependencies: "ULD_HISTORY table, Informix FltRange DB",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      }
+    ],
+    upstreamDependencies: [
+      "When CLP submits a load plan in S4A, it calls InsertULDScanInfo() on ULDVerificationWS, which writes to the ULD_Scanning table."
+    ],
+    downstreamConsumers: [
+      "Load data and final load summaries go to S4A and the Planeside Tool.",
+      "Igloo Verification Report."
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "S4A load plan submissions via InsertULDScanInfo() on ULDVerificationWS into ULD_Scanning, handheld scanner verification to ULD_History, and downstream feeds to S4A, Planeside Tool, and the Igloo Verification Report.",
+      diagramUpstream: [
+        {
+          id: "airclic-up-1",
+          name: "S4A / CLP Load Plan",
+          label: "S4A / CLP Load Plan",
+          subtitle: "Calls InsertULDScanInfo() on ULDVerificationWS → ULD_Scanning",
+          iconType: "network"
+        }
+      ],
+      diagramServices: [
+        "ULD Scanning / Verification",
+        "Planeside Tool (PST)",
+        "Igloo Verification Report / ULD AVR"
+      ],
+      diagramDownstream: [
+        {
+          id: "airclic-down-1",
+          name: "S4A & Planeside Tool",
+          label: "S4A & Planeside Tool",
+          subtitle: "Load data and final load summaries",
+          iconType: "nodes"
+        },
+        {
+          id: "airclic-down-2",
+          name: "Igloo Verification Report",
+          label: "Igloo Verification Report",
+          subtitle: "Match/No Match report refreshed hourly into Azure",
+          iconType: "chart"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 1, tone: "red" },
+        { label: "Downstream Consumers", count: 2, tone: "green" },
+        { label: "Applications & Systems", count: 3, tone: "blue" },
+        { label: "Infrastructure Dependencies", count: 4, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "AirClic scanning issues are classed as Sev 2. The platform links S4A load planning to ramp loading verification."
+      ],
+      upstreamTable: [
+        {
+          id: "airclic-uptbl-1",
+          name: "S4A / CLP Load Plan (ULDVerificationWS)",
+          subName: "(InsertULDScanInfo() → ULD_Scanning)",
+          description:
+            "When CLP submits a load plan in S4A, it calls InsertULDScanInfo() on ULDVerificationWS, which writes to the ULD_Scanning table.",
+          type: "Internal / Web Service",
+          typeBadge: "orange",
+          impact: "Handsets can't download load data."
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "airclic-dwntbl-1",
+          name: "S4A and the Planeside Tool",
+          subName: "(Load Data & Final Load Summaries)",
+          description:
+            "Load data and final load summaries go to S4A and the Planeside Tool.",
+          type: "Internal Operations",
+          dataFlow: "Final flight load data to CLP and Departure Coordinator",
+          impact: "Final load summaries delayed from planeside to CLP and DC."
+        },
+        {
+          id: "airclic-dwntbl-2",
+          name: "Igloo Verification Report",
+          subName: "(ULD AVR · Hourly into Azure)",
+          description: "Igloo Verification Report.",
+          type: "Internal Reporting",
+          dataFlow: "ULD_HISTORY table & Informix FltRange DB → Azure",
+          impact: "Descartes data missing from the report."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "airclic-infra-1",
+          component: "AirClic DB (TUKVVAAGSSDB01)",
+          category: "Database",
+          iconType: "database",
+          description:
+            "AirClic DB on airclic.sql.insideaag.com (TUKVVAAGSSDB01)",
+          details:
+            "AirClic DB on airclic.sql.insideaag.com (TUKVVAAGSSDB01)",
+          owner: "ITS Airport Operations / DBA",
+          impact: "JBoss DB errors affecting ULD_Scanning and ULD_History."
+        },
+        {
+          id: "airclic-infra-2",
+          component: "JBoss/Harvester on TUKVVAPP17",
+          category: "Application Server",
+          iconType: "server",
+          description: "JBoss/Harvester on TUKVVAPP17",
+          details: "JBoss/Harvester on TUKVVAPP17",
+          owner: "ITS Airport Operations / ProdOps / Network",
+          impact: "Connection Failed or Harvester Shutdown alerts."
+        },
+        {
+          id: "airclic-infra-3",
+          component: "ULDVerificationWS (DNA Servers)",
+          category: "Web Service",
+          iconType: "globe",
+          description:
+            "ULDVerificationWS on the DNA servers in McGee and Tukwila",
+          details:
+            "ULDVerificationWS on the DNA servers in McGee and Tukwila",
+          owner: "ITS Airport Operations",
+          impact: "Load plan data from S4A cannot be written to ULD_Scanning."
+        },
+        {
+          id: "airclic-infra-4",
+          component: "TC75x Scanners (WS1)",
+          category: "Mobile Scanners",
+          iconType: "layers",
+          description: "TC75x scanners managed through WS1",
+          details: "TC75x scanners managed through WS1",
+          owner: "Enterprise Mobile",
+          impact: "Handheld scanner issues on the ramp."
+        }
+      ]
+    },
+    typicalBusinessImpact: [
+      "Handsets can't download load data",
+      "Scanners prompt for the wrong ULD position",
+      "Scan data never reaches the verification report"
+    ],
+    knownWorkarounds: ["(Add Known Workarounds)"],
+    validationChecklist: [
+      "Check that ULDVerificationWS is running.",
+      "For JBoss \"Connection Failed\" alerts, ask ProdOps/Network whether there's a network problem affecting TUKVVAPP17. If not, call Descartes; they may ask for server.log.",
+      "For Harvester shutdown alerts, check the end of the log for PINGs. If there are none, email server.log to Descartes.",
+      "For JBoss DB errors, contact the DBA about TUKVVAAGSSDB01.",
+      "For a wrong position prompt, have Enterprise Mobile check the scanner first, then send the ticket to Airport Ops on-call.",
+      "Have users log out of the Descartes app after scanning, which shows whether there was a network problem."
+    ],
+    vendorContacts: {
+      supportPhone:
+        "877-786-9339 (choose option 0, then ask for AirClic Support) / 877-901-7557 (2026 vendor sheet)",
+      supportPhoneNote:
+        "AirClic has two support numbers. Most documents list 877-786-9339; the 2026 vendor sheet lists 877-901-7557.",
+      supportEmail: "servicedesk@descartes.com",
+      supportHours: "(Add Support Service Hours)",
+      accountManager:
+        "Will King, Manager of Support Services, wking@descartes.com (Possible escalation contact)",
+      technicalSupport:
+        "Descartes Service Desk: 877-786-9339 (choose option 0, then ask for AirClic Support) / 877-901-7557 (servicedesk@descartes.com) • Possible escalation contact: Will King, Manager of Support Services, wking@descartes.com",
+      namedEscalationContact:
+        "Will King, Manager of Support Services, wking@descartes.com",
+      companyNote: "Descartes (formerly AirClic)",
+      categoryNote:
+        "Cargo / Ramp: ULD scanning and the Planeside Tool • Portal: https://servicedesk.descartes.com/ (registration required)",
+      contactDirectory: [
+        {
+          role: "Descartes Service Desk",
+          name: "Descartes Service Desk (AirClic Support)",
+          phone:
+            "877-786-9339 (choose option 0, then ask for AirClic Support) / 877-901-7557 (2026 vendor sheet)",
+          email: "servicedesk@descartes.com"
+        },
+        {
+          role: "Possible Escalation Contact",
+          name: "Will King, Manager of Support Services",
+          phone: "—",
+          email: "wking@descartes.com"
+        }
+      ],
+      contactWarningNote:
+        "⚠️ Check before you publish: AirClic has two support numbers. Most documents list 877-786-9339; the 2026 vendor sheet lists 877-901-7557.",
+      escalation:
+        "Escalate to Airport Ops before contacting the vendor. Only Cargo Systems Support or CNS should contact Descartes. Descartes Service Desk: 877-786-9339 (choose option 0, then ask for AirClic Support). Possible escalation contact: Will King, Manager of Support Services, wking@descartes.com.",
+      communicationGuidelines: [
+        "Escalate to Airport Ops before contacting the vendor. Only Cargo Systems Support or CNS should contact Descartes."
+      ],
+      responseSlas: [
+        {
+          priority: "Response Targets",
+          label: "Response Targets",
+          level: "AirClic (Descartes) SLA (Sev 2 Classed)",
+          description: "(Add Response Targets)",
+          target: "(Add Response Targets)",
+          condition: "AirClic scanning issues are classed as Sev 2.",
+          value: "(Add Response Targets)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS Airport Operations (formerly Cargo IT)",
+      itsTeamNote:
+        "Primary ITS Team Owner: ITS Airport Operations (formerly Cargo IT). Cargo Systems Support: Gary Johnson, 573-854-1582. Cargo Network Support: 206-392-7991 / 877-815-8254.",
+      applicationOwner: "Gary Johnson, 573-854-1582 (Cargo Systems Support)",
+      onCallSupport:
+        "ITS Airport Operations On-Call • Cargo Network Support: 206-392-7991 / 877-815-8254",
+      systemAdministration:
+        "Cargo Systems Support: Gary Johnson, 573-854-1582 • Cargo Network Support: 206-392-7991 / 877-815-8254",
+      businessOwner: "Cargo / Ramp Operations",
+      everbridgeContacts: "ITS Airport Operations",
+      passwordSupport: "Cargo Systems Support / Cargo Network Support",
+      internalDirectory: [
+        {
+          role: "Primary ITS Team Owner",
+          contact: "ITS Airport Operations (formerly Cargo IT)"
+        },
+        {
+          role: "Cargo Systems Support",
+          contact: "Gary Johnson, 573-854-1582"
+        },
+        {
+          role: "Cargo Network Support",
+          contact: "206-392-7991 / 877-815-8254"
+        }
+      ]
+    },
+    incidentHistory: [],
+    relatedDocuments: [
+      {
+        title: "SupportDoc_AirClic.docx",
+        type: "AirClic Support Document (Word)",
+        owner: "ITS Airport Operations / SysDocs",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/SysDocs/_layouts/15/Doc.aspx?sourcedoc=%7BF7E2E38D-5CF2-445D-B9F9-2C2B6AEF2B84%7D&file=SupportDoc_AirClic.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "ULD KT_Document V1.1.docx",
+        type: "ULD Knowledge Transfer Document (Word)",
+        owner: "ITS Airport Operations / WAB",
+        updated: "V1.1",
+        url: "https://alaskaair.sharepoint.com/sites/ASICS/AOS/AO/WAB/_layouts/15/Doc.aspx?sourcedoc=%7B544997FB-A7F1-4AA3-B960-BAB835922527%7D&file=ULD%20KT_Document%20V1.1.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      }
+    ]
+  },
+
+  smartkargo: {
+    id: "smartkargo",
+    name: "SmartKargo",
+    breadcrumbTrail: ["Vendors", "SmartKargo", "Vendor Impact"],
+    pageTitle: "SmartKargo - Vendor Impact Details",
+    pageSubtitle:
+      "SmartKargo is the customer-facing tool for booking cargo online and it feeds CargoSPOT. HA uses it as its cargo system.",
+    applicationsTabTitle: "SmartKargo",
+    applicationsTabSubheading: "Applications & Systems",
+    applicationsTabSubtitle:
+      "View SmartKargo online cargo booking and Hawaiian Airlines (HA) cargo system details.",
+    applicationsCardSubtitle:
+      "Web app for external customers to book cargo online, and HA cargo booking, payments, and settlement via VeriFone.",
+    dependenciesTabTitle: "SmartKargo - Dependencies Architecture",
+    dependenciesTabSubtitle:
+      "Upstream dependencies, downstream CargoSPOT and Salesforce MQ feeds, and IBM MQ (QMMFP) infrastructure.",
+    status: "Active",
+    lastUpdated: "2026 (SmartKargo System Summary & Support Guide v8.9 / v8.10)",
+    subtitle: "Cargo: online booking. HA uses it as its cargo system",
+    company: "SmartKargo",
+    website: "(Add Website/Support Portal URL)",
+    category: "Cargo: online booking. HA uses it as its cargo system",
+    itsTeam: "ITS Airport Operations (AirportOps queue)",
+    logo: "public/vendors/cargo-spot.png",
+    impactSummary: {
+      confirmed: 0,
+      potential: 1,
+      notImpacted: 0,
+      underReview: 0
+    },
+    impactCallout: {
+      level: "Warning",
+      title: "Key Takeaways: Customer-Facing Online Cargo Booking & HA Cargo System",
+      message:
+        "SmartKargo is the customer-facing tool for booking cargo online and it feeds CargoSPOT."
+    },
+    impactedSystems: [
+      {
+        id: "smartkargo-only-app",
+        name: "SmartKargo",
+        subName: "(Online Cargo Booking & HA Cargo System)",
+        appTabSubName: "(Online Cargo Booking & HA Cargo System)",
+        description: "Web app for external customers to book cargo online",
+        appTabDescription: "Web app for external customers to book cargo online",
+        businessFunction:
+          "Cargo booking. For HA, also payments and settlement via VeriFone",
+        impact: "(Add Impact)",
+        dependencies: "MQ feeds to CargoSPOT and Salesforce",
+        status: "Potential",
+        owner: "ITS Airport Operations"
+      }
+    ],
+    upstreamDependencies: ["(Add Upstream Dependencies)"],
+    downstreamConsumers: [
+      "CargoSPOT (QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT)",
+      "Salesforce (QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE)"
+    ],
+    dependenciesTab: {
+      overviewSubtitle:
+        "SmartKargo online cargo booking feeding CargoSPOT (QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT) and Salesforce (QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE) via IBM MQ (QMMFP).",
+      diagramUpstream: [
+        {
+          id: "smartkargo-up-1",
+          name: "(Add Upstream Dependencies)",
+          label: "(Add Upstream Dependencies)",
+          subtitle: "External customer booking & VeriFone settlement (HA)",
+          iconType: "doc"
+        }
+      ],
+      diagramServices: ["SmartKargo"],
+      diagramDownstream: [
+        {
+          id: "smartkargo-down-1",
+          name: "CargoSPOT",
+          label: "CargoSPOT",
+          subtitle: "QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT",
+          iconType: "transfer"
+        },
+        {
+          id: "smartkargo-down-2",
+          name: "Salesforce",
+          label: "Salesforce",
+          subtitle: "QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE",
+          iconType: "database"
+        }
+      ],
+      summaryStats: [
+        { label: "Upstream Dependencies", count: 1, tone: "red" },
+        { label: "Downstream Consumers", count: 2, tone: "green" },
+        { label: "Applications & Systems", count: 1, tone: "blue" },
+        { label: "Infrastructure Dependencies", count: 1, tone: "purple" }
+      ],
+      keyTakeaways: [
+        "SmartKargo is the customer-facing tool for booking cargo online and it feeds CargoSPOT."
+      ],
+      upstreamTable: [
+        {
+          id: "smartkargo-uptbl-1",
+          name: "(Add Upstream Dependencies)",
+          subName: "(SmartKargo Upstream)",
+          description: "(Add Upstream Dependencies)",
+          type: "External / Vendor",
+          typeBadge: "orange",
+          impact: "(Add Impact)"
+        }
+      ],
+      downstreamTable: [
+        {
+          id: "smartkargo-dwntbl-1",
+          name: "CargoSPOT",
+          subName: "(QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT)",
+          description: "CargoSPOT (QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT)",
+          type: "Internal Operations",
+          dataFlow: "QMMFP.CG.CUSTOMER.SMARTKARGO.CARGOSPOT",
+          impact: "Online cargo bookings do not flow into CargoSPOT."
+        },
+        {
+          id: "smartkargo-dwntbl-2",
+          name: "Salesforce",
+          subName: "(QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE)",
+          description: "Salesforce (QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE)",
+          type: "CRM Consumer",
+          dataFlow: "QMMFP.CG.CUSTOMER.SMARTKARGO.SALESFORCE",
+          impact: "Online cargo booking updates do not flow into Salesforce."
+        }
+      ],
+      infrastructureTable: [
+        {
+          id: "smartkargo-infra-1",
+          component: "IBM MQ (QMMFP)",
+          category: "Messaging & Infrastructure",
+          iconType: "server",
+          description:
+            "IBM MQ (QMMFP). Anything else: (Add Infrastructure Dependencies).",
+          details:
+            "IBM MQ (QMMFP). Anything else: (Add Infrastructure Dependencies).",
+          owner: "ITS Airport Operations",
+          impact: "MQ feeds to CargoSPOT and Salesforce disrupted."
+        }
+      ]
+    },
+    typicalBusinessImpact: ["(Add Typical Business Impact)"],
+    knownWorkarounds: ["(Add Known Workarounds)"],
+    validationChecklist: [
+      "Send all SmartKargo or online cargo booking tickets to the AirportOps queue.",
+      "For HA users with password, access, browser, printer or network problems, route them to HA ITSC.",
+      "For anything else, the QID Help Desk logs a ticket. Include the issue description, steps to reproduce, and the user's contact info."
+    ],
+    vendorContacts: {
+      supportPhone:
+        "617-607-4066. The HA guide lists the QID Help Desk at 888-733-0568.",
+      supportPhoneNote:
+        "SmartKargo has two support numbers. The 2026 vendor sheet lists 617-607-4066. The HA support guide lists the QID Help Desk at 888-733-0568.",
+      supportEmail:
+        "ha@skglobal.zohodesk.com (v8.10). Earlier versions listed skglobal@smartkargo.com.",
+      supportHours: "(Add Support Service Hours)",
+      accountManager: "QID Help Desk, 888-733-0568",
+      technicalSupport:
+        "QID Help Desk, 888-733-0568 • 2026 vendor sheet: 617-607-4066 • Email: ha@skglobal.zohodesk.com (v8.10; earlier skglobal@smartkargo.com)",
+      namedEscalationContact: "QID Help Desk, 888-733-0568",
+      companyNote: "SmartKargo",
+      categoryNote: "Cargo: online booking. HA uses it as its cargo system",
+      contactDirectory: [
+        {
+          role: "QID Help Desk (HA Guide)",
+          name: "QID Help Desk",
+          phone: "888-733-0568",
+          email:
+            "ha@skglobal.zohodesk.com (v8.10). Earlier versions listed skglobal@smartkargo.com."
+        },
+        {
+          role: "SmartKargo Support (2026 Vendor Sheet)",
+          name: "SmartKargo Support",
+          phone: "617-607-4066",
+          email:
+            "ha@skglobal.zohodesk.com (v8.10). Earlier versions listed skglobal@smartkargo.com."
+        }
+      ],
+      contactWarningNote:
+        "⚠️ Check before you publish: SmartKargo has two support numbers. The 2026 vendor sheet lists 617-607-4066. The HA support guide lists the QID Help Desk at 888-733-0568.",
+      escalation:
+        "Escalate through Airport Operations. QID Help Desk, 888-733-0568 (2026 vendor sheet lists 617-607-4066). Email: ha@skglobal.zohodesk.com (v8.10; earlier skglobal@smartkargo.com).",
+      communicationGuidelines: ["Escalate through Airport Operations."],
+      responseSlas: [
+        {
+          priority: "Response Targets",
+          label: "Response Targets",
+          level: "SmartKargo SLA",
+          description: "(Add Response Targets)",
+          target: "(Add Response Targets)",
+          condition: "(Add Response Targets)",
+          value: "(Add Response Targets)"
+        }
+      ]
+    },
+    internalContacts: {
+      itsTeam: "ITS Airport Operations (AirportOps queue)",
+      itsTeamNote:
+        "ITS Airport Operations (AirportOps queue) • HA ITSC: 1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)",
+      applicationOwner: "ITS Airport Operations",
+      onCallSupport: "ITS Airport Operations (AirportOps queue)",
+      systemAdministration:
+        "HA ITSC: 1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)",
+      businessOwner: "Cargo Operations (AS & HA)",
+      everbridgeContacts: "ITS Airport Operations",
+      passwordSupport:
+        "HA ITSC: 1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)",
+      internalDirectory: [
+        {
+          role: "Primary ITS Team Owner",
+          contact: "ITS Airport Operations (AirportOps queue)"
+        },
+        {
+          role: "HA ITSC",
+          contact: "1-800-218-6149 in v8.10 (1-866-701-4143 in the older v8.9)"
+        }
+      ]
+    },
+    incidentHistory: [],
+    relatedDocuments: [
+      {
+        title: "SmartKargo System Summary.docx",
+        type: "System Summary (Word)",
+        owner: "ITS Knowledge Management",
+        updated: "Primary Internal Source",
+        url: "https://alaskaair.sharepoint.com/sites/ITSKnowledgeManagement/_layouts/15/Doc.aspx?sourcedoc=%7B3849EC97-55F4-4D13-9611-EA238C17D1F3%7D&file=SmartKargo%20System%20Summary.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo Product Support Guide v8.9.docx",
+        type: "Product Support Guide v8.9 (Word)",
+        owner: "Hawaiian Airlines / AS-HA TIMO",
+        updated: "v8.9",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/_layouts/15/Doc.aspx?sourcedoc=%7BF9CD4742-84A9-4171-845D-F6D1B5FF5089%7D&file=SmartKargo%20Product%20Support%20Guide%20v8.9.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo Product Support Guide v8.10.docx",
+        type: "Product Support Guide v8.10 (Word)",
+        owner: "Hawaiian Airlines / AS-HA TIMO",
+        updated: "v8.10",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/_layouts/15/Doc.aspx?sourcedoc=%7B59C4C917-07C6-4DCA-B850-D53DC1397A8B%7D&file=SmartKargo%20Product%20Support%20Guide%20v8.10.docx&action=default&mobileredirect=true&DefaultItemOpen=1"
+      },
+      {
+        title: "SmartKargo_User_Guide_(v2024.01).pdf",
+        type: "User Guide v2024.01 (PDF)",
+        owner: "Single Cargo Operation / AS-HA TIMO",
+        updated: "2024.01",
+        url: "https://alaskaair.sharepoint.com/sites/ashatimo/Shared%20Documents/2.%20Operations/Cargo/Single%20Cargo%20Operation/Requirements/SmartKargo_User_Guide_(v2024.01).pdf?web=1"
       }
     ]
   }
@@ -6916,7 +9826,7 @@ const KNOWN_VENDOR_WEBSITES = {
   aerodata: "https://www.aerodata.co/en-US/",
   "aircraft-performance-aerodata": "https://www.aerodata.co/en-US/",
   sita: "https://www.sita.aero",
-  arinc: "https://auth.direct.arinc.net/",
+  arinc: "https://portal.arinc.net",
   "jeppesen-flight-planning": "https://www.jeppesen.com",
   jcte: "https://www.jeppesen.com",
   "jcte-crew": "https://www.jeppesen.com",
@@ -6938,7 +9848,10 @@ const KNOWN_VENDOR_WEBSITES = {
   "as-trax": "https://www.trax.aero",
   "qx-trax": "https://www.trax.aero",
   icargo: "https://alaska-icargo.ibsplc.aero",
-  "cargo-spot": "https://www.champ.aero",
+  "cargo-spot": "https://servicedesk.descartes.com/",
+  champ: "https://www.champ.aero",
+  airclic: "https://servicedesk.descartes.com/",
+  smartkargo: "https://www.smartkargo.com",
   "shopping-service": "https://azure.microsoft.com",
   "solar-mileage": "https://www.oracle.com",
   "peoplesoft-financials": "https://www.oracle.com",
@@ -7949,6 +10862,8 @@ export function getVendorImpactDetails(vendor, allVendors = []) {
       base = VENDOR_IMPACT_DETAILS.accelya;
     } else if (company.includes("aerodata")) {
       base = VENDOR_IMPACT_DETAILS.aerodata;
+    } else if (company.includes("arinc") || sysName.includes("arinc")) {
+      base = VENDOR_IMPACT_DETAILS.arinc;
     } else if (company.includes("sita") || sysName.includes("acars")) {
       base = VENDOR_IMPACT_DETAILS.sita;
     } else if (company.includes("aims") || sysName.includes("aims")) {
@@ -7957,6 +10872,17 @@ export function getVendorImpactDetails(vendor, allVendors = []) {
       base = VENDOR_IMPACT_DETAILS.alvaria;
     } else if (company.includes("avtec") || sysName.includes("avtec")) {
       base = VENDOR_IMPACT_DETAILS.avtec;
+    } else if (company.includes("boeing") || sysName.includes("boeing")) {
+      base = VENDOR_IMPACT_DETAILS.boeing;
+    } else if (
+      company.includes("champ") ||
+      company.includes("airclic") ||
+      company.includes("descartes") ||
+      company.includes("smartkargo") ||
+      sysName.includes("cargo spot") ||
+      sysName.includes("cargospot")
+    ) {
+      base = VENDOR_IMPACT_DETAILS["cargo-spot"];
     } else {
       base = buildTemplateVendorImpactDetails(vendor, allVendors);
     }
